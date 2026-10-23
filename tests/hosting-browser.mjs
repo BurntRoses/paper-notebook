@@ -31,18 +31,43 @@ try {
   }
   checks.push(`All ${links.size} same-site navigation, image, film and download targets return HTTP 200`);
 
+  await context.grantPermissions(['clipboard-read', 'clipboard-write']);
   await page.goto(base + 'chat-start.html');
+  assert.equal(await page.locator('a[download]').count(), 0);
   const prompt = await page.getByLabel('通用生成指令', { exact: true }).inputValue();
   assert.ok(prompt.includes('DeepSeek'));
   const repositoryPrompt = await page.getByLabel('仓库 Skill 调用语句', { exact: true }).inputValue();
   assert.ok(repositoryPrompt.includes('https://github.com/BurntRoses/paper-notebook'));
   assert.ok(repositoryPrompt.includes('skills/paper-notebook/SKILL.md'));
-  await page.getByRole('button', { name: '复制仓库调用语句', exact: true }).click();
+  assert.ok(repositoryPrompt.includes('scripts') || repositoryPrompt.includes('构建脚本'));
+  await page.getByRole('button', { name: '复制给 Agent', exact: true }).click();
   await page.waitForFunction(() => /已复制|已选中/.test(document.querySelector('#repository-status').textContent));
-  await page.getByRole('button', { name: '复制通用指令', exact: true }).click();
+  assert.equal(await page.evaluate(() => navigator.clipboard.readText()), repositoryPrompt);
+  await page.getByRole('button', { name: '复制给网页端模型', exact: true }).click();
   await page.waitForFunction(() => /已复制|已选中/.test(document.querySelector('#status').textContent));
-  checks.push('Copyable repository Skill prompt names the real repository and confirms text-only fallback');
-  checks.push('Generic generation prompt works or offers a selection fallback');
+  assert.equal(await page.evaluate(() => navigator.clipboard.readText()), prompt);
+  checks.push('Both copy buttons put the complete, self-contained instructions on the clipboard; no download step');
+
+  const fallback = await context.newPage();
+  await fallback.addInitScript(() => {
+    Object.defineProperty(navigator, 'clipboard', { value: { writeText: async () => { throw new Error('Clipboard unavailable'); } } });
+    document.execCommand = () => false;
+  });
+  await fallback.goto(base + 'chat-start.html');
+  for (const [button, field, status] of [['复制给 Agent', '#repository-prompt', '#repository-status'], ['复制给网页端模型', '#prompt', '#status']]) {
+    await fallback.getByRole('button', { name: button, exact: true }).click();
+    await fallback.waitForFunction(selector => document.querySelector(selector).textContent.includes('已选中完整指令'), status);
+    assert.ok(await fallback.locator(field).isVisible());
+    assert.equal(await fallback.locator(field).evaluate(el => el.selectionEnd - el.selectionStart), (await fallback.locator(field).inputValue()).length);
+  }
+  await fallback.close();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(base + 'chat-start.html');
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+  await page.screenshot({ path: out + '/copy-phone.png', fullPage: true });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.screenshot({ path: out + '/copy-desktop.png', fullPage: true });
+  checks.push('Clipboard-denied fallback reveals and selects each complete prompt; mobile layout fits the viewport');
 
   await page.goto(base + 'downloads/blank-notebook.html?demo');
   await page.waitForFunction(() => !!window.reader);

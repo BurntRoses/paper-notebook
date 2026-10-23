@@ -6,7 +6,11 @@ A focused reader for structured tutorials created by your own agent. The agent w
 
 The primary deliverable is a single offline HTML file. Local IndexedDB drafts restore learning records; downloaded copies support long-term storage. No account or hosted generation is required.
 
-## Start
+## Generate a notebook
+
+Open [the generation page](https://burntroses.github.io/paper-notebook/chat-start.html). Choose **Copy for Agent** or **Copy for a web chat**, then paste the complete prompt alongside your topic and materials. The Agent prompt includes the repository, Skill and runtime URLs so the agent can retrieve its tools. The web-chat prompt includes the complete import format; paste the model’s answer into the blank reader.
+
+## Local development
 
 ```sh
 npm install

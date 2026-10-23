@@ -1,19 +1,40 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>生成学习笔记 · Paper Notebook</title><style>
-*{box-sizing:border-box}body{margin:0;background:#f0ece2;color:#304f58;font:16px/1.8 system-ui,sans-serif}main{max-width:1060px;margin:auto;padding:28px}header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #8b9b8d55;padding-bottom:18px}a{color:inherit;text-underline-offset:5px}h1,h2{font-family:'Songti SC',Georgia,serif;font-weight:500}h1{font-size:clamp(30px,4vw,44px);line-height:1.4;margin:34px 0 12px}h2{font-size:24px;margin:0 0 8px}.lead{color:#66766e}.routes{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:28px 0}.route{background:#faf8ef;border:1px solid #a3ad9455;border-radius:6px;padding:24px}.route p{font-size:15px;margin:10px 0}.step{color:#9b7950;font-size:12px;letter-spacing:.06em}.actions{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}button,.actions a{font:inherit;font-size:14px;cursor:pointer;border:1px solid #8d9c8d66;color:inherit;border-radius:5px;padding:10px 16px;background:#fffdf5;text-decoration:none}button,.actions a:first-child{background:#345f62;color:#fffdf5}textarea{width:100%;min-height:240px;resize:vertical;padding:18px;color:#3d565b;background:#fffdf5;border:1px solid #a3ad9488;border-radius:5px;font:14px/1.8 ui-monospace,monospace}.note{font-size:13px;color:#788172}details{padding-top:16px;border-top:1px solid #8b9b8d55}summary{cursor:pointer}code{font-size:13px;overflow-wrap:anywhere}button:focus-visible,a:focus-visible{outline:2px solid #a0643c;outline-offset:4px}@media(max-width:700px){main{padding:18px}.routes{grid-template-columns:1fr}.route{padding:20px}}
-</style></head><body><main><header><strong>Paper Notebook</strong><a href="promo.html">产品介绍</a></header>
-<h1>用常用的 AI，生成自己的学习笔记。</h1><p class="lead">提供主题、基础和材料。AI 负责整理内容，Paper Notebook 负责阅读、圈画和复习。</p>
-<div class="routes"><article class="route"><span class="step">AGENT / SKILL</span><h2>Agent 直接生成文件</h2><p>在支持本地 Skill 的 Agent 中安装 Paper Notebook。说明学习要求后，Agent 使用共享阅读器生成 HTML、JSON 和 ZIP。</p><div class="actions"><a href="downloads/paper-notebook-skill.zip" download>下载 Skill</a><a href="downloads/paper-notebook-product.html">阅读示例</a></div><p class="note">Agent 需要文件和代码工具。能运行 Python 的对话环境，也可使用<a href="downloads/paper-notebook-chat.zip" download>通用使用包</a>。</p></article>
-<article class="route"><span class="step">CHATGPT / DEEPSEEK / 文字对话</span><h2>复制生成指令，导入阅读器</h2><p>复制下方指令，与材料一起发给 AI。收到完整笔记后，在空白阅读器中选择“文件 → 导入”，粘贴、预览并确认。下载 HTML 后即可离线阅读。</p><div class="actions"><button id="copy">复制通用指令</button><a href="downloads/blank-notebook.html">打开空白阅读器</a></div><p class="note">普通文字对话无需安装 Skill，也无需 API。模型生成的是导入稿；离线文件由阅读器导出。</p></article></div>
-<label for="prompt"><strong>通用生成指令</strong></label><textarea id="prompt" readonly aria-label="通用生成指令">请用 Paper Notebook 为我制作学习笔记。此指令可直接用于 ChatGPT、DeepSeek 等文字对话，无需在聊天账号中安装 Skill。
+<!doctype html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="复制指令，发给 Agent、ChatGPT 或 DeepSeek，生成自己的 Paper Notebook 学习笔记。">
+<title>复制给 AI · Paper Notebook</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f0ece2;color:#304f58;font:16px/1.8 system-ui,sans-serif}main{max-width:1100px;margin:auto;padding:24px 28px 40px}header{display:flex;justify-content:space-between;align-items:center;gap:20px;border-bottom:1px solid #8b9b8d55;padding-bottom:18px}a{color:inherit;text-underline-offset:5px}.brand{text-decoration:none;letter-spacing:.02em}.eyebrow{margin:32px 0 10px;font-size:12px;letter-spacing:.12em;color:#967343}h1,h2{font-family:'Songti SC',Georgia,serif;font-weight:500}h1{font-size:clamp(30px,4vw,44px);line-height:1.4;margin:0 0 12px}h2{font-size:26px;line-height:1.5;margin:10px 0}.lead{color:#66766e;max-width:740px;margin:0}.routes{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:28px 0}.route{min-width:0;background:#faf8ef;border:1px solid #a3ad9455;border-radius:8px;padding:26px;box-shadow:0 3px 0 #d8d0bc55}.route p{font-size:15px;margin:10px 0}.step{color:#9b7950;font-size:12px;letter-spacing:.08em}.actions{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0 0}button,.action{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:46px;font:inherit;font-size:14px;cursor:pointer;border:1px solid #345f62;border-radius:5px;padding:10px 18px;text-decoration:none;background:#345f62;color:#fffdf5}button:hover,.action:hover{background:#274e51}button svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.6}.note{font-size:13px;color:#6d7b70}.route .note{font-size:13px}details{padding-top:12px;border-top:1px solid #8b9b8d40}summary{cursor:pointer;font-size:13px;color:#63756d;min-height:36px;align-content:center}textarea{display:block;width:100%;min-height:210px;resize:vertical;margin:10px 0 6px;padding:14px;color:#3d565b;background:#fffdf5;border:1px solid #a3ad9488;border-radius:5px;font:13px/1.8 ui-monospace,monospace}#prompt{min-height:300px}.copy-status{min-height:46px;margin:10px 0!important;line-height:1.7}.read-next{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:24px 0;border-top:1px solid #8b9b8d55}.read-next h2{font-size:23px;margin:0 0 6px}.read-next p{font-size:14px;margin:0;color:#66766e}.read-next .action{flex-shrink:0}.help{margin:6px 0 20px}.help p{font-size:14px;color:#63756d}footer{display:flex;flex-wrap:wrap;gap:20px;padding-top:18px;border-top:1px solid #8b9b8d40;font-size:13px;color:#6d7b70}button:focus-visible,a:focus-visible,summary:focus-visible,textarea:focus-visible{outline:2px solid #a0643c;outline-offset:4px}@media(max-width:700px){main{padding:18px}.routes{grid-template-columns:1fr;gap:18px}.route{padding:22px}.read-next{align-items:flex-start;flex-direction:column;gap:16px}.eyebrow{margin-top:26px}.copy-status{min-height:24px}}
+</style></head><body><main>
+<header><a class="brand" href="promo.html"><strong>Paper Notebook</strong></a><a href="downloads/paper-notebook-product.html">阅读示例</a></header>
+<p class="eyebrow">生成你的学习笔记</p><h1>复制，发给你常用的 AI。</h1>
+<p class="lead">选择你的使用方式，把指令和主题、讲义或题库一起发过去。AI 会确认学习要求，整理成适合阅读和复习的笔记。</p>
+<div class="routes">
+<article class="route" id="agent"><span class="step">01 / AGENT</span><h2>让 Agent 生成文件</h2><p>指令已包含公开仓库地址。Agent 读取 Paper Notebook Skill，获取所需工具，按你的要求生成 HTML、JSON 和 ZIP。</p>
+<div class="actions"><button id="copy-repository" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"/></svg>复制给 Agent</button></div>
+<p id="repository-status" class="note copy-status" role="status" aria-live="polite">复制后发给能读取仓库、运行代码的 Agent，并附上材料。</p>
+<details id="agent-instructions"><summary>查看将要复制的指令</summary><textarea id="repository-prompt" readonly aria-label="仓库 Skill 调用语句">请使用 GitHub 仓库 https://github.com/BurntRoses/paper-notebook 中的 Paper Notebook Skill，为我制作学习笔记。
+
+读取 skills/paper-notebook/SKILL.md（原文：https://raw.githubusercontent.com/BurntRoses/paper-notebook/main/skills/paper-notebook/SKILL.md）。由你获取所需的仓库文件与运行资源；完整运行包位于 https://burntroses.github.io/paper-notebook/downloads/paper-notebook-skill.zip ，包含协议、阅读器与构建脚本，解压后按 SKILL.md 执行。无需我手动安装 Skill。
+
+集中询问我尚未说明的学习目标、已有基础、难度、语言风格、学习周期、练习偏好、参考材料及材料遵循程度。已提供的信息不重复询问。严格遵循材料时保留原题、答案、顺序和客观内容，补充解释另列；识别疑点保留页码与原文，不擅自猜写。
+
+复用共享格式和阅读器组织内容，按内容选用概念、公式黑板、代码、手绘关系图及重点圈画。解释直接自然，保留关键条件、推导、例子和来源。
+
+调用校验器与构建器，交付实际生成的独立 HTML、源 JSON 和 ZIP，并说明实际完成的检查。若当前环境只能输出文字，使用 https://burntroses.github.io/paper-notebook/paper-notebook-prompt.txt 中的完整导入格式，输出可直接导入的 Markdown/TXT，并说明如何在 https://burntroses.github.io/paper-notebook/downloads/blank-notebook.html 中导入。无法读取格式时明确说明，不虚构附件或下载链接。</textarea></details></article>
+<article class="route" id="chat"><span class="step">02 / CHATGPT · DEEPSEEK · 网页端模型</span><h2>让对话生成笔记内容</h2><p>复制完整指令，与材料一起发到 AI 对话。指令自带排版格式，模型可以直接输出供阅读器导入的完整笔记。</p>
+<div class="actions"><button id="copy" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"/></svg>复制给网页端模型</button></div>
+<p id="status" class="note copy-status" role="status" aria-live="polite">收到完整内容后，复制到下方空白阅读器的“文件 → 导入”。</p>
+<details id="chat-instructions"><summary>查看将要复制的指令</summary><textarea id="prompt" readonly aria-label="通用生成指令">请用 Paper Notebook 为我制作学习笔记。此指令可直接用于 ChatGPT、DeepSeek 等文字对话，已包含完整导入格式。
+
+项目：https://github.com/BurntRoses/paper-notebook
+阅读器：https://burntroses.github.io/paper-notebook/downloads/blank-notebook.html
 
 生成前，请集中确认尚未明确的信息：学习目标、已有基础、学习时间、语言和表达风格、难度、短期了解或长期课程、是否需要练习、参考材料和材料遵循程度。已提供的信息不重复询问。
 
 材料严格模式：保留题库/讲义的原题、答案、顺序与客观内容。补充解释另列，疑似错字或矛盾标为待核实，不擅自修题。PDF 优先读文字层，扫描图片仅按当前可用的识别能力处理；保留页码、原始内容和不确定处。无法读取的材料请明确说明，不猜写。
 
-交付：
-- 支持 Paper Notebook Skill 且能运行代码的 Agent，使用共享构建器生成实际 HTML、JSON、ZIP。
-- 可运行 Python 且已收到使用包时，按包内 CHAT-START.md 构建，提供真实文件链接。
-- 只有文字对话时，输出下述完整可导入稿。不要重写 HTML 界面，不要编造附件。用户会复制正文到 blank-notebook.html → 文件 → 导入，再下载离线副本。
+交付完整可导入的 Markdown/TXT 笔记。用户会复制正文到上述阅读器的“文件 → 导入”，预览确认后保存为离线 HTML。不重写 HTML 界面，不编造附件或下载链接。
 
 格式：# 教程名；## 章节名；### 纸页标题。普通正文直接写，每页围绕一个连贯问题解释概念、条件、推理、例子和来源。需要黑板、圈注或图示时，使用下面给出的 notebook-block JSON 围栏和字段，id 全文唯一。公式的 JSON 反斜杠要双写。不在全文外另套围栏，不用省略号代替内容。内容较多时按章节交付完整分册，不能在 JSON 中途截断。文字自然直接，不写对话开场、空泛鼓励、预设读者错误或重复总结。练习仅在明确需要时提供。
 
@@ -40,7 +61,22 @@
 ```notebook-block
 {"id":"growth-map","type":"diagram","nodes":[{"id":"n0","label":"100 元"},{"id":"n1","label":"110 元"},{"id":"n2","label":"121 元"}],"edges":[{"from":"n0","to":"n1","label":"× 1.1"},{"from":"n1","to":"n2","label":"× 1.1"}],"caption":"每期以当期金额为基础增长。"}
 ```
-</textarea><p id="status" class="note" role="status" aria-live="polite"></p><p class="note"><a href="paper-notebook-prompt.txt" download>下载 TXT 指令</a> · <a href="docs/chat-import.md">格式与交付说明</a> · <a href="downloads/paper-notebook-chat.zip" download>下载通用对话使用包</a></p>
-<details open><summary>直接给 Agent 一句话，调用公开仓库里的 Skill</summary><p class="note">把下面这段话发给能访问 GitHub 仓库、读取 Skill 并使用文件工具的 Agent。仅文字对话模型也可按指令输出可导入内容，但不能假称已安装 Skill 或生成附件。</p><textarea id="repository-prompt" readonly aria-label="仓库 Skill 调用语句" style="min-height:150px">请使用 GitHub 仓库 https://github.com/BurntRoses/paper-notebook 中的 Paper Notebook Skill，为我制作学习笔记。先读取 skills/paper-notebook/SKILL.md，按其中要求集中询问我尚未说明的学习目标、已有基础、难度、语言风格、学习周期、材料及材料遵循程度。制作时复用仓库的共享格式和阅读器，尽量依据我提供的原始资料；若只有文字对话能力，就输出完整可导入的 Paper Notebook Markdown/TXT，并告诉我如何导入，不要虚构 HTML、ZIP 或下载链接。</textarea><div class="actions"><button id="copy-repository">复制仓库调用语句</button><a href="https://github.com/BurntRoses/paper-notebook">查看公开源码</a><a href="https://raw.githubusercontent.com/BurntRoses/paper-notebook/main/skills/paper-notebook/SKILL.md">直接读取 Skill</a></div><p id="repository-status" class="note" role="status" aria-live="polite"></p></details>
-<details><summary>文件、材料和生成结果如何处理？</summary><p class="note">严格材料模式保留原题、答案与顺序；解释另列。PDF、图片的识别能力取决于当前 AI 环境，识别疑点需要对照原件。导入时校验内容结构，格式错误不会覆盖当前笔记。对话环境没有文件工具时，使用文字导入路径即可。</p></details>
-</main><script>const field=document.querySelector('#prompt'),status=document.querySelector('#status');document.querySelector('#copy').onclick=async()=>{if(field.value.startsWith('正在载入'))return;try{await navigator.clipboard.writeText(field.value);status.textContent='已复制。发送到 AI 对话，并附上主题和材料。';}catch{field.focus();field.select();status.textContent='已选中指令，请复制。';}};const repositoryPrompt=document.querySelector('#repository-prompt'),repositoryStatus=document.querySelector('#repository-status');document.querySelector('#copy-repository').onclick=async()=>{try{await navigator.clipboard.writeText(repositoryPrompt.value);repositoryStatus.textContent='已复制。发送给可读取 GitHub 仓库的 Agent，并附上学习材料。';}catch{repositoryPrompt.focus();repositoryPrompt.select();repositoryStatus.textContent='已选中语句，请复制。';}};</script></body></html>
+</textarea></details></article>
+</div>
+<section class="read-next"><div><h2>笔记生成后，在这里阅读。</h2><p>Agent 生成的 HTML 可直接打开。网页对话输出的文字，粘贴到空白阅读器即可导入、圈画和保存。</p></div><a class="action" href="downloads/blank-notebook.html">打开空白阅读器 ↗</a></section>
+<details class="help"><summary>讲义、题库、PDF 和图片怎么提供？</summary><p>与指令一起发给 AI，并说明希望严格按材料整理，还是允许补充讲解。题库严格模式保留原题、答案和顺序；PDF 与图片的识别疑点需要对照原件确认。</p></details>
+<footer><a href="promo.html">产品介绍</a><a href="docs/chat-import.md">格式与交付说明</a><a href="https://github.com/BurntRoses/paper-notebook">GitHub 源码</a></footer>
+</main><script>
+async function copyPrompt(field,status,details,message){
+ try{
+  await navigator.clipboard.writeText(field.value);
+  status.textContent=message;
+ }catch{
+  details.open=true;field.focus();field.select();
+  let copied=false;try{copied=document.execCommand('copy');}catch{}
+  status.textContent=copied?message:'已选中完整指令，请按 Ctrl+C（Mac 用 ⌘C）复制，然后粘贴到 AI 对话。';
+ }
+}
+ document.querySelector('#copy-repository').onclick=()=>copyPrompt(document.querySelector('#repository-prompt'),document.querySelector('#repository-status'),document.querySelector('#agent-instructions'),'已复制。粘贴给 Agent，并附上学习主题和材料。');
+ document.querySelector('#copy').onclick=()=>copyPrompt(document.querySelector('#prompt'),document.querySelector('#status'),document.querySelector('#chat-instructions'),'已复制。粘贴到 ChatGPT、DeepSeek 等对话，并附上主题和材料。');
+</script></body></html>

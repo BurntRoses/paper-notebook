@@ -8,9 +8,8 @@ AI 结构化教程的离线阅读器。Agent 按学习目标和材料整理内�
 
 ## 生成入口
 
-- Coding agent：下载工具包或安装 Skill，提供材料，说“我想学习机器学习，用 Paper Notebook 制作教程”。生成前集中确认目标、基础、时间、材料及习题偏好，交付 HTML、JSON、ZIP。
-- 支持文件与 Python 的对话：上传 `dist/downloads/paper-notebook-chat.zip` 和材料，按包内 `CHAT-START.md` 生成实际 HTML、JSON、ZIP。Python 构建器只依赖标准库。
-- ChatGPT、DeepSeek 等文字对话：打开 [生成入口](public/chat-start.html)，复制通用指令，输出完整 Markdown/TXT。粘贴到空白阅读器，导入并下载离线 HTML。无需在聊天账号中安装 Skill。
+- Agent：打开 [生成入口](public/chat-start.html#agent)，点击“复制给 Agent”，与材料一起发送。指令带有仓库和 Skill 地址，Agent 自行获取工具、确认学习要求并生成 HTML、JSON、ZIP。
+- ChatGPT、DeepSeek 等网页端模型：在 [同一入口](public/chat-start.html#chat) 点击“复制给网页端模型”，与主题和材料一起发送。将完整结果粘贴到空白阅读器，导入并保存离线 HTML。指令已包含排版格式。
 
 对 Agent 可直接说：“请使用 GitHub 仓库 https://github.com/BurntRoses/paper-notebook 中的 Paper Notebook Skill，为我制作学习笔记。先读取 `skills/paper-notebook/SKILL.md`，按 Skill 集中确认学习要求，并交付 HTML、JSON 和 ZIP。” Agent 需要能访问仓库并使用 Skill／文件工具；文字对话模型则按生成指令输出阅读器可导入的完整内容。
 

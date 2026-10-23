@@ -2,9 +2,9 @@
 
 打开 start.html 或 promo.html，先体验概念、公式、实践三类教程。
 
-有 coding agent：下载工具包，交给 agent 阅读 AGENTS.md 与 Paper Notebook Skill。agent 集中询问目标、基础、时间、材料和练习偏好，然后生成 JSON 并构建 HTML。安装独立 Skill 后，直接说“我想学习机器学习，用 Paper Notebook 制作教程”。
+使用 Agent：打开 chat-start.html，点击“复制给 Agent”，与主题和材料一起发送。指令包含公开仓库、Skill 原文和完整运行资源地址；Agent 获取工具、集中确认学习要求，并生成 HTML、JSON、ZIP。打开生成的 HTML 即可阅读。
 
-使用 ChatGPT、DeepSeek 等文字对话：打开 chat-start.html，复制完整指令并提供主题和材料。收到完整笔记后，在空白阅读器中选“文件 → 导入”，粘贴、预览并确认，再下载 HTML。若对话提供 Python 和文件工具，可上传 paper-notebook-chat.zip，按包内 CHAT-START.md 直接构建附件。
+使用 ChatGPT、DeepSeek 等网页端模型：在同一页点击“复制给网页端模型”，与主题和材料一起发送。完整指令自带导入格式；收到笔记后，在空白阅读器中选“文件 → 导入”，粘贴、预览并确认，再保存离线 HTML。
 
 阅读器顶部提供目录、阅读设置、导入和下载。目录含正文搜索、公式/图示/习题索引；记录区保存标记和历史问题；来源区列出参考材料。选中文字可添加荧光、圈注、波浪、框选、括注、勾记、星标或着重点。点击纸面上的已有标记可删除，重复同一标记不会叠加。
 
@@ -18,6 +18,6 @@
 
 # Quick start
 
-Use the toolkit or install the portable Skill, then ask your agent to create a tutorial. It asks about your goal, prior knowledge, time, materials and exercise choice. A chat-only model can output structured Markdown for import into the blank HTML reader.
+Open chat-start.html, copy the Agent or web-chat prompt and send it with your topic and materials. The Agent retrieves the Skill and builds files. A web-chat model outputs structured Markdown for import into the blank HTML reader.
 
 Read with the contents/search sidebar, layouts, light text marks, questions and optional exercises. Local drafts restore your work; download a copy for long-term storage. Personal records are optional in exported copies. The generated HTML opens offline without a server.

@@ -1,4 +1,8 @@
-# 安装与调用
+# 调用与安装
+
+日常使用：打开 [生成入口](https://burntroses.github.io/paper-notebook/chat-start.html#agent)，点击“复制给 Agent”，与主题和材料一起发送。指令包含仓库、Skill 与完整运行包地址，由 Agent 获取工具并生成文件。网页端模型使用同页的“复制给网页端模型”，结果粘贴到空白阅读器即可导入。
+
+以下安装方式用于开发环境或需要长期保留本地 Skill 的宿主。
 
 工具包根目录运行 `npm install && npm run build && npm run install-skill`。安装器将可自足的 Skill 放到 `${CODEX_HOME:-~/.codex}/skills/paper-notebook`。包含完整说明、schema、组件规范、空白 JSON、离线 HTML 和已捆绑的 Node CLI。已有安装会先移入CODEX_HOME/skill-backups 中的时间戳目录。
 
