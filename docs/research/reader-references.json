@@ -1,0 +1,45 @@
+[
+  {
+    "url": "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/",
+    "retrieved": true,
+    "bytes": 43147,
+    "title": " Dialog (Modal) Pattern | APG | WAI | W3C"
+  },
+  {
+    "url": "https://m3.material.io/styles/motion/overview",
+    "retrieved": true,
+    "bytes": 61819,
+    "title": "Motion – Material Design 3"
+  },
+  {
+    "url": "https://www.apple.com/apple-books/",
+    "retrieved": true,
+    "bytes": 185629,
+    "title": "Apple Books - Apple"
+  },
+  {
+    "url": "https://lsc.cornell.edu/how-to-study/taking-notes/cornell-note-taking-system/",
+    "retrieved": true,
+    "bytes": 216734,
+    "title": "The Cornell Note Taking System &#8211; Learning Strategies Center"
+  },
+  {
+    "url": "https://www.postgresql.org/docs/current/functions-aggregate.html",
+    "retrieved": true,
+    "bytes": 75475,
+    "title": "PostgreSQL: Documentation: 18: 9.21. Aggregate Functions"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/blader/humanizer/8c307f367c91bd974002f10f2be2965d642c13df/SKILL.md",
+    "retrieved": true,
+    "bytes": 32309,
+    "title": "---\nname: humanizer\ndescription: |\n  Rewrite AI-sounding text so it reads like the writer without ch"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/op7418/Humanizer-zh/f4518a8eab97b8bfebc66a89d34320a89bef6930/SKILL.md",
+    "retrieved": true,
+    "bytes": 20527,
+    "title": "Humanizer-zh · pinned SKILL.md",
+    "retrieval": "GitHub blob API ef07b54da21a41d4a7e4fe0b0afb928f597eb684"
+  }
+]

@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-23T06:39:02.943Z",
+  "checks": [
+    "four coherent ruled lesson sheets; source stays read-only; authored mark removal and undo are private",
+    "key passages collect real authored and personal text anchors with source navigation",
+    "long text keeps every character and source offset across continuation sheets and rotation",
+    "CJK, emoji and multiline highlighting uses exact line endpoints and deterministic SVG",
+    "all nine reading marks work; repeat marks toggle without stacking; click and delete supports overlapping marks",
+    "custom keyboard-capable choice menus update real settings and keep mark geometry aligned under zoom",
+    "four preset transitions converge on the final target under rapid turns, without stale overlays",
+    "page-corner drag distinguishes rebound and commit with no text-selection gesture conflict",
+    "mark undo and redo works after page navigation",
+    "Cornell derivation and chalkboard use live formulas; quiz feedback repaginates without clipping",
+    "immersive paper fills the viewport, hides chrome, reveals controls and preserves reading location",
+    "brief captures level, writing style, horizon and strict material/OCR requirements without editing the open lesson",
+    "personal HTML reopens fully offline and re-exports annotations, source visuals and private authored-mark dismissals",
+    "desktop, both tablet orientations and phone fit paper and navigation; immersive screenshots collected",
+    "OS reduced motion bypasses animated page overlays",
+    "local drafts restore personal marks and the same physical continuation sheet",
+    "legacy normalized ink imports into a visible pending list and retains original samples"
+  ],
+  "errors": [],
+  "scope": "Chromium desktop, viewport emulation and offline; physical iOS/Android hardware not tested"
+}

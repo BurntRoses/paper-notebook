@@ -1,0 +1,89 @@
+{
+  "title": "Paper Notebook — 用 AI 生成学习笔记",
+  "duration": 64,
+  "fps": 30,
+  "bpm": 120,
+  "music": "Original score: Paper / Pulse",
+  "scenes": [
+    {
+      "id": "pain",
+      "pageId": "product-pain",
+      "start": 0,
+      "end": 8,
+      "headline": "用 Skill，让 AI 生成学习笔记。",
+      "purpose": "开场说明 Agent Skill、ChatGPT 和 DeepSeek 对话生成的入口与交付方式",
+      "visual": "原生标题与入口说明从首帧出现；真实生成指令分三段踩点进入，构建文件和复制导入两种路径明确呈现。",
+      "sound": "短马林巴开场动机，电钢琴与轻鼓逐层进入，生成指令出现时点入高音木琴"
+    },
+    {
+      "id": "idea",
+      "pageId": "product-idea",
+      "start": 8,
+      "end": 16,
+      "headline": "长篇 AI 讲解，整理成学习笔记。",
+      "purpose": "呈现长篇回答枯燥难读的痛点与结构化阅读方式",
+      "visual": "品牌落在真实纸面；页面展开，三步关系图逐段出现，荧光划过核心句。",
+      "sound": "鼓组与低音进入，电钢琴琶音连接主旋律，图示出现时短笛高音回应"
+    },
+    {
+      "id": "structure",
+      "pageId": "product-structure",
+      "start": 16,
+      "end": 24,
+      "headline": "条件、公式、例题，放在同一页。",
+      "purpose": "展示知识组织和页面设计",
+      "visual": "康奈尔页边线索与正文分层展开；推进黑板公式，移向数值例子和勾记。",
+      "sound": "拨弦切分，黑板出现时短钟琴高音，计算结果配马林巴轻点"
+    },
+    {
+      "id": "marks",
+      "pageId": "product-marks",
+      "start": 24,
+      "end": 32,
+      "headline": "圈画重点，集中复习。",
+      "purpose": "展示圈画、引线旁注和复习回到原文",
+      "visual": "荧光、圈注、星标、方框按节拍逐笔出现；镜头从原句移向回顾线索。",
+      "sound": "主旋律变奏，荧光配木琴，圈注和星标分别点入钟琴高音，保留铅笔划线声"
+    },
+    {
+      "id": "subjects",
+      "pageId": "product-subjects",
+      "start": 32,
+      "end": 40,
+      "headline": "公式、原文和代码分别排版。",
+      "purpose": "以真实文学、商学和代码内容表现差异",
+      "visual": "原句摘录、黑板与代码切成三段纸片，依次推进；完整学科纸页踩点接力。",
+      "sound": "鼓组增加踩镲，文学短笛、公式钟琴、代码马林巴分别回应"
+    },
+    {
+      "id": "fit",
+      "pageId": "product-fit",
+      "start": 40,
+      "end": 48,
+      "headline": "按基础、目标和材料生成。",
+      "purpose": "需求、材料遵循与 AI 生成流程",
+      "visual": "目标、基础和材料所在的真实段落展开；关系图连通，圈出严格材料要求。",
+      "sound": "减鼓留白，电钢琴单句与短笛交替，生成流程出现时马林巴轻点"
+    },
+    {
+      "id": "focus",
+      "pageId": "product-focus",
+      "start": 48,
+      "end": 56,
+      "headline": "沉浸阅读，离线保存。",
+      "purpose": "沉浸、横竖适配和离线价值",
+      "visual": "横版纸与竖版纸交错展开，推近沉浸阅读；离线句和星标落笔。",
+      "sound": "完整节拍回归，横竖纸页配短笛上行，保存句配钟琴，保留翻页声"
+    },
+    {
+      "id": "start",
+      "pageId": "product-start",
+      "start": 56,
+      "end": 64,
+      "headline": "AI 生成，纸页阅读，重点复习。",
+      "purpose": "品牌记忆与明确行动入口",
+      "visual": "笔记页面收拢，品牌与试读入口留在纸上；最后四秒稳定停留，星标画完。",
+      "sound": "主旋律收束，末拍三音品牌动机与自然尾音"
+    }
+  ]
+}

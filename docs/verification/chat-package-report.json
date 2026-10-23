@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-23T06:38:36.048Z",
+  "archive": "paper-notebook-chat.zip",
+  "entries": 21,
+  "promptMatches": true,
+  "pythonBuild": true,
+  "exactSourcePreserved": true,
+  "embeddedSourceMatches": true,
+  "zipMatches": true,
+  "validation": {
+    "valid": true,
+    "id": "paper-notebook-product-story",
+    "pages": 8,
+    "blocks": 26,
+    "assets": 0,
+    "warnings": []
+  },
+  "build": "{\"id\": \"paper-notebook-product-story\", \"revision\": 2, \"schemaValidated\": true, \"coreReferencesChecked\": true, \"browserInspected\": false, \"htmlBytes\": 1342872}",
+  "scope": "Local package extraction, Python standard-library build and shared schema validation. No remote ChatGPT or DeepSeek session/API used; browser results are recorded separately."
+}

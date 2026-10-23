@@ -1,0 +1,210 @@
+{
+  "schemaVersion": "1.0.0",
+  "notebook": {
+    "id": "notebook-growth",
+    "revision": 1,
+    "title": "复利的递推关系",
+    "subtitle": "用一个具体数值，理解指数与复利。",
+    "author": "Paper Notebook",
+    "language": "zh-CN",
+    "goals": [
+      "从递推关系推出指数形式",
+      "检查公式的前提条件"
+    ],
+    "sources": [
+      {
+        "id": "source-editorial",
+        "title": "本项目编写的教学示例",
+        "status": "illustrative"
+      }
+    ],
+    "chapters": [
+      {
+        "id": "notebook-growth-chapter",
+        "title": "从问题到理解",
+        "pages": [
+          {
+            "id": "growth-1",
+            "title": "增长如何继续累积？",
+            "subtitle": "从逐期计算推导通式。",
+            "layout": "grid",
+            "blocks": [
+              {
+                "id": "growth-intro",
+                "type": "prose",
+                "text": "一个假想账户初始有 100 元，每期增长 10%，不取出利息。第一期后是 110 元，第二期增长的基础变成了 110 元，因此增加 11 元。这里的 10% 只是教学假设，不代表实际收益。"
+              },
+              {
+                "id": "growth-eq",
+                "type": "formula",
+                "latex": "P_{n+1}=P_n(1+r), \\qquad P_n=P_0(1+r)^n",
+                "text": "P₀ 是初始值，r 是每期增长率，n 是期数。每一期的增长率相同，但增加的绝对数值不同。"
+              },
+              {
+                "id": "growth-table",
+                "type": "comparison",
+                "columns": [
+                  "期数 n",
+                  "期初数值",
+                  "期末数值"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "100",
+                    "110"
+                  ],
+                  [
+                    "2",
+                    "110",
+                    "121"
+                  ],
+                  [
+                    "3",
+                    "121",
+                    "133.1"
+                  ]
+                ]
+              },
+              {
+                "id": "growth-steps",
+                "type": "example",
+                "prompt": "第三期末有多少？",
+                "steps": [
+                  {
+                    "id": "growth-s1",
+                    "text": "第二期末：100 × 1.1² = 121。"
+                  },
+                  {
+                    "id": "growth-s2",
+                    "text": "第三期末：121 × 1.1 = 133.1。"
+                  }
+                ],
+                "result": "三期一共增加 33.1，而每期固定加 10 只会增加 30。"
+              }
+            ]
+          },
+          {
+            "id": "growth-2",
+            "title": "通式的适用条件",
+            "subtitle": "增长率、存取与期数都属于模型条件。",
+            "layout": "reading",
+            "blocks": [
+              {
+                "id": "growth-bound",
+                "type": "callout",
+                "text": "这个公式假设每期增长率恒定，增长继续计入本金，期间没有额外存入或取出。条件改变时，需要重新建立模型。"
+              },
+              {
+                "id": "growth-path",
+                "type": "diagram",
+                "nodes": [
+                  {
+                    "id": "g0",
+                    "label": "100"
+                  },
+                  {
+                    "id": "g1",
+                    "label": "110"
+                  },
+                  {
+                    "id": "g2",
+                    "label": "121"
+                  },
+                  {
+                    "id": "g3",
+                    "label": "133.1"
+                  }
+                ],
+                "edges": [
+                  {
+                    "from": "g0",
+                    "to": "g1",
+                    "label": "× 1.1"
+                  },
+                  {
+                    "from": "g1",
+                    "to": "g2",
+                    "label": "× 1.1"
+                  },
+                  {
+                    "from": "g2",
+                    "to": "g3",
+                    "label": "× 1.1"
+                  }
+                ]
+              },
+              {
+                "id": "growth-quiz",
+                "type": "exercise",
+                "questionType": "single",
+                "question": "初始值 200，每期增长 5%，两期后是多少？",
+                "options": [
+                  {
+                    "id": "growth-a",
+                    "text": "210"
+                  },
+                  {
+                    "id": "growth-b",
+                    "text": "220"
+                  },
+                  {
+                    "id": "growth-c",
+                    "text": "220.5"
+                  }
+                ],
+                "solution": [
+                  "growth-c"
+                ],
+                "explanation": "200 × 1.05² = 220.5。",
+                "points": 2
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "userState": {
+    "updatedAt": "2026-10-23T11:36:07.471Z",
+    "lastPageId": "growth-1",
+    "notes": [],
+    "annotations": [],
+    "doubts": [],
+    "answers": {},
+    "checks": {},
+    "bookmarks": [],
+    "readingPositions": {},
+    "preferences": {
+      "language": "zh",
+      "desk": "oak",
+      "showDesk": true,
+      "motion": true,
+      "texture": 0.48,
+      "reading": "pages",
+      "direction": "horizontal",
+      "spread": false,
+      "fontSize": 18,
+      "weatherCity": "",
+      "weatherEnabled": false,
+      "penColor": "#6c7355",
+      "penWidth": 2,
+      "penTexture": "pencil",
+      "timerDisplay": "digital",
+      "timerRemaining": 1500,
+      "timerRunning": false
+    }
+  },
+  "assets": [],
+  "extensions": {
+    "readerProfile": {
+      "layout": "auto",
+      "direction": "horizontal",
+      "sidebar": "open",
+      "pageShape": "auto",
+      "transition": "turn",
+      "theme": "paper-light",
+      "motion": "full"
+    }
+  }
+}

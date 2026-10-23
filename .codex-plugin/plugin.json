@@ -1,0 +1,17 @@
+{
+  "name": "paper-notebook",
+  "version": "2.0.0",
+  "description": "Create structured tutorials as focused single-file offline readers after a short learning brief.",
+  "author": {
+    "name": "Paper Notebook contributors"
+  },
+  "license": "MIT",
+  "skills": [
+    "./skills/"
+  ],
+  "extensions": {
+    "com.openai": {
+      "onboardingSkill": "./skills/paper-notebook/SKILL.md"
+    }
+  }
+}

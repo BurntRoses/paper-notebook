@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-23T06:39:11.626Z",
+  "checks": [
+    "Offline start page embeds the complete portable prompt and supports the copy fallback",
+    "Portable Python-built HTML opens offline, preserves source and deterministic circle on return",
+    "Reader brief offers concrete file build and text-only import routes",
+    "The portable prompt example imports through the offline UI with a blackboard formula, worked example and text mark",
+    "Text-only output exports to a real HTML file and reopens fully offline with native diagrams",
+    "Film player loads both 64s formats, chapter navigation works and rotation preserves time",
+    "The film player also opens from file:// and seeks chapters without a server"
+  ],
+  "errors": [],
+  "scope": "Chromium, including file:// offline Python-built HTML and text import/export; no remote ChatGPT or DeepSeek account session or physical devices used"
+}

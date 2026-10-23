@@ -1,0 +1,4 @@
+interface:
+  display_name: Paper Notebook
+  short_description: Create a structured tutorial as a focused offline HTML reader.
+  default_prompt: Make a Paper Notebook tutorial for my learning goal. First ask about my background, time, materials and whether I want exercises.

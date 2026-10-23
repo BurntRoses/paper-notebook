@@ -1,0 +1,132 @@
+{
+  "source": "examples/paper-notebook.json",
+  "renderer": "PageSurface + native SVG ink",
+  "outputs": [
+    {
+      "page": 1,
+      "pageId": "intro-capabilities",
+      "orientation": "landscape",
+      "paper": "paper-landscape-1.png",
+      "composition": "poster-landscape-1.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "page": 2,
+      "pageId": "intro-principles",
+      "orientation": "landscape",
+      "paper": "paper-landscape-2.png",
+      "composition": "poster-landscape-2.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "page": 3,
+      "pageId": "intro-features",
+      "orientation": "landscape",
+      "paper": "paper-landscape-3.png",
+      "composition": "poster-landscape-3.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "page": 4,
+      "pageId": "intro-start",
+      "orientation": "landscape",
+      "paper": "paper-landscape-4.png",
+      "composition": "poster-landscape-4.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "page": 5,
+      "pageId": "subject-literature",
+      "orientation": "landscape",
+      "paper": "paper-landscape-5.png",
+      "composition": "poster-landscape-5.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "page": 6,
+      "pageId": "subject-business",
+      "orientation": "landscape",
+      "paper": "paper-landscape-6.png",
+      "composition": "poster-landscape-6.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "page": 7,
+      "pageId": "subject-code",
+      "orientation": "landscape",
+      "paper": "paper-landscape-7.png",
+      "composition": "poster-landscape-7.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "page": 1,
+      "pageId": "intro-capabilities",
+      "orientation": "portrait",
+      "paper": "paper-portrait-1.png",
+      "composition": "poster-portrait-1.png",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "page": 2,
+      "pageId": "intro-principles",
+      "orientation": "portrait",
+      "paper": "paper-portrait-2.png",
+      "composition": "poster-portrait-2.png",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "page": 3,
+      "pageId": "intro-features",
+      "orientation": "portrait",
+      "paper": "paper-portrait-3.png",
+      "composition": "poster-portrait-3.png",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "page": 4,
+      "pageId": "intro-start",
+      "orientation": "portrait",
+      "paper": "paper-portrait-4.png",
+      "composition": "poster-portrait-4.png",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "page": 5,
+      "pageId": "subject-literature",
+      "orientation": "portrait",
+      "paper": "paper-portrait-5.png",
+      "composition": "poster-portrait-5.png",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "page": 6,
+      "pageId": "subject-business",
+      "orientation": "portrait",
+      "paper": "paper-portrait-6.png",
+      "composition": "poster-portrait-6.png",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "page": 7,
+      "pageId": "subject-code",
+      "orientation": "portrait",
+      "paper": "paper-portrait-7.png",
+      "composition": "poster-portrait-7.png",
+      "width": 1080,
+      "height": 1920
+    }
+  ]
+}

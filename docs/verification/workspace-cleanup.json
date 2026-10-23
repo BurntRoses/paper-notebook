@@ -1,0 +1,101 @@
+{
+  "date": "2026-10-23",
+  "workspaceBytesBefore": 1576308917,
+  "workspaceBytesAfter": 1244197543,
+  "bytesReclaimed": 332111374,
+  "activeProjectBytes": 860533498,
+  "archiveBytes": 383664186,
+  "archivedMembers": 1486,
+  "historicalFilesMoved": 202,
+  "checks": {
+    "archiveMemberSHA256": true,
+    "historySHA256": true,
+    "finalFilmsAndMusicUnchanged": true,
+    "finalNotebookContentUnchanged": true,
+    "sourceTypecheck": true,
+    "modelTests": 28,
+    "readerBrowserGroups": 17,
+    "deliveryBrowserGroups": 7,
+    "landscapePortraitPreviewRebuilt": true,
+    "rebuiltPostersMatchFinal": 16,
+    "localEntryLinksExist": 58,
+    "zipIntegrity": true,
+    "noLegacyEditorOrRecordingInRelease": true,
+    "outputCacheRemoved": true
+  },
+  "packages": [
+    {
+      "name": "blank-notebook.zip",
+      "bytes": 705861,
+      "entries": 4,
+      "integrity": true
+    },
+    {
+      "name": "concept.zip",
+      "bytes": 711405,
+      "entries": 4,
+      "integrity": true
+    },
+    {
+      "name": "formula.zip",
+      "bytes": 708279,
+      "entries": 4,
+      "integrity": true
+    },
+    {
+      "name": "paper-notebook-chat.zip",
+      "bytes": 846556,
+      "entries": 21,
+      "integrity": true
+    },
+    {
+      "name": "paper-notebook-chatgpt.zip",
+      "bytes": 846556,
+      "entries": 21,
+      "integrity": true
+    },
+    {
+      "name": "paper-notebook-offline.zip",
+      "bytes": 8466220,
+      "entries": 14,
+      "integrity": true
+    },
+    {
+      "name": "paper-notebook-product.zip",
+      "bytes": 713410,
+      "entries": 4,
+      "integrity": true
+    },
+    {
+      "name": "paper-notebook-promo-source.zip",
+      "bytes": 66581664,
+      "entries": 71,
+      "integrity": true
+    },
+    {
+      "name": "paper-notebook-skill.zip",
+      "bytes": 846400,
+      "entries": 21,
+      "integrity": true
+    },
+    {
+      "name": "paper-notebook-toolkit.zip",
+      "bytes": 233078668,
+      "entries": 282,
+      "integrity": true
+    },
+    {
+      "name": "paper-notebook.zip",
+      "bytes": 714065,
+      "entries": 4,
+      "integrity": true
+    },
+    {
+      "name": "practice.zip",
+      "bytes": 708920,
+      "entries": 4,
+      "integrity": true
+    }
+  ],
+  "archiveManifest": "../../../archives/2026-10-23-cleanup/manifest.json"
+}

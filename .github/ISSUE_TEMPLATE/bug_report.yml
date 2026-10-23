@@ -1,0 +1,15 @@
+name: Report a problem / 问题反馈
+description: Describe a reproducible notebook problem.
+body:
+  - type: textarea
+    attributes:
+      label: Steps and expected result / 操作和预期
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Browser, device and screen size / 浏览器、设备、尺寸
+  - type: textarea
+    attributes:
+      label: Error or screenshot / 错误与截图
+      description: Remove private materials before attaching a notebook.

@@ -1,0 +1,32 @@
+[
+  {
+    "viewport": "desktop",
+    "width": 1440,
+    "height": 1000,
+    "physicalSheets": 7,
+    "markGeometryChecks": 5,
+    "codeTextExact": true,
+    "anchoredExplanations": 2,
+    "choiceFits": true
+  },
+  {
+    "viewport": "portrait",
+    "width": 820,
+    "height": 1180,
+    "physicalSheets": 7,
+    "markGeometryChecks": 5,
+    "codeTextExact": true,
+    "anchoredExplanations": 2,
+    "choiceFits": true
+  },
+  {
+    "viewport": "phone",
+    "width": 390,
+    "height": 844,
+    "physicalSheets": 7,
+    "markGeometryChecks": 6,
+    "codeTextExact": true,
+    "anchoredExplanations": 2,
+    "choiceFits": true
+  }
+]

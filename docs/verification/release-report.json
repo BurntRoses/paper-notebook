@@ -1,0 +1,104 @@
+{
+  "date": "2026-10-23",
+  "modelTests": 28,
+  "readerBrowserGroups": 17,
+  "deliveryBrowserChecks": 7,
+  "packages": [
+    {
+      "name": "blank-notebook.zip",
+      "bytes": 705861,
+      "entries": 4,
+      "integrity": true
+    },
+    {
+      "name": "concept.zip",
+      "bytes": 711405,
+      "entries": 4,
+      "integrity": true
+    },
+    {
+      "name": "formula.zip",
+      "bytes": 708279,
+      "entries": 4,
+      "integrity": true
+    },
+    {
+      "name": "paper-notebook-chat.zip",
+      "bytes": 846556,
+      "entries": 21,
+      "integrity": true
+    },
+    {
+      "name": "paper-notebook-chatgpt.zip",
+      "bytes": 846556,
+      "entries": 21,
+      "integrity": true
+    },
+    {
+      "name": "paper-notebook-offline.zip",
+      "bytes": 8466220,
+      "entries": 14,
+      "integrity": true
+    },
+    {
+      "name": "paper-notebook-product.zip",
+      "bytes": 713410,
+      "entries": 4,
+      "integrity": true
+    },
+    {
+      "name": "paper-notebook-promo-source.zip",
+      "bytes": 66581664,
+      "entries": 71,
+      "integrity": true
+    },
+    {
+      "name": "paper-notebook-skill.zip",
+      "bytes": 846400,
+      "entries": 21,
+      "integrity": true
+    },
+    {
+      "name": "paper-notebook-toolkit.zip",
+      "bytes": 233078668,
+      "entries": 282,
+      "integrity": true
+    },
+    {
+      "name": "paper-notebook.zip",
+      "bytes": 714065,
+      "entries": 4,
+      "integrity": true
+    },
+    {
+      "name": "practice.zip",
+      "bytes": 708920,
+      "entries": 4,
+      "integrity": true
+    }
+  ],
+  "sourceArchiveClean": true,
+  "mediaUnchanged": [
+    {
+      "path": "paper-notebook-kit/public/promo/paper-notebook-film.mp4",
+      "sha256": "4964e3d1dda3488b10416166bba7b5135d23c144ba71b1a98c511a089867c60c",
+      "unchanged": true
+    },
+    {
+      "path": "paper-notebook-kit/public/promo/paper-notebook-film-portrait.mp4",
+      "sha256": "e61f8c65387a46a88fb3d8051fb6e35b135cfe39ca199c1504ff7c4ababdc8f1",
+      "unchanged": true
+    },
+    {
+      "path": "paper-notebook-kit/public/promo/product-film-music.wav",
+      "sha256": "9e5baec16c7bbc6af57454aa1c8fb2340a00f2905c89629c77a2d666d2c252f8",
+      "unchanged": true
+    },
+    {
+      "path": "paper-notebook-kit/public/promo/product-film-music.mp3",
+      "sha256": "725d17f9453d646d2fb601ef547538d14e682d7541fcaa07ad2430d55abb9fc9",
+      "unchanged": true
+    }
+  ],
+  "scope": "Workspace cleanup and rebuilding current release. Reader/UI validation is Chromium and viewport emulation; no new vendor account/API or physical-device checks."
+}

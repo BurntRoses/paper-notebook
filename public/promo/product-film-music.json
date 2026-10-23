@@ -1,0 +1,337 @@
+{
+  "title": "Paper / Pulse",
+  "duration": 64,
+  "bpm": 120,
+  "bars": 32,
+  "sampleRate": 48000,
+  "channels": 2,
+  "license": "CC0-1.0; original synthesized composition for this project",
+  "instruments": [
+    "FM pluck hook",
+    "warm chord pads",
+    "syncopated bass",
+    "kick",
+    "clap",
+    "stereo hi-hats",
+    "paper and pencil textures",
+    "Rhodes-style electric piano",
+    "marimba",
+    "celesta",
+    "short flute accents"
+  ],
+  "arrangement": [
+    "filtered intro",
+    "full groove",
+    "melodic development",
+    "marker rhythm",
+    "subject montage lift",
+    "half-time break",
+    "full return",
+    "three-note brand ending"
+  ],
+  "master": "-16 LUFS target, -1.2 dBTP target",
+  "accentCues": [
+    {
+      "time": 0.0,
+      "midi": 76,
+      "instrument": "marimba",
+      "duration": 0.6,
+      "action": "opening Skill title"
+    },
+    {
+      "time": 0.25,
+      "midi": 79,
+      "instrument": "marimba",
+      "duration": 0.6,
+      "action": "opening Skill title"
+    },
+    {
+      "time": 0.5,
+      "midi": 81,
+      "instrument": "marimba",
+      "duration": 0.6,
+      "action": "opening Skill title"
+    },
+    {
+      "time": 1.3,
+      "midi": 81,
+      "instrument": "marimba",
+      "duration": 0.4,
+      "action": "generation prompt strip"
+    },
+    {
+      "time": 1.95,
+      "midi": 84,
+      "instrument": "marimba",
+      "duration": 0.4,
+      "action": "generation prompt strip"
+    },
+    {
+      "time": 2.6,
+      "midi": 88,
+      "instrument": "marimba",
+      "duration": 0.4,
+      "action": "generation prompt strip"
+    },
+    {
+      "time": 8.0,
+      "midi": 69,
+      "instrument": "rhodes",
+      "duration": 0.85,
+      "action": "new section"
+    },
+    {
+      "time": 8.09,
+      "midi": 72,
+      "instrument": "rhodes",
+      "duration": 0.85,
+      "action": "new section"
+    },
+    {
+      "time": 8.18,
+      "midi": 76,
+      "instrument": "rhodes",
+      "duration": 0.85,
+      "action": "new section"
+    },
+    {
+      "time": 16.0,
+      "midi": 69,
+      "instrument": "rhodes",
+      "duration": 0.85,
+      "action": "new section"
+    },
+    {
+      "time": 16.09,
+      "midi": 72,
+      "instrument": "rhodes",
+      "duration": 0.85,
+      "action": "new section"
+    },
+    {
+      "time": 16.18,
+      "midi": 76,
+      "instrument": "rhodes",
+      "duration": 0.85,
+      "action": "new section"
+    },
+    {
+      "time": 32.0,
+      "midi": 69,
+      "instrument": "rhodes",
+      "duration": 0.85,
+      "action": "new section"
+    },
+    {
+      "time": 32.09,
+      "midi": 72,
+      "instrument": "rhodes",
+      "duration": 0.85,
+      "action": "new section"
+    },
+    {
+      "time": 32.18,
+      "midi": 76,
+      "instrument": "rhodes",
+      "duration": 0.85,
+      "action": "new section"
+    },
+    {
+      "time": 48.0,
+      "midi": 69,
+      "instrument": "rhodes",
+      "duration": 0.85,
+      "action": "new section"
+    },
+    {
+      "time": 48.09,
+      "midi": 72,
+      "instrument": "rhodes",
+      "duration": 0.85,
+      "action": "new section"
+    },
+    {
+      "time": 48.18,
+      "midi": 76,
+      "instrument": "rhodes",
+      "duration": 0.85,
+      "action": "new section"
+    },
+    {
+      "time": 56.0,
+      "midi": 69,
+      "instrument": "rhodes",
+      "duration": 0.85,
+      "action": "new section"
+    },
+    {
+      "time": 56.09,
+      "midi": 72,
+      "instrument": "rhodes",
+      "duration": 0.85,
+      "action": "new section"
+    },
+    {
+      "time": 56.18,
+      "midi": 76,
+      "instrument": "rhodes",
+      "duration": 0.85,
+      "action": "new section"
+    },
+    {
+      "time": 10.0,
+      "midi": 84,
+      "instrument": "flute",
+      "duration": 0.48,
+      "action": "content relationship diagram"
+    },
+    {
+      "time": 17.1,
+      "midi": 88,
+      "instrument": "celesta",
+      "duration": 0.75,
+      "action": "blackboard formula"
+    },
+    {
+      "time": 19.25,
+      "midi": 84,
+      "instrument": "marimba",
+      "duration": 0.48,
+      "action": "worked calculation"
+    },
+    {
+      "time": 24.9,
+      "midi": 88,
+      "instrument": "marimba",
+      "duration": 0.48,
+      "action": "highlighter"
+    },
+    {
+      "time": 25.5,
+      "midi": 91,
+      "instrument": "celesta",
+      "duration": 0.75,
+      "action": "circle"
+    },
+    {
+      "time": 26.3,
+      "midi": 93,
+      "instrument": "celesta",
+      "duration": 0.75,
+      "action": "star"
+    },
+    {
+      "time": 27.4,
+      "midi": 88,
+      "instrument": "marimba",
+      "duration": 0.48,
+      "action": "key passage list"
+    },
+    {
+      "time": 32.4,
+      "midi": 81,
+      "instrument": "flute",
+      "duration": 0.48,
+      "action": "poetry extract"
+    },
+    {
+      "time": 34.1,
+      "midi": 88,
+      "instrument": "celesta",
+      "duration": 0.75,
+      "action": "business blackboard"
+    },
+    {
+      "time": 36.5,
+      "midi": 91,
+      "instrument": "marimba",
+      "duration": 0.48,
+      "action": "code explanation"
+    },
+    {
+      "time": 41.3,
+      "midi": 84,
+      "instrument": "flute",
+      "duration": 0.48,
+      "action": "strict material boundary"
+    },
+    {
+      "time": 43.7,
+      "midi": 88,
+      "instrument": "marimba",
+      "duration": 0.48,
+      "action": "generation route"
+    },
+    {
+      "time": 48.5,
+      "midi": 88,
+      "instrument": "flute",
+      "duration": 0.48,
+      "action": "landscape and portrait"
+    },
+    {
+      "time": 52.1,
+      "midi": 91,
+      "instrument": "celesta",
+      "duration": 0.75,
+      "action": "offline saved copy"
+    },
+    {
+      "time": 57.8,
+      "midi": 84,
+      "instrument": "marimba",
+      "duration": 0.48,
+      "action": "start action"
+    },
+    {
+      "time": 60.0,
+      "midi": 88,
+      "instrument": "celesta",
+      "duration": 0.75,
+      "action": "closing"
+    },
+    {
+      "time": 40,
+      "midi": 72,
+      "instrument": "rhodes",
+      "duration": 0.8,
+      "action": "half-time piano variation"
+    },
+    {
+      "time": 40.75,
+      "midi": 76,
+      "instrument": "rhodes",
+      "duration": 0.8,
+      "action": "half-time piano variation"
+    },
+    {
+      "time": 42,
+      "midi": 79,
+      "instrument": "rhodes",
+      "duration": 0.8,
+      "action": "half-time piano variation"
+    },
+    {
+      "time": 44,
+      "midi": 76,
+      "instrument": "rhodes",
+      "duration": 0.8,
+      "action": "half-time piano variation"
+    },
+    {
+      "time": 45.5,
+      "midi": 72,
+      "instrument": "rhodes",
+      "duration": 0.8,
+      "action": "half-time piano variation"
+    },
+    {
+      "time": 46.5,
+      "midi": 76,
+      "instrument": "rhodes",
+      "duration": 0.8,
+      "action": "half-time piano variation"
+    }
+  ],
+  "accentDesign": "Sparse short high-register timbres at actual fragment, ink and feature reveals; quiet piano contrast at 40s"
+}

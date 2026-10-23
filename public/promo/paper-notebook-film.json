@@ -1,0 +1,15 @@
+{
+  "orientation": "landscape",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "duration": 64,
+  "frames": 1920,
+  "notebookId": "paper-notebook-product-story",
+  "source": "examples/product-notebook.json",
+  "motion": "Native paper fragments, camera reframing, SVG stroke/clip reveals, beat-aligned paper wipes",
+  "screenRecording": false,
+  "music": "product-film-music.wav",
+  "script": "product-film-script.json",
+  "file": "paper-notebook-film.mp4"
+}

@@ -1,0 +1,36 @@
+{
+  "checks": [
+    {
+      "input": "image",
+      "pages": 1,
+      "methods": [
+        "Apple Vision OCR"
+      ],
+      "rawPreserved": true,
+      "stableSourceId": true,
+      "uncertainLines": 26
+    },
+    {
+      "input": "PDF",
+      "pages": 5,
+      "methods": [
+        "PDF text layer"
+      ],
+      "rawPreserved": true,
+      "stableSourceId": true,
+      "uncertainLines": 0
+    },
+    {
+      "input": "DOCX",
+      "pages": 1,
+      "methods": [
+        "textutil; pagination may differ from visual document"
+      ],
+      "rawPreserved": true,
+      "stableSourceId": true,
+      "uncertainLines": 0
+    }
+  ],
+  "codeExampleOutput": "2",
+  "limits": "OCR is extraction, not mathematical verification. Formula symbols and source corrections require comparison with the original. DOCX section references do not promise visual pagination."
+}

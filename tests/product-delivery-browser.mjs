@@ -1,0 +1,40 @@
+import assert from 'node:assert/strict';
+import {mkdir,writeFile,readFile} from 'node:fs/promises';
+import {pathToFileURL} from 'node:url';
+const {chromium}=await import(process.env.PLAYWRIGHT_MODULE||'playwright');
+const browser=await chromium.launch({headless:true}),root=process.cwd(),errors=[],checks=[];
+try{
+ const context=await browser.newContext({viewport:{width:1440,height:1000}}),page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
+ const offline=root+'/output/chatgpt-package-check/paper-notebook/output/index.html';
+ await context.setOffline(true);
+ await page.goto(pathToFileURL(root+'/dist/chat-start.html').href);
+ const genericPrompt=await page.getByLabel('通用生成指令',{exact:true}).inputValue();assert.equal(genericPrompt,await readFile('public/paper-notebook-prompt.txt','utf8'));assert.ok(genericPrompt.includes('DeepSeek'));
+ await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{value:undefined,configurable:true}));await page.getByRole('button',{name:'复制通用指令',exact:true}).click();await page.getByRole('status').filter({hasText:'已选中指令'}).waitFor();assert.equal(await page.locator('#prompt').evaluate(f=>f.selectionEnd-f.selectionStart),genericPrompt.length);checks.push('Offline start page embeds the complete portable prompt and supports the copy fallback');
+ await page.goto(pathToFileURL(offline).href);await page.waitForFunction(()=>!!window.reader);await page.evaluate(()=>document.fonts.ready);
+ assert.equal(await page.locator('.page-surface').getAttribute('data-page'),'product-pain');assert.ok((await page.locator('.reader-content').innerText()).includes('DeepSeek'));
+ assert.equal(await page.locator('[data-kind=circle]').count(),1);const first=await page.locator('[data-kind=circle]').getAttribute('d');
+ await page.keyboard.press('ArrowRight');await page.locator('.page-transition').waitFor({state:'detached'});assert.equal(await page.locator('.page-surface').getAttribute('data-page'),'product-idea');
+ await page.keyboard.press('ArrowLeft');await page.locator('.page-transition').waitFor({state:'detached'});assert.equal(await page.locator('[data-kind=circle]').getAttribute('d'),first);
+ await page.screenshot({path:root+'/docs/screenshots/product-offline-circle.png'});checks.push('Portable Python-built HTML opens offline, preserves source and deterministic circle on return');
+ await page.locator('.reader-files summary').click();await page.locator('.reader-file-menu').getByRole('button',{name:'导入',exact:true}).click();await page.getByRole('button',{name:'生成前问答',exact:true}).click();
+ const prompt=await page.getByLabel('生成提示预览',{exact:true}).inputValue();assert.ok(prompt.includes('只有文字对话能力'));assert.ok(prompt.includes('scripts/build_reader.py'));await page.getByRole('button',{name:'关闭',exact:true}).click();checks.push('Reader brief offers concrete file build and text-only import routes');
+ // Text-only sample enters the same blank reader through its import UI.
+ await page.goto(pathToFileURL(root+'/dist/downloads/blank-notebook.html').href);await page.waitForFunction(()=>!!window.reader);
+ await page.locator('.reader-files summary').click();await page.locator('.reader-file-menu').getByRole('button',{name:'导入',exact:true}).click();
+ await page.getByLabel('教程源文本',{exact:true}).fill(genericPrompt.slice(genericPrompt.indexOf('# 复利的增长基础')));await page.getByRole('button',{name:'预览导入',exact:true}).click();
+ await page.locator('.dialog-foot').getByRole('button',{name:'导入',exact:true}).click();assert.ok(await page.locator('[data-block=growth-formula]').count());assert.ok(await page.locator('[data-kind=circle]').count());checks.push('The portable prompt example imports through the offline UI with a blackboard formula, worked example and text mark');
+ await page.locator('.reader-files summary').click();await page.locator('.reader-file-menu').getByRole('button',{name:'下载',exact:true}).click();const download=page.waitForEvent('download');await page.locator('.dialog-foot').getByRole('button',{name:'下载',exact:true}).click();const exported=await download,importedPath=root+'/output/chatgpt-package-check/paper-notebook/output/text-import.html';await exported.saveAs(importedPath);
+ await page.goto(pathToFileURL(importedPath).href);await page.waitForFunction(()=>!!window.reader);assert.equal(await page.locator('[data-block=growth-formula]').count(),1);await page.keyboard.press('ArrowRight');await page.locator('.page-transition').waitFor({state:'detached'});assert.equal(await page.locator('[data-block=growth-map]').count(),1);checks.push('Text-only output exports to a real HTML file and reopens fully offline with native diagrams');
+ await context.setOffline(false);await context.close();
+ const pc=await browser.newContext({viewport:{width:1440,height:1000}}),promo=await pc.newPage();promo.on('pageerror',e=>errors.push(e.message));
+ await promo.goto('http://127.0.0.1:5178/paper-notebook-kit/dist/promo-motion.html');await promo.waitForFunction(()=>document.querySelector('video')?.readyState>=1);
+ let spec=await promo.locator('video').evaluate(v=>({duration:v.duration,w:v.videoWidth,h:v.videoHeight,src:v.currentSrc}));assert.deepEqual([spec.duration,spec.w,spec.h],[64,1920,1080]);
+ await promo.getByRole('button',{name:'竖屏',exact:true}).click();await promo.waitForFunction(()=>document.querySelector('video')?.videoWidth===1080);
+ spec=await promo.locator('video').evaluate(v=>({duration:v.duration,w:v.videoWidth,h:v.videoHeight}));assert.deepEqual([spec.duration,spec.w,spec.h],[64,1080,1920]);
+ await promo.getByRole('button',{name:'00:32 公式、原文与代码',exact:true}).click();await promo.waitForFunction(()=>{const v=document.querySelector('video');return !v.seeking&&v.currentTime>=32;});await promo.locator('video').evaluate(v=>v.pause());
+ const time=await promo.locator('video').evaluate(v=>v.currentTime);assert.ok(time>=32&&time<34);
+ await promo.getByRole('button',{name:'横屏',exact:true}).click();await promo.waitForFunction(()=>{const v=document.querySelector('video');return v.videoWidth===1920&&!v.seeking&&v.currentTime>=32;});await promo.locator('video').evaluate(v=>v.pause());assert.ok(await promo.locator('video').evaluate(v=>v.currentTime>=32));assert.equal(await promo.locator('video').evaluate(v=>v.paused),true);
+ await promo.locator('video').evaluate(v=>new Promise(resolve=>{v.requestVideoFrameCallback(()=>requestAnimationFrame(resolve));v.currentTime=35.5;}));await promo.waitForFunction(()=>document.querySelector('video')?.readyState===4);await promo.waitForTimeout(400);await promo.screenshot({path:root+'/docs/screenshots/product-film-player.png'});checks.push('Film player loads both 64s formats, chapter navigation works and rotation preserves time');
+ await promo.goto(pathToFileURL(root+'/dist/promo-motion.html').href);await promo.waitForFunction(()=>document.querySelector('video')?.readyState>=1);assert.equal(await promo.locator('video').evaluate(v=>v.duration),64);await promo.getByRole('button',{name:'00:24 圈画与复习线索',exact:true}).click();await promo.waitForFunction(()=>{const v=document.querySelector('video');return !v.seeking&&v.currentTime>=24;});await promo.locator('video').evaluate(v=>v.pause());checks.push('The film player also opens from file:// and seeks chapters without a server');
+ assert.deepEqual(errors,[]);await mkdir('docs/verification',{recursive:true});await writeFile('docs/verification/product-delivery-report.json',JSON.stringify({date:new Date().toISOString(),checks,errors,scope:'Chromium, including file:// offline Python-built HTML and text import/export; no remote ChatGPT or DeepSeek account session or physical devices used'},null,2));console.log(checks.join('\n'));
+}finally{await browser.close();}

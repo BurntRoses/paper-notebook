@@ -1,0 +1,87 @@
+{
+  "seed": 20261019,
+  "objects": "Current renderer: src/reader/surface.ts and src/reader/ink.ts. Legacy desk SVG/CSS sources archived in ../archives/2026-10-23-cleanup/process-and-legacy.tar.gz.",
+  "files": [
+    {
+      "path": "assets/WenKai-OFL-1.1.txt",
+      "version": "1.0.0",
+      "bytes": 5171,
+      "sha256": "1a25e35da1031c6c3436fde545bb9cb5aca954e9873afe510c834b8b79bd21a0",
+      "source": "LXGW WenKai v1.530 renamed subset",
+      "license": "OFL-1.1",
+      "production": "Original / retained derivative"
+    },
+    {
+      "path": "assets/paper-kraft.webp",
+      "version": "1.0.0",
+      "bytes": 33216,
+      "sha256": "410b031e7055049af8a7ede1d2770048b7d8e47457fddddbe3fa550fe09e651d",
+      "source": "https://ambientcg.com/view?id=Paper001",
+      "license": "CC0-1.0",
+      "production": "tools/build_materials.py"
+    },
+    {
+      "path": "assets/desk-felt.webp",
+      "version": "1.0.0",
+      "bytes": 21930,
+      "sha256": "f8ba54415ef88ac18272eea5453cfd3b7f9bc3a613cb3beb00c2510ef4488c09",
+      "source": "Project procedural texture",
+      "license": "MIT",
+      "production": "tools/build_materials.py"
+    },
+    {
+      "path": "assets/desk-oak.webp",
+      "version": "1.0.0",
+      "bytes": 2634,
+      "sha256": "843d0a0b5a002853183c8ea628b4671a298ebea33175bc38c0822de1c9a12b4d",
+      "source": "Project procedural texture",
+      "license": "MIT",
+      "production": "tools/build_materials.py"
+    },
+    {
+      "path": "assets/desk-night.webp",
+      "version": "1.0.0",
+      "bytes": 4122,
+      "sha256": "5dbaf2ede4ff478d15d2d426a6558657e6e49a9400c65564813d613d80663fa6",
+      "source": "Project procedural texture",
+      "license": "MIT",
+      "production": "tools/build_materials.py"
+    },
+    {
+      "path": "assets/paper-cotton.webp",
+      "version": "1.0.0",
+      "bytes": 16746,
+      "sha256": "f327cb7afccff50d999f4a30348d4319205a48d31bfe7cf7246867e84910e409",
+      "source": "https://ambientcg.com/view?id=Paper001",
+      "license": "CC0-1.0",
+      "production": "tools/build_materials.py"
+    },
+    {
+      "path": "assets/study-hand.woff2",
+      "version": "1.0.0",
+      "bytes": 146580,
+      "sha256": "61913b98574b5d379ab4c64abf1962a7d66a85b1891de0616e8dd7f61cc94b29",
+      "source": "LXGW WenKai v1.530 renamed subset",
+      "license": "OFL-1.1",
+      "production": "Original / retained derivative"
+    },
+    {
+      "path": "assets/paper-cream.webp",
+      "version": "1.0.0",
+      "bytes": 21192,
+      "sha256": "018384e781205fd7721fad3fc061cda0fd5e6d7d41a722495c16c7b04f70f7b7",
+      "source": "https://ambientcg.com/view?id=Paper001",
+      "license": "CC0-1.0",
+      "production": "tools/build_materials.py"
+    },
+    {
+      "path": "assets/originals/Paper001_1K-JPG_Color.jpg",
+      "version": "1.0.0",
+      "bytes": 398173,
+      "sha256": "e8db6f5b91f7882f4711ab5b2dc5c2e91f822d4f80a7d0081991532cf5cd9b9a",
+      "source": "https://ambientcg.com/view?id=Paper001",
+      "license": "CC0-1.0",
+      "production": "Original / retained derivative"
+    }
+  ]
+}

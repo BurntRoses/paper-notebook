@@ -1,0 +1,45 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>生成学习笔记 · Paper Notebook</title><style>
+*{box-sizing:border-box}body{margin:0;background:#f0ece2;color:#304f58;font:16px/1.8 system-ui,sans-serif}main{max-width:1060px;margin:auto;padding:28px}header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #8b9b8d55;padding-bottom:18px}a{color:inherit;text-underline-offset:5px}h1,h2{font-family:'Songti SC',Georgia,serif;font-weight:500}h1{font-size:clamp(30px,4vw,44px);line-height:1.4;margin:34px 0 12px}h2{font-size:24px;margin:0 0 8px}.lead{color:#66766e}.routes{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:28px 0}.route{background:#faf8ef;border:1px solid #a3ad9455;border-radius:6px;padding:24px}.route p{font-size:15px;margin:10px 0}.step{color:#9b7950;font-size:12px;letter-spacing:.06em}.actions{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}button,.actions a{font:inherit;font-size:14px;cursor:pointer;border:1px solid #8d9c8d66;color:inherit;border-radius:5px;padding:10px 16px;background:#fffdf5;text-decoration:none}button,.actions a:first-child{background:#345f62;color:#fffdf5}textarea{width:100%;min-height:240px;resize:vertical;padding:18px;color:#3d565b;background:#fffdf5;border:1px solid #a3ad9488;border-radius:5px;font:14px/1.8 ui-monospace,monospace}.note{font-size:13px;color:#788172}details{padding-top:16px;border-top:1px solid #8b9b8d55}summary{cursor:pointer}code{font-size:13px;overflow-wrap:anywhere}button:focus-visible,a:focus-visible{outline:2px solid #a0643c;outline-offset:4px}@media(max-width:700px){main{padding:18px}.routes{grid-template-columns:1fr}.route{padding:20px}}
+</style></head><body><main><header><strong>Paper Notebook</strong><a href="promo.html">产品介绍</a></header>
+<h1>用常用的 AI，生成自己的学习笔记。</h1><p class="lead">提供主题、基础和材料。AI 负责整理内容，Paper Notebook 负责阅读、圈画和复习。</p>
+<div class="routes"><article class="route"><span class="step">AGENT / SKILL</span><h2>Agent 直接生成文件</h2><p>在支持本地 Skill 的 Agent 中安装 Paper Notebook。说明学习要求后，Agent 使用共享阅读器生成 HTML、JSON 和 ZIP。</p><div class="actions"><a href="downloads/paper-notebook-skill.zip" download>下载 Skill</a><a href="downloads/paper-notebook-product.html">阅读示例</a></div><p class="note">Agent 需要文件和代码工具。能运行 Python 的对话环境，也可使用<a href="downloads/paper-notebook-chat.zip" download>通用使用包</a>。</p></article>
+<article class="route"><span class="step">CHATGPT / DEEPSEEK / 文字对话</span><h2>复制生成指令，导入阅读器</h2><p>复制下方指令，与材料一起发给 AI。收到完整笔记后，在空白阅读器中选择“文件 → 导入”，粘贴、预览并确认。下载 HTML 后即可离线阅读。</p><div class="actions"><button id="copy">复制通用指令</button><a href="downloads/blank-notebook.html">打开空白阅读器</a></div><p class="note">普通文字对话无需安装 Skill，也无需 API。模型生成的是导入稿；离线文件由阅读器导出。</p></article></div>
+<label for="prompt"><strong>通用生成指令</strong></label><textarea id="prompt" readonly aria-label="通用生成指令">请用 Paper Notebook 为我制作学习笔记。此指令可直接用于 ChatGPT、DeepSeek 等文字对话，无需在聊天账号中安装 Skill。
+
+生成前，请集中确认尚未明确的信息：学习目标、已有基础、学习时间、语言和表达风格、难度、短期了解或长期课程、是否需要练习、参考材料和材料遵循程度。已提供的信息不重复询问。
+
+材料严格模式：保留题库/讲义的原题、答案、顺序与客观内容。补充解释另列，疑似错字或矛盾标为待核实，不擅自修题。PDF 优先读文字层，扫描图片仅按当前可用的识别能力处理；保留页码、原始内容和不确定处。无法读取的材料请明确说明，不猜写。
+
+交付：
+- 支持 Paper Notebook Skill 且能运行代码的 Agent，使用共享构建器生成实际 HTML、JSON、ZIP。
+- 可运行 Python 且已收到使用包时，按包内 CHAT-START.md 构建，提供真实文件链接。
+- 只有文字对话时，输出下述完整可导入稿。不要重写 HTML 界面，不要编造附件。用户会复制正文到 blank-notebook.html → 文件 → 导入，再下载离线副本。
+
+格式：# 教程名；## 章节名；### 纸页标题。普通正文直接写，每页围绕一个连贯问题解释概念、条件、推理、例子和来源。需要黑板、圈注或图示时，使用下面给出的 notebook-block JSON 围栏和字段，id 全文唯一。公式的 JSON 反斜杠要双写。不在全文外另套围栏，不用省略号代替内容。内容较多时按章节交付完整分册，不能在 JSON 中途截断。文字自然直接，不写对话开场、空泛鼓励、预设读者错误或重复总结。练习仅在明确需要时提供。
+
+以下是格式示例，请据我的主题编写实际内容：
+
+# 复利的增长基础
+## 恒定增长率
+### 两期后的金额
+每期增长率保持 10%，期间无额外存取。初始金额为 100 元。
+
+```notebook-block
+{"id":"growth-rule","type":"prose","text":"上一期的期末金额，是下一期的增长基础。","study":{"marks":[{"text":"下一期的增长基础","kind":"circle"}]}}
+```
+
+```notebook-block
+{"id":"growth-formula","type":"formula","latex":"P_n=P_0(1+r)^n","text":"P₀ 是初始金额，r 是每期增长率，n 是期数。","study":{"visual":"blackboard"}}
+```
+
+```notebook-block
+{"id":"growth-example","type":"example","prompt":"100 元，每期增长 10%，计算两期期末金额。","steps":[{"id":"growth-s1","text":"第一期：100 × 1.1 = 110 元。"},{"id":"growth-s2","text":"第二期：110 × 1.1 = 121 元。"}],"result":"期末 121 元，累计增长 21 元。"}
+```
+
+### 金额的变化
+```notebook-block
+{"id":"growth-map","type":"diagram","nodes":[{"id":"n0","label":"100 元"},{"id":"n1","label":"110 元"},{"id":"n2","label":"121 元"}],"edges":[{"from":"n0","to":"n1","label":"× 1.1"},{"from":"n1","to":"n2","label":"× 1.1"}],"caption":"每期以当期金额为基础增长。"}
+```
+</textarea><p id="status" class="note" role="status" aria-live="polite"></p><p class="note"><a href="paper-notebook-prompt.txt" download>下载 TXT 指令</a> · <a href="docs/chat-import.md">格式与交付说明</a> · <a href="downloads/paper-notebook-chat.zip" download>下载通用对话使用包</a></p>
+<details><summary>文件、材料和生成结果如何处理？</summary><p class="note">严格材料模式保留原题、答案与顺序；解释另列。PDF、图片的识别能力取决于当前 AI 环境，识别疑点需要对照原件。导入时校验内容结构，格式错误不会覆盖当前笔记。对话环境没有文件工具时，使用文字导入路径即可。</p></details>
+</main><script>const field=document.querySelector('#prompt'),status=document.querySelector('#status');document.querySelector('#copy').onclick=async()=>{if(field.value.startsWith('正在载入'))return;try{await navigator.clipboard.writeText(field.value);status.textContent='已复制。发送到 AI 对话，并附上主题和材料。';}catch{field.focus();field.select();status.textContent='已选中指令，请复制。';}};</script></body></html>

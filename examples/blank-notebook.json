@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "1.0.0",
+  "notebook": {
+    "id": "notebook-blank",
+    "revision": 1,
+    "title": "结构化学习笔记",
+    "language": "zh-CN",
+    "goals": [],
+    "sources": [],
+    "chapters": [
+      {
+        "id": "chapter-8a23048f-a1c3-4e66-a71f-b06f25744eba",
+        "title": "学习内容",
+        "pages": [
+          {
+            "id": "page-298dae31-a52b-463b-9738-da35c0515923",
+            "title": "导入教程",
+            "layout": "reading",
+            "blocks": []
+          }
+        ]
+      }
+    ]
+  },
+  "userState": {
+    "updatedAt": "2026-10-23T11:36:07.908Z",
+    "lastPageId": "page-298dae31-a52b-463b-9738-da35c0515923",
+    "notes": [],
+    "annotations": [],
+    "doubts": [],
+    "answers": {},
+    "checks": {},
+    "bookmarks": [],
+    "readingPositions": {},
+    "preferences": {
+      "language": "zh",
+      "desk": "oak",
+      "showDesk": true,
+      "motion": true,
+      "texture": 0.48,
+      "reading": "pages",
+      "direction": "horizontal",
+      "spread": false,
+      "fontSize": 18,
+      "weatherCity": "",
+      "weatherEnabled": false,
+      "penColor": "#6c7355",
+      "penWidth": 2,
+      "penTexture": "pencil",
+      "timerDisplay": "digital",
+      "timerRemaining": 1500,
+      "timerRunning": false
+    }
+  },
+  "assets": [],
+  "extensions": {}
+}

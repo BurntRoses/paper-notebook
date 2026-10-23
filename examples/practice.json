@@ -1,0 +1,199 @@
+{
+  "schemaVersion": "1.0.0",
+  "notebook": {
+    "id": "notebook-observe-plant",
+    "revision": 1,
+    "title": "给窗边的植物做一份记录",
+    "subtitle": "用具体现象与日期建立观察记录。",
+    "author": "Paper Notebook",
+    "language": "zh-CN",
+    "goals": [
+      "用可比较的方式记录观察",
+      "区分观察与原因解释"
+    ],
+    "sources": [
+      {
+        "id": "source-editorial",
+        "title": "本项目编写的教学示例",
+        "status": "illustrative"
+      }
+    ],
+    "chapters": [
+      {
+        "id": "notebook-observe-plant-chapter",
+        "title": "从问题到理解",
+        "pages": [
+          {
+            "id": "plant-1",
+            "title": "建立一次观察记录",
+            "subtitle": "十分钟，记录现象、条件和操作。",
+            "layout": "cornell",
+            "blocks": [
+              {
+                "id": "plant-intro",
+                "type": "prose",
+                "text": "“叶子看起来不太好”很难帮助下一次判断。换一种记录方式：叶片的位置、颜色变化、盆土干湿、最近一次浇水日期。先记录看见的东西，随后写可能的解释。"
+              },
+              {
+                "id": "plant-steps",
+                "type": "steps",
+                "items": [
+                  {
+                    "id": "plant-s1",
+                    "text": "拍一张固定角度的照片，记下日期。"
+                  },
+                  {
+                    "id": "plant-s2",
+                    "text": "观察叶片：下垂的是新叶、老叶，还是整株？"
+                  },
+                  {
+                    "id": "plant-s3",
+                    "text": "按该植物适合的方法检查盆土干湿，不只看表面颜色。"
+                  },
+                  {
+                    "id": "plant-s4",
+                    "text": "写下今天采取的操作，过几天在同一角度比较。"
+                  }
+                ]
+              },
+              {
+                "id": "plant-warn",
+                "type": "callout",
+                "tone": "warning",
+                "text": "不同植物需要不同的水分和光照。这套记录方法不提供通用浇水处方；养护操作需核对植物种类及条件。"
+              },
+              {
+                "id": "plant-log",
+                "type": "comparison",
+                "columns": [
+                  "日期",
+                  "观察到的现象",
+                  "采取的操作"
+                ],
+                "rows": [
+                  [
+                    "今天",
+                    "下部两片叶子变黄",
+                    "记录照片，核对养护条件"
+                  ],
+                  [
+                    "三天后",
+                    "由你补充",
+                    "由你补充"
+                  ]
+                ]
+              }
+            ],
+            "cues": [
+              {
+                "id": "cue-observe",
+                "text": "看见了什么？",
+                "blockId": "plant-intro"
+              },
+              {
+                "id": "cue-condition",
+                "text": "已知条件",
+                "blockId": "plant-steps"
+              },
+              {
+                "id": "cue-log",
+                "text": "日期与操作",
+                "blockId": "plant-log"
+              }
+            ],
+            "summary": "一条可复查的记录包含日期、具体观察、已知条件和采取的操作。原因推测单独记录，并列出需要补充的证据。"
+          },
+          {
+            "id": "plant-2",
+            "title": "观察与原因解释",
+            "subtitle": "证据决定解释能走到哪一步。",
+            "layout": "reading",
+            "blocks": [
+              {
+                "id": "plant-concept",
+                "type": "concept",
+                "title": "观察 ≠ 原因",
+                "text": "“两片老叶变黄”是观察。“缺水导致变黄”是原因判断，还需要植物种类、浇水和根系状态等证据。"
+              },
+              {
+                "id": "plant-match",
+                "type": "exercise",
+                "questionType": "matching",
+                "question": "每条记录属于哪种类别？",
+                "pairs": [
+                  {
+                    "id": "plant-p1",
+                    "left": "照片里有两片黄叶",
+                    "right": "观察"
+                  },
+                  {
+                    "id": "plant-p2",
+                    "left": "可能是光照不足",
+                    "right": "待核实的解释"
+                  },
+                  {
+                    "id": "plant-p3",
+                    "left": "明天核对养护资料",
+                    "right": "后续行动"
+                  }
+                ],
+                "explanation": "分别记录观察现象、待核实原因和后续行动，复查时更容易判断。",
+                "points": 3
+              },
+              {
+                "id": "plant-reflect",
+                "type": "exercise",
+                "questionType": "subjective",
+                "question": "为你身边的一盆植物写一条记录。",
+                "explanation": "参考要点：包含日期、具体观察、已知条件；将原因判断写成待核实的假设。",
+                "points": 0
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "userState": {
+    "updatedAt": "2026-10-23T11:36:07.471Z",
+    "lastPageId": "plant-1",
+    "notes": [],
+    "annotations": [],
+    "doubts": [],
+    "answers": {},
+    "checks": {},
+    "bookmarks": [],
+    "readingPositions": {},
+    "preferences": {
+      "language": "zh",
+      "desk": "oak",
+      "showDesk": true,
+      "motion": true,
+      "texture": 0.48,
+      "reading": "pages",
+      "direction": "horizontal",
+      "spread": false,
+      "fontSize": 18,
+      "weatherCity": "",
+      "weatherEnabled": false,
+      "penColor": "#6c7355",
+      "penWidth": 2,
+      "penTexture": "pencil",
+      "timerDisplay": "digital",
+      "timerRemaining": 1500,
+      "timerRunning": false
+    }
+  },
+  "assets": [],
+  "extensions": {
+    "readerProfile": {
+      "layout": "auto",
+      "direction": "horizontal",
+      "sidebar": "open",
+      "pageShape": "auto",
+      "transition": "turn",
+      "theme": "paper-light",
+      "motion": "full"
+    }
+  }
+}

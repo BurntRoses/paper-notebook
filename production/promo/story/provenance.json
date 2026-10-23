@@ -1,0 +1,11 @@
+{
+  "renderer": "Production PageSurface, deterministic Chromium capture with CSS/raster geometry checks",
+  "document": "examples/product-notebook.json",
+  "pages": 8,
+  "orientations": [
+    "landscape",
+    "portrait"
+  ],
+  "ink": "Unmodified native SVG geometry; only dash/clip reveal",
+  "revealSteps": 80
+}

@@ -1,0 +1,1521 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://paper-notebook.local/notebook.schema.json",
+  "title": "Paper Notebook Document 1.0",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "notebook",
+    "userState",
+    "assets",
+    "extensions"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "notebook": {
+      "type": "object",
+      "required": [
+        "id",
+        "revision",
+        "title",
+        "language",
+        "goals",
+        "sources",
+        "chapters"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/id"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        },
+        "goals": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "title"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/definitions/id"
+              },
+              "title": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "chapters": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 500,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "title",
+              "pages"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/definitions/id"
+              },
+              "title": {
+                "type": "string"
+              },
+              "pages": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 500,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "title",
+                    "blocks"
+                  ],
+                  "properties": {
+                    "id": {
+                      "$ref": "#/definitions/id"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "layout": {
+                      "enum": [
+                        "reading",
+                        "cornell",
+                        "grid",
+                        "exam",
+                        "free"
+                      ]
+                    },
+                    "blocks": {
+                      "type": "array",
+                      "maxItems": 5000,
+                      "items": {
+                        "$ref": "#/definitions/block"
+                      }
+                    },
+                    "summary": {
+                      "type": "string"
+                    },
+                    "cues": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "text"
+                        ],
+                        "properties": {
+                          "id": {
+                            "$ref": "#/definitions/id"
+                          },
+                          "text": {
+                            "type": "string"
+                          },
+                          "blockId": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "paper": {
+                      "type": "object",
+                      "properties": {
+                        "ruling": {
+                          "enum": [
+                            "lined",
+                            "grid",
+                            "dots",
+                            "blank"
+                          ]
+                        },
+                        "lineHeight": {
+                          "type": "number",
+                          "minimum": 24,
+                          "maximum": 56
+                        }
+                      }
+                    },
+                    "placements": {
+                      "$ref": "#/definitions/placements"
+                    },
+                    "subject": {
+                      "enum": [
+                        "general",
+                        "stem",
+                        "literature",
+                        "business",
+                        "code"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parent": {
+          "type": "object",
+          "required": [
+            "notebookId"
+          ],
+          "properties": {
+            "notebookId": {
+              "$ref": "#/definitions/id"
+            },
+            "pageId": {
+              "$ref": "#/definitions/id"
+            }
+          }
+        },
+        "brief": {
+          "type": "object",
+          "required": [
+            "goal",
+            "level",
+            "minutes",
+            "materials",
+            "exercises",
+            "language",
+            "route",
+            "imagePolicy"
+          ],
+          "properties": {
+            "goal": {
+              "type": "string"
+            },
+            "level": {
+              "type": "string"
+            },
+            "minutes": {
+              "type": "number",
+              "minimum": 1
+            },
+            "materials": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "exercises": {
+              "type": "boolean"
+            },
+            "language": {
+              "type": "string"
+            },
+            "route": {
+              "enum": [
+                "quick",
+                "systematic",
+                "deep",
+                "practice",
+                "review"
+              ]
+            },
+            "imagePolicy": {
+              "enum": [
+                "original",
+                "programmatic",
+                "redraw"
+              ]
+            },
+            "languageStyle": {
+              "type": "string"
+            },
+            "difficulty": {
+              "type": "string"
+            },
+            "priorKnowledge": {
+              "type": "string"
+            },
+            "horizon": {
+              "enum": [
+                "short",
+                "long"
+              ]
+            },
+            "materialFidelity": {
+              "enum": [
+                "strict",
+                "guided",
+                "open"
+              ]
+            },
+            "scope": {
+              "type": "string"
+            },
+            "termPolicy": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "userState": {
+      "type": "object",
+      "required": [
+        "updatedAt",
+        "lastPageId",
+        "notes",
+        "annotations",
+        "doubts",
+        "answers",
+        "checks",
+        "bookmarks",
+        "readingPositions",
+        "preferences"
+      ],
+      "properties": {
+        "updatedAt": {
+          "type": "string"
+        },
+        "lastPageId": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "pageId",
+              "title",
+              "text",
+              "back",
+              "material",
+              "seed",
+              "x",
+              "y",
+              "z",
+              "face",
+              "attached",
+              "collapsed",
+              "surface"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/definitions/id"
+              },
+              "pageId": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              },
+              "back": {
+                "type": "string"
+              },
+              "material": {
+                "enum": [
+                  "butter",
+                  "rose",
+                  "sage",
+                  "lilac",
+                  "kraft",
+                  "glassine"
+                ]
+              },
+              "seed": {
+                "type": "number"
+              },
+              "x": {
+                "type": "number"
+              },
+              "y": {
+                "type": "number"
+              },
+              "z": {
+                "type": "number"
+              },
+              "face": {
+                "enum": [
+                  "front",
+                  "back"
+                ]
+              },
+              "attached": {
+                "type": "boolean"
+              },
+              "collapsed": {
+                "type": "boolean"
+              },
+              "surface": {
+                "enum": [
+                  "page",
+                  "desk"
+                ]
+              },
+              "blockId": {
+                "$ref": "#/definitions/id"
+              },
+              "selector": {
+                "$ref": "#/definitions/selector"
+              },
+              "width": {
+                "type": "number",
+                "minimum": 80,
+                "maximum": 1000
+              },
+              "height": {
+                "type": "number",
+                "minimum": 60,
+                "maximum": 1000
+              },
+              "positions": {
+                "type": "object",
+                "properties": {
+                  "landscape": {
+                    "type": "object",
+                    "required": [
+                      "x",
+                      "y",
+                      "width",
+                      "z"
+                    ],
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "minimum": -100000,
+                        "maximum": 100000
+                      },
+                      "y": {
+                        "type": "number",
+                        "minimum": -100000,
+                        "maximum": 100000
+                      },
+                      "width": {
+                        "type": "number",
+                        "minimum": 20,
+                        "maximum": 10000
+                      },
+                      "height": {
+                        "type": "number",
+                        "minimum": -100000,
+                        "maximum": 100000
+                      },
+                      "z": {
+                        "type": "number",
+                        "minimum": -100000,
+                        "maximum": 100000
+                      },
+                      "sheet": {
+                        "type": "integer",
+                        "minimum": 0
+                      }
+                    }
+                  },
+                  "portrait": {
+                    "type": "object",
+                    "required": [
+                      "x",
+                      "y",
+                      "width",
+                      "z"
+                    ],
+                    "properties": {
+                      "x": {
+                        "type": "number",
+                        "minimum": -100000,
+                        "maximum": 100000
+                      },
+                      "y": {
+                        "type": "number",
+                        "minimum": -100000,
+                        "maximum": 100000
+                      },
+                      "width": {
+                        "type": "number",
+                        "minimum": 20,
+                        "maximum": 10000
+                      },
+                      "height": {
+                        "type": "number",
+                        "minimum": -100000,
+                        "maximum": 100000
+                      },
+                      "z": {
+                        "type": "number",
+                        "minimum": -100000,
+                        "maximum": 100000
+                      },
+                      "sheet": {
+                        "type": "integer",
+                        "minimum": 0
+                      }
+                    }
+                  }
+                }
+              },
+              "sheet": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        },
+        "annotations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "kind",
+              "selectors",
+              "color",
+              "width",
+              "seed",
+              "pageId"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/definitions/id"
+              },
+              "kind": {
+                "enum": [
+                  "bold",
+                  "red",
+                  "strike",
+                  "underline",
+                  "circle",
+                  "highlight",
+                  "arrow",
+                  "check",
+                  "freehand",
+                  "wave",
+                  "box",
+                  "bracket",
+                  "star",
+                  "dots"
+                ]
+              },
+              "selectors": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/selector"
+                }
+              },
+              "color": {
+                "type": "string",
+                "pattern": "^#[0-9a-fA-F]{6}$"
+              },
+              "width": {
+                "type": "number",
+                "minimum": 0.5,
+                "maximum": 40
+              },
+              "seed": {
+                "type": "number"
+              },
+              "pageId": {
+                "type": "string"
+              },
+              "points": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 3,
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              },
+              "status": {
+                "enum": [
+                  "resolved",
+                  "ambiguous",
+                  "orphaned",
+                  "needs-placement"
+                ]
+              },
+              "coordinateSpace": {
+                "enum": [
+                  "legacy-width",
+                  "normalized-page"
+                ]
+              },
+              "originalPoints": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 3,
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              },
+              "sourceSize": {
+                "type": "object",
+                "required": [
+                  "width",
+                  "height"
+                ],
+                "properties": {
+                  "width": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "height": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  }
+                }
+              },
+              "shape": {
+                "enum": [
+                  "landscape",
+                  "portrait"
+                ]
+              },
+              "sheet": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "tool": {
+                "enum": [
+                  "pencil",
+                  "pen",
+                  "marker",
+                  "arrow"
+                ]
+              },
+              "attachedBlockId": {
+                "type": "string"
+              },
+              "blockFrame": {
+                "type": "object",
+                "required": [
+                  "x",
+                  "y",
+                  "width",
+                  "height"
+                ],
+                "properties": {
+                  "x": {
+                    "type": "number",
+                    "minimum": -100000,
+                    "maximum": 100000
+                  },
+                  "y": {
+                    "type": "number",
+                    "minimum": -100000,
+                    "maximum": 100000
+                  },
+                  "width": {
+                    "type": "number",
+                    "minimum": 20,
+                    "maximum": 10000
+                  },
+                  "height": {
+                    "type": "number",
+                    "minimum": -100000,
+                    "maximum": 100000
+                  },
+                  "z": {
+                    "type": "number",
+                    "minimum": -100000,
+                    "maximum": 100000
+                  }
+                }
+              },
+              "migration": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "doubts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "pageId",
+              "selector",
+              "question",
+              "status"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/definitions/id"
+              },
+              "pageId": {
+                "type": "string"
+              },
+              "selector": {
+                "$ref": "#/definitions/selector"
+              },
+              "question": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "open",
+                  "resolved"
+                ]
+              },
+              "category": {
+                "enum": [
+                  "unclear",
+                  "verify",
+                  "question"
+                ]
+              },
+              "answerNotebookId": {
+                "$ref": "#/definitions/id"
+              },
+              "answerPageId": {
+                "$ref": "#/definitions/id"
+              }
+            }
+          }
+        },
+        "answers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "selected",
+              "submitted"
+            ],
+            "properties": {
+              "selected": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "submitted": {
+                "type": "boolean"
+              },
+              "text": {
+                "type": "string"
+              },
+              "matches": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "checks": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "boolean"
+          }
+        },
+        "bookmarks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "readingPositions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "preferences": {
+          "type": "object",
+          "required": [
+            "language",
+            "desk",
+            "showDesk",
+            "motion",
+            "texture",
+            "reading",
+            "direction",
+            "spread",
+            "fontSize",
+            "weatherCity",
+            "weatherEnabled",
+            "timerRemaining",
+            "timerRunning"
+          ],
+          "properties": {
+            "language": {
+              "enum": [
+                "zh",
+                "en"
+              ]
+            },
+            "desk": {
+              "enum": [
+                "oak",
+                "felt",
+                "night"
+              ]
+            },
+            "showDesk": {
+              "type": "boolean"
+            },
+            "motion": {
+              "type": "boolean"
+            },
+            "texture": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "reading": {
+              "enum": [
+                "pages",
+                "scroll"
+              ]
+            },
+            "direction": {
+              "enum": [
+                "horizontal",
+                "vertical"
+              ]
+            },
+            "spread": {
+              "type": "boolean"
+            },
+            "fontSize": {
+              "type": "number",
+              "minimum": 14,
+              "maximum": 28
+            },
+            "weatherCity": {
+              "type": "string"
+            },
+            "weatherEnabled": {
+              "type": "boolean"
+            },
+            "penColor": {
+              "type": "string",
+              "pattern": "^#[0-9a-fA-F]{6}$"
+            },
+            "penWidth": {
+              "type": "number",
+              "minimum": 0.5,
+              "maximum": 40
+            },
+            "penTexture": {
+              "enum": [
+                "pencil",
+                "marker",
+                "ink"
+              ]
+            },
+            "timerDisplay": {
+              "enum": [
+                "digital",
+                "dial",
+                "minimal",
+                "focus"
+              ]
+            },
+            "timerRemaining": {
+              "type": "number",
+              "minimum": 0
+            },
+            "timerRunning": {
+              "type": "boolean"
+            },
+            "timerEnd": {
+              "type": "number"
+            }
+          }
+        },
+        "readingAnchor": {
+          "type": "object",
+          "required": [
+            "pageId",
+            "offset"
+          ],
+          "properties": {
+            "sheet": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "textOffset": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "pageId": {
+              "$ref": "#/definitions/id"
+            },
+            "blockId": {
+              "$ref": "#/definitions/id"
+            },
+            "offset": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        },
+        "layouts": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/placements"
+          }
+        },
+        "dismissedStudyMarks": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "data",
+          "mime"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/definitions/id"
+          },
+          "name": {
+            "type": "string"
+          },
+          "data": {
+            "type": "string",
+            "maxLength": 30000000
+          },
+          "mime": {
+            "type": "string"
+          },
+          "originalAssetId": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "license": {
+            "type": "string"
+          },
+          "verified": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "properties": {
+        "doubtLinks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "doubtId",
+              "pageId"
+            ],
+            "properties": {
+              "doubtId": {
+                "$ref": "#/definitions/id"
+              },
+              "pageId": {
+                "$ref": "#/definitions/id"
+              }
+            }
+          }
+        },
+        "baseRevision": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    }
+  },
+  "definitions": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "selector": {
+      "type": "object",
+      "required": [
+        "blockId",
+        "start",
+        "end",
+        "exact",
+        "prefix",
+        "suffix"
+      ],
+      "properties": {
+        "blockId": {
+          "type": "string"
+        },
+        "start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "exact": {
+          "type": "string"
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "suffix": {
+          "type": "string"
+        }
+      }
+    },
+    "block": {
+      "type": "object",
+      "required": [
+        "id",
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/id"
+        },
+        "type": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 1000000
+        },
+        "items": {
+          "$ref": "#/definitions/items"
+        },
+        "steps": {
+          "$ref": "#/definitions/items"
+        },
+        "columns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "label"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "from",
+              "to"
+            ],
+            "properties": {
+              "from": {
+                "type": "string"
+              },
+              "to": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "options": {
+          "$ref": "#/definitions/items"
+        },
+        "solution": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "pairs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "left",
+              "right"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "left": {
+                "type": "string"
+              },
+              "right": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "questionType": {
+          "enum": [
+            "single",
+            "multiple",
+            "truefalse",
+            "matching",
+            "subjective"
+          ]
+        },
+        "points": {
+          "type": "number",
+          "minimum": 0
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        },
+        "explanation": {
+          "type": "string"
+        },
+        "caption": {
+          "type": "string"
+        },
+        "attribution": {
+          "type": "string"
+        },
+        "tone": {
+          "type": "string"
+        },
+        "verification": {
+          "type": "string"
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "sourceId"
+            ],
+            "properties": {
+              "sourceId": {
+                "type": "string"
+              },
+              "locator": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "study": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "aside": {
+              "type": "string"
+            },
+            "tone": {
+              "enum": [
+                "blue",
+                "red",
+                "olive",
+                "gold"
+              ]
+            },
+            "marks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "text",
+                  "kind"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "kind": {
+                    "enum": [
+                      "highlight",
+                      "underline",
+                      "circle",
+                      "wave",
+                      "box",
+                      "bracket",
+                      "check",
+                      "star",
+                      "dots"
+                    ]
+                  },
+                  "color": {
+                    "type": "string"
+                  },
+                  "seed": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                }
+              }
+            },
+            "visual": {
+              "enum": [
+                "plain",
+                "blackboard",
+                "extract",
+                "sketch"
+              ]
+            },
+            "explanations": {
+              "type": "array",
+              "maxItems": 3,
+              "items": {
+                "type": "object",
+                "required": [
+                  "text",
+                  "note"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "enum": [
+                  "prose",
+                  "concept",
+                  "quote",
+                  "callout",
+                  "code"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "text"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "enum": [
+                  "steps",
+                  "checklist"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "items"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "example"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "prompt",
+              "steps",
+              "result"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "formula"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "latex"
+            ],
+            "properties": {
+              "latex": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "comparison"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "columns",
+              "rows"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "image"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "assetId",
+              "alt"
+            ],
+            "properties": {
+              "assetId": {
+                "type": "string"
+              },
+              "alt": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "diagram"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "nodes",
+              "edges"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "exercise"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "question",
+              "questionType"
+            ],
+            "properties": {
+              "question": {
+                "type": "string"
+              }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "questionType": {
+                      "enum": [
+                        "single",
+                        "multiple",
+                        "truefalse"
+                      ]
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "options",
+                    "solution"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "questionType": {
+                      "const": "matching"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "pairs"
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "text"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/definitions/id"
+          },
+          "text": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "objectFrame": {
+      "type": "object",
+      "required": [
+        "x",
+        "y",
+        "width",
+        "z"
+      ],
+      "properties": {
+        "x": {
+          "type": "number",
+          "minimum": -100000,
+          "maximum": 100000
+        },
+        "y": {
+          "type": "number",
+          "minimum": -100000,
+          "maximum": 100000
+        },
+        "width": {
+          "type": "number",
+          "minimum": 20,
+          "maximum": 10000
+        },
+        "height": {
+          "type": "number",
+          "minimum": -100000,
+          "maximum": 100000
+        },
+        "z": {
+          "type": "number",
+          "minimum": -100000,
+          "maximum": 100000
+        },
+        "sheet": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "placements": {
+      "type": "object",
+      "properties": {
+        "landscape": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/objectFrame"
+          }
+        },
+        "portrait": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/objectFrame"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
