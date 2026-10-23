@@ -12,6 +12,8 @@ AI 结构化教程的离线阅读器。Agent 按学习目标和材料整理内�
 - 支持文件与 Python 的对话：上传 `dist/downloads/paper-notebook-chat.zip` 和材料，按包内 `CHAT-START.md` 生成实际 HTML、JSON、ZIP。Python 构建器只依赖标准库。
 - ChatGPT、DeepSeek 等文字对话：打开 [生成入口](public/chat-start.html)，复制通用指令，输出完整 Markdown/TXT。粘贴到空白阅读器，导入并下载离线 HTML。无需在聊天账号中安装 Skill。
 
+对 Agent 可直接说：“请使用 GitHub 仓库 https://github.com/BurntRoses/paper-notebook 中的 Paper Notebook Skill，为我制作学习笔记。先读取 `skills/paper-notebook/SKILL.md`，按 Skill 集中确认学习要求，并交付 HTML、JSON 和 ZIP。” Agent 需要能访问仓库并使用 Skill／文件工具；文字对话模型则按生成指令输出阅读器可导入的完整内容。
+
 ## 本地运行与安装
 
 ```sh

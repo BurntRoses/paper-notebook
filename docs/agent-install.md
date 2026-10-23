@@ -6,6 +6,8 @@
 
 调用：“我想学习机器学习，用 Paper Notebook 制作教程。” Agent 根据 Skill 补齐目标、基础、时间、材料与练习选择，输出结构化数据，运行校验与构建。原生提问/选择控件仅在宿主支持时使用，其他环境采用文字问答。
 
-一句话委托安装：“安装这个工具包中的 Paper Notebook Skill，并制作离线教程；先询问缺少的学习需求。” 尚未配置公开仓库 URL。发布后，可在该句中附上真实仓库地址。
+从公开代码仓库调用：“请使用 GitHub 仓库 https://github.com/BurntRoses/paper-notebook 中的 Paper Notebook Skill，为我制作学习笔记。先读取 skills/paper-notebook/SKILL.md；根据 Skill 集中询问未提供的学习要求，复用共享格式生成 HTML、JSON 和 ZIP。” 如果 Agent 不能直接从远程仓库读取 Skill，先下载该仓库或其中的 `skills/paper-notebook/` 并安装；不要把纯文本对话误报为已安装 Skill。
+
+一句话委托安装：“安装 Paper Notebook Skill，并制作离线教程；先询问缺少的学习需求。” 公开仓库地址：https://github.com/BurntRoses/paper-notebook 。纯文字对话可以使用网站中的生成指令输出导入稿，由阅读器生成离线文件。
 
 CLI 使用 Skill 目录下 scripts/notebook.mjs：validate / build / convert。脚本不依赖原仓库位置或 node_modules。输出 index.html、notebook.json、notebook.zip 和构建报告。

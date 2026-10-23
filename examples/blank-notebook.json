@@ -9,11 +9,11 @@
     "sources": [],
     "chapters": [
       {
-        "id": "chapter-8a23048f-a1c3-4e66-a71f-b06f25744eba",
+        "id": "chapter-ead3821f-b83d-423a-a327-2fa742553dba",
         "title": "学习内容",
         "pages": [
           {
-            "id": "page-298dae31-a52b-463b-9738-da35c0515923",
+            "id": "page-ccc16557-318c-4b5c-a344-ff8d34b753f3",
             "title": "导入教程",
             "layout": "reading",
             "blocks": []
@@ -23,8 +23,8 @@
     ]
   },
   "userState": {
-    "updatedAt": "2026-10-23T11:36:07.908Z",
-    "lastPageId": "page-298dae31-a52b-463b-9738-da35c0515923",
+    "updatedAt": "2026-10-23T16:44:39.142Z",
+    "lastPageId": "page-ccc16557-318c-4b5c-a344-ff8d34b753f3",
     "notes": [],
     "annotations": [],
     "doubts": [],

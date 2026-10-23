@@ -34,9 +34,15 @@ try {
   await page.goto(base + 'chat-start.html');
   const prompt = await page.getByLabel('通用生成指令', { exact: true }).inputValue();
   assert.ok(prompt.includes('DeepSeek'));
+  const repositoryPrompt = await page.getByLabel('仓库 Skill 调用语句', { exact: true }).inputValue();
+  assert.ok(repositoryPrompt.includes('https://github.com/BurntRoses/paper-notebook'));
+  assert.ok(repositoryPrompt.includes('skills/paper-notebook/SKILL.md'));
+  await page.getByRole('button', { name: '复制仓库调用语句', exact: true }).click();
+  await page.waitForFunction(() => /已复制|已选中/.test(document.querySelector('#repository-status').textContent));
   await page.getByRole('button', { name: '复制通用指令', exact: true }).click();
   await page.waitForFunction(() => /已复制|已选中/.test(document.querySelector('#status').textContent));
-  checks.push('Generation prompt loads and copy works or offers a selection fallback');
+  checks.push('Copyable repository Skill prompt names the real repository and confirms text-only fallback');
+  checks.push('Generic generation prompt works or offers a selection fallback');
 
   await page.goto(base + 'downloads/blank-notebook.html?demo');
   await page.waitForFunction(() => !!window.reader);
