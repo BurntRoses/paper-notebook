@@ -6,4 +6,5 @@ test-results/
 
 # Rebuildable local captures and frame cache
 output/
+tmp/
 production/promo/story/capture.html

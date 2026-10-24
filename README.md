@@ -4,14 +4,14 @@ AI 结构化教程的离线阅读器。Agent 按学习目标和材料整理内�
 
 [在线体验](https://burntroses.github.io/paper-notebook/) · [生成笔记](https://burntroses.github.io/paper-notebook/chat-start.html) · [GitHub 源码](https://github.com/BurntRoses/paper-notebook)
 
-**成品统一打包 ZIP，并保留同名单独的离线 HTML。** 横屏默认一张横版纸，竖屏一张竖版纸，默认宽松康奈尔版式并带横线。正文、图文和 SVG 笔迹共用 PageSurface；双页为可选项。学习记录集中在侧栏，本机草稿自动保存。
+**成品默认只有一个“教程名-v版本.html”，双击即可离线阅读。** 横屏默认一张横版纸，竖屏一张竖版纸，默认宽松康奈尔版式并带横线。正文、图文和 SVG 笔迹共用 PageSurface；双页为可选项。学习记录集中在侧栏，本机草稿自动保存。
 
 ## 生成入口
 
-- Agent：打开 [生成入口](public/chat-start.html#agent)，点击“复制给 Agent”，与材料一起发送。指令带有仓库和 Skill 地址，Agent 自行获取工具、确认学习要求并生成 HTML、JSON、ZIP。
+- Agent：打开 [生成入口](public/chat-start.html#agent)，点击“复制给 Agent”，与材料一起发送。指令带有仓库和 Skill 地址，Agent 自行获取工具、确认学习要求并生成独立 HTML（源数据和记录内嵌）。
 - ChatGPT、DeepSeek 等网页端模型：在 [同一入口](public/chat-start.html#chat) 点击“复制给网页端模型”，与主题和材料一起发送。将完整结果粘贴到空白阅读器，导入并保存离线 HTML。指令已包含排版格式。
 
-对 Agent 可直接说：“请使用 GitHub 仓库 https://github.com/BurntRoses/paper-notebook 中的 Paper Notebook Skill，为我制作学习笔记。先读取 `skills/paper-notebook/SKILL.md`，按 Skill 先等待文件或“没有文件”，再用选择题确认学习要求，并交付 HTML、JSON 和 ZIP。” Agent 需要能访问仓库并使用 Skill／文件工具；文字对话模型则按生成指令输出阅读器可导入的完整内容。
+对 Agent 可直接说：“请使用 GitHub 仓库 https://github.com/BurntRoses/paper-notebook 中的 Paper Notebook Skill，为我制作学习笔记。先读取 `skills/paper-notebook/SKILL.md`，按 Skill 先等待文件或“没有文件”，再用选择题确认学习要求，并交付一个自动命名的离线 HTML。” Agent 需要能访问仓库并使用 Skill／文件工具；文字对话模型则按生成指令输出阅读器可导入的完整内容。
 
 ## 本地运行与安装
 
@@ -48,7 +48,7 @@ node tools/writing-check.mjs notebook.json
 
 页面可用黑板、摘录和手绘草图承载公式、定义与关系图；文学、理工、商学和代码页面有对应的轻量样式。生成前问答会记录目标、基础、语言风格、时间周期、材料遵循程度和 OCR 校正要求。翻页预设为仿真、覆盖、滑动和无动画；阅读器不加载自由布料模拟。旧版布局与便签数据继续保留，作为兼容内容显示与导出。
 
-下载默认包含全部个人记录，可取消勾选生成公开副本。格式为 HTML、JSON、ZIP、Markdown；浏览器打印可保存 PDF。本机草稿用于恢复，下载副本用于长期保存与转移设备。旧笔迹保留原始坐标，缺少原纸幅时在“记录”的待定位列表中手动关联。
+下载默认包含全部个人记录，可取消勾选生成公开副本。默认下载只保存 HTML；ZIP、JSON、Markdown 和当前页 PNG 收在“高级导出”。“导出 PDF”可选择 A4 横向或纵向，通过系统打印另存为 PDF；浅色排版、12pt 正文、12mm 留白，学习记录可选，文字标记重排，自由笔迹放在原页附录。本机草稿用于恢复，下载副本用于长期保存与转移设备。旧笔迹保留原始坐标，缺少原纸幅时在“记录”的待定位列表中手动关联。
 
 `dist/downloads/` 含空白容器、三类主题示例、便携 Skill、通用对话使用包、产品笔记、工具包及离线合集。`public/promo/` 仅含发布使用的海报、影片、最终配乐和封面。八张原生纸页及坐标源位于 `production/promo/story/`；笔迹展开帧写入已忽略的 `output/`，不进入发布目录。旧录屏、旧编辑器、过程截图及历史输出已完整校验后收进工作区 `../archives/2026-10-23-cleanup/`，映射和哈希见 归档目录中的 `manifest.json`。
 

@@ -9,11 +9,11 @@
     "sources": [],
     "chapters": [
       {
-        "id": "chapter-c7d9391e-19b8-4e3d-8351-578e4dcaa8e4",
+        "id": "chapter-b0383163-138e-45b1-a98f-004ba657ccce",
         "title": "学习内容",
         "pages": [
           {
-            "id": "page-3c4185ac-bf58-49b9-a663-24c05e32e74e",
+            "id": "page-539949dc-d9e8-4476-a967-dffaa8b4a88d",
             "title": "导入教程",
             "layout": "cornell",
             "blocks": []
@@ -23,8 +23,8 @@
     ]
   },
   "userState": {
-    "updatedAt": "2026-10-24T07:08:38.105Z",
-    "lastPageId": "page-3c4185ac-bf58-49b9-a663-24c05e32e74e",
+    "updatedAt": "2026-10-24T09:15:22.403Z",
+    "lastPageId": "page-539949dc-d9e8-4476-a967-dffaa8b4a88d",
     "notes": [],
     "annotations": [],
     "doubts": [],

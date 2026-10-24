@@ -9,8 +9,8 @@
 <header><a class="brand" href="promo.html"><strong>Paper Notebook</strong></a><a href="downloads/paper-notebook-product.html">阅读示例</a></header>
 <p class="eyebrow">生成你的学习笔记</p><h1>复制，发给你常用的 AI。</h1>
 <p class="lead">选择一种方式复制指令。AI 会先等你上传参考文件，或回复“没有文件”，然后用选择题确认主题与学习要求。</p>
-<section class="first-files"><strong>先交材料，再聊想学什么。</strong>第一轮只需上传文件，或回复“没有文件”。没有参考资料时，AI 会按可用能力检索可靠来源、组织讲解并绘制图解，然后再确认领域、主题与学习需求。<div class="steps-path"><span>① 文件 / 没有文件</span><span>→ ② 主题与需求选择题</span><span>→ ③ 图文教材</span><span>→ ④ ZIP + 离线 HTML</span></div></section><div class="routes">
-<article class="route" id="agent"><span class="step">01 / AGENT</span><h2>让 Agent 生成文件</h2><p>指令已包含公开仓库地址。Agent 读取 Paper Notebook Skill，获取所需工具，按你的要求生成图文教材，交付 ZIP 与同名单独 HTML。</p>
+<section class="first-files"><strong>先交材料，再聊想学什么。</strong>第一轮只需上传文件，或回复“没有文件”。没有参考资料时，AI 会按可用能力检索可靠来源、组织讲解并绘制图解，然后再确认领域、主题与学习需求。<div class="steps-path"><span>① 文件 / 没有文件</span><span>→ ② 主题与需求选择题</span><span>→ ③ 图文教材</span><span>→ ④ 一个离线 HTML</span></div></section><div class="routes">
+<article class="route" id="agent"><span class="step">01 / AGENT</span><h2>让 Agent 生成文件</h2><p>指令已包含公开仓库地址。Agent 读取 Paper Notebook Skill，获取所需工具，按你的要求生成图文教材，默认交付一个自动命名的离线 HTML。</p>
 <div class="actions"><button id="copy-repository" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"/></svg>复制给 Agent</button></div>
 <p id="repository-status" class="note copy-status" role="status" aria-live="polite">复制后发给能读取仓库、运行代码的 Agent，并附上材料。</p>
 <details id="agent-instructions"><summary>查看将要复制的指令</summary><textarea id="repository-prompt" readonly aria-label="仓库 Skill 调用语句">请使用 GitHub 仓库 https://github.com/BurntRoses/paper-notebook 中的 Paper Notebook Skill，为我制作高质量、图文并茂、可以独立学习的教材式笔记。
@@ -30,9 +30,9 @@
 
 材料要求：严格模式保留原题、答案、顺序和客观内容，补充解释另列。PDF 优先文字层，扫描件使用可用 OCR；保留页码、原文、识别疑点与单独校正。资料与自拟教学数据明确区分；补充资料记录实际可核实来源，不编造引文。
 
-交付：运行校验器和构建器，输出“教程名-v版本.zip”和同名单独的离线 HTML，并保留源 JSON。ZIP 内含同名 HTML、notebook.json、打开说明、许可；素材内嵌一次，移除冗余资产和未用字库分片，不删正文。文件清晰命名，说明打开哪一个。检查横竖屏、分页、图文、夜间模式和离线打开，未执行的检查如实列出。
+交付：运行校验器和构建器，默认仅交付一个“教程名-v版本.html”。双击即可离线阅读、圈画、作答和再次保存；字体、素材、源数据和所选学习记录内嵌，无需附带素材目录。构建接口仍可生成 ZIP/JSON 等，但只有用户需要编辑迁移时才附带，不主动输出一堆文件。移除冗余资产和未用字库分片，不删正文；保留覆盖用户新增笔记的系统字体回退。PDF 使用阅读器“导出 PDF”，支持 A4 横竖版与学习记录选项。检查横竖屏、分页、图文、夜间模式和离线打开，未执行的检查如实列出。
 
-如果只有文字能力，请使用 https://burntroses.github.io/paper-notebook/paper-notebook-prompt.txt 的完整导入格式输出 Markdown/TXT，说明在 https://burntroses.github.io/paper-notebook/downloads/blank-notebook.html 导入，再下载 ZIP 或单独 HTML。无法读取格式时明确说明，不虚构附件或下载链接。阅读器会提供友好的项目主页、GitHub 和 Star 入口，无需在教材正文反复插入广告。
+如果只有文字能力，请使用 https://burntroses.github.io/paper-notebook/paper-notebook-prompt.txt 的完整导入格式输出 Markdown/TXT，说明在 https://burntroses.github.io/paper-notebook/downloads/blank-notebook.html 导入，再下载离线 HTML。无法读取格式时明确说明，不虚构附件或下载链接。阅读器会提供友好的项目主页、GitHub 和 Star 入口，无需在教材正文反复插入广告。
 </textarea></details></article>
 <article class="route" id="chat"><span class="step">02 / CHATGPT · DEEPSEEK · 网页端模型</span><h2>让对话生成笔记内容</h2><p>复制完整指令，与材料一起发到 AI 对话。指令自带排版格式，模型可以直接输出供阅读器导入的完整笔记。</p>
 <div class="actions"><button id="copy" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"/></svg>复制给网页端模型</button></div>
@@ -55,7 +55,7 @@
 材料严格模式保留题库/讲义的原题、答案、顺序和客观内容，补充解释另列。PDF 优先文字层；扫描件和图片按可用能力识别，保留页码、原文与不确定处，校正单列。引用实际可核实来源；无检索能力时说明限制，不编造来源或读取结果。表达直接自然，无对话开场、空泛鼓励、预设读者错误或重复总结。
 
 【交付与格式】
-只输出完整可导入的 Markdown/TXT 教材。用户会复制到上述阅读器“文件 → 导入”，预览后保存。阅读器默认打包 ZIP，也能单独下载按教程名自动命名的离线 HTML。不要生成另一套 HTML 界面，不编造附件或下载链接。内容较多时按完整章节分册，不能截断 JSON 或用省略号代替正文。
+只输出完整可导入的 Markdown/TXT 教材。用户会复制到上述阅读器“文件 → 导入”，预览后保存。阅读器默认只下载按“教程名-v版本.html”自动命名的离线 HTML，字体、素材、源数据和所选记录内嵌，无需附带其他文件。PDF 在“导出 PDF”选择 A4 横向或纵向，通过系统打印保存。ZIP、JSON 等仅在“高级导出”提供。不要生成另一套 HTML 界面，不编造附件或下载链接。内容较多时按完整章节分册，不能截断 JSON 或用省略号代替正文。
 
 # 教程名；## 章节名；### 纸页标题。每页聚焦一个连贯问题。普通段落直接写，特殊组件用 notebook-block JSON 围栏，每个 id 全文唯一。JSON 公式的反斜杠双写。全文外不要再套围栏。
 

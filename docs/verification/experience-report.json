@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-24T09:16:31.888Z",
+  "checks": [
+    "night paper, sidebar, all lesson components, dialogs and font menu reach 4.5:1; header SVGs align; logo restores focus",
+    "one versioned HTML download embeds notes, marks and answers and can be saved again with networking disabled",
+    "actual SVG label pixels stay aligned with nodes and chart axes in both themes, four viewport sizes, font changes and reading zoom",
+    "actual portrait and landscape A4 PDFs include every source block, 12pt body and unclipped content; printing restores reader state",
+    "continuous reading restores the same page, passage and scroll position after completed and cancelled printing",
+    "long tables repeat headers, code preserves every line, 18 derivation steps keep their numbering, wide formulas fit, original ink and notes append separately",
+    "phone print dimensions stay A4; vertical drag, Escape cancellation, rapid reverse spread turns, rotation and reduced motion leave no stale animation"
+  ],
+  "errors": [],
+  "scope": "Headless Chromium, screen emulation, real Chromium PDF output; native OS print UI and physical devices not exercised"
+}

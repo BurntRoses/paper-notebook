@@ -3,6 +3,10 @@ import './math.css';
 import './paper.css';
 import './fonts.css';
 import './textbook.css';
+import './theme.css';
+import './print.css';
+import { icon } from '../ui/icons';
+import { preparePrint, createPrintView, type PrintOptions } from './print';
 import generationInstructions from '../../skills/paper-notebook/assets/agent-prompt.txt?raw';
 import { PageSurface, type SurfacePage, type FragmentBlock } from './surface';
 import { authoredAnnotations } from '../model/study';
@@ -32,7 +36,7 @@ type Anchor=Omit<ReadingAnchor,'offset'> & {top:number};
 const interactive='button,a,input,textarea,select,summary,dialog,.reader-selection-toolbar,.stationery,[contenteditable=true],.paper-note,.object-handles';
 
 class ReaderApp {
-  editor:PaperEditor;private sheets:SurfacePage[]=[];private paginationKey='';private saveTick=0;private ready=false;private turnAnimation:Animation|null=null;toolsOpen=false;zoom=1;immersive=false;private chromeTick=0;
+  editor:PaperEditor;private sheets:SurfacePage[]=[];private paginationKey='';private saveTick=0;private ready=false;toolsOpen=false;zoom=1;immersive=false;private chromeTick=0;
   invalidate=()=>{this.paginationKey='';};
   get shape():PaperShape{return paperShape(this.profile?.pageShape,innerWidth,innerHeight);}
   d:NotebookDocument; pageIndex=0; profile:ReaderPresentation; sidebarOpen:boolean;
@@ -43,7 +47,9 @@ class ReaderApp {
   private pageHeights=new Map<string,number>();
   private liveSlots=new Set<HTMLElement>();
   private scrollTick=0; private resizeTick=0; private lastWidth=innerWidth; private selectionTick=0;
-  private beforePrint:Anchor|undefined;private fontsCalibrated=false;
+  private printJob:Awaited<ReturnType<typeof preparePrint>>|undefined;private printPreparing=false;private fontsCalibrated=false;
+  private printState:{anchor:Anchor;index:number;x:number;y:number}|undefined;private printRestoring=false;
+  private turnAnimations=new Set<Animation>();
   constructor(d:NotebookDocument){
     this.d=d;if(d.userState.preferences.fontSize===18)d.userState.preferences.fontSize=24;this.sessionBooks.set(d.notebook.id,d);
     this.profile={font:'hand',lineSpacing:1.85,layout:'single',direction:'horizontal',sidebar:innerWidth<1000?'collapsed':'open',theme:'paper-light',motion:'full',pageShape:'auto',transition:'turn',...(d.extensions.readerProfile as Partial<ReaderPresentation>||{})};
@@ -92,18 +98,19 @@ class ReaderApp {
   render(a?:Anchor){
     document.documentElement.dataset.paperTheme=this.profile.theme;
     this.editor.cancel(false);
-    this.turnAnimation?.cancel();document.querySelectorAll('.page-transition').forEach(n=>n.remove());this.paginate();if(a)this.pageIndex=this.indexForAnchor(a);
+    this.cancelTurn();this.paginate();if(a)this.pageIndex=this.indexForAnchor(a);
     this.scrollObserver?.disconnect();this.liveSlots.clear();this.clearToolbar();appRoot.replaceChildren();
     document.documentElement.lang=this.en?'en':'zh-CN';document.title=this.d.notebook.title+' · Paper Notebook';
     appRoot.dataset.layout=this.actualLayout();appRoot.dataset.direction=this.profile.direction;appRoot.dataset.shape=this.shape;
     appRoot.dataset.theme=this.profile.theme;appRoot.dataset.motion=this.motion()?'full':'reduced';appRoot.classList.toggle('is-immersive',this.immersive);
     appRoot.classList.toggle('sidebar-collapsed',!this.sidebarOpen);appRoot.style.setProperty('--reading-size',this.readingSize+'px');
-    const header=el('header','reader-header');const brand=el('div','reader-brand');brand.append(el('span','reader-seal','纸'),el('div','book-identity'));brand.lastElementChild!.append(el('small','book-eyebrow','PAPER NOTEBOOK · 学习笔记'),el('strong','',this.d.notebook.title));
+    const header=el('header','reader-header');const brand=button(this.t('关于 Paper Notebook 与项目导航','About Paper Notebook and project links'),()=>this.showAbout(),'reader-brand','');brand.append(el('span','reader-seal','纸'),el('div','book-identity'));brand.lastElementChild!.append(el('small','book-eyebrow','PAPER NOTEBOOK · 学习笔记'),el('strong','',this.d.notebook.title));
     const controls=el('nav','reader-controls');controls.setAttribute('aria-label',this.t('阅读操作','Reader controls'));
-    const contents=button(this.t('目录','Contents'),()=>this.toggleSidebar(),'reader-control','☰');contents.setAttribute('aria-expanded',String(this.sidebarOpen));contents.setAttribute('aria-controls','reader-sidebar');
-    const files=el('details','reader-files');files.append(el('summary','','文件'));const menu=el('div','reader-file-menu');menu.append(button(this.t('导入','Import'),()=>{files.open=false;this.showImport()}),button(this.t('下载','Download'),()=>{files.open=false;this.showExport()}));files.append(menu);
-    const theme=button(this.t('切换日夜模式','Toggle day and night'),()=>{const a=this.anchor();this.profile.theme=this.profile.theme==='paper-night'?'paper-light':'paper-night';this.render(a)},'reader-control theme-toggle',this.profile.theme==='paper-night'?'☀':'☾');theme.setAttribute('aria-pressed',String(this.profile.theme==='paper-night'));
-    controls.append(contents,theme,button(this.t('阅读设置','Reading settings'),()=>this.showSettings(),'reader-control','Aa'),button(this.t('沉浸阅读','Immersive reading'),()=>this.setImmersive(true),'reader-control immersion-entry','⛶'),files);
+    const contents=button(this.t('目录','Contents'),()=>this.toggleSidebar(),'reader-control','');contents.append(icon('contents'));contents.setAttribute('aria-expanded',String(this.sidebarOpen));contents.setAttribute('aria-controls','reader-sidebar');
+    const files=el('details','reader-files'),fileTrigger=el('summary');fileTrigger.title=this.t('文件：导入、下载与 PDF','Files: import, download and PDF');fileTrigger.setAttribute('aria-label',fileTrigger.title);fileTrigger.setAttribute('aria-expanded','false');fileTrigger.append(icon('folder'));files.append(fileTrigger);files.ontoggle=()=>fileTrigger.setAttribute('aria-expanded',String(files.open));const menu=el('div','reader-file-menu');menu.append(button(this.t('导入','Import'),()=>{files.open=false;this.showImport()}),button(this.t('下载','Download'),()=>{files.open=false;this.showExport()}),button(this.t('导出 PDF','Export PDF'),()=>{files.open=false;this.showPDF()}));files.append(menu);
+    const theme=button(this.t('切换日夜模式','Toggle day and night'),()=>{const a=this.anchor();this.profile.theme=this.profile.theme==='paper-night'?'paper-light':'paper-night';this.render(a)},'reader-control theme-toggle','');theme.append(icon(this.profile.theme==='paper-night'?'sun':'moon'));theme.setAttribute('aria-pressed',String(this.profile.theme==='paper-night'));
+    const settings=button(this.t('阅读设置','Reading settings'),()=>this.showSettings(),'reader-control','');settings.append(icon('type'));const immersive=button(this.t('沉浸阅读','Immersive reading'),()=>this.setImmersive(true),'reader-control immersion-entry','');immersive.append(icon('expand'));
+    controls.append(contents,theme,settings,immersive,files);
     header.append(brand,controls);appRoot.append(header);
     const shell=el('div','reader-shell');shell.append(this.renderSidebar());
     if(this.sidebarOpen&&(innerWidth<800||this.immersive)){const backdrop=button(this.t('收起目录','Close contents'),()=>this.toggleSidebar(false),'sidebar-backdrop');backdrop.tabIndex=-1;shell.append(backdrop)}
@@ -123,7 +130,7 @@ class ReaderApp {
     this.pages.forEach((page,index)=>{const slot=el('div','reader-page-slot');slot.dataset.pageSlot=page.id;slot.dataset.index=String(index);slot.style.minHeight=(this.pageHeights.get(page.id+':'+page.part)||Math.max(800,innerHeight-120))+'px';
       if(Math.abs(index-this.pageIndex)<2){slot.append(this.renderPage(page));this.liveSlots.add(slot)}wrap.append(slot);
     });
-    this.scrollObserver=new IntersectionObserver(entries=>{for(const entry of entries){const slot=entry.target as HTMLElement,index=Number(slot.dataset.index),page=this.pages[index];
+    this.scrollObserver=new IntersectionObserver(entries=>{if(this.printState)return;for(const entry of entries){const slot=entry.target as HTMLElement,index=Number(slot.dataset.index),page=this.pages[index];
       if(entry.isIntersecting){if(!slot.firstChild){slot.append(this.renderPage(page));this.fitPages();this.editor.paint()}slot.style.minHeight='';this.liveSlots.add(slot)}
       else if(slot.firstChild){const height=slot.getBoundingClientRect().height;this.pageHeights.set(page.id+':'+page.part,height);slot.style.minHeight=height+'px';slot.replaceChildren();this.liveSlots.delete(slot)}
     }},{rootMargin:'1100px 0px'});
@@ -200,11 +207,17 @@ class ReaderApp {
     if(mode==='turn'){
       snapshot.style.transformOrigin=vertical?(sign>0?'center top':'center bottom'):(sign>0?'left center':'right center');
       keyframes=[{transform:`perspective(1800px) rotate${vertical?'X':'Y'}(0deg)`,opacity:1,filter:'brightness(1)'},{transform:`perspective(1800px) rotate${vertical?'X':'Y'}(${sign*(vertical?58:-58)}deg)`,opacity:1,filter:'brightness(.87)',offset:.65},{transform:`perspective(1800px) rotate${vertical?'X':'Y'}(${sign*(vertical?95:-95)}deg)`,opacity:0,filter:'brightness(.8)'}];
-    }else if(mode==='cover')keyframes=[{transform:'translate(0)',boxShadow:'-10px 0 24px #30291c25'},{transform:`translate${axis}(${-sign*105}%)`,boxShadow:'-20px 0 35px #30291c40'}];
+    }else if(mode==='cover'){const shadow=getComputedStyle(wrap).getPropertyValue('--turn-shadow').trim();keyframes=[{transform:'translate(0)',boxShadow:`-10px 0 24px ${shadow}`},{transform:`translate${axis}(${-sign*105}%)`,boxShadow:`-20px 0 35px ${shadow}`}];}
     else keyframes=[{transform:'translate(0)',opacity:1},{transform:mode==='slide'?`translate${axis}(${-sign*100}%)`:'translate(0)',opacity:mode==='fade'?0:1}];
-    const animation=snapshot.animate(keyframes,{duration:mode==='turn'?380:280,easing:'cubic-bezier(.22,.68,.23,1)',fill:'forwards'});this.turnAnimation=animation;animation.finished.then(()=>scene.remove(),()=>scene.remove());
-    if(mode==='slide')wrap.animate([{transform:`translate${axis}(${sign*100}%)`},{transform:'translate(0)'}],{duration:280,easing:'ease-out'});
+    const animation=snapshot.animate(keyframes,{duration:mode==='turn'?380:280,easing:'cubic-bezier(.22,.68,.23,1)',fill:'forwards'});this.turnAnimations.add(animation);const finish=()=>{scene.remove();this.turnAnimations.delete(animation)};animation.finished.then(finish,finish);
+    if(mode==='slide'){const incoming=wrap.animate([{transform:`translate${axis}(${sign*100}%)`},{transform:'translate(0)'}],{duration:280,easing:'ease-out'});this.turnAnimations.add(incoming);incoming.finished.then(()=>this.turnAnimations.delete(incoming),()=>this.turnAnimations.delete(incoming));}
   }
+  cancelGesture(rebound=false){
+    const g=this.gesture;this.gesture=null;if(!g)return;
+    g.page.style.removeProperty('--corner-pull');delete g.page.dataset.dragSide;
+    if(rebound&&this.motion()){const corner=g.page.querySelector<HTMLElement>('.corner-'+g.side);if(corner){const animation=corner.animate([{width:(42+g.progress*180)+'px',height:(42+g.progress*180)+'px'},{width:'42px',height:'42px'}],{duration:190,easing:'ease-out'});this.turnAnimations.add(animation);animation.finished.then(()=>this.turnAnimations.delete(animation),()=>this.turnAnimations.delete(animation));}}
+  }
+  cancelTurn(){this.cancelGesture();for(const animation of this.turnAnimations)animation.cancel();this.turnAnimations.clear();document.querySelectorAll('.page-transition').forEach(n=>n.remove());}
   goBlock(pageId:string,blockId:string){const index=this.pages.findIndex(p=>p.id===pageId&&(!blockId||p.blocks.some(b=>b.id===blockId)));if(index<0){toast(this.t('原页面已移除，记录保留在侧栏。','The original page is missing. Your record is kept.'));return}this.goPage(index,true);requestAnimationFrame(()=>{const target=appRoot.querySelector<HTMLElement>(`[data-block="${CSS.escape(blockId)}"]`);target?.focus({preventScroll:true});target?.classList.add('reader-located')})}
   updateProgress(){
     appRoot.querySelectorAll<HTMLElement>('[data-page-link]').forEach(n=>n.setAttribute('aria-current',n.dataset.pageLink===this.page.id?'page':'false'));
@@ -215,8 +228,9 @@ class ReaderApp {
     enhanceSelects();new MutationObserver(()=>enhanceSelects()).observe(document.body,{childList:true,subtree:true});
     document.addEventListener('click',e=>{const cue=(e.target as HTMLElement).closest<HTMLElement>('[data-cue-block]');if(cue)this.goBlock(cue.closest<HTMLElement>('[data-page]')!.dataset.page!,cue.dataset.cueBlock!);});
     document.addEventListener('keydown',e=>{
-      if(e.key==='Escape'){if(this.immersive&&!document.querySelector('dialog[open]')){this.setImmersive(false);return;}this.gesture=null;this.clearToolbar();if(this.sidebarOpen&&innerWidth<800&&!document.querySelector('dialog[open]'))this.toggleSidebar(false);return}
+      if(e.key==='Escape'){if(this.immersive&&!document.querySelector('dialog[open]')){this.setImmersive(false);return;}this.cancelGesture(true);this.clearToolbar();if(this.sidebarOpen&&innerWidth<800&&!document.querySelector('dialog[open]'))this.toggleSidebar(false);return}
       if(document.querySelector('dialog[open]')||(e.target as HTMLElement).closest('input,textarea,select,[contenteditable=true]'))return;
+      if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='p'){e.preventDefault();this.showPDF();return;}
       if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='f'){e.preventDefault();this.sidebarTab='contents';this.toggleSidebar(true);appRoot.querySelector<HTMLInputElement>('.sidebar-search')?.focus();return}
       if(e.ctrlKey||e.metaKey||e.altKey)return;if(e.key.toLowerCase()==='i'){e.preventDefault();this.setImmersive();return;}
       if(['ArrowRight','PageDown'].includes(e.key)||(this.profile.direction==='vertical'&&e.key==='ArrowDown')){e.preventDefault();this.turn(1)}
@@ -225,19 +239,20 @@ class ReaderApp {
     });
     document.addEventListener('pointerdown',e=>{const corner=(e.target as HTMLElement).closest<HTMLElement>('[data-corner]');if(!corner||e.button!==0||this.actualLayout()==='scroll')return;const page=corner.closest<HTMLElement>('.page-surface')!,side=corner.dataset.corner as 'left'|'right';
       if(side==='left'&&this.pageIndex===0||side==='right'&&this.pageIndex+this.step>=this.pages.length)return;
-      e.preventDefault();corner.setPointerCapture(e.pointerId);this.gesture={x:e.clientX,y:e.clientY,page,pointer:e.pointerId,side,progress:0};
+      e.preventDefault();this.cancelTurn();corner.setPointerCapture(e.pointerId);this.gesture={x:e.clientX,y:e.clientY,page,pointer:e.pointerId,side,progress:0};
     });
-    document.addEventListener('pointermove',e=>{if(this.immersive)this.wakeChrome();const g=this.gesture;if(!g||g.pointer!==e.pointerId)return;e.preventDefault();g.progress=Math.min(1,Math.max(0,(g.side==='right'?g.x-e.clientX:e.clientX-g.x)/g.page.getBoundingClientRect().width));g.page.style.setProperty('--corner-pull',Math.round(42+g.progress*180)+'px');g.page.dataset.dragSide=g.side;});
-    const cancelTurn=()=>{if(this.gesture){this.gesture.page.style.removeProperty('--corner-pull');delete this.gesture.page.dataset.dragSide;}this.gesture=null;};
+    document.addEventListener('pointermove',e=>{if(this.immersive)this.wakeChrome();const g=this.gesture;if(!g||g.pointer!==e.pointerId)return;e.preventDefault();const vertical=this.profile.direction==='vertical',distance=vertical?g.y-e.clientY:g.x-e.clientX,extent=vertical?g.page.getBoundingClientRect().height:g.page.getBoundingClientRect().width;g.progress=Math.min(1,Math.max(0,distance*(g.side==='right'?1:-1)/extent));g.page.style.setProperty('--corner-pull',Math.round(42+g.progress*180)+'px');g.page.dataset.dragSide=g.side;});
+    const cancelTurn=()=>this.cancelGesture(true);
     document.addEventListener('pointercancel',cancelTurn);window.addEventListener('blur',cancelTurn);
-    document.addEventListener('pointerup',e=>{const g=this.gesture;if(g&&g.pointer===e.pointerId){cancelTurn();const commit=g.progress>.18||Math.hypot(e.clientX-g.x,e.clientY-g.y)<7;if(commit)this.turn(g.side==='right'?1:-1);return;}
+    document.addEventListener('pointerup',e=>{const g=this.gesture;if(g&&g.pointer===e.pointerId){const commit=g.progress>.18||Math.hypot(e.clientX-g.x,e.clientY-g.y)<7;this.cancelGesture(!commit);if(commit)this.turn(g.side==='right'?1:-1);return;}
       if(this.immersive&&!getSelection()?.toString())this.wakeChrome();if(!(e.target as HTMLElement).closest(interactive))window.setTimeout(()=>this.showToolbar(),50);
     });
     document.addEventListener('selectionchange',()=>{clearTimeout(this.selectionTick);this.selectionTick=window.setTimeout(()=>{if(getSelection()?.isCollapsed)this.clearToolbar();else if(!document.querySelector('dialog[open]'))this.showToolbar()},180)});
-    window.addEventListener('resize',()=>{clearTimeout(this.resizeTick);this.resizeTick=window.setTimeout(()=>{const a=this.anchor();if(this.lastWidth>=800&&innerWidth<800)this.sidebarOpen=false;this.lastWidth=innerWidth;this.pageHeights.clear();this.render(a)},160)});
-    window.addEventListener('scroll',()=>{if(this.scrollTick)return;this.scrollTick=requestAnimationFrame(()=>{this.scrollTick=0;this.clearToolbar();this.positionNavigation();if(this.actualLayout()!=='scroll')return;const active=[...this.liveSlots].sort((a,b)=>Math.abs(a.getBoundingClientRect().top-100)-Math.abs(b.getBoundingClientRect().top-100))[0];if(active){this.pageIndex=Number(active.dataset.index);this.remember();this.updateProgress()}})},{passive:true});
-    window.addEventListener('beforeprint',()=>{this.beforePrint=this.anchor();this.scrollObserver?.disconnect();const wrap=appRoot.querySelector('.reader-page-wrap')!;wrap.replaceChildren(...this.pages.map(p=>this.renderPage(p)));this.editor.paint()});
-    window.addEventListener('afterprint',()=>this.render(this.beforePrint));
+    window.addEventListener('resize',()=>{if(this.printState)return;this.cancelTurn();clearTimeout(this.resizeTick);this.resizeTick=window.setTimeout(()=>{const a=this.anchor();if(this.lastWidth>=800&&innerWidth<800)this.sidebarOpen=false;this.lastWidth=innerWidth;this.pageHeights.clear();this.render(a)},160)});
+    window.addEventListener('scroll',()=>{if(this.printState)return;if(this.scrollTick)return;this.scrollTick=requestAnimationFrame(()=>{this.scrollTick=0;if(this.printState)return;this.clearToolbar();this.positionNavigation();if(this.actualLayout()!=='scroll')return;const active=[...this.liveSlots].sort((a,b)=>Math.abs(a.getBoundingClientRect().top-100)-Math.abs(b.getBoundingClientRect().top-100))[0];if(active){this.pageIndex=Number(active.dataset.index);this.remember();this.updateProgress()}})},{passive:true});
+    window.addEventListener('beforeprint',()=>{this.beginPrint();if(!this.printJob)this.printJob=createPrintView(this.d,{orientation:'portrait',includeRecords:true},{pages:this.pages,render:p=>this.renderPage(p)});});
+    window.addEventListener('afterprint',()=>this.finishPrint());const printMedia=matchMedia('print');printMedia.addEventListener('change',event=>{if(!event.matches)this.finishPrint();});
+    matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change',()=>this.cancelTurn());
     window.addEventListener('pagehide',()=>{if(this.ready)void saveDraft(this.d).catch(()=>{});});
   }
   showToolbar(){
@@ -310,17 +325,55 @@ class ReaderApp {
   }
   generationPrompt(){return this.briefPrompt({goal:'',level:'',minutes:30,materials:[],language:'中文',route:'systematic',horizon:'short',materialFidelity:'guided',termPolicy:''});}
   showExport(){
-    const m=modal(this.t('下载副本','Download a copy'));m.body.append(el('p','export-summary',`${this.d.notebook.title} · ${this.pages.length} ${this.t('页','pages')}`));
+    const m=modal(this.t('下载副本','Download a copy'));m.body.append(el('p','export-summary',this.d.notebook.title+' · v'+this.d.notebook.revision));
+    const card=el('div','export-card');card.append(el('strong','','一个 HTML，整本笔记随身带'),el('span','','双击即可打开。字体、素材、教程源数据和所选学习记录都已内嵌；无需素材目录，也无需联网。'));m.body.append(card);
     const choices:ExportChoices={marks:true,questions:true,answers:true,legacy:true};
     m.body.append(label(this.t('包含阅读标记、作答与历史学习记录','Include all personal records'),checkbox(true,v=>{choices.marks=v;choices.questions=v;choices.answers=v;choices.legacy=v;})));
-    const format=select([['html',this.t('单文件 HTML','Single-file HTML')],['zip',this.t('HTML + 源文件 ZIP','HTML + source ZIP')],['json',this.t('源 JSON','Source JSON')],['md','Markdown']], 'zip');m.body.append(label(this.t('格式','Format'),format),el('p','brief-note','推荐 ZIP：解压后直接打开以教程名命名的 HTML，源文件与许可一并保存。也可单独下载 HTML。'));
+    const status=el('p','export-status');status.setAttribute('role','status');
+    const save=async(format:string)=>{this.remember();const d=readerCopy(this.d,choices);try{
+      if(format==='html')await exportHTML(d);else if(format==='zip')await exportBundle(d);else if(format==='json')download(safeName(d.notebook.title)+'.json',JSON.stringify(d,null,2),'application/json');else if(format==='md')download(safeName(d.notebook.title)+'.md',exportMarkdown(d));else await exportPreview(appRoot.querySelector<HTMLElement>('.reader-page')!,this.page.title);m.close();
+    }catch(error){status.textContent=String(error)}};
+    const advanced=el('details','export-advanced');advanced.append(el('summary','','高级导出'));
+    const format=select([['zip','HTML + 源文件 ZIP'],['json','源 JSON'],['md','Markdown'],['png','当前页图片 PNG']],'zip');advanced.append(label('格式',format),el('p','brief-note','用于编辑、迁移或分享局部页面。日常阅读只需上面的 HTML。'),button('下载所选格式',()=>{void save(format.value)},'quiet'));m.body.append(advanced,status);
+    const primary=button(this.t('下载离线 HTML','Download offline HTML'),async()=>{primary.disabled=true;try{await save('html')}finally{primary.disabled=false}},'primary');
+    m.foot.append(button(this.t('导出 PDF','Export PDF'),()=>{m.close();this.showPDF()},'quiet'),primary);
+  }
+  async preparePDF(options:PrintOptions){
+    this.remember();this.beginPrint();this.printJob?.dispose();
+    try{this.printJob=await preparePrint(this.d,options,{pages:this.pages,render:p=>this.renderPage(p)});return this.printJob.root;}
+    catch(error){this.finishPrint();throw error;}
+  }
+  private beginPrint(){
+    if(!this.printState)this.printState={anchor:this.anchor(),index:this.pageIndex,x:scrollX,y:scrollY};
+    this.cancelTurn();clearTimeout(this.resizeTick);this.scrollObserver?.disconnect();
+  }
+  private finishPrint(){
+    if(matchMedia('print').matches)return;
+    this.printJob?.dispose();this.printJob=undefined;
+    const state=this.printState;if(!state||this.printRestoring)return;this.printRestoring=true;
+    // Print hides the reader and collapses the document scroll range. Restore
+    // after screen layout returns, before allowing virtualization to resume.
+    requestAnimationFrame(()=>{
+      this.pageIndex=state.index;window.scrollTo({left:state.x,top:state.y,behavior:'instant'});
+      const target=this.anchorNode(state.anchor);if(target)window.scrollBy({top:target.getBoundingClientRect().top-state.anchor.top,behavior:'instant'});
+      this.fitPages();this.editor.paint();this.updateProgress();
+      requestAnimationFrame(()=>{this.printState=undefined;this.printRestoring=false;appRoot.querySelectorAll('.reader-page-slot').forEach(n=>this.scrollObserver?.observe(n));this.remember();});
+    });
+  }
+  showPDF(){
+    const m=modal(this.t('导出 PDF','Export PDF'),'按 A4 重新排版，使用浅色纸张。打印窗口中选择“另存为 PDF”。');
+    const options:PrintOptions={orientation:'portrait',includeRecords:true},preview=el('div','pdf-preview'),paper=el('div','pdf-paper');
+    paper.setAttribute('aria-hidden','true');preview.append(paper,el('p','','正文 12pt · 四周至少 12mm 留白\n公式与例题尽量整块保留，长表格重复表头。'));m.body.append(preview,label('A4 方向',select([['portrait','纵向 · 210 × 297 mm'],['landscape','横向 · 297 × 210 mm']],'portrait',v=>{options.orientation=v as PrintOptions['orientation'];paper.classList.toggle('landscape',v==='landscape')})),label('包含学习记录',checkbox(true,v=>options.includeRecords=v)),el('p','brief-note','文字标记跟随原文重新排版；自由笔迹保留为原页附录。取消或完成打印后，继续在原位置阅读。'));
     const status=el('p','export-status');status.setAttribute('role','status');m.body.append(status);
-    const save=button(this.t('下载','Download'),async()=>{save.disabled=true;status.textContent='';this.remember();const d=readerCopy(this.d,choices);try{
-      if(format.value==='html')await exportHTML(d);else if(format.value==='zip')await exportBundle(d);else if(format.value==='json')download(safeName(d.notebook.title)+'.json',JSON.stringify(d,null,2),'application/json');else download(safeName(d.notebook.title)+'.md',exportMarkdown(d));m.close();
-    }catch(error){status.textContent=String(error);m.foot.append(button(this.t('下载 JSON 备份','Download JSON backup'),()=>download(safeName(d.notebook.title)+'.json',JSON.stringify(d,null,2),'application/json'),'quiet'))}finally{save.disabled=false}},'primary');
-    m.foot.append(button(this.t('打印 / PDF','Print / PDF'),()=>{m.close();window.print()},'quiet'),button(this.t('当前页图片','Page image'),async()=>{m.close();try{await exportPreview(appRoot.querySelector<HTMLElement>('.reader-page')!,this.page.title)}catch(e){toast(String(e))}},'quiet'),save);
+    const print=button('打开系统打印',async()=>{if(this.printPreparing)return;this.printPreparing=true;print.disabled=true;status.textContent='正在加载字体、图片并编排 A4 页面……';this.cancelTurn();try{
+      await this.preparePDF(options);m.close();window.print();
+    }catch(error){status.textContent=String(error)}finally{this.printPreparing=false;print.disabled=false;}},'primary');
+    m.foot.append(button('返回阅读',m.close,'quiet'),print);
   }
   showImage(b:Block){const asset=this.d.assets.find(a=>a.id===b.assetId);if(!asset)return;const m=modal(b.title||this.t('图片','Image'));const img=el('img','reader-image');img.src=asset.data;img.alt=b.alt||'';m.body.append(img);if(b.caption)m.body.append(el('p','',b.caption));if(asset.source)m.body.append(el('p','',asset.source+(asset.license?' · '+asset.license:'')));m.foot.append(button(this.t('关闭','Close'),m.close,'primary'))}
-  showAbout(){const m=modal('Paper Notebook');m.body.append(el('p','',this.t('Agent 生成教程；阅读器负责版式、阅读和离线交付。','Your agent creates the tutorial. The reader handles layout, reading and offline delivery.')),el('p','', '2.1.0 · MIT'));const github=el('a','support-star','☆ 喜欢这本小笔记？去 GitHub 留一颗 Star ↗');github.href='https://github.com/BurntRoses/paper-notebook';github.target='_blank';github.rel='noopener noreferrer';m.body.append(github);const details=el('details');details.append(el('summary','',this.t('第三方许可','Third-party licenses')),el('pre','license-text',notices));m.body.append(details);m.foot.append(button(this.t('关闭','Close'),m.close,'primary'))}
+  showAbout(){const m=modal('Paper Notebook','一张纸的亲切，一本教材的认真。');m.body.append(el('p','','让 AI 生成图文并茂的教程，在这里离线阅读、圈画和复习。2.1.0 · MIT'));
+    const links=el('nav','project-links');links.setAttribute('aria-label','项目导航');
+    for(const [name,url] of [['项目首页 ↗','https://burntroses.github.io/paper-notebook/'],['用 AI 制作一本 ↗','https://burntroses.github.io/paper-notebook/chat-start.html'],['☆ 给纸上灵感一颗 Star ↗','https://github.com/BurntRoses/paper-notebook'],['源码与许可 ↗','https://github.com/BurntRoses/paper-notebook/blob/main/LICENSE']]){const a=el('a','',name);a.href=url;a.target='_blank';a.rel='noopener noreferrer';links.append(a);}m.body.append(links);
+    const details=el('details');details.append(el('summary','','第三方许可'),el('pre','license-text',notices));m.body.append(details);m.foot.append(button('继续阅读',m.close,'primary'))}
 }
 new ReaderApp(embedded||structuredClone(introNotebook));

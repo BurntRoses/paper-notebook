@@ -4,7 +4,7 @@ A focused reader for structured tutorials created by your own agent. The agent w
 
 [Live site](https://burntroses.github.io/paper-notebook/) · [Generate a notebook](https://burntroses.github.io/paper-notebook/chat-start.html) · [Source](https://github.com/BurntRoses/paper-notebook)
 
-Delivery is a clearly named ZIP and a separate offline HTML file. The bundle includes source JSON, a short opening guide and notices; embedded media are not duplicated. Start by uploading references or replying “no files”; the AI ends that response and waits before asking topic and learning-brief choices. Without references, it uses reliable web sources when retrieval is available and original diagrams.
+Delivery is one clearly named offline HTML file. Fonts, media, editable source and selected records are embedded; advanced exports remain available for editing. Start by uploading references or replying “no files”; the AI ends that response and waits before asking topic and learning-brief choices. Without references, it uses reliable web sources when retrieval is available and original diagrams.
 
 Cornell pages, generous line spacing, three font choices, a real dark theme, native charts and stable hand-drawn frame variants support structured textbook content.
 
@@ -34,7 +34,7 @@ node tools/notebook.mjs build notebook.json --out output/tutorial
 
 Read one landscape sheet in landscape and one portrait sheet in portrait, with horizontal ruling by default. Optional spread and continuous layouts are available. Source text stays fixed and read-only. Header and footer controls provide navigation, selected-text marks and annotation tools; notes, questions, answers and sources are grouped in the sidebar. Page transition presets are simulated, cover, slide and none. No cloth simulation is loaded.
 
-Download a copy with all learning records included by default, or choose a public copy. HTML, JSON, ZIP and structured Markdown share the same protocol. Print to PDF from the browser.
+Download a copy with all learning records included by default, or choose a public copy. HTML, JSON, ZIP and structured Markdown share the same protocol. Use the PDF panel for portrait or landscape A4, then save through system print.
 
 Blackboards, extracts, hand-drawn relationship diagrams and syntax-colored code share live, selectable text. Up to three line-linked explanations connect concepts or code to short marginal notes. Nine annotation styles include emphasis dots and upper-right stars; click a mark to delete it. Same-range actions toggle or merge instead of stacking. Key passages collect source excerpts for review.
 
@@ -45,3 +45,5 @@ MIT code; third-party notices remain in `licenses/`. The GitHub Pages workflow p
 ## Workspace organization
 
 `dist/` is the final offline reader, static promotion pages and downloads. `public/promo/` contains only final media and posters. `production/promo/story/` retains native page captures, SVG and geometry for rebuilding the film. `output/` is ignored scratch space and can be regenerated. Superseded editor sources, operation recordings and intermediate QA artifacts are in the parent workspace’s `archives/2026-10-23-cleanup/` with SHA-256 provenance.
+
+The primary deliverable is one automatically named `<title>-v<revision>.html`, with fonts, assets, editable source and selected study records embedded. ZIP, JSON, Markdown and page PNG are advanced exports. The separate PDF panel supports A4 portrait/landscape via system print with light paper, 12pt text and at least 12mm margins. Anchored marks reflow; freehand is preserved in original-page appendices.

@@ -15,6 +15,6 @@
 
 材料要求：严格模式保留原题、答案、顺序和客观内容，补充解释另列。PDF 优先文字层，扫描件使用可用 OCR；保留页码、原文、识别疑点与单独校正。资料与自拟教学数据明确区分；补充资料记录实际可核实来源，不编造引文。
 
-交付：运行校验器和构建器，输出“教程名-v版本.zip”和同名单独的离线 HTML，并保留源 JSON。ZIP 内含同名 HTML、notebook.json、打开说明、许可；素材内嵌一次，移除冗余资产和未用字库分片，不删正文。文件清晰命名，说明打开哪一个。检查横竖屏、分页、图文、夜间模式和离线打开，未执行的检查如实列出。
+交付：运行校验器和构建器，默认仅交付一个“教程名-v版本.html”。双击即可离线阅读、圈画、作答和再次保存；字体、素材、源数据和所选学习记录内嵌，无需附带素材目录。构建接口仍可生成 ZIP/JSON 等，但只有用户需要编辑迁移时才附带，不主动输出一堆文件。移除冗余资产和未用字库分片，不删正文；保留覆盖用户新增笔记的系统字体回退。PDF 使用阅读器“导出 PDF”，支持 A4 横竖版与学习记录选项。检查横竖屏、分页、图文、夜间模式和离线打开，未执行的检查如实列出。
 
-如果只有文字能力，请使用 https://burntroses.github.io/paper-notebook/paper-notebook-prompt.txt 的完整导入格式输出 Markdown/TXT，说明在 https://burntroses.github.io/paper-notebook/downloads/blank-notebook.html 导入，再下载 ZIP 或单独 HTML。无法读取格式时明确说明，不虚构附件或下载链接。阅读器会提供友好的项目主页、GitHub 和 Star 入口，无需在教材正文反复插入广告。
+如果只有文字能力，请使用 https://burntroses.github.io/paper-notebook/paper-notebook-prompt.txt 的完整导入格式输出 Markdown/TXT，说明在 https://burntroses.github.io/paper-notebook/downloads/blank-notebook.html 导入，再下载离线 HTML。无法读取格式时明确说明，不虚构附件或下载链接。阅读器会提供友好的项目主页、GitHub 和 Star 入口，无需在教材正文反复插入广告。

@@ -40,4 +40,4 @@ assets: id/name/data/mime，可附 source/license/originalAssetId/verified。支
 
 ## 保存与分享
 
-无账号。本机 IndexedDB 保存草稿，重开相同笔记时恢复较新记录。导出默认包含全部个人记录（圈画、自由笔、便签、排版、疑问、作答），取消勾选时生成公开正文副本。HTML、JSON、ZIP、结构化 Markdown 使用相同协议；打印/PDF 来自浏览器打印。源 JSON 适合交回 agent 更新。
+无账号。本机 IndexedDB 保存草稿，重开相同笔记时恢复较新记录。导出默认包含全部个人记录（圈画、自由笔、便签、排版、疑问、作答），取消勾选时生成公开正文副本。HTML、JSON、ZIP、结构化 Markdown 使用相同协议；默认下载一个 HTML，源数据、字体、素材与所选记录内嵌。ZIP、JSON 等保留在高级导出中。PDF 面板按 A4 横竖方向、12pt 正文和至少 12mm 留白重新分页后调用系统打印；文字标记随原文重排，自由笔迹保留为原页附录。内部 `PrintOptions` 仅控制方向和是否包含记录，不改变阅读器源数据格式。源 JSON 适合交回 agent 更新。

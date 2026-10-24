@@ -37,6 +37,15 @@ try {
   const prompt = await page.getByLabel('通用生成指令', { exact: true }).inputValue();
   assert.ok(prompt.includes('DeepSeek'));
   const repositoryPrompt = await page.getByLabel('仓库 Skill 调用语句', { exact: true }).inputValue();
+  for(const text of [prompt,repositoryPrompt]){
+    assert.ok(text.indexOf('第一条回复')<text.indexOf('领域或主题'));
+    assert.match(text,/结束本轮回复[，,]等待/);
+    assert.match(text,/第一条回复[\s\S]*没有文件[\s\S]*检索可靠/);
+    assert.match(text,/收到文件或确认[\s\S]*选择题/);
+    assert.ok(text.includes('教程名-v版本.html'));
+    assert.ok(text.includes('高级导出')||text.includes('ZIP/JSON'));
+  }
+  checks.push('Both generation prompts wait for files/no-files before topic choices and describe single HTML delivery');
   assert.ok(repositoryPrompt.includes('https://github.com/BurntRoses/paper-notebook'));
   assert.ok(repositoryPrompt.includes('skills/paper-notebook/SKILL.md'));
   assert.ok(repositoryPrompt.includes('scripts') || repositoryPrompt.includes('构建脚本'));
@@ -80,10 +89,8 @@ try {
   assert.ok(await page.locator('[data-kind=circle]').count());
   await page.locator('.reader-files summary').click();
   await page.locator('.reader-file-menu').getByRole('button', { name: '下载', exact: true }).click();
-  await page.getByRole('combobox', {name:'格式',exact:true}).click();
-  await page.locator('.paper-choice-list:popover-open').getByRole('option',{name:'单文件 HTML',exact:true}).click();
   const downloaded = page.waitForEvent('download');
-  await page.locator('.dialog-foot').getByRole('button', { name: '下载', exact: true }).click();
+  await page.locator('.dialog-foot').getByRole('button', { name: '下载离线 HTML', exact: true }).click();
   const file = await downloaded;
   await file.saveAs(out + '/imported-notebook.html');
   checks.push('Text-only chat example imports with a real formula and circle, then downloads as HTML');

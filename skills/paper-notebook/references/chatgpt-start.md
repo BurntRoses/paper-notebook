@@ -10,6 +10,6 @@
 
 1. 解压本包，生成符合共享 Schema 的 notebook.json。保留用户已有文档与实体 ID；更新时填写 extensions.baseRevision。
 2. 在包目录运行 `python scripts/build_reader.py notebook.json --out output`。仅用 Python 标准库，无需联网和依赖安装。遇到错误修正源文件并重新运行。
-3. 交付 output/教程名-v版本.html、output/同名.zip、output/notebook.json 的实际下载链接。说明范围、来源疑点和实际执行的校验。若环境支持浏览器，应检查横竖排版及翻页、圈画；没有浏览器就说明此项未检查。
+3. 默认只交付 output/教程名-v版本.html 的实际下载链接，源数据和所选记录已内嵌；JSON、ZIP 仅在用户需要编辑迁移时附带。说明范围、来源疑点和实际执行的校验。若环境支持浏览器，应检查横竖排版及翻页、圈画；没有浏览器就说明此项未检查。
 
 不要重新实现 HTML 阅读器，不要将一张截图或 Markdown 冒充离线 HTML。ChatGPT、DeepSeek 等对话没有运行代码能力时，按 references/chat-import.md 输出完整可导入稿，告知用户在空白阅读器中粘贴并下载副本。不能编造附件链接。
