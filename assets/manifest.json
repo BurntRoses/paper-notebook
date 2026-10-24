@@ -82,6 +82,486 @@
       "source": "https://ambientcg.com/view?id=Paper001",
       "license": "CC0-1.0",
       "production": "Original / retained derivative"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-core.woff2",
+      "bytes": 357476,
+      "sha256": "480258add8fb703bc27a5284e217fe737b7ca299a4481d57317cc849cabcc948",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-00.woff2",
+      "bytes": 37816,
+      "sha256": "a77c41aea93813ab20ab38ce1b197ae6556f842332ab8fb8ae09d1a0ec8614a9",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-01.woff2",
+      "bytes": 45692,
+      "sha256": "3d45f5e0caa1a36330cb3c9109289e6dfcc2212cc352051d537bead7c9f1842f",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-02.woff2",
+      "bytes": 71748,
+      "sha256": "65b70e0e70908be3689397d8c4f2e9cac2c3fc765909d7b67e2b97b08be359d9",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-03.woff2",
+      "bytes": 95948,
+      "sha256": "07471264b72d0a729f7f922e5adbf2c79b49d1f1f5c6bb2e70e58e35aba73319",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-04.woff2",
+      "bytes": 186676,
+      "sha256": "9b2b4688dbca4c6e7c9572c9848c49490a99b299379b18065f5f4dbd0cefc796",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-05.woff2",
+      "bytes": 224724,
+      "sha256": "f32f577f4ae5e3eee4842929970301d8f94a2e68a1cfced2d8651e48cf15ed6a",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-06.woff2",
+      "bytes": 247276,
+      "sha256": "1d3d072d568398b16e6185d03553b523351e44afda1f2d7c553f370e9732d68a",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-07.woff2",
+      "bytes": 244592,
+      "sha256": "66f701b37c93b56d194fbfb8dac9f5d08f256b83fe66b213fcf8ce9c00ae0543",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-08.woff2",
+      "bytes": 241032,
+      "sha256": "3f9e80a09a6dd338dfa85cbe0d7065205f9d625fe42fcc55caecb8ff5f5109e3",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-09.woff2",
+      "bytes": 253672,
+      "sha256": "c2a420da315cf3e717129fe8cc1e4d766a2ea74ecc32d47796cfcc2fefb6475e",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-10.woff2",
+      "bytes": 266512,
+      "sha256": "d82fc9640da801943597ef7e92d2f7f52ca60d2069cbdd60ec3556f8bcbe98fe",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-11.woff2",
+      "bytes": 276588,
+      "sha256": "9c37f6b4fadb5973e266cb60637988013ae29d260241d289ed41d68779d00c1b",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-12.woff2",
+      "bytes": 272212,
+      "sha256": "bdf2ce3b16da9dd9d80f39fefd3dc2d1f96e8bf89e7366d2fe37087b4233f7a7",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-13.woff2",
+      "bytes": 185192,
+      "sha256": "542cc99ceefdbdc8ed01907115a9823cbecbb84a2ec743d9e5a983ae07497cc0",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-14.woff2",
+      "bytes": 175236,
+      "sha256": "b4d83029274d6d766c30d09eb5026af24c302939b5a5a477ae7c60c6913fd1e9",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-15.woff2",
+      "bytes": 210280,
+      "sha256": "124b7f7c09ca02bdc137bb21d85a483ea64438a6baf38b2ef1bdb3c818047ee5",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-16.woff2",
+      "bytes": 228000,
+      "sha256": "f81e7d041e7c8fc4b51ec5c1698cde86c715556351b281afb34633bb2279ad52",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-17.woff2",
+      "bytes": 204352,
+      "sha256": "c9546e3ba5b6d3ce5c08aba65d99ab827bd9eeffbba3e97ce4699769a974ed05",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-18.woff2",
+      "bytes": 215500,
+      "sha256": "b1fc7dd25294d3309c3476d41235102a5b1b7d4518972b3625246cd4c2ab42d2",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-19.woff2",
+      "bytes": 229072,
+      "sha256": "485cd1d5da5c7980981a7abc69b636d17e46b9a5d1c08627cfb8137260e1c078",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-20.woff2",
+      "bytes": 191764,
+      "sha256": "17e84b6b92dfff886c66b9d7a498ff619e322a3ce5458296acb14cafd86a0a32",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-21.woff2",
+      "bytes": 260052,
+      "sha256": "3ee4a37d489a3a59e9362148597c26e9581f7f65e0b94aff8eda5c7564f8d9c7",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-22.woff2",
+      "bytes": 193480,
+      "sha256": "8eafe65bda33ed14f7167d4733e3d6481198125765544ac8e2727cf2092512f2",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-23.woff2",
+      "bytes": 245864,
+      "sha256": "ff59fe346e8690b009acb1d1f8c19d744aa93462edcaa279ad0f0e0bb5c33a09",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-24.woff2",
+      "bytes": 211640,
+      "sha256": "056ed1eea72ff85e3f13ee4c7fa35415a014fc63445da87f0fe6246e3db80042",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-25.woff2",
+      "bytes": 203228,
+      "sha256": "3dab417518dae273fdf5f870072879def1304ef66f21112c65134ec61dd29451",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-26.woff2",
+      "bytes": 226924,
+      "sha256": "68837ad526e894baff2d0d790f57b1837f6026103010d53413f5cad0766c9074",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-27.woff2",
+      "bytes": 252548,
+      "sha256": "6a0f61ae2ceaf40a51f7ed1f3965880738f99e3e23d952517101f2ef0633beb1",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-28.woff2",
+      "bytes": 218700,
+      "sha256": "6ac9a6055e234743fde0e9294191ef0b05f3ce2bd74b784054792c7057b17299",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-29.woff2",
+      "bytes": 203084,
+      "sha256": "3447c9e843341f18f7581d4929f6283ca9b38a19cf79de2bbe73f67cb2269a0b",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-30.woff2",
+      "bytes": 259232,
+      "sha256": "f3ffa97401792fedbe5ea26a827358db2a50cbe9db051f319483e8ed60d3f1bf",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-31.woff2",
+      "bytes": 235380,
+      "sha256": "1afce371b7b5c6d4b12b35c364a188d92be453c1b90e0357c0b637e63dcb8101",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-32.woff2",
+      "bytes": 222664,
+      "sha256": "37c8af3b71c20e0661179ec2c5656508202c65838cdbf9dadccd64e047b7b8da",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-33.woff2",
+      "bytes": 218396,
+      "sha256": "ef6207efdb71ad6cd82ba4586c7b2caa25af3fb342f234713040c525622d28af",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-34.woff2",
+      "bytes": 237428,
+      "sha256": "61de19abdbaf6aedd4c8f8a1e3c0e745550867f6b4745f87dc50b70a3b0fa94b",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-35.woff2",
+      "bytes": 234960,
+      "sha256": "dde9641963be543218e4095d9f18faf0de64c1d12c7ff8039f617a77fdac2ff6",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-36.woff2",
+      "bytes": 250840,
+      "sha256": "67ec0679240c417a0d25cb17bbaedabcb0f8b3215bc19f634f326a61ed2f3689",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-37.woff2",
+      "bytes": 249852,
+      "sha256": "f8da8884b948b5e9df4826ad543dcb25fb5491ac3f6282400ba2a9c4c4cc4a62",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-38.woff2",
+      "bytes": 153308,
+      "sha256": "2fd37e49f871b0696bbebbea2ed72a5f5797411da86419eb2fd60ecff066acf6",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-39.woff2",
+      "bytes": 27432,
+      "sha256": "e041bc5c42320c1fe7dd42bf381da45a1dabd1eb8d2757fce03a7ffcb0446c0b",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-40.woff2",
+      "bytes": 23992,
+      "sha256": "6b896384c86fbf254211c48d45001ea89dcd53c79b6f485a6d10b8632c4dd200",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-41.woff2",
+      "bytes": 25244,
+      "sha256": "c47211305645ba89542177896c02380a79cdd643b4926f8dc05b8bc29e1a6f2b",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-42.woff2",
+      "bytes": 28208,
+      "sha256": "3afa46e5c2a06e9315bca9af59139259f8744c0c950747a20d0157a068334728",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-43.woff2",
+      "bytes": 24824,
+      "sha256": "0a47af1a545c1378543cbe9415642141e11ae1b23cffa1aa695bdb48fe5db7ee",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-44.woff2",
+      "bytes": 24832,
+      "sha256": "786d51b0514380decfbe512d626cd8bc2190e457a3415cb2024128f92808efd7",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-45.woff2",
+      "bytes": 25748,
+      "sha256": "49b0564bb7eb488a44da1d5ba1da5d2a14549919339fcc696be1a55b8de761e7",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-46.woff2",
+      "bytes": 26172,
+      "sha256": "abef87e0d5730ff58bb13a528ee5c91881851188377021facd12418459c5966a",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-47.woff2",
+      "bytes": 26264,
+      "sha256": "4c9c8aa25f620b9b6683037a078732eb7c7892176813cbf52e02a63c586af64c",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-48.woff2",
+      "bytes": 27588,
+      "sha256": "6cf2b51b906ef5267aa5d5527a003e765334c6c3b763e13f726e7dbfc1f906f0",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-49.woff2",
+      "bytes": 26804,
+      "sha256": "a64e5ef87ef8ed13c0a2ae97cb5f94011bd9a3483f41aad484a1491bc96be0ed",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-50.woff2",
+      "bytes": 23184,
+      "sha256": "73942208a4aa571c0b1b71a8435a64da72f6ade7f846cbd620a75d0a2fde8130",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-51.woff2",
+      "bytes": 27580,
+      "sha256": "dff5bf4b852cd6a5915b85a2fd23752389497e6ff31359b1a2bdee66c4fe3e10",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-52.woff2",
+      "bytes": 33224,
+      "sha256": "ca7e13d2d521fd79b9438cf25ee22cfd62372845fb4d3fa19051c4bd0742944e",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-53.woff2",
+      "bytes": 167900,
+      "sha256": "aa765d8549b55fbeb889a3487f7c7683459a3dee69a37dbc5b95c38bb01752b9",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-54.woff2",
+      "bytes": 203732,
+      "sha256": "804a93c9495f3fd3e3ce48e3a757f66243283ad1f7da9daff30faa86e6bdbf66",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-55.woff2",
+      "bytes": 271232,
+      "sha256": "9183d6fb5c8f6753e334006f22dcf2655202df157aeef696ec00026e59e2bf50",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-56.woff2",
+      "bytes": 290032,
+      "sha256": "ccc60bf029d2ccb45ac1b5d499e12e5b49e47d2d85a2a2b3f73389e9172c4cec",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-57.woff2",
+      "bytes": 221900,
+      "sha256": "6a0268121970a8c0d8acd64a3084923b2d8b0a59f65f751f7730560dd5448967",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
+    },
+    {
+      "path": "assets/fonts/wenkai-reading-58.woff2",
+      "bytes": 43200,
+      "sha256": "81514715b1c40fd91f17696cdce34ec05aefe61688543ee3d9f10fe1988d188c",
+      "source": "LXGW WenKai v1.530, retained range subsets",
+      "license": "OFL-1.1",
+      "production": "Unicode-range split; per-book unused faces omitted"
     }
   ]
 }

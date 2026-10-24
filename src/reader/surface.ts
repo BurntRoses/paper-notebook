@@ -8,14 +8,15 @@ export class PageSurface {
  constructor(public d:NotebookDocument,public shape:PaperShape,public fontSize:number,private renderBlock:(b:Block)=>HTMLElement,private dimensions?:{width:number;height:number}){}
  size=()=>this.dimensions||paperSize(this.shape);
  make(page:Page,part=0){
-  const article=el('article',`reader-page paper page-surface page-layout-${page.layout||'reading'}`);article.dataset.page=page.id;article.dataset.part=String(part);article.dataset.shape=this.shape;article.dataset.subject=page.subject||'general';article.dataset.ruling=page.paper?.ruling||'lined';article.setAttribute('aria-label',page.title);
-  const {width,height}=this.size(),bottom=(innerWidth<600?138:88)+(page.layout==='cornell'?100:0);article.style.width=width+'px';article.style.height=height+'px';article.style.setProperty('--rule',Math.max(page.paper?.lineHeight||32,Math.ceil(this.fontSize*1.35/2)*2)+'px');article.style.setProperty('--reading-size',this.fontSize+'px');article.style.setProperty('--body-bottom',bottom+'px');article.style.setProperty('--summary-bottom',(bottom-92)+'px');article.style.setProperty('--body-height',(height-159-bottom)+'px');
+  const layout=page.layout||'cornell',profile=this.d.extensions.readerProfile as {font?:string;lineSpacing?:number}|undefined;
+  const article=el('article',`reader-page paper page-surface page-layout-${layout}`);article.dataset.page=page.id;article.dataset.part=String(part);article.dataset.shape=this.shape;article.dataset.font=profile?.font||'hand';article.dataset.subject=page.subject||'general';article.dataset.ruling=page.paper?.ruling||'lined';article.setAttribute('aria-label',page.title);
+  const {width,height}=this.size(),bottom=(innerWidth<600?138:88)+(layout==='cornell'?100:0);article.style.width=width+'px';article.style.height=height+'px';article.style.setProperty('--rule',Math.max(page.paper?.lineHeight||0,Math.ceil(this.fontSize*(profile?.lineSpacing||1.85)/2)*2)+'px');article.style.setProperty('--reading-size',this.fontSize+'px');article.style.setProperty('--body-bottom',bottom+'px');article.style.setProperty('--summary-bottom',(bottom-(innerWidth<600?136:114))+'px');article.style.setProperty('--body-height',(height-159-bottom)+'px');
   article.append(el('div','paper-fibers'),el('div','binding-holes'));
   const heading=el('header','reader-page-heading');heading.append(el('div','reader-chapter',this.d.notebook.chapters.find(c=>c.pages.some(p=>p.id===page.id))?.title||this.d.notebook.title),el('h1','',page.title));if(page.subtitle)heading.append(el('p','reader-subtitle',page.subtitle));if(part)heading.append(el('span','continued-label','续页 · '+(part+1)));article.append(heading);
   const body=el('div','reader-page-body');const content=el('div','reader-content');body.append(content);article.append(body);
-  if(page.layout==='cornell'){
-   const cues=el('aside','cornell-cues');cues.append(el('h3','','回忆线索'));for(const cue of page.cues||[])cues.append(el('p','cornell-cue',cue.text));body.prepend(cues);
-   if(page.summary){const summary=el('section','cornell-summary');summary.append(el('strong','summary-label','合上笔记，试着复述'),el('span','',page.summary));article.append(summary);}
+  if(layout==='cornell'){
+   const cues=el('aside','cornell-cues');cues.append(el('h3','','回忆线索'));for(const cue of page.cues||[]){const n=el(cue.blockId?'button':'p','cornell-cue',cue.text);if(cue.blockId)n.dataset.cueBlock=cue.blockId;cues.append(n);}if(!page.cues?.length)cues.append(el('p','cue-placeholder','关键词\n\n关系图\n\n自己的疑问'));body.prepend(cues);
+   const summary=el('section','cornell-summary');summary.append(el('strong','summary-label',page.summary?'合上笔记，试着复述':'读后留白 · 用自己的话概括'),el('span','',page.summary||'这一页解释了什么？它在什么条件下成立？'));article.append(summary);
   }
   const footer=el('footer','reader-page-footer');footer.append(el('span','folio-number'));article.append(footer);
   const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.classList.add('ink-overlay');svg.setAttribute('viewBox',`0 0 ${width} ${height}`);article.append(svg);
@@ -31,6 +32,8 @@ export class PageSurface {
  }
  render(page:SurfacePage,index:number){
   const article=this.make(page,page.part),content=article.querySelector<HTMLElement>('.reader-content')!;
+  const shown=new Set(page.blocks.map(b=>b.id));article.querySelectorAll<HTMLElement>('[data-cue-block]').forEach(n=>{if(!shown.has(n.dataset.cueBlock!))n.remove();});
+  const cues=article.querySelector('.cornell-cues');if(cues&&!cues.querySelector('.cornell-cue')){cues.querySelector('.cue-placeholder')?.remove();for(const b of page.blocks.filter(b=>b.title).slice(0,3)){const cue=el('button','cornell-cue',b.title);cue.dataset.cueBlock=b.id;cues.append(cue);}if(!cues.querySelector('.cornell-cue'))cues.append(el('p','cue-placeholder','本页关键关系是什么？\n\n可以补上哪些条件？'));}
   page.blocks.forEach(b=>{const n=this.block(page,b);if(n.classList.contains('placed-object')&&!(b as FragmentBlock)._offset)article.append(n);else content.append(n);});
   article.querySelector('.folio-number')!.textContent=String(index+1).padStart(2,'0')+(page.totalParts>1?` · ${page.part+1}/${page.totalParts}`:'');
   if(!page.blocks.length)content.append(el('p','reader-empty','从页眉导入 AI 生成的结构化教程。'));
@@ -48,15 +51,19 @@ export class PageSurface {
    for(const sourceBlock of source.blocks){
     let b:FragmentBlock={...sourceBlock},guard=0;
     while(guard++<1000){
-     const n=append(b);if(height()<=limit()+1){blocks.push(b);break;}n.remove();
+     const n=append(b);if(height()<=limit()+1){blocks.push(b);break;}
+     // A block that fits a fresh sheet moves whole. Never sacrifice a definition,
+     // short program, table or worked argument just to fill the previous sheet.
+     const ownHeight=n.getBoundingClientRect().height;n.remove();
+     if(blocks.length&&(ownHeight<=limit()||b.keepTogether)){flush();continue;}
      // Text is split at measured line boundaries. Offsets continue to address the original block.
-     if(['prose','concept','quote','callout','code'].includes(b.type)&&b.text&&b.text.length>1){
+     if(!b.keepTogether&&['prose','concept','quote','callout'].includes(b.type)&&b.text&&b.text.length>1){
       let lo=0,hi=b.text.length;while(lo<hi){const mid=Math.ceil((lo+hi)/2),t={...b,text:b.text.slice(0,mid)};const probe=append(t),fits=height()<=limit();probe.remove();if(fits)lo=mid;else hi=mid-1;}
       let cut=safeBoundary(b.text,lo);if(cut<1&&blocks.length){flush();continue;}if(cut<1)cut=safeBoundary(b.text,Math.min(b.text.length,200));
-      if(cut<b.text.length){const lineBreak=b.text.lastIndexOf('\n',cut);const space=b.text.lastIndexOf(' ',cut);const word=Math.max(lineBreak,space);if(word>cut-35&&word>0)cut=word+1;}
+      if(cut<b.text.length){const sentence=Math.max(...['。','！','？','；','\n'].map(mark=>b.text!.lastIndexOf(mark,cut-1)));if(sentence>cut*.7)cut=sentence+1;const lineBreak=b.text.lastIndexOf('\n',cut);const space=b.text.lastIndexOf(' ',cut);const word=Math.max(lineBreak,space);if(word>cut-35&&word>0)cut=word+1;}
       const head={...b,text:b.text.slice(0,cut)};append(head);blocks.push(head);const rest=b.text.slice(cut);if(!rest)break;flush();b={...b,title:undefined,text:rest,_offset:(b._offset||0)+cut};continue;
      }
-     if(['steps','checklist','comparison'].includes(b.type)){
+     if(!b.keepTogether&&['steps','checklist','comparison'].includes(b.type)){
       const key=b.type==='comparison'?'rows':'items',items=(b[key]||[]) as any[];
       if(items.length>1){let take=0;for(let i=1;i<=items.length;i++){const probe=append({...b,[key]:items.slice(0,i)}),fits=height()<=limit();probe.remove();if(!fits)break;take=i;}if(!take&&blocks.length){flush();continue;}const oversize=!take;take=Math.max(1,take);const head={...b,[key]:items.slice(0,take),_oversize:oversize};append(head);blocks.push(head);const rest=items.slice(take);if(!rest.length)break;const offset=key==='items'?items.slice(0,take).reduce((s,i)=>s+i.text.length+1,0):0,rowOffset=key==='rows'?items.slice(0,take).flat().reduce((s,i)=>s+i.length+1,0):0;flush();b={...b,title:undefined,[key]:rest,_offset:(b._offset||0)+offset,_rowOffset:Number(b._rowOffset||0)+rowOffset};continue;}
      }

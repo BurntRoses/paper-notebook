@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import re
 import zipfile
+import unicodedata
 
 
 def validate(value, rule, schema, path='$'):
@@ -83,6 +84,30 @@ def check_references(doc):
         for item in doc['userState'][key]:add(item)
 
 
+def artifact_stem(title, revision):
+    name=re.sub(r'[<>:"/\\|?*\x00-\x1f\x7f]', '-',unicodedata.normalize('NFKC', title))
+    name=re.sub(r'[\s-]+','-',name).strip('. -')[:72] or '学习笔记'
+    if re.match(r'^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\.|$)',name,re.I):name='笔记-'+name
+    return name+'-v'+str(max(1,revision))
+
+
+def slim_fonts(template, doc):
+    if not any(p['blocks'] for c in doc['notebook']['chapters'] for p in c['pages']):return template
+    points={ord(c) for c in json.dumps(doc,ensure_ascii=False)}
+    def face(match):
+        value=match[0]
+        if not re.search(r"font-family:\s*[\"']?StudyHand\b",value):return value
+        ranges=re.search(r'unicode-range:\s*([^;}]+)',value,re.I)
+        if not ranges or re.search(r'U\+20-7E\b',ranges[1],re.I):return value
+        for item in ranges[1].split(','):
+            m=re.fullmatch(r'U\+([\da-f]+)(?:-([\da-f]+))?',item.strip(),re.I)
+            if not m:return value
+            lo=int(m[1],16);hi=int(m[2] or m[1],16)
+            if any(lo<=p<=hi for p in points):return value
+        return ''
+    return re.sub(r'@font-face\s*\{[^{}]*\}',face,template)
+
+
 def build(source, template, schema_path, notices, output):
     doc=json.loads(source.read_text(encoding='utf-8-sig'),parse_constant=lambda v:(_ for _ in ()).throw(ValueError('invalid JSON number: '+v)))
     schema=json.loads(schema_path.read_text(encoding='utf-8'))
@@ -93,13 +118,15 @@ def build(source, template, schema_path, notices, output):
     result,count=re.subn(r'(<script\b[^>]*\bid=[\"\']notebook-data[\"\'][^>]*>)[\s\S]*?(</script>)',lambda m:m[1]+data+m[2],template_text)
     if count!=1:raise ValueError('Expected one notebook-data slot')
     result=re.sub(r'<title>[^<]*</title>',lambda m:'<title>'+html.escape(doc['notebook']['title'])+' · Paper Notebook</title>',result,count=1)
+    result=slim_fonts(result,doc)
+    stem=artifact_stem(doc['notebook']['title'],doc['notebook']['revision'])
     text=json.dumps(doc,ensure_ascii=False,indent=2)
     notice=notices.read_text(encoding='utf-8')
     output.mkdir(parents=True,exist_ok=True)
-    (output/'index.html').write_text(result,encoding='utf-8');(output/'notebook.json').write_text(text,encoding='utf-8')
-    with zipfile.ZipFile(output/'notebook.zip','w',zipfile.ZIP_DEFLATED) as bundle:
-        bundle.writestr('index.html',result);bundle.writestr('notebook.json',text);bundle.writestr('THIRD_PARTY_NOTICES.txt',notice)
-    report={'id':doc['notebook']['id'],'revision':doc['notebook']['revision'],'schemaValidated':True,'coreReferencesChecked':True,'browserInspected':False,'htmlBytes':len(result.encode())}
+    (output/(stem+'.html')).write_text(result,encoding='utf-8');(output/'notebook.json').write_text(text,encoding='utf-8')
+    with zipfile.ZipFile(output/(stem+'.zip'),'w',zipfile.ZIP_DEFLATED) as bundle:
+        bundle.writestr(stem+'.html',result);bundle.writestr('notebook.json',text);bundle.writestr('THIRD_PARTY_NOTICES.txt',notice);bundle.writestr('打开我-README.txt','打开 '+stem+'.html 即可离线阅读；notebook.json 保留源数据。\nPaper Notebook · https://github.com/BurntRoses/paper-notebook')
+    report={'id':doc['notebook']['id'],'revision':doc['notebook']['revision'],'schemaValidated':True,'coreReferencesChecked':True,'browserInspected':False,'htmlBytes':len(result.encode()),'html':stem+'.html','zip':stem+'.zip'}
     (output/'build-report.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
     return report
 

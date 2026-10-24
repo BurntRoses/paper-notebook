@@ -4,11 +4,11 @@ The product is an offline reader for AI-generated structured learning content. G
 
 ## Pages and reading controls
 
-Landscape displays one landscape sheet; portrait displays one portrait sheet. Double-page and continuous modes are optional. Default ruling is horizontal lines. Normal content flows into continuation sheets with stable source IDs and UTF-16 text offsets. Oversized technical objects remain accessible in scrolling viewports.
+Landscape displays one landscape sheet; portrait displays one portrait sheet. Double-page and continuous modes are optional. Default ruling is horizontal lines. Content that fits a fresh sheet moves intact. Only very long prose or lists/tables split; formulas, worked examples, programs and figures stay together. Continuations preserve source IDs and UTF-16 offsets. Oversized technical objects remain accessible in scrolling viewports.
 
-`Page.layout`: reading, cornell, grid or exam. Cornell uses optional `cues: [{id,text,blockId?}]` and `summary`; cues refer to actual blocks and summaries state useful recall points. Legacy free layouts remain readable but have no drag or editing controls.
+`Page.layout`: reading, cornell, grid or exam. Cornell is the default and uses optional `cues: [{id,text,blockId?}]` and `summary`; cues refer to actual blocks and summaries state useful recall points. Legacy free layouts remain readable but have no drag or editing controls.
 
-`extensions.readerProfile` supports layout auto/single/spread/scroll; shape auto/portrait/landscape; direction horizontal/vertical; transition turn/cover/slide/none; theme paper-light/paper-night; motion full/reduced. Default auto means one sheet matching viewport orientation. OS reduced-motion takes precedence. The reader uses preset transitions, with no freely deformable cloth physics.
+`extensions.readerProfile` supports layout auto/single/spread/scroll; shape auto/portrait/landscape; direction horizontal/vertical; transition turn/cover/slide/none; theme paper-light/paper-night; motion full/reduced; font hand/serif/sans; lineSpacing 1.65/1.85/2.05. Night mode changes paper, UI, tables and diagrams without dimming a white sheet. Default auto means one sheet matching viewport orientation. OS reduced-motion takes precedence. The reader uses preset transitions, with no freely deformable cloth physics.
 
 Controls stay in the header and footer. Source text is read-only. Selected-text actions support highlight, underline, circle, wave, box, bracket, check, star and emphasis dots. Authored study marks are deterministic; clicking a mark opens a small inspector, and the same action on the same range is merged or toggled instead of stacking duplicates. Notes, questions, answers and sources are grouped in the sidebar. Avoid repeated toolbars, conversational introductions and product descriptions on lesson pages.
 
@@ -22,4 +22,6 @@ Before generation, use the brief interview to capture goal, prior knowledge, lan
 
 User records remain separate from lesson content. IndexedDB restores local drafts. Downloads include all personal records by default; users may choose a public copy. Preserve legacy original stroke samples and visibly mark unresolved coordinates or text anchors instead of guessing.
 
-Generated HTML must open from file:// with networking disabled. Fonts, runtime, media and formulas stay embedded. Deliver HTML, source JSON and ZIP. Validate, build, inspect desktop/tablet/phone layouts, exercise an actual quiz, export a personal copy, reopen offline and export again. State physical-device checks that were not performed.
+Generated HTML must open from file:// with networking disabled. Fonts, runtime, media and formulas stay embedded. Deliver a title-and-revision named ZIP plus the separate offline HTML and source JSON. Embedded assets are not copied a second time into the bundle. The builder removes unused Unicode font faces while the blank import reader retains full coverage. Validate, build, inspect desktop/tablet/phone layouts, exercise an actual quiz, export a personal copy, reopen offline and export again. State physical-device checks that were not performed.
+
+Use native `chart` blocks for accurate scatter, line and bar graphics. `study.role` separates definitions, intuition, derivations, worked examples, evidence and takeaways; `study.frame` selects stable auto/plain/pencil/tape/double/margin treatments. Comparison tables accept `align` per column; headers center and numeric columns center by default. `keepTogether` preserves meaningful units. See components for exact fields.

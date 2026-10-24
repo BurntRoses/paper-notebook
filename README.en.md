@@ -4,7 +4,11 @@ A focused reader for structured tutorials created by your own agent. The agent w
 
 [Live site](https://burntroses.github.io/paper-notebook/) · [Generate a notebook](https://burntroses.github.io/paper-notebook/chat-start.html) · [Source](https://github.com/BurntRoses/paper-notebook)
 
-The primary deliverable is a single offline HTML file. Local IndexedDB drafts restore learning records; downloaded copies support long-term storage. No account or hosted generation is required.
+Delivery is a clearly named ZIP and a separate offline HTML file. The bundle includes source JSON, a short opening guide and notices; embedded media are not duplicated. Start by uploading references or replying “no files”; the AI ends that response and waits before asking topic and learning-brief choices. Without references, it uses reliable web sources when retrieval is available and original diagrams.
+
+Cornell pages, generous line spacing, three font choices, a real dark theme, native charts and stable hand-drawn frame variants support structured textbook content.
+
+Local IndexedDB drafts restore learning records; downloaded copies support long-term storage. No account or hosted generation is required.
 
 ## Generate a notebook
 

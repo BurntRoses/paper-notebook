@@ -1,7 +1,7 @@
 {
-  "date": "2026-10-23T06:38:36.048Z",
+  "date": "2026-10-24T07:08:45.835Z",
   "archive": "paper-notebook-chat.zip",
-  "entries": 21,
+  "entries": 22,
   "promptMatches": true,
   "pythonBuild": true,
   "exactSourcePreserved": true,
@@ -15,6 +15,6 @@
     "assets": 0,
     "warnings": []
   },
-  "build": "{\"id\": \"paper-notebook-product-story\", \"revision\": 2, \"schemaValidated\": true, \"coreReferencesChecked\": true, \"browserInspected\": false, \"htmlBytes\": 1342872}",
+  "build": "{\"id\": \"paper-notebook-product-story\", \"revision\": 2, \"schemaValidated\": true, \"coreReferencesChecked\": true, \"browserInspected\": false, \"htmlBytes\": 4007391, \"html\": \"Paper-Notebook-·-产品笔记-v2.html\", \"zip\": \"Paper-Notebook-·-产品笔记-v2.zip\"}",
   "scope": "Local package extraction, Python standard-library build and shared schema validation. No remote ChatGPT or DeepSeek session/API used; browser results are recorded separately."
 }

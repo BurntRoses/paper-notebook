@@ -16,12 +16,14 @@ export function importText(input:string):{document:NotebookDocument;warnings:str
   if(t.type==='heading_open'){
    flush();const level=Number(t.tag.slice(1));const title=tokens[i+1]?.content||'';i+=2;
    if(level===1)d.notebook.title=title;
-   else if(level===2){if(d.notebook.chapters.length===1&&chapter.pages.length===1&&!page.blocks.length&&chapter.title==='正文'){chapter.title=title;}else{chapter={id:uid('chapter'),title,pages:[{id:uid('page'),title:'开始阅读',blocks:[] as Block[]}]};d.notebook.chapters.push(chapter);page=chapter.pages[0];}}
-   else if(level===3){if(!page.blocks.length&&page.title==='开始阅读')page.title=title;else{page={id:uid('page'),title,blocks:[]};chapter.pages.push(page);}}
+   else if(level===2){if(d.notebook.chapters.length===1&&chapter.pages.length===1&&!page.blocks.length&&chapter.title==='正文'){chapter.title=title;}else{chapter={id:uid('chapter'),title,pages:[{id:uid('page'),title:'开始阅读',layout:'cornell',blocks:[] as Block[]}]};d.notebook.chapters.push(chapter);page=chapter.pages[0];}}
+   else if(level===3){if(!page.blocks.length&&page.title==='开始阅读')page.title=title;else{page={id:uid('page'),title,layout:'cornell',blocks:[]};chapter.pages.push(page);}}
    else add({id:uid('block'),type:'concept',title,text:''});
   }else if(t.type==='fence'){
    flush();if(t.info.trim()==='notebook-metadata'){
     try{metadata=JSON.parse(t.content);}catch{throw new Error('notebook-metadata JSON 无效。');}
+   }else if(t.info.trim()==='notebook-page'){
+    try{const config=JSON.parse(t.content);const {blocks:_,...presentation}=config;Object.assign(page,presentation);}catch{throw new Error('notebook-page JSON 无效。');}
    }else if(t.info.trim()==='notebook-block'){
     try{const b=JSON.parse(t.content);if(!b.id)b.id=uid('block');add(b);}catch{throw new Error(`第 ${(t.map?.[0]||0)+1} 行 notebook-block JSON 无效；原文尚未导入。`);}
    }else if(['math','latex'].includes(t.info.trim()))add({id:uid('block'),type:'formula',latex:t.content.trim()});

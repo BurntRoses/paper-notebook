@@ -1,6 +1,9 @@
 import './style.css';
 import './math.css';
 import './paper.css';
+import './fonts.css';
+import './textbook.css';
+import generationInstructions from '../../skills/paper-notebook/assets/agent-prompt.txt?raw';
 import { PageSurface, type SurfacePage, type FragmentBlock } from './surface';
 import { authoredAnnotations } from '../model/study';
 import { PaperEditor, readingMarks } from './editor';
@@ -40,23 +43,25 @@ class ReaderApp {
   private pageHeights=new Map<string,number>();
   private liveSlots=new Set<HTMLElement>();
   private scrollTick=0; private resizeTick=0; private lastWidth=innerWidth; private selectionTick=0;
-  private beforePrint:Anchor|undefined;
+  private beforePrint:Anchor|undefined;private fontsCalibrated=false;
   constructor(d:NotebookDocument){
     this.d=d;if(d.userState.preferences.fontSize===18)d.userState.preferences.fontSize=24;this.sessionBooks.set(d.notebook.id,d);
-    this.profile={layout:'single',direction:'horizontal',sidebar:innerWidth<1000?'collapsed':'open',theme:'paper-light',motion:'full',pageShape:'auto',transition:'turn',...(d.extensions.readerProfile as Partial<ReaderPresentation>||{})};
+    this.profile={font:'hand',lineSpacing:1.85,layout:'single',direction:'horizontal',sidebar:innerWidth<1000?'collapsed':'open',theme:'paper-light',motion:'full',pageShape:'auto',transition:'turn',...(d.extensions.readerProfile as Partial<ReaderPresentation>||{})};
     this.editor=new PaperEditor(this,appRoot);
     this.sidebarOpen=innerWidth>=800&&this.profile.sidebar==='open';setLocale(this.en?'en':'zh');
     this.paginate();this.pageIndex=this.indexForAnchor(d.userState.readingAnchor||{pageId:d.userState.lastPageId});
     const saved=structuredClone(d.userState.readingAnchor);this.render();if(saved)this.restoreSaved(saved);if(this.actualLayout()==='scroll'&&!saved)requestAnimationFrame(()=>this.goPage(this.pageIndex));this.bind();(window as unknown as {reader:ReaderApp}).reader=this;
-    document.fonts.ready.then(()=>{const a=this.anchor();this.invalidate();this.render(a);});
+    // Font subsets may emit several loadingdone events while a new page is mounted.
+    // One ready pass is enough to correct pagination without replacing controls in a loop.
+    document.fonts.ready.then(()=>{if(this.fontsCalibrated)return;this.fontsCalibrated=true;const a=this.anchor();this.invalidate();this.render(a);});
     const noDraft=new URLSearchParams(location.search).has('demo');
     if(!noDraft)loadDraft(d.notebook.id).then(draft=>{if(draft&&draft.userState.updatedAt>d.userState.updatedAt){this.d=parseDocument(draft).document;this.profile={...this.profile,...this.d.extensions.readerProfile as object};this.invalidate();this.paginate();const saved=structuredClone(this.d.userState.readingAnchor);this.pageIndex=this.indexForAnchor(saved||{pageId:this.d.userState.lastPageId});this.render();if(saved)this.restoreSaved(saved);toast('已恢复本机草稿');}this.ready=true;}).catch(()=>{this.ready=true;toast('本机草稿不可用，请及时导出副本。',true);});else this.ready=true;
     if(loadError)toast(this.t('内嵌内容无效，当前显示示例。可重新导入源文件。','Embedded data is invalid. A sample is open; import your source again.'),true);
   }
   get pages(){return this.sheets.length?this.sheets:pagesOf(this.d) as SurfacePage[]} get page(){return this.pages[this.pageIndex]||this.pages[0]}
-  get sheetSize(){const size=paperSize(this.shape);if(this.immersive||innerWidth<600||this.shape==='portrait'){const inset=this.immersive?0:24,head=this.immersive?0:76;return {width:size.width,height:Math.max(580,Math.round(size.width*(innerHeight-head)/(innerWidth-inset)))};}return size;}
+  get sheetSize(){const size=paperSize(this.shape);if(this.immersive||innerWidth<600||this.shape==='portrait'){const inset=this.immersive?0:24,head=this.immersive?0:76;return {width:size.width,height:Math.max(580,Math.round(size.width*(innerHeight-head)/(innerWidth-inset)))};}const availableWidth=Math.max(300,innerWidth-(this.sidebarOpen?284:48));return {...size,height:Math.max(size.height,Math.min(1050,Math.round(size.width*(innerHeight-76)/availableWidth)))};}
   get readingSize(){return this.d.userState.preferences.fontSize*(innerWidth<600?1.5:1);}
-  paginate(){const key=JSON.stringify([this.d.notebook,this.d.userState.layouts,this.shape,this.readingSize,this.sheetSize]);if(key===this.paginationKey)return;const old=this.sheets[this.pageIndex];this.sheets=new PageSurface(this.d,this.shape,this.readingSize,b=>this.block(b),this.sheetSize).paginate();this.paginationKey=key;if(old){const index=this.sheets.findIndex(p=>p.id===old.id&&p.part===old.part);this.pageIndex=index>=0?index:Math.min(this.pageIndex,this.sheets.length-1);}}
+  paginate(){const key=JSON.stringify([this.d.notebook,this.d.userState.layouts,this.shape,this.readingSize,this.sheetSize,this.profile.font,this.profile.lineSpacing]);if(key===this.paginationKey)return;const old=this.sheets[this.pageIndex];this.d.extensions.readerProfile={...this.profile};this.sheets=new PageSurface(this.d,this.shape,this.readingSize,b=>this.block(b),this.sheetSize).paginate();this.paginationKey=key;if(old){const index=this.sheets.findIndex(p=>p.id===old.id&&p.part===old.part);this.pageIndex=index>=0?index:Math.min(this.pageIndex,this.sheets.length-1);}}
   get en(){return this.d.userState.preferences.language==='en'}
   async pageImage(){await document.fonts.ready;return pagePNG(appRoot.querySelector<HTMLElement>('.page-surface')!);}
   get marks(){return this.d.userState.annotations}
@@ -85,6 +90,7 @@ class ReaderApp {
   })}
   restoreSaved(a:ReadingAnchor){requestAnimationFrame(()=>{const node=this.anchorNode(a);if(node){const r=node.getBoundingClientRect();window.scrollBy({top:r.top+a.offset*r.height-100,behavior:'instant'});this.remember()}})}
   render(a?:Anchor){
+    document.documentElement.dataset.paperTheme=this.profile.theme;
     this.editor.cancel(false);
     this.turnAnimation?.cancel();document.querySelectorAll('.page-transition').forEach(n=>n.remove());this.paginate();if(a)this.pageIndex=this.indexForAnchor(a);
     this.scrollObserver?.disconnect();this.liveSlots.clear();this.clearToolbar();appRoot.replaceChildren();
@@ -96,7 +102,8 @@ class ReaderApp {
     const controls=el('nav','reader-controls');controls.setAttribute('aria-label',this.t('阅读操作','Reader controls'));
     const contents=button(this.t('目录','Contents'),()=>this.toggleSidebar(),'reader-control','☰');contents.setAttribute('aria-expanded',String(this.sidebarOpen));contents.setAttribute('aria-controls','reader-sidebar');
     const files=el('details','reader-files');files.append(el('summary','','文件'));const menu=el('div','reader-file-menu');menu.append(button(this.t('导入','Import'),()=>{files.open=false;this.showImport()}),button(this.t('下载','Download'),()=>{files.open=false;this.showExport()}));files.append(menu);
-    controls.append(contents,button(this.t('阅读设置','Reading settings'),()=>this.showSettings(),'reader-control','Aa'),button(this.t('沉浸阅读','Immersive reading'),()=>this.setImmersive(true),'reader-control immersion-entry','⛶'),files);
+    const theme=button(this.t('切换日夜模式','Toggle day and night'),()=>{const a=this.anchor();this.profile.theme=this.profile.theme==='paper-night'?'paper-light':'paper-night';this.render(a)},'reader-control theme-toggle',this.profile.theme==='paper-night'?'☀':'☾');theme.setAttribute('aria-pressed',String(this.profile.theme==='paper-night'));
+    controls.append(contents,theme,button(this.t('阅读设置','Reading settings'),()=>this.showSettings(),'reader-control','Aa'),button(this.t('沉浸阅读','Immersive reading'),()=>this.setImmersive(true),'reader-control immersion-entry','⛶'),files);
     header.append(brand,controls);appRoot.append(header);
     const shell=el('div','reader-shell');shell.append(this.renderSidebar());
     if(this.sidebarOpen&&(innerWidth<800||this.immersive)){const backdrop=button(this.t('收起目录','Close contents'),()=>this.toggleSidebar(false),'sidebar-backdrop');backdrop.tabIndex=-1;shell.append(backdrop)}
@@ -132,7 +139,7 @@ class ReaderApp {
         this.pages.forEach(p=>p.blocks.forEach(b=>{if((p.title+' '+(b.title||'')+' '+textOf(b)).toLocaleLowerCase().includes(query)){count++;const hit=button(b.title||textOf(b).slice(0,70)||p.title,()=>this.goBlock(p.id,b.id),'sidebar-result');hit.append(el('span','result-page',p.title));list.append(hit)}}));
         if(!count)list.append(el('p','empty-state',this.t('没有匹配内容','No results')));
       }else this.d.notebook.chapters.forEach(c=>{const section=el('section','sidebar-chapter');section.append(el('h2','',c.title));c.pages.forEach(p=>{const b=button(p.title,()=>this.goPage(this.pages.findIndex(s=>s.id===p.id),true),'sidebar-page');b.dataset.pageLink=p.id;b.setAttribute('aria-current',p.id===this.page.id?'page':'false');section.append(b);
-        for(const block of p.blocks.filter(b=>['formula','diagram','exercise','comparison'].includes(b.type)))section.append(button(this.blockLabel(block),()=>this.goBlock(p.id,block.id),'sidebar-block'));
+        for(const block of p.blocks.filter(b=>['formula','diagram','chart','exercise','comparison'].includes(b.type)))section.append(button(this.blockLabel(block),()=>this.goBlock(p.id,block.id),'sidebar-block'));
       });list.append(section)})};
       search.oninput=()=>{this.search=search.value;fill()};aside.append(search,list);fill();
     }else if(this.sidebarTab==='highlights'){
@@ -154,11 +161,12 @@ class ReaderApp {
       if(!this.d.notebook.sources.length)aside.append(el('p','empty-state',this.t('此教程尚未列出外部来源。','No external sources listed.')));
       aside.append(button(this.t('关于与许可','About and licenses'),()=>this.showAbout(),'sidebar-action'));
     }
+    const support=el('section','sidebar-support');support.append(el('p','',this.t('这本笔记的工具来自开源项目。喜欢这种学习方式？给它留一颗星，或来提个点子。','Enjoy this notebook? Leave a star or share an idea.')));const star=el('a','support-star','☆ 给小笔记一颗 Star ↗');star.href='https://github.com/BurntRoses/paper-notebook';star.target='_blank';star.rel='noopener noreferrer';const nav=el('nav');for(const [name,url]of [['生成新笔记','https://burntroses.github.io/paper-notebook/chat-start.html'],['项目主页','https://burntroses.github.io/paper-notebook/'],['反馈建议','https://github.com/BurntRoses/paper-notebook/issues']]){const a=el('a','',name);a.href=url;a.target='_blank';a.rel='noopener noreferrer';nav.append(a);}support.append(star,nav);aside.append(support);
     return aside;
   }
   refreshSidebar(){const old=appRoot.querySelector('.reader-sidebar');old?.replaceWith(this.renderSidebar())}
   toggleSidebar(open=!this.sidebarOpen){const a=this.anchor();this.sidebarOpen=open;this.render(a)}
-  blockLabel(b:Block){const icon:Record<string,string>={formula:'∑',diagram:'◇',exercise:'?',comparison:'▦'};const names:Record<string,string>={formula:this.t('公式','Formula'),diagram:this.t('图示','Diagram'),exercise:this.t('练习','Exercise'),comparison:this.t('对照表','Comparison')};return `${icon[b.type]} ${b.title||b.question||names[b.type]}`}
+  blockLabel(b:Block){const icon:Record<string,string>={formula:'∑',diagram:'◇',chart:'⌁',exercise:'?',comparison:'▦'};const names:Record<string,string>={formula:this.t('公式','Formula'),diagram:this.t('图示','Diagram'),chart:this.t('数据图','Data chart'),exercise:this.t('练习','Exercise'),comparison:this.t('对照表','Comparison')};return `${icon[b.type]} ${b.title||b.question||names[b.type]}`}
   renderPage(page:SurfacePage){
     const slot=el('div','paper-slot');
     const paper=new PageSurface(this.d,this.shape,this.readingSize,b=>this.block(b),this.sheetSize).render(page,this.pages.indexOf(page));
@@ -205,6 +213,7 @@ class ReaderApp {
   }
   bind(){
     enhanceSelects();new MutationObserver(()=>enhanceSelects()).observe(document.body,{childList:true,subtree:true});
+    document.addEventListener('click',e=>{const cue=(e.target as HTMLElement).closest<HTMLElement>('[data-cue-block]');if(cue)this.goBlock(cue.closest<HTMLElement>('[data-page]')!.dataset.page!,cue.dataset.cueBlock!);});
     document.addEventListener('keydown',e=>{
       if(e.key==='Escape'){if(this.immersive&&!document.querySelector('dialog[open]')){this.setImmersive(false);return;}this.gesture=null;this.clearToolbar();if(this.sidebarOpen&&innerWidth<800&&!document.querySelector('dialog[open]'))this.toggleSidebar(false);return}
       if(document.querySelector('dialog[open]')||(e.target as HTMLElement).closest('input,textarea,select,[contenteditable=true]'))return;
@@ -244,6 +253,7 @@ class ReaderApp {
       label(this.t('纸张方向','Paper orientation'),select([['auto',this.t('自然比例','Natural')],['portrait',this.t('竖版','Portrait')],['landscape',this.t('横版','Landscape')]],this.profile.pageShape||'auto',v=>change('pageShape',v as ReaderPresentation['pageShape']))),
       label(this.t('翻页方向','Page direction'),select([['horizontal',this.t('左右','Horizontal')],['vertical',this.t('上下','Vertical')]],this.profile.direction,v=>change('direction',v as ReaderDirection))),
       label(this.t('翻页效果','Transition'),select([['turn',this.t('仿真','Simulated page')],['cover',this.t('覆盖','Cover')],['slide',this.t('滑动','Slide')],['none',this.t('无动画','None')]],this.profile.transition||'turn',v=>change('transition',v as ReaderPresentation['transition']))));
+    m.body.append(label(this.t('正文字体','Reading font'),select([['hand','文楷 · 随书嵌入'],['serif','宋体 / 衬线 · 系统字体'],['sans','黑体 / 无衬线 · 系统字体']],this.profile.font||'hand',v=>change('font',v as ReaderPresentation['font']))),label(this.t('行距','Line spacing'),select([['1.65','舒适 · 1.65'],['1.85','宽松 · 1.85'],['2.05','留白 · 2.05']],String(this.profile.lineSpacing||1.85),v=>change('lineSpacing',Number(v) as ReaderPresentation['lineSpacing']))));
     const size=input(String(this.d.userState.preferences.fontSize));size.type='range';size.min='14';size.max='36';size.onchange=()=>{this.d.userState.preferences.fontSize=Number(size.value);this.render(a)};m.body.append(label(this.t('字号','Text size'),size));
     m.body.append(label(this.t('纸色','Paper color'),select([['paper-light',this.t('日间','Day')],['paper-night',this.t('夜间','Night')]],this.profile.theme,v=>change('theme',v as ReaderPresentation['theme']))),label(this.t('减少动态','Reduce motion'),checkbox(this.profile.motion==='reduced',v=>change('motion',v?'reduced':'full'))),label(this.t('界面语言','Interface language'),select([['zh','中文'],['en','English']],this.en?'en':'zh',v=>{this.d.userState.preferences.language=v as 'zh'|'en';setLocale(v as 'zh'|'en');this.render(a)})));
     m.foot.append(button(this.t('完成','Done'),()=>{m.close();this.render(a)},'primary'));
@@ -289,22 +299,21 @@ class ReaderApp {
     const fidelity=select([['strict','严格遵循材料：题库、讲义、原文优先'],['guided','以材料为主，允许补充必要背景'],['open','开放组织，可补充可靠来源']],brief.materialFidelity||'guided');
     const material=textarea((brief.materials||[]).join('\n'),3);material.placeholder=this.t('材料名称、文件、章节或题库范围','Files, chapters, question bank or scope');
     const terms=textarea(brief.termPolicy||'',2);terms.placeholder=this.t('术语表、统一译法、需要校正的词','Glossary, preferred translations or corrections');
-    m.body.append(label(this.t('学习目标','Learning goal'),goal),label(this.t('基础情况','Prior knowledge'),level),label(this.t('预计时长（分钟）','Time in minutes'),minutes),label(this.t('语言风格','Language'),language),label(this.t('表达风格','Writing style'),style),label(this.t('难易程度','Difficulty'),difficulty),label(this.t('包含练习','Include exercises'),exercises),label(this.t('学习周期','Horizon'),horizon),label(this.t('内容路线','Route'),route),label(this.t('材料遵循程度','Material fidelity'),fidelity),label(this.t('参考材料','Reference materials'),material),label(this.t('术语与校正要求','Terms and corrections'),terms));
+    m.body.append(label(this.t('参考材料','Reference materials'),material),el('p','brief-note','复制给 AI 后，先上传准备好的文件，或明确回复“没有文件”。无文件时，AI 将按可用能力检索可靠资料并绘制图解，再用选择题确认主题等需求。'),label(this.t('学习目标','Learning goal'),goal),label(this.t('基础情况','Prior knowledge'),level),label(this.t('预计时长（分钟）','Time in minutes'),minutes),label(this.t('语言风格','Language'),language),label(this.t('表达风格','Writing style'),style),label(this.t('难易程度','Difficulty'),difficulty),label(this.t('包含练习','Include exercises'),exercises),label(this.t('学习周期','Horizon'),horizon),label(this.t('内容路线','Route'),route),label(this.t('材料遵循程度','Material fidelity'),fidelity),label(this.t('术语与校正要求','Terms and corrections'),terms));
     const output=el('textarea','brief-output');output.readOnly=true;output.rows=8;output.setAttribute('aria-label',this.t('生成提示预览','Prompt preview'));
     const make=()=>{const selected={goal:goal.value.trim(),level:level.value.trim(),minutes:Math.max(5,Number(minutes.value||30)),materials:material.value.split(/\n+/).map(x=>x.trim()).filter(Boolean),exercises:exercises.checked,language:language.value,languageStyle:style.value,difficulty:difficulty.value,route:route.value,horizon:horizon.value,materialFidelity:fidelity.value,termPolicy:terms.value.trim()};output.value=this.briefPrompt(selected);return selected;};
     [goal,level,minutes,language,style,difficulty,exercises,horizon,route,fidelity,material,terms].forEach(n=>n.addEventListener('input',make));[language,style,difficulty,horizon,route,fidelity].forEach(n=>n.addEventListener('change',make));m.body.append(el('p','brief-note',this.t('上传 PDF、图片或扫描件时：先 OCR，保留页码与原文，再单独列出校正；严格材料模式下不擅自修题、改答案或补充材料之外的结论。','For PDFs, images or scans: OCR first, retain page references and raw text, then list corrections separately. Strict mode never rewrites questions, answers or source claims.')),output);make();
     m.foot.append(button(this.t('复制给 Agent','Copy for agent'),()=>{make();void copyText(output.value)},'primary'),button(this.t('关闭','Close'),m.close,'quiet'));
   }
   briefPrompt(brief:Record<string,unknown>){
-    const fidelity=brief.materialFidelity==='strict'?'严格保留题库、讲义和指定知识点的原题、原答案、原顺序与客观表述；补充解释单列并注明来源。疑似原文错误标为待核实，不擅自修题或改答案。':brief.materialFidelity==='open'?'围绕学习范围组织内容，可补充可靠来源；区分用户材料、外部依据和教学例子。':'以用户材料为主；只补理解所需的背景，补充处注明来源，不扩大材料中的结论。';
-    return `请使用 Paper Notebook 生成结构化学习笔记。此指令适用于支持 Skill 的 Agent，以及 ChatGPT、DeepSeek 等文字对话。\n\n学习目标：${brief.goal||'待确认'}\n已有基础：${brief.level||'待确认'}\n学习周期：${brief.horizon==='long'?'长期课程或持续复习':'短期速览一个问题'}；预计 ${brief.minutes} 分钟\n语言：${brief.language}；表达：${brief.languageStyle||'简洁直述'}；难度：${brief.difficulty||'依基础调整'}\n练习：${brief.exercises===undefined?'待确认':brief.exercises?'需要':'不需要'}\n内容路线：${brief.route}\n材料遵循：${brief.materialFidelity}\n参考材料：${(brief.materials as string[]||[]).join('；')||'待提供'}\n术语与校正：${brief.termPolicy||'记录术语表，校正与原文分开'}\n\n材料约定：${fidelity}\n材料提取：PDF 优先读取文字层；扫描件、图片使用 OCR；文档提取正文并核对版面。保留页码、原始文本和不确定字词，校正与术语表分开记录。公式、单位、否定词及题号须对照原件核实。\n\n编排范围：${brief.horizon==='long'?'按先修关系和章节目标组织课程，设置有实际内容的回顾线索；每次交付说明已覆盖与未覆盖的范围。':'限定本次问题和时间，保留理解所需的条件、核心解释与一个恰当例子，避免扩展成整门课程。'}\n输出要求：按内容需要组织概念、条件、推导、例子与来源；反例须与当前问题直接相关，练习只在用户需要时提供。避免对话式介绍、重复提醒、预设错误和“先……再……”模板句。用 study.visual 区分 plain、blackboard、extract、sketch，用 study.marks 为关键原句提供荧光、圈注、下划线、波浪、框选、括注、勾记、星标或着重点。使用稳定 ID。
-交付方式：若能读取文件并运行代码，使用 Paper Notebook Skill 或通用对话使用包内的共享阅读器构建，交付实际生成的 notebook.json、离线 HTML 与 ZIP 下载链接。只有 Python 时可运行 scripts/build_reader.py。不要重写阅读器界面。若当前只有文字对话能力，输出完整可导入稿：# 教程名、## 章节名、### 纸页标题；普通段落用于正文，特殊组件使用 notebook-block JSON 围栏（如 {"id":"key-formula","type":"formula","latex":"P_n=P_0(1+r)^n","text":"注明变量和适用条件","study":{"visual":"blackboard"}}）。不要省略内容或用占位符；我会将全文粘贴到空白阅读器的“导入”，再下载离线副本。仅输出文字时不要声称已生成 HTML、附件或完成构建。`;}
+    return generationInstructions+'\n\n以下是我已在阅读器填写的学习偏好。保留已有答案；若我尚未上传文件或明确说没有文件，仍先按上述流程等待文件，不要立刻生成。\n'+JSON.stringify(brief,null,2)+'\nPDF/扫描材料使用可用 OCR，保留页码、原文与疑点；严格材料模式不擅自修改题目、答案或顺序。';
+  }
   generationPrompt(){return this.briefPrompt({goal:'',level:'',minutes:30,materials:[],language:'中文',route:'systematic',horizon:'short',materialFidelity:'guided',termPolicy:''});}
   showExport(){
     const m=modal(this.t('下载副本','Download a copy'));m.body.append(el('p','export-summary',`${this.d.notebook.title} · ${this.pages.length} ${this.t('页','pages')}`));
     const choices:ExportChoices={marks:true,questions:true,answers:true,legacy:true};
     m.body.append(label(this.t('包含阅读标记、作答与历史学习记录','Include all personal records'),checkbox(true,v=>{choices.marks=v;choices.questions=v;choices.answers=v;choices.legacy=v;})));
-    const format=select([['html',this.t('单文件 HTML','Single-file HTML')],['zip',this.t('HTML + 源文件 ZIP','HTML + source ZIP')],['json',this.t('源 JSON','Source JSON')],['md','Markdown']], 'html');m.body.append(label(this.t('格式','Format'),format));
+    const format=select([['html',this.t('单文件 HTML','Single-file HTML')],['zip',this.t('HTML + 源文件 ZIP','HTML + source ZIP')],['json',this.t('源 JSON','Source JSON')],['md','Markdown']], 'zip');m.body.append(label(this.t('格式','Format'),format),el('p','brief-note','推荐 ZIP：解压后直接打开以教程名命名的 HTML，源文件与许可一并保存。也可单独下载 HTML。'));
     const status=el('p','export-status');status.setAttribute('role','status');m.body.append(status);
     const save=button(this.t('下载','Download'),async()=>{save.disabled=true;status.textContent='';this.remember();const d=readerCopy(this.d,choices);try{
       if(format.value==='html')await exportHTML(d);else if(format.value==='zip')await exportBundle(d);else if(format.value==='json')download(safeName(d.notebook.title)+'.json',JSON.stringify(d,null,2),'application/json');else download(safeName(d.notebook.title)+'.md',exportMarkdown(d));m.close();
@@ -312,6 +321,6 @@ class ReaderApp {
     m.foot.append(button(this.t('打印 / PDF','Print / PDF'),()=>{m.close();window.print()},'quiet'),button(this.t('当前页图片','Page image'),async()=>{m.close();try{await exportPreview(appRoot.querySelector<HTMLElement>('.reader-page')!,this.page.title)}catch(e){toast(String(e))}},'quiet'),save);
   }
   showImage(b:Block){const asset=this.d.assets.find(a=>a.id===b.assetId);if(!asset)return;const m=modal(b.title||this.t('图片','Image'));const img=el('img','reader-image');img.src=asset.data;img.alt=b.alt||'';m.body.append(img);if(b.caption)m.body.append(el('p','',b.caption));if(asset.source)m.body.append(el('p','',asset.source+(asset.license?' · '+asset.license:'')));m.foot.append(button(this.t('关闭','Close'),m.close,'primary'))}
-  showAbout(){const m=modal('Paper Notebook');m.body.append(el('p','',this.t('Agent 生成教程；阅读器负责版式、阅读和离线交付。','Your agent creates the tutorial. The reader handles layout, reading and offline delivery.')),el('p','', '2.0.0 · MIT'));const details=el('details');details.append(el('summary','',this.t('第三方许可','Third-party licenses')),el('pre','license-text',notices));m.body.append(details);m.foot.append(button(this.t('关闭','Close'),m.close,'primary'))}
+  showAbout(){const m=modal('Paper Notebook');m.body.append(el('p','',this.t('Agent 生成教程；阅读器负责版式、阅读和离线交付。','Your agent creates the tutorial. The reader handles layout, reading and offline delivery.')),el('p','', '2.1.0 · MIT'));const github=el('a','support-star','☆ 喜欢这本小笔记？去 GitHub 留一颗 Star ↗');github.href='https://github.com/BurntRoses/paper-notebook';github.target='_blank';github.rel='noopener noreferrer';m.body.append(github);const details=el('details');details.append(el('summary','',this.t('第三方许可','Third-party licenses')),el('pre','license-text',notices));m.body.append(details);m.foot.append(button(this.t('关闭','Close'),m.close,'primary'))}
 }
 new ReaderApp(embedded||structuredClone(introNotebook));

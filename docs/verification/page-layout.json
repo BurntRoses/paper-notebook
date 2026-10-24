@@ -5,30 +5,40 @@
     "page": "intro-capabilities",
     "part": "0",
     "bodyHeight": 547,
-    "content": 458,
+    "content": 260,
     "objects": [
       {
         "id": "intro-lead",
-        "height": 61,
-        "scroll": 61,
+        "height": 86,
+        "scroll": 86,
         "scroller": false
       },
       {
         "id": "intro-read",
-        "height": 105,
-        "scroll": 105,
+        "height": 146,
+        "scroll": 146,
         "scroller": false
-      },
+      }
+    ]
+  },
+  {
+    "width": 1920,
+    "height": 1080,
+    "page": "intro-capabilities",
+    "part": "1",
+    "bodyHeight": 547,
+    "content": 427,
+    "objects": [
       {
         "id": "intro-create",
-        "height": 164,
-        "scroll": 164,
+        "height": 288,
+        "scroll": 288,
         "scroller": false
       },
       {
         "id": "intro-promise",
-        "height": 81,
-        "scroll": 81,
+        "height": 106,
+        "scroll": 106,
         "scroller": false
       }
     ]
@@ -43,20 +53,30 @@
     "objects": [
       {
         "id": "intro-native",
-        "height": 61,
-        "scroll": 61,
+        "height": 86,
+        "scroll": 86,
         "scroller": false
       },
       {
         "id": "intro-flow",
-        "height": 140,
-        "scroll": 147,
+        "height": 213,
+        "scroll": 220,
         "scroller": false
-      },
+      }
+    ]
+  },
+  {
+    "width": 1920,
+    "height": 1080,
+    "page": "intro-principles",
+    "part": "1",
+    "bodyHeight": 447,
+    "content": 447,
+    "objects": [
       {
         "id": "intro-anchor",
-        "height": 181,
-        "scroll": 181,
+        "height": 321,
+        "scroll": 321,
         "scroller": false
       }
     ]
@@ -67,30 +87,40 @@
     "page": "intro-features",
     "part": "0",
     "bodyHeight": 547,
-    "content": 504,
+    "content": 416,
     "objects": [
       {
         "id": "intro-paper",
-        "height": 132,
-        "scroll": 132,
+        "height": 185,
+        "scroll": 185,
         "scroller": false
       },
       {
         "id": "intro-tools",
-        "height": 129,
-        "scroll": 129,
+        "height": 202,
+        "scroll": 202,
         "scroller": false
-      },
+      }
+    ]
+  },
+  {
+    "width": 1920,
+    "height": 1080,
+    "page": "intro-features",
+    "part": "1",
+    "bodyHeight": 547,
+    "content": 261,
+    "objects": [
       {
         "id": "intro-templates",
-        "height": 163,
-        "scroll": 163,
+        "height": 185,
+        "scroll": 185,
         "scroller": false
       },
       {
         "id": "intro-owned",
-        "height": 34,
-        "scroll": 34,
+        "height": 46,
+        "scroll": 46,
         "scroller": false
       }
     ]
@@ -101,30 +131,40 @@
     "page": "intro-start",
     "part": "0",
     "bodyHeight": 547,
-    "content": 536,
+    "content": 382,
     "objects": [
       {
         "id": "intro-first",
-        "height": 115,
-        "scroll": 115,
+        "height": 152,
+        "scroll": 152,
         "scroller": false
       },
       {
         "id": "intro-how",
-        "height": 129,
-        "scroll": 129,
+        "height": 202,
+        "scroll": 202,
         "scroller": false
-      },
+      }
+    ]
+  },
+  {
+    "width": 1920,
+    "height": 1080,
+    "page": "intro-start",
+    "part": "1",
+    "bodyHeight": 547,
+    "content": 427,
+    "objects": [
       {
         "id": "intro-delivery",
-        "height": 164,
-        "scroll": 164,
+        "height": 288,
+        "scroll": 288,
         "scroller": false
       },
       {
         "id": "intro-close",
-        "height": 81,
-        "scroll": 81,
+        "height": 106,
+        "scroll": 106,
         "scroller": false
       }
     ]
@@ -135,30 +175,40 @@
     "page": "subject-literature",
     "part": "0",
     "bodyHeight": 547,
-    "content": 485,
+    "content": 541,
     "objects": [
       {
         "id": "literature-quote",
-        "height": 139,
-        "scroll": 139,
+        "height": 156,
+        "scroll": 156,
         "scroller": false
       },
       {
         "id": "literature-detail",
-        "height": 132,
-        "scroll": 132,
+        "height": 185,
+        "scroll": 185,
         "scroller": false
       },
       {
         "id": "literature-map",
-        "height": 104,
-        "scroll": 104,
+        "height": 141,
+        "scroll": 141,
         "scroller": false
-      },
+      }
+    ]
+  },
+  {
+    "width": 1920,
+    "height": 1080,
+    "page": "subject-literature",
+    "part": "1",
+    "bodyHeight": 547,
+    "content": 89,
+    "objects": [
       {
         "id": "literature-reading",
-        "height": 61,
-        "scroll": 61,
+        "height": 86,
+        "scroll": 86,
         "scroller": false
       }
     ]
@@ -169,30 +219,40 @@
     "page": "subject-business",
     "part": "0",
     "bodyHeight": 547,
-    "content": 521,
+    "content": 371,
     "objects": [
       {
         "id": "business-conditions",
-        "height": 61,
-        "scroll": 61,
+        "height": 86,
+        "scroll": 86,
         "scroller": false
       },
       {
         "id": "business-formula",
-        "height": 168,
-        "scroll": 175,
+        "height": 243,
+        "scroll": 250,
         "scroller": false
-      },
+      }
+    ]
+  },
+  {
+    "width": 1920,
+    "height": 1080,
+    "page": "subject-business",
+    "part": "1",
+    "bodyHeight": 547,
+    "content": 427,
+    "objects": [
       {
         "id": "business-table",
-        "height": 152,
-        "scroll": 152,
+        "height": 288,
+        "scroll": 288,
         "scroller": false
       },
       {
         "id": "business-extract",
-        "height": 81,
-        "scroll": 81,
+        "height": 106,
+        "scroll": 106,
         "scroller": false
       }
     ]
@@ -203,30 +263,40 @@
     "page": "subject-code",
     "part": "0",
     "bodyHeight": 547,
-    "content": 536,
+    "content": 537,
     "objects": [
       {
         "id": "code-question",
-        "height": 61,
-        "scroll": 61,
+        "height": 86,
+        "scroll": 86,
         "scroller": false
       },
       {
         "id": "code-example",
-        "height": 241,
-        "scroll": 241,
+        "height": 254,
+        "scroll": 254,
         "scroller": false
       },
       {
         "id": "code-map",
-        "height": 104,
-        "scroll": 104,
+        "height": 141,
+        "scroll": 141,
         "scroller": false
-      },
+      }
+    ]
+  },
+  {
+    "width": 1920,
+    "height": 1080,
+    "page": "subject-code",
+    "part": "1",
+    "bodyHeight": 547,
+    "content": 111,
+    "objects": [
       {
         "id": "code-limit",
-        "height": 81,
-        "scroll": 81,
+        "height": 106,
+        "scroll": 106,
         "scroller": false
       }
     ]
@@ -237,30 +307,30 @@
     "page": "intro-capabilities",
     "part": "0",
     "bodyHeight": 1138,
-    "content": 557,
+    "content": 833,
     "objects": [
       {
         "id": "intro-lead",
-        "height": 95,
-        "scroll": 95,
+        "height": 132,
+        "scroll": 132,
         "scroller": false
       },
       {
         "id": "intro-read",
-        "height": 136,
-        "scroll": 136,
+        "height": 177,
+        "scroll": 177,
         "scroller": false
       },
       {
         "id": "intro-create",
-        "height": 164,
-        "scroll": 164,
+        "height": 288,
+        "scroll": 288,
         "scroller": false
       },
       {
         "id": "intro-promise",
-        "height": 115,
-        "scroll": 115,
+        "height": 152,
+        "scroll": 152,
         "scroller": false
       }
     ]
@@ -275,20 +345,20 @@
     "objects": [
       {
         "id": "intro-native",
-        "height": 95,
-        "scroll": 95,
+        "height": 132,
+        "scroll": 132,
         "scroller": false
       },
       {
         "id": "intro-flow",
-        "height": 140,
-        "scroll": 147,
+        "height": 213,
+        "scroll": 220,
         "scroller": false
       },
       {
         "id": "intro-anchor",
-        "height": 181,
-        "scroll": 181,
+        "height": 321,
+        "scroll": 321,
         "scroller": false
       }
     ]
@@ -299,30 +369,30 @@
     "page": "intro-features",
     "part": "0",
     "bodyHeight": 1138,
-    "content": 697,
+    "content": 928,
     "objects": [
       {
         "id": "intro-paper",
-        "height": 189,
-        "scroll": 194,
+        "height": 265,
+        "scroll": 270,
         "scroller": false
       },
       {
         "id": "intro-tools",
-        "height": 129,
-        "scroll": 129,
+        "height": 202,
+        "scroll": 202,
         "scroller": false
       },
       {
         "id": "intro-templates",
-        "height": 265,
-        "scroll": 265,
+        "height": 287,
+        "scroll": 287,
         "scroller": false
       },
       {
         "id": "intro-owned",
-        "height": 68,
-        "scroll": 68,
+        "height": 92,
+        "scroll": 92,
         "scroller": false
       }
     ]
@@ -333,30 +403,30 @@
     "page": "intro-start",
     "part": "0",
     "bodyHeight": 1138,
-    "content": 570,
+    "content": 878,
     "objects": [
       {
         "id": "intro-first",
-        "height": 115,
-        "scroll": 115,
+        "height": 152,
+        "scroll": 152,
         "scroller": false
       },
       {
         "id": "intro-how",
-        "height": 129,
-        "scroll": 129,
+        "height": 202,
+        "scroll": 202,
         "scroller": false
       },
       {
         "id": "intro-delivery",
-        "height": 164,
-        "scroll": 164,
+        "height": 288,
+        "scroll": 288,
         "scroller": false
       },
       {
         "id": "intro-close",
-        "height": 115,
-        "scroll": 115,
+        "height": 152,
+        "scroll": 152,
         "scroller": false
       }
     ]
@@ -367,30 +437,30 @@
     "page": "subject-literature",
     "part": "0",
     "bodyHeight": 1138,
-    "content": 504,
+    "content": 662,
     "objects": [
       {
         "id": "literature-quote",
-        "height": 139,
-        "scroll": 139,
+        "height": 156,
+        "scroll": 156,
         "scroller": false
       },
       {
         "id": "literature-detail",
-        "height": 132,
-        "scroll": 132,
+        "height": 185,
+        "scroll": 185,
         "scroller": false
       },
       {
         "id": "literature-map",
-        "height": 89,
-        "scroll": 89,
+        "height": 105,
+        "scroll": 105,
         "scroller": false
       },
       {
         "id": "literature-reading",
-        "height": 95,
-        "scroll": 95,
+        "height": 132,
+        "scroll": 132,
         "scroller": false
       }
     ]
@@ -401,30 +471,30 @@
     "page": "subject-business",
     "part": "0",
     "bodyHeight": 1138,
-    "content": 649,
+    "content": 955,
     "objects": [
       {
         "id": "business-conditions",
-        "height": 95,
-        "scroll": 95,
+        "height": 132,
+        "scroll": 132,
         "scroller": false
       },
       {
         "id": "business-formula",
-        "height": 168,
-        "scroll": 175,
+        "height": 283,
+        "scroll": 290,
         "scroller": false
       },
       {
         "id": "business-table",
-        "height": 212,
-        "scroll": 212,
+        "height": 288,
+        "scroll": 288,
         "scroller": false
       },
       {
         "id": "business-extract",
-        "height": 115,
-        "scroll": 115,
+        "height": 152,
+        "scroll": 152,
         "scroller": false
       }
     ]
@@ -435,30 +505,30 @@
     "page": "subject-code",
     "part": "0",
     "bodyHeight": 1138,
-    "content": 627,
+    "content": 753,
     "objects": [
       {
         "id": "code-question",
-        "height": 95,
-        "scroll": 95,
+        "height": 132,
+        "scroll": 132,
         "scroller": false
       },
       {
         "id": "code-example",
-        "height": 313,
-        "scroll": 313,
+        "height": 326,
+        "scroll": 326,
         "scroller": false
       },
       {
         "id": "code-map",
-        "height": 89,
-        "scroll": 89,
+        "height": 105,
+        "scroll": 105,
         "scroller": false
       },
       {
         "id": "code-limit",
-        "height": 81,
-        "scroll": 81,
+        "height": 106,
+        "scroll": 106,
         "scroller": false
       }
     ]
@@ -469,30 +539,40 @@
     "page": "intro-capabilities",
     "part": "0",
     "bodyHeight": 1367,
-    "content": 1048,
+    "content": 1149,
     "objects": [
       {
         "id": "intro-lead",
-        "height": 185,
-        "scroll": 185,
+        "height": 257,
+        "scroll": 257,
         "scroller": false
       },
       {
         "id": "intro-read",
-        "height": 281,
-        "scroll": 281,
+        "height": 356,
+        "scroll": 356,
         "scroller": false
       },
       {
         "id": "intro-create",
-        "height": 344,
-        "scroll": 344,
+        "height": 478,
+        "scroll": 478,
         "scroller": false
-      },
+      }
+    ]
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "page": "intro-capabilities",
+    "part": "1",
+    "bodyHeight": 1367,
+    "content": 214,
+    "objects": [
       {
         "id": "intro-promise",
-        "height": 155,
-        "scroll": 155,
+        "height": 209,
+        "scroll": 209,
         "scroller": false
       }
     ]
@@ -507,20 +587,30 @@
     "objects": [
       {
         "id": "intro-native",
-        "height": 185,
-        "scroll": 185,
+        "height": 189,
+        "scroll": 189,
         "scroller": false
       },
       {
         "id": "intro-flow",
-        "height": 244,
-        "scroll": 251,
+        "height": 333,
+        "scroll": 340,
         "scroller": false
-      },
+      }
+    ]
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "page": "intro-principles",
+    "part": "1",
+    "bodyHeight": 1267,
+    "content": 1267,
+    "objects": [
       {
         "id": "intro-anchor",
-        "height": 453,
-        "scroll": 453,
+        "height": 694,
+        "scroll": 694,
         "scroller": false
       }
     ]
@@ -531,30 +621,40 @@
     "page": "intro-features",
     "part": "0",
     "bodyHeight": 1367,
-    "content": 1224,
+    "content": 1353,
     "objects": [
       {
         "id": "intro-paper",
-        "height": 316,
-        "scroll": 321,
+        "height": 437,
+        "scroll": 442,
         "scroller": false
       },
       {
         "id": "intro-tools",
-        "height": 285,
-        "scroll": 285,
+        "height": 349,
+        "scroll": 349,
         "scroller": false
       },
       {
         "id": "intro-templates",
-        "height": 441,
-        "scroll": 441,
+        "height": 510,
+        "scroll": 510,
         "scroller": false
-      },
+      }
+    ]
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "page": "intro-features",
+    "part": "1",
+    "bodyHeight": 1367,
+    "content": 139,
+    "objects": [
       {
         "id": "intro-owned",
-        "height": 100,
-        "scroll": 100,
+        "height": 136,
+        "scroll": 136,
         "scroller": false
       }
     ]
@@ -565,30 +665,30 @@
     "page": "intro-start",
     "part": "0",
     "bodyHeight": 1367,
-    "content": 972,
+    "content": 1331,
     "objects": [
       {
         "id": "intro-first",
-        "height": 205,
-        "scroll": 205,
+        "height": 277,
+        "scroll": 277,
         "scroller": false
       },
       {
         "id": "intro-how",
-        "height": 185,
-        "scroll": 185,
+        "height": 281,
+        "scroll": 281,
         "scroller": false
       },
       {
         "id": "intro-delivery",
-        "height": 344,
-        "scroll": 344,
+        "height": 478,
+        "scroll": 478,
         "scroller": false
       },
       {
         "id": "intro-close",
-        "height": 155,
-        "scroll": 155,
+        "height": 209,
+        "scroll": 209,
         "scroller": false
       }
     ]
@@ -599,30 +699,30 @@
     "page": "subject-literature",
     "part": "0",
     "bodyHeight": 1367,
-    "content": 1022,
+    "content": 1318,
     "objects": [
       {
         "id": "literature-quote",
-        "height": 170,
-        "scroll": 170,
+        "height": 196,
+        "scroll": 196,
         "scroller": false
       },
       {
         "id": "literature-detail",
-        "height": 238,
-        "scroll": 238,
+        "height": 332,
+        "scroll": 332,
         "scroller": false
       },
       {
         "id": "literature-map",
-        "height": 394,
-        "scroll": 394,
+        "height": 516,
+        "scroll": 516,
         "scroller": false
       },
       {
         "id": "literature-reading",
-        "height": 135,
-        "scroll": 135,
+        "height": 189,
+        "scroll": 189,
         "scroller": false
       }
     ]
@@ -633,30 +733,40 @@
     "page": "subject-business",
     "part": "0",
     "bodyHeight": 1367,
-    "content": 1143,
+    "content": 1071,
     "objects": [
       {
         "id": "business-conditions",
-        "height": 185,
-        "scroll": 185,
+        "height": 257,
+        "scroll": 257,
         "scroller": false
       },
       {
         "id": "business-formula",
-        "height": 288,
-        "scroll": 295,
+        "height": 380,
+        "scroll": 387,
         "scroller": false
       },
       {
         "id": "business-table",
-        "height": 370,
-        "scroll": 370,
+        "height": 360,
+        "scroll": 360,
         "scroller": false
-      },
+      }
+    ]
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "page": "subject-business",
+    "part": "1",
+    "bodyHeight": 1367,
+    "content": 282,
+    "objects": [
       {
         "id": "business-extract",
-        "height": 205,
-        "scroll": 205,
+        "height": 277,
+        "scroll": 277,
         "scroller": false
       }
     ]
@@ -667,30 +777,40 @@
     "page": "subject-code",
     "part": "0",
     "bodyHeight": 1367,
-    "content": 1261,
+    "content": 1273,
     "objects": [
       {
         "id": "code-question",
-        "height": 135,
-        "scroll": 135,
+        "height": 189,
+        "scroll": 189,
         "scroller": false
       },
       {
         "id": "code-example",
-        "height": 492,
-        "scroll": 492,
+        "height": 510,
+        "scroll": 510,
         "scroller": false
       },
       {
         "id": "code-map",
-        "height": 394,
-        "scroll": 394,
+        "height": 516,
+        "scroll": 516,
         "scroller": false
-      },
+      }
+    ]
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "page": "subject-code",
+    "part": "1",
+    "bodyHeight": 1367,
+    "content": 214,
+    "objects": [
       {
         "id": "code-limit",
-        "height": 155,
-        "scroll": 155,
+        "height": 209,
+        "scroll": 209,
         "scroller": false
       }
     ]

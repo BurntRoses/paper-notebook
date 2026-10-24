@@ -37,3 +37,15 @@
 小型 diagram 可设 `arrangement: "row"`，最多四个节点横向排列；手机自动转为纵向，更复杂的关系使用默认分层排布。code 保留缩进，显示语言与复制按钮，语法颜色仅作用于文字，不执行程序。
 
 需要解释代码或关键概念时，可用 `study.explanations: [{text, note}]`，最多三条。text 必须是实际正文的子串；阅读器从对应文字行尾引线至旁注，窄页将解释移至下方，保持原文和缩进。标记的星标、勾记位于文字右上角行间，框线留出文字四周空间。
+
+## 教材组件与宽松纸页（2.1）
+
+`study.role`: definition / intuition / derivation / example / evidence / takeaway / recall；用于区分知识点、推导、例题与回忆。`study.frame`: auto / plain / pencil / tape / double / margin。auto 按块 ID 稳定选样，不在翻页时重新随机。
+
+`chart` 使用 chartType（scatter/line/bar）、xLabel、yLabel、series: [{id,label,points:[{x,y,label?}]}]，最多四系列。线图按提供顺序连接；教学示意与测量数据须明确区分。图标题、坐标、单位和数值必须与正文一致。
+
+`comparison.align`: 与列对应的 left/center/right。表头默认居中，数值列默认居中，说明文字默认左对齐，单元格垂直居中。
+
+`keepTogether:true` 可用于重要完整块。默认就会将能在新页放下的块完整移到下一页；超高代码、公式、图、例题使用完整滚动框。仅超长正文、列表、表格会分页，表格保留表头。
+
+Markdown 的 `notebook-page` 围栏可在 ### 后指定 {id, layout, subject, cues:[{id,text,blockId}], summary}。默认 Cornell，宽图与长推导可选 reading。cues 引用本页实际块并可点击定位，续页只显示对应线索。summary 写有用结论，不放通用鼓励。

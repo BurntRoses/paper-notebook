@@ -2,7 +2,7 @@
 
 打开 start.html 或 promo.html，先体验概念、公式、实践三类教程。
 
-使用 Agent：打开 chat-start.html，点击“复制给 Agent”，与主题和材料一起发送。指令包含公开仓库、Skill 原文和完整运行资源地址；Agent 获取工具、集中确认学习要求，并生成 HTML、JSON、ZIP。打开生成的 HTML 即可阅读。
+使用 Agent：打开 chat-start.html，点击“复制给 Agent”，与主题和材料一起发送。指令包含公开仓库、Skill 原文和完整运行资源地址；Agent 获取工具、先等待文件或“没有文件”，再用选择题确认学习要求，并生成 HTML、JSON、ZIP。打开生成的 HTML 即可阅读。
 
 使用 ChatGPT、DeepSeek 等网页端模型：在同一页点击“复制给网页端模型”，与主题和材料一起发送。完整指令自带导入格式；收到笔记后，在空白阅读器中选“文件 → 导入”，粘贴、预览并确认，再保存离线 HTML。
 

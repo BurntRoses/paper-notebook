@@ -21,12 +21,13 @@ const run=(command,args,cwd=root)=>{
  assert.equal(result.status,0,result.stderr||result.stdout);return result.stdout.trim();
 };
 const build=run(process.env.PYTHON||'python3',['scripts/build_reader.py','notebook.json','--out','output'],kit);
-const html=await readFile(kit+'/output/index.html','utf8'),json=await readFile(kit+'/output/notebook.json','utf8');
+const builtReport=JSON.parse(await readFile(kit+'/output/build-report.json','utf8'));
+const html=await readFile(kit+'/output/'+builtReport.html,'utf8'),json=await readFile(kit+'/output/notebook.json','utf8');
 assert.deepEqual(JSON.parse(json),JSON.parse(source));
 const embedded=html.match(/<script\b[^>]*\bid=["']notebook-data["'][^>]*>([\s\S]*?)<\/script>/);
 assert.ok(embedded);assert.deepEqual(JSON.parse(embedded[1]),JSON.parse(source));
-const builtZIP=unzipSync(await readFile(kit+'/output/notebook.zip'));
-assert.equal(strFromU8(builtZIP['index.html']),html);assert.deepEqual(JSON.parse(strFromU8(builtZIP['notebook.json'])),JSON.parse(source));
+const builtZIP=unzipSync(await readFile(kit+'/output/'+builtReport.zip));
+assert.equal(strFromU8(builtZIP[builtReport.html]),html);assert.deepEqual(JSON.parse(strFromU8(builtZIP['notebook.json'])),JSON.parse(source));
 const validation=JSON.parse(run(process.execPath,['tools/notebook.mjs','validate',kit+'/output/notebook.json']));
 assert.equal(validation.valid,true);assert.deepEqual(validation.warnings,[]);
 await mkdir('docs/verification',{recursive:true});

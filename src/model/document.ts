@@ -15,13 +15,14 @@ export function parseDocument(raw: unknown): { document: NotebookDocument; warni
   if(pagesOf(d).length>500||blocksOf(d).length>5000)throw new Error('请将超过 500 页或 5000 个内容块的笔记拆为分册。');
   for(const a of d.assets){add(a.id,'asset');if(!/^data:image\/(png|jpeg|webp|gif|avif|svg\+xml);(base64|charset=utf-8),/i.test(a.data))throw new Error(`资源 ${a.id} 必须是内嵌图片 data URL。`);}
   const profile=d.extensions.readerProfile as Record<string,unknown>|undefined;
-  if(profile){if(typeof profile!=='object'||Array.isArray(profile))throw new Error('readerProfile 必须是对象。');const allowed:Record<string,string[]>={layout:['auto','single','spread','scroll'],direction:['horizontal','vertical'],sidebar:['open','collapsed'],pageShape:['auto','portrait','landscape'],transition:['turn','cover','slide','fade','none'],theme:['paper-light','paper-night'],motion:['full','reduced']};for(const [key,values] of Object.entries(allowed))if(profile[key]!==undefined&&!values.includes(String(profile[key])))throw new Error(`readerProfile.${key}: 无效选项。`);}
+  if(profile){if(typeof profile!=='object'||Array.isArray(profile))throw new Error('readerProfile 必须是对象。');const allowed:Record<string,string[]>={layout:['auto','single','spread','scroll'],direction:['horizontal','vertical'],sidebar:['open','collapsed'],pageShape:['auto','portrait','landscape'],transition:['turn','cover','slide','fade','none'],theme:['paper-light','paper-night'],motion:['full','reduced'],font:['hand','serif','sans'],lineSpacing:['1.65','1.85','2.05']};for(const [key,values] of Object.entries(allowed))if(profile[key]!==undefined&&!values.includes(String(profile[key])))throw new Error(`readerProfile.${key}: 无效选项。`);}
   const assets=new Set(d.assets.map(a=>a.id)),sources=new Set(d.notebook.sources.map(s=>s.id));
   for(const b of blocksOf(d)){
     if(b.type==='image'&&!assets.has(b.assetId||''))throw new Error(`${b.id}: 图片资源不存在 ${b.assetId}`);
     if(b.type==='exercise'&&b.questionType==='matching'&&!b.pairs?.length)throw new Error(`${b.id}: 匹配题需要至少一对条目。`);
     for(const ref of b.sourceRefs||[])if(!sources.has(ref.sourceId))warnings.push(`${b.id}: 来源 ${ref.sourceId} 不存在`);
     if(['single','multiple','truefalse'].includes(b.questionType||'')) {const opts=new Set(b.options?.map(o=>o.id));if(!b.solution?.length||b.solution.some(s=>!opts.has(s)))throw new Error(`${b.id}: 标准答案必须引用实际选项 ID。`);if(b.questionType!=='multiple'&&b.solution.length!==1)throw new Error(`${b.id}: 单选题只能有一个答案。`);}
+    if(b.type==='chart'&&b.series?.some(s=>s.points.some(p=>!Number.isFinite(p.x)||!Number.isFinite(p.y))))throw new Error(`${b.id}: 图表数据须为有限数值。`);
     if(b.type==='diagram'){const nodeIds=new Set(b.nodes?.map(n=>n.id));if(nodeIds.size!==b.nodes?.length||b.edges?.some(e=>!nodeIds.has(e.from)||!nodeIds.has(e.to)))throw new Error(`${b.id}: 图示节点 ID 或连线无效。`);}
   }
   for(const list of [d.userState.notes,d.userState.annotations,d.userState.doubts])for(const entry of list)add(entry.id,'userState');

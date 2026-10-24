@@ -1,6 +1,6 @@
 {
   "name": "paper-notebook-kit",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": false,
   "type": "module",
   "description": "A structured tutorial reader and a self-contained Skill for your own agent.",
@@ -14,7 +14,7 @@
   },
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "tsc --noEmit && vite build && node --import tsx tools/release.mjs",
+    "build": "node tools/sync-prompts.mjs && tsc --noEmit && vite build && node --import tsx tools/release.mjs",
     "build:pages": "npm run build && node tools/prepare-pages.mjs",
     "preview": "vite preview --host 127.0.0.1",
     "notebook": "node tools/notebook.mjs",

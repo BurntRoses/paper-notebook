@@ -4,14 +4,14 @@ AI 结构化教程的离线阅读器。Agent 按学习目标和材料整理内�
 
 [在线体验](https://burntroses.github.io/paper-notebook/) · [生成笔记](https://burntroses.github.io/paper-notebook/chat-start.html) · [GitHub 源码](https://github.com/BurntRoses/paper-notebook)
 
-**成品是一份独立 HTML 笔记本。** 横屏默认一张横版纸，竖屏一张竖版纸，默认带横线。正文、图文和 SVG 笔迹共用 PageSurface；双页为可选项。学习记录集中在侧栏，本机草稿自动保存。
+**成品统一打包 ZIP，并保留同名单独的离线 HTML。** 横屏默认一张横版纸，竖屏一张竖版纸，默认宽松康奈尔版式并带横线。正文、图文和 SVG 笔迹共用 PageSurface；双页为可选项。学习记录集中在侧栏，本机草稿自动保存。
 
 ## 生成入口
 
 - Agent：打开 [生成入口](public/chat-start.html#agent)，点击“复制给 Agent”，与材料一起发送。指令带有仓库和 Skill 地址，Agent 自行获取工具、确认学习要求并生成 HTML、JSON、ZIP。
 - ChatGPT、DeepSeek 等网页端模型：在 [同一入口](public/chat-start.html#chat) 点击“复制给网页端模型”，与主题和材料一起发送。将完整结果粘贴到空白阅读器，导入并保存离线 HTML。指令已包含排版格式。
 
-对 Agent 可直接说：“请使用 GitHub 仓库 https://github.com/BurntRoses/paper-notebook 中的 Paper Notebook Skill，为我制作学习笔记。先读取 `skills/paper-notebook/SKILL.md`，按 Skill 集中确认学习要求，并交付 HTML、JSON 和 ZIP。” Agent 需要能访问仓库并使用 Skill／文件工具；文字对话模型则按生成指令输出阅读器可导入的完整内容。
+对 Agent 可直接说：“请使用 GitHub 仓库 https://github.com/BurntRoses/paper-notebook 中的 Paper Notebook Skill，为我制作学习笔记。先读取 `skills/paper-notebook/SKILL.md`，按 Skill 先等待文件或“没有文件”，再用选择题确认学习要求，并交付 HTML、JSON 和 ZIP。” Agent 需要能访问仓库并使用 Skill／文件工具；文字对话模型则按生成指令输出阅读器可导入的完整内容。
 
 ## 本地运行与安装
 

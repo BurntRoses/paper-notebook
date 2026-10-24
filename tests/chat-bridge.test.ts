@@ -4,6 +4,7 @@ import {readFileSync,mkdtempSync,writeFileSync,rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {spawnSync} from 'node:child_process';
+import {artifactStem} from '../src/io/packaging';
 import {importText} from '../src/io/markdown';
 import {blankDocument,blocksOf} from '../src/model/types';
 
@@ -31,10 +32,10 @@ test('Python chat builder embeds exact source safely and rejects invalid referen
   writeFileSync(join(dir,'reader.html'),'<title>Template</title><script id="notebook-data" type="application/json">null</script>');
   const build=()=>spawnSync('python3',['skills/paper-notebook/scripts/build_reader.py',join(dir,'source.json'),'--out',join(dir,'output'),'--template',join(dir,'reader.html'),'--schema','schemas/notebook.schema.json','--notices','THIRD_PARTY_NOTICES.txt'],{encoding:'utf8'});
   const result=build();assert.equal(result.status,0,result.stderr);
-  const html=readFileSync(join(dir,'output/index.html'),'utf8');const json=html.match(/<script id="notebook-data" type="application\/json">([\s\S]*?)<\/script>/)![1];
+  const html=readFileSync(join(dir,'output',artifactStem(doc.notebook.title,doc.notebook.revision)+'.html'),'utf8');const json=html.match(/<script id="notebook-data" type="application\/json">([\s\S]*?)<\/script>/)![1];
   assert.deepEqual(JSON.parse(json),doc);assert.ok(!html.includes('<script>alert'));
   assert.deepEqual(JSON.parse(readFileSync(join(dir,'output/notebook.json'),'utf8')),doc);
-  assert.ok(readFileSync(join(dir,'output/notebook.zip')).length>0);
+  assert.ok(readFileSync(join(dir,'output',artifactStem(doc.notebook.title,doc.notebook.revision)+'.zip')).length>0);
   doc.notebook.chapters[0].pages[0].blocks=[{id:'broken-image',type:'image',assetId:'missing'}];
   writeFileSync(join(dir,'source.json'),JSON.stringify(doc));assert.notEqual(build().status,0);
   doc.notebook.chapters[0].pages[0].blocks=[{id:doc.notebook.id,type:'prose',text:'duplicate'}];

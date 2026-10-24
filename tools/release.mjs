@@ -6,6 +6,8 @@ import { examples } from '../src/examples.ts';
 import { introNotebook } from '../src/intro.ts';
 import { productStory } from '../src/product-story.ts';
 import {buildSkill} from './build-skill.mjs';
+import {slimFonts,artifactStem,bundleReadme} from '../src/io/packaging.ts';
+import {machineLearning} from '../src/machine-learning.ts';
 import { blankDocument } from '../src/model/types.ts';
 import { parseDocument, scriptJSON } from '../src/model/document.ts';
 const root=fileURLToPath(new URL('../',import.meta.url));
@@ -14,12 +16,12 @@ const template=await readFile(root+'dist/index.html','utf8');
 const notices=await readFile(root+'THIRD_PARTY_NOTICES.txt');
 await mkdir(root+'dist/downloads',{recursive:true});await mkdir(root+'examples',{recursive:true});
 const artifacts=[];
-const build=(document)=>{let replaced=false;const html=template.replace(/(<script\b[^>]*\bid=["']notebook-data["'][^>]*>)[\s\S]*?(<\/script>)/,(_,open,close)=>{replaced=true;return open+scriptJSON(document)+close;});if(!replaced)throw new Error('Missing notebook-data slot');return html;};
+const build=(document)=>{let replaced=false;const html=template.replace(/(<script\b[^>]*\bid=["']notebook-data["'][^>]*>)[\s\S]*?(<\/script>)/,(_,open,close)=>{replaced=true;return open+scriptJSON(document)+close;});if(!replaced)throw new Error('Missing notebook-data slot');return slimFonts(html,document);};
 const blank=blankDocument();blank.notebook.id='notebook-blank';
-for(const [name,doc] of [['blank-notebook',blank],['paper-notebook',introNotebook],['paper-notebook-product',productStory],...examples.map((d,i)=>[['concept','formula','practice'][i],d])]){
+for(const [name,doc] of [['blank-notebook',blank],['paper-notebook',introNotebook],['paper-notebook-product',productStory],['machine-learning',machineLearning],...examples.map((d,i)=>[['concept','formula','practice'][i],d])]){
  parseDocument(doc);const html=build(doc),json=JSON.stringify(doc,null,2);
  await writeFile(root+`dist/downloads/${name}.html`,html);await writeFile(root+`dist/downloads/${name}.json`,json);await writeFile(root+`examples/${name}.json`,json);
- const zip=zipSync({'index.html':strToU8(html),'notebook.json':strToU8(json),'THIRD_PARTY_NOTICES.txt':notices,'README.txt':strToU8('Open index.html / 打开 index.html。It supports reading and optional marks offline.\nnotebook.json is the editable source; retain the accompanying notices.')},{level:6});
+ const stem=artifactStem(doc.notebook.title,doc.notebook.revision);const zip=zipSync({[stem+'.html']:strToU8(html),'notebook.json':strToU8(JSON.stringify(doc)),'THIRD_PARTY_NOTICES.txt':notices,'打开我-README.txt':strToU8(bundleReadme(stem))},{level:9});
  await writeFile(root+`dist/downloads/${name}.zip`,zip);artifacts.push({name,htmlBytes:Buffer.byteLength(html),zipBytes:zip.byteLength,sha256:createHash('sha256').update(html).digest('hex')});
 }
 for(const dir of ['licenses','skills','docs','schemas'])await cp(root+dir,root+'dist/'+dir,{recursive:true});
@@ -56,7 +58,7 @@ for(const name of ['plugin.json'])toolkit[name]=new Uint8Array(await readFile(ro
 Object.assign(toolkit,await walk(root+'tests','tests/'));
 toolkit['dist/index.html']=strToU8(template);toolkit['dist/downloads/blank-notebook.html']=new Uint8Array(await readFile(root+'dist/downloads/blank-notebook.html'));
 await writeFile(root+'dist/downloads/paper-notebook-toolkit.zip',zipSync(toolkit,{level:6}));
-const offline={};for(const a of artifacts)for(const ext of ['html','zip'])offline[a.name+'.'+ext]=new Uint8Array(await readFile(root+'dist/downloads/'+a.name+'.'+ext));offline['README.md']=strToU8('Open any .html file. blank-notebook.html accepts Markdown, TXT, JSON or notebook ZIP.\n打开任一 HTML；空白容器支持导入。工具包源码见 paper-notebook-toolkit.zip。');offline['THIRD_PARTY_NOTICES.txt']=notices;
+const offline={};for(const a of artifacts)for(const ext of ['html'])offline[a.name+'.'+ext]=new Uint8Array(await readFile(root+'dist/downloads/'+a.name+'.'+ext));offline['README.md']=strToU8('Open any .html file. blank-notebook.html accepts Markdown, TXT, JSON or notebook ZIP.\n打开任一 HTML；空白容器支持导入。工具包源码见 paper-notebook-toolkit.zip。');offline['THIRD_PARTY_NOTICES.txt']=notices;
 await writeFile(root+'dist/downloads/paper-notebook-offline.zip',zipSync(offline,{level:6}));
 await writeFile(root+'dist/downloads/manifest.json',JSON.stringify({version:'2.0.0',artifacts},null,2));
 console.log(JSON.stringify({release:'dist/downloads',artifacts},null,2));

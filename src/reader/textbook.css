@@ -1,0 +1,68 @@
+/* A screen is generous paper. Keep room for thought, figures and marginalia. */
+.page-surface{--book-font:StudyHand,'Kaiti SC','STKaiti','Noto Serif CJK SC','Songti SC',serif;--figure-paper:#f5f3e8;--figure-line:#6a8796;--figure-ink:#31586b;--aside-ink:#99664f}
+.page-surface[data-font=serif]{--book-font:'Noto Serif CJK SC','Songti SC','SimSun',Georgia,serif}
+.page-surface[data-font=sans]{--book-font:system-ui,'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',sans-serif}
+.page-surface .reader-content,.page-surface .reader-page-heading h1,.page-surface .reader-chapter,.page-surface .reader-subtitle,.page-surface .block-title,.page-surface .content-block table,.page-surface .cornell-cues,.page-surface .cornell-summary,.page-surface .study-label,.page-surface .study-aside,.page-surface .exercise-options,.page-surface .exercise-question,.page-surface .answer-feedback,.page-surface .figure-caption{font-family:var(--book-font)}
+.page-surface .reader-page-heading h1{font-size:36px;line-height:1.4;letter-spacing:.01em}
+.page-surface .content-block{margin-bottom:26px;break-inside:avoid;overflow-wrap:anywhere}
+.page-surface .block-title{font-size:1.12em;line-height:1.55;margin:0 0 12px}
+.page-surface .content-block p{margin-top:0}.page-surface .block-prose p{margin:0}
+.page-surface .block-steps li,.page-surface .block-example li{margin-bottom:12px;line-height:var(--rule)}
+.page-surface .block-formula:not([data-visual=blackboard]){padding:22px 28px;margin-block:24px 30px;background:#e5ebe545;border-color:#7d9c985c}
+.page-surface .block-formula .formula{padding-block:10px;font-size:1.08em}
+.page-surface .block-formula p{margin-top:14px;font-size:.9em;line-height:1.85}
+.page-surface .example-prompt{margin-bottom:18px;line-height:var(--rule)}
+.page-surface .example-result{padding-top:14px;margin-top:18px;line-height:var(--rule)}
+.page-surface .content-block table{font-size:.88em;line-height:1.85;table-layout:auto}
+.page-surface .content-block th,.page-surface .content-block td{padding:14px 16px;vertical-align:middle;min-width:72px}
+.page-surface .content-block tbody tr:nth-child(even){background:#a0ac8b0e}
+.page-surface .block-code pre{font-size:.72em;line-height:1.9;padding:22px}
+.page-surface .study-label{font-size:.64em;line-height:1.8;margin:0 0 12px;color:#698183;letter-spacing:.07em}
+.page-surface .role-label{border-bottom:1px dashed #7b918a50;padding-bottom:5px;width:fit-content}
+.page-surface .study-aside{color:var(--aside-ink);font-size:.77em;line-height:1.8}
+.page-surface .block-example{padding:20px 24px;background:#e6e8d22b}
+.page-surface .content-block[data-frame=pencil]{border:1px solid #80928465;border-radius:3px 10px 4px 8px;padding:20px}
+.page-surface .content-block[data-frame=tape]{border:1px solid #9ca38a40;padding:24px 20px 18px;background:#ece6d530;border-radius:2px;box-shadow:2px 3px 0 #a49a7c12}
+.page-surface .content-block[data-frame=tape]:before{content:'';display:block;position:absolute;left:32px;top:-7px;width:74px;height:14px;background:#c8bc9266;transform:rotate(-3deg);border-inline:2px dashed #fdfbf480;pointer-events:none}
+.page-surface .content-block[data-frame=double]{border-block:3px double #8c9e9366;padding:20px 8px}
+.page-surface .content-block[data-frame=margin]{border-left:3px solid #ad806265;padding:8px 18px}
+.page-surface .figure-caption,.page-surface .block-image figcaption{font: .76em/1.85 var(--book-font);text-align:left;color:var(--muted);margin:16px 0 0}
+.page-surface .diagram{max-height:350px;overflow:visible;font-family:var(--book-font)}
+.page-surface .diagram text{font-family:var(--book-font)}
+.page-surface .cornell-cue{display:block;text-align:left;width:100%;padding:8px 0;margin:0 0 30px;line-height:1.8;font-size:.86em;min-height:44px;color:var(--aside-ink)}
+.page-surface button.cornell-cue:hover{text-decoration:underline;text-underline-offset:7px}.cue-placeholder{font-size:.7em;color:#a99a85;white-space:pre-line;line-height:2.3}
+.page-surface .cornell-summary{font-size:calc(var(--reading-size) * .78);line-height:1.8;padding:10px 16px;height:102px;background:#dfe5c52e}
+.page-surface .summary-label{font: .63em/1.7 system-ui;margin-bottom:3px;letter-spacing:.06em}
+.page-surface .oversize-object{scrollbar-width:thin;border-bottom:2px dashed #9a927c66}
+.page-surface .oversize-object:after{content:'↕ 此内容保持完整，可在框内滚动';display:block;font:13px/1.8 system-ui;color:var(--muted);text-align:center;padding-top:10px}
+.sidebar-support{margin-top:28px;padding:18px 10px 4px;border-top:1px dashed #8b9d7f66;font:12px/1.9 system-ui;color:#64756c}.sidebar-support p{margin:0 0 9px}.sidebar-support a{display:inline-block;padding-block:5px}.sidebar-support nav{display:flex;gap:14px;flex-wrap:wrap}.support-star{color:#8a6730;font-weight:600}.theme-toggle{font-size:20px}
+.notebook-chart{display:block;width:100%;height:auto;max-height:375px;font-family:var(--book-font);color:var(--figure-ink);overflow:visible}.notebook-chart text{fill:currentColor;stroke:none}.chart-grid{stroke:#8a9d8e35;stroke-width:1;stroke-dasharray:4 7;fill:none}.chart-axis{stroke:currentColor;stroke-width:1.8;fill:none}.chart-tick{font-size:16px}.chart-axis-label{font-size:19px}.chart-legend{font-size:17px}.chart-point-label{font-size:16px}.chart-series-0{color:#426e85}.chart-series-1{color:#ad6655}.chart-series-2{color:#6b8651}.chart-series-3{color:#9e7d31}.chart-line{fill:none;stroke:currentColor;stroke-width:2.3;stroke-linejoin:round;stroke-linecap:round}.chart-point{fill:var(--figure-paper);stroke:currentColor;stroke-width:2.2}.chart-bar{fill:currentColor;fill-opacity:.65;stroke:currentColor;stroke-width:1}
+html[data-paper-theme=paper-night]{color-scheme:dark;background:#171f23;--paper:#263139;--ink:#e4e2d6;--muted:#b6bbaa;--line:#92a79a4a;--accent:#a4b9a1}
+html[data-paper-theme=paper-night] body{background:#171f23}
+html[data-paper-theme=paper-night] .reader-app-root{background:#171f23;color:#e4e2d6}
+html[data-paper-theme=paper-night] .page-surface{--paper:#263139;--ink:#e4e2d6;--muted:#b6bbaa;--figure-paper:#2c3940;--figure-ink:#d5e0de;--aside-ink:#dfb394;--book-font:StudyHand,'Kaiti SC','STKaiti','Noto Serif CJK SC','Songti SC',serif;filter:none;background-color:var(--paper);background-image:linear-gradient(90deg,#0002,transparent 8%,transparent 96%,#0002);color:var(--ink);border-color:#465149;box-shadow:0 2px 2px #0007,0 12px 22px -12px #0009,2px 3px 0 #39423e,4px 5px 0 #202a2c}
+html[data-paper-theme=paper-night] .reader-page-heading h1,html[data-paper-theme=paper-night] .block-title,html[data-paper-theme=paper-night] .formula,html[data-paper-theme=paper-night] .reader-brand strong{color:#d9e7e8}
+html[data-paper-theme=paper-night] .reader-header,html[data-paper-theme=paper-night] .reader-sidebar,html[data-paper-theme=paper-night] .sidebar-tabs,html[data-paper-theme=paper-night] .reader-file-menu,html[data-paper-theme=paper-night] .reader-navigation,html[data-paper-theme=paper-night] .stationery{background:#202c31;color:#d9e0d6;border-color:#56615477}
+html[data-paper-theme=paper-night] .reader-control,html[data-paper-theme=paper-night] .reader-files{color:#e1e6de}
+html[data-paper-theme=paper-night] .page-surface .reader-page-body{background-image:linear-gradient(to bottom,transparent calc(var(--rule) - 1px),#9bb9b51b 0)}
+html[data-paper-theme=paper-night] .page-surface[data-ruling=blank] .reader-page-body{background-image:none}
+html[data-paper-theme=paper-night] .page-surface[data-ruling=grid] .reader-page-body{background-image:linear-gradient(#9bb9b51b 1px,transparent 1px),linear-gradient(90deg,#9bb9b51b 1px,transparent 1px)}
+html[data-paper-theme=paper-night] .page-surface[data-ruling=dots] .reader-page-body{background-image:radial-gradient(#9bb9b54d .8px,transparent 1px)}
+html[data-paper-theme=paper-night] .page-surface .study-label{color:#a3c2bf}html[data-paper-theme=paper-night] .cornell-summary{background:#7f98671b;color:#c6d3b3}html[data-paper-theme=paper-night] .cornell-cues{color:#dfb394}
+html[data-paper-theme=paper-night] .content-block th,html[data-paper-theme=paper-night] .callout-body,html[data-paper-theme=paper-night] .block-code pre{background:#344248;color:#e3e4db;border-color:#91a59155}
+html[data-paper-theme=paper-night] .content-block[data-frame=tape],html[data-paper-theme=paper-night] .block-example,html[data-paper-theme=paper-night] .block-formula{background:#96a99c0c}
+html[data-paper-theme=paper-night] .diagram .diagram-node{fill:#35434a;stroke:#a5bebc}html[data-paper-theme=paper-night] .diagram text{fill:#dfebe2}html[data-paper-theme=paper-night] .diagram path:not(.diagram-node){stroke:#a7c3c5}
+html[data-paper-theme=paper-night] .chart-series-0{color:#a2c8e0}html[data-paper-theme=paper-night] .chart-series-1{color:#e6aa95}html[data-paper-theme=paper-night] .chart-series-2{color:#b5ca90}html[data-paper-theme=paper-night] .chart-series-3{color:#e7ca85}
+html[data-paper-theme=paper-night] .example-result{color:#b5d0a6}html[data-paper-theme=paper-night] .answer-option{background:#344238;color:#e2e6dc}html[data-paper-theme=paper-night] .answer-option:has(input:checked){background:#465642}html[data-paper-theme=paper-night] .answer-feedback{background:#394a37;color:#dfe6d6}html[data-paper-theme=paper-night] .answer-feedback.incorrect{background:#523b31}
+html[data-paper-theme=paper-night] .sheet-dialog,html[data-paper-theme=paper-night] .dialog-head,html[data-paper-theme=paper-night] .dialog-foot{background:#243139;color:#e2e5dc}html[data-paper-theme=paper-night] .paper-choice-list{background:#2b3a40;color:#e2e5dc}html[data-paper-theme=paper-night] .paper-choice-option[aria-selected=true]{background:#43574e}
+html[data-paper-theme=paper-night] .sidebar-support{color:#b8c3b5}html[data-paper-theme=paper-night] .support-star{color:#e4c58a}html[data-paper-theme=paper-night] .sidebar-page[aria-current=page],html[data-paper-theme=paper-night] .reader-control:hover,html[data-paper-theme=paper-night] .reader-file-menu button:hover{background:#3b4d49;color:#e6eddf}
+html[data-paper-theme=paper-night] .page-surface[data-font=serif]{--book-font:'Noto Serif CJK SC','Songti SC','SimSun',Georgia,serif}html[data-paper-theme=paper-night] .page-surface[data-font=sans]{--book-font:system-ui,'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',sans-serif}
+@media(max-width:599px){.page-surface .reader-page-heading,.page-surface .reader-page-body,.page-surface .cornell-summary,.page-surface .reader-page-footer{left:76px;right:44px}.page-surface .reader-page-heading h1{font-size:42px;line-height:1.3}.page-surface.page-layout-cornell .reader-page-body{grid-template-columns:108px minmax(0,1fr);gap:20px}.page-surface .cornell-summary{height:124px;font-size:calc(var(--reading-size) * .73)}.page-surface .diagram{max-height:620px}.page-surface .notebook-chart{max-height:580px}.page-surface .cornell-cue{font-size:.73em;margin-bottom:40px}.page-surface .block-formula:not([data-visual=blackboard]){padding:20px 16px}.page-surface .content-block th,.page-surface .content-block td{padding:14px 12px}.page-surface .block-example{padding:20px 16px}.page-surface .content-block[data-frame]:not([data-frame=plain]){padding-inline:16px}.page-surface .summary-label{font-size:.64em}.reader-brand strong{max-width:calc(100vw - 205px)}.immersion-entry{display:none}.page-surface .oversize-object:after{font-size:22px}}
+@media print{html[data-paper-theme] .page-surface{--ink:#263d48;--paper:#fff;color:var(--ink);background:white!important}.sidebar-support{display:none!important}}
+
+.page-surface .block-formula[data-visual=blackboard]{padding:22px 26px;margin-block:22px 30px}.page-surface .diagram[data-arrangement=row]{max-height:180px}html[data-paper-theme=paper-night] .block-formula[data-visual=blackboard]{background-color:#1f3c34}html[data-paper-theme=paper-night] .block-code,html[data-paper-theme=paper-night] .block-code .study-main{background:#2b3840}html[data-paper-theme=paper-night] .code-head{background:#34444a;color:#cfddd0}html[data-paper-theme=paper-night] .code-token.token-plain{color:#d5e2e3}html[data-paper-theme=paper-night] .code-token.token-keyword{color:#d9acd1}html[data-paper-theme=paper-night] .code-token.token-string{color:#c0d5a0}html[data-paper-theme=paper-night] .code-token.token-number{color:#e5b693}html[data-paper-theme=paper-night] .code-token.token-builtin,html[data-paper-theme=paper-night] .code-token.token-function{color:#a2ccdc}html[data-paper-theme=paper-night] .paper-choice-trigger{background:#34454a;color:#e0e7dd;border-color:#8c9e8755}html[data-paper-theme=paper-night] .paper-choice-list [role=option]{color:#e0e7dd}html[data-paper-theme=paper-night] .paper-choice-list [role=option]:hover,html[data-paper-theme=paper-night] .paper-choice-list [aria-selected=true]{background:#43584c;color:#e9ecdc}html[data-paper-theme=paper-night] .field-label,html[data-paper-theme=paper-night] .dialog-head h2{color:#c4d5ca}
+
+.page-surface .diagram text{font-family:var(--book-font)}html[data-paper-theme=paper-night] .chart-grid{stroke:#bac9bf30}
+
+/* SVG coordinate labels use one stable UI font across rotations and font swaps. */
+.page-surface .diagram text,.notebook-chart text{font-family:system-ui,'PingFang SC','Microsoft YaHei',sans-serif}

@@ -15,7 +15,7 @@ try {
   for (const route of ['', 'promo.html', 'start.html', 'chat-start.html', 'promo-motion.html']) {
     const response = await page.goto(base + route);
     assert.equal(response.status(), 200, route);
-    for (const url of await page.locator('a[href],img[src],iframe[src],video[src]').evaluateAll(nodes => nodes.map(node => new URL(node.getAttribute('href') || node.getAttribute('src'), location.href).href))) {
+    for (const url of await page.locator('a[href],img[src],iframe[src],video[src],script[src],link[rel=stylesheet]').evaluateAll(nodes => nodes.map(node => new URL(node.getAttribute('href') || node.getAttribute('src'), location.href).href))) {
       if (url.startsWith(base) && !url.includes('#')) links.add(url);
     }
     if (!route) {
@@ -80,6 +80,8 @@ try {
   assert.ok(await page.locator('[data-kind=circle]').count());
   await page.locator('.reader-files summary').click();
   await page.locator('.reader-file-menu').getByRole('button', { name: '下载', exact: true }).click();
+  await page.getByRole('combobox', {name:'格式',exact:true}).click();
+  await page.locator('.paper-choice-list:popover-open').getByRole('option',{name:'单文件 HTML',exact:true}).click();
   const downloaded = page.waitForEvent('download');
   await page.locator('.dialog-foot').getByRole('button', { name: '下载', exact: true }).click();
   const file = await downloaded;

@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-24T06:57:31.386Z",
+  "checks": [
+    "Every machine-learning sheet fits its body and Cornell summary at desktop, tablet and phone sizes; no horizontal page overflow",
+    "Day/night changes real paper and diagram colors; font and spacing controls reflow content",
+    "Definitions, programs and explicit keepTogether arguments remain intact; oversize material gets its own scroll frame",
+    "Default ZIP contains exactly named HTML, source, guide and notices; separate HTML has matching name; extracted book opens offline with no network requests"
+  ],
+  "layouts": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 1000,
+      "sheets": 24,
+      "scrollFrames": 0
+    },
+    {
+      "name": "tablet",
+      "width": 820,
+      "height": 1180,
+      "sheets": 22,
+      "scrollFrames": 0
+    },
+    {
+      "name": "phone",
+      "width": 390,
+      "height": 844,
+      "sheets": 21,
+      "scrollFrames": 0
+    }
+  ],
+  "palette": {
+    "paper": "rgb(38, 49, 57)",
+    "ink": "rgb(228, 226, 214)",
+    "filter": "none"
+  },
+  "errors": [],
+  "scope": "Local Chromium viewport emulation and offline export; no physical device or remote WorkBuddy session used"
+}

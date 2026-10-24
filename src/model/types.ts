@@ -1,13 +1,15 @@
-export type BlockType = 'prose'|'concept'|'steps'|'example'|'comparison'|'formula'|'code'|'quote'|'image'|'diagram'|'callout'|'checklist'|'exercise';
+export type BlockType = 'prose'|'concept'|'steps'|'example'|'comparison'|'formula'|'code'|'quote'|'image'|'diagram'|'chart'|'callout'|'checklist'|'exercise';
 export interface Item { id: string; text: string }
 export interface DiagramNode { id: string; label: string; x?: number; y?: number }
 export type StudyMarkKind='highlight'|'underline'|'circle'|'wave'|'box'|'bracket'|'check'|'star'|'dots';
-export interface StudyPresentation {visual?:'plain'|'blackboard'|'extract'|'sketch';label?:string;aside?:string;explanations?:{text:string;note:string}[];tone?:'blue'|'red'|'olive'|'gold';marks?:{text:string;kind:StudyMarkKind;color?:string;seed?:number}[]}
+export interface StudyPresentation {visual?:'plain'|'blackboard'|'extract'|'sketch';role?:'definition'|'intuition'|'derivation'|'example'|'evidence'|'takeaway'|'recall';frame?:'auto'|'plain'|'pencil'|'tape'|'double'|'margin';label?:string;aside?:string;explanations?:{text:string;note:string}[];tone?:'blue'|'red'|'olive'|'gold';marks?:{text:string;kind:StudyMarkKind;color?:string;seed?:number}[]}
 export interface Block {
   id: string; type: BlockType | string; title?: string; text?: string;
   study?:StudyPresentation;
   items?: Item[]; steps?: Item[]; prompt?: string; result?: string;
   columns?: string[]; rows?: string[][]; latex?: string; language?: string;
+  align?: ('left'|'center'|'right')[]; keepTogether?:boolean;
+  chartType?:'scatter'|'line'|'bar';xLabel?:string;yLabel?:string;series?:{id:string;label:string;points:{x:number;y:number;label?:string}[]}[];
   sourceRefs?: { sourceId: string; locator?: string }[]; verification?: string;
   assetId?: string; caption?: string; alt?: string; attribution?: string;
   nodes?: DiagramNode[]; edges?: { from: string; to: string; label?: string }[];
@@ -33,7 +35,7 @@ export interface ReadingAnchor {pageId:string;blockId?:string;offset:number;shee
 export type TimerDisplay = 'digital'|'dial'|'minimal'|'focus';
 export type ReaderLayout = 'auto'|'single'|'spread'|'scroll';
 export type ReaderDirection = 'horizontal'|'vertical';
-export interface ReaderPresentation { layout: ReaderLayout; direction: ReaderDirection; sidebar: 'open'|'collapsed'; theme: 'paper-light'|'paper-night'; motion: 'full'|'reduced'; pageShape?:'auto'|'portrait'|'landscape'; transition?:'turn'|'cover'|'slide'|'fade'|'none' }
+export interface ReaderPresentation { layout: ReaderLayout; direction: ReaderDirection; sidebar: 'open'|'collapsed'; theme: 'paper-light'|'paper-night'; motion: 'full'|'reduced'; font?:'hand'|'serif'|'sans';lineSpacing?:1.65|1.85|2.05; pageShape?:'auto'|'portrait'|'landscape'; transition?:'turn'|'cover'|'slide'|'fade'|'none' }
 export interface ReaderSidebarItem { id:string; pageId:string; blockId?:string; kind:'chapter'|'page'|'formula'|'diagram'|'exercise'|'question'; label:string; count?:number }
 export interface Preferences { language: 'zh'|'en'; desk: 'oak'|'felt'|'night'; showDesk: boolean; motion: boolean; texture: number; reading: 'pages'|'scroll'; direction: 'horizontal'|'vertical'; spread: boolean; fontSize: number; weatherCity: string; weatherEnabled: boolean; penColor: string; penWidth: number; penTexture: 'pencil'|'marker'|'ink'; timerDisplay: TimerDisplay; timerEnd?: number; timerRemaining: number; timerRunning: boolean }
 export interface StudyBrief {languageStyle?:string;difficulty?:string;priorKnowledge?:string;horizon?:'short'|'long';materialFidelity?:'strict'|'guided'|'open';scope?:string;termPolicy?:string; goal: string; level: string; minutes: number; materials: string[]; exercises: boolean; language: string; route: 'quick'|'systematic'|'deep'|'practice'|'review'; imagePolicy: 'original'|'programmatic'|'redraw' }
@@ -57,5 +59,5 @@ export const uid = (prefix='id') => `${prefix}-${globalThis.crypto?.randomUUID?.
 export function userState(pageId=''): NotebookDocument['userState'] { return {updatedAt:new Date().toISOString(),lastPageId:pageId,notes:[],annotations:[],doubts:[],answers:{},checks:{},bookmarks:[],readingPositions:{},preferences:defaultPreferences()}; }
 export const pagesOf = (d: NotebookDocument) => d.notebook.chapters.flatMap(c=>c.pages);
 export const blocksOf = (d: NotebookDocument) => pagesOf(d).flatMap(p=>p.blocks);
-export function blankDocument(): NotebookDocument { const id=uid('page');return {schemaVersion:'1.0.0',notebook:{id:uid('notebook'),revision:1,title:'结构化学习笔记',language:'zh-CN',goals:[],sources:[],chapters:[{id:uid('chapter'),title:'学习内容',pages:[{id,title:'导入教程',layout:'reading',blocks:[]}]}]},userState:userState(id),assets:[],extensions:{}}; }
+export function blankDocument(): NotebookDocument { const id=uid('page');return {schemaVersion:'1.0.0',notebook:{id:uid('notebook'),revision:1,title:'结构化学习笔记',language:'zh-CN',goals:[],sources:[],chapters:[{id:uid('chapter'),title:'学习内容',pages:[{id,title:'导入教程',layout:'cornell',blocks:[]}]}]},userState:userState(id),assets:[],extensions:{}}; }
 export function textOf(b: Block): string { if(b.type==='comparison')return [...(b.columns||[]),...(b.rows||[]).flat()].join('\n');return [b.text||b.question||b.prompt||b.latex||'',...(b.items||b.steps||[]).map(i=>i.text),b.result||''].filter(Boolean).join('\n'); }

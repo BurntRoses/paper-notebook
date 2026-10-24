@@ -5,6 +5,7 @@ import {zipSync,strToU8} from 'fflate';
 import {parseDocument,scriptJSON} from '../src/model/document';
 import {importText} from '../src/io/markdown';
 import {pagesOf,blocksOf} from '../src/model/types';
+import {slimFonts,artifactStem,bundleReadme} from '../src/io/packaging';
 const root=fileURLToPath(new URL('../',import.meta.url));
 const [command,input,...args]=process.argv.slice(2);
 async function resource(paths:string[]){for(const path of paths){try{return await readFile(root+path,'utf8')}catch{}}throw new Error('Reader runtime is missing. Run npm run build in the toolkit, or install the complete Skill package.');}
@@ -17,10 +18,11 @@ try{
     if(command==='convert'){await mkdir(dirname(output),{recursive:true});await writeFile(output,JSON.stringify(document,null,2));console.log(output)}
     else{
       const template=await resource(['dist/index.html','assets/reader.html']);let injected=false;
-      const html=template.replace(/(<script\b[^>]*\bid=["']notebook-data["'][^>]*>)[\s\S]*?(<\/script>)/,(_,open,close)=>{injected=true;return open+scriptJSON(document)+close}).replace(/<title>[^<]*<\/title>/,()=>'<title>'+document.notebook.title.replace(/[<>&]/g,'')+' · Paper Notebook</title>');
+      const html=slimFonts(template.replace(/(<script\b[^>]*\bid=["']notebook-data["'][^>]*>)[\s\S]*?(<\/script>)/,(_,open,close)=>{injected=true;return open+scriptJSON(document)+close}).replace(/<title>[^<]*<\/title>/,()=>'<title>'+document.notebook.title.replace(/[<>&]/g,'')+' · Paper Notebook</title>'),document);
       if(!injected||/src=["'][^"']*\/src\//.test(html))throw new Error('The HTML template is not a bundled reader.');
       const notices=await resource(['THIRD_PARTY_NOTICES.txt','assets/THIRD_PARTY_NOTICES.txt']),json=JSON.stringify(document,null,2);
-      await mkdir(output,{recursive:true});await writeFile(output+'/index.html',html);await writeFile(output+'/notebook.json',json);await writeFile(output+'/notebook.zip',zipSync({'index.html':strToU8(html),'notebook.json':strToU8(json),'THIRD_PARTY_NOTICES.txt':strToU8(notices)},{level:6}));await writeFile(output+'/build-report.json',JSON.stringify({id:document.notebook.id,revision:document.notebook.revision,htmlBytes:Buffer.byteLength(html),warnings},null,2));console.log(`Built ${output}/index.html, notebook.json, notebook.zip`);
+      const stem=artifactStem(document.notebook.title,document.notebook.revision);
+      await mkdir(output,{recursive:true});await writeFile(output+'/'+stem+'.html',html);await writeFile(output+'/notebook.json',json);await writeFile(output+'/'+stem+'.zip',zipSync({[stem+'.html']:strToU8(html),'notebook.json':strToU8(JSON.stringify(document)),'THIRD_PARTY_NOTICES.txt':strToU8(notices),'打开我-README.txt':strToU8(bundleReadme(stem))},{level:9}));await writeFile(output+'/build-report.json',JSON.stringify({id:document.notebook.id,revision:document.notebook.revision,html:stem+'.html',zip:stem+'.zip',htmlBytes:Buffer.byteLength(html),warnings},null,2));console.log(`Built ${output}/${stem}.html, notebook.json, ${stem}.zip`);
     }
   }
 }catch(error){console.error(error instanceof Error?error.message:String(error));process.exitCode=1}
