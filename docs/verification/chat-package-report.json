@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-24T07:08:45.835Z",
+  "date": "2026-10-24T10:50:05.742Z",
   "archive": "paper-notebook-chat.zip",
   "entries": 22,
   "promptMatches": true,
@@ -15,6 +15,6 @@
     "assets": 0,
     "warnings": []
   },
-  "build": "{\"id\": \"paper-notebook-product-story\", \"revision\": 2, \"schemaValidated\": true, \"coreReferencesChecked\": true, \"browserInspected\": false, \"htmlBytes\": 4007391, \"html\": \"Paper-Notebook-·-产品笔记-v2.html\", \"zip\": \"Paper-Notebook-·-产品笔记-v2.zip\"}",
+  "build": "{\"id\": \"paper-notebook-product-story\", \"revision\": 3, \"schemaValidated\": true, \"coreReferencesChecked\": true, \"browserInspected\": false, \"htmlBytes\": 4363402, \"html\": \"Paper-Notebook-·-产品笔记-v3.html\", \"zip\": \"Paper-Notebook-·-产品笔记-v3.zip\"}",
   "scope": "Local package extraction, Python standard-library build and shared schema validation. No remote ChatGPT or DeepSeek session/API used; browser results are recorded separately."
 }

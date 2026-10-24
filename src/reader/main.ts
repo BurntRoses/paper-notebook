@@ -4,6 +4,7 @@ import './paper.css';
 import './fonts.css';
 import './textbook.css';
 import './theme.css';
+import './materials.css';
 import './print.css';
 import { icon } from '../ui/icons';
 import { preparePrint, createPrintView, type PrintOptions } from './print';
@@ -177,7 +178,7 @@ class ReaderApp {
   renderPage(page:SurfacePage){
     const slot=el('div','paper-slot');
     const paper=new PageSurface(this.d,this.shape,this.readingSize,b=>this.block(b),this.sheetSize).render(page,this.pages.indexOf(page));
-    for(const [side,glyph] of [['left','‹'],['right','›']] as const){const corner=button(side==='right'?'拖动页角到下一页':'拖动页角到上一页',()=>{},'page-corner corner-'+side,glyph);corner.dataset.corner=side;paper.append(corner);}
+    for(const side of ['left','right'] as const){const corner=button(side==='right'?'拖动页角到下一页':'拖动页角到上一页',()=>{},'page-corner corner-'+side,'');corner.dataset.corner=side;paper.append(corner);}
     slot.append(paper);return slot;
   }
   block(b:Block){const root=renderBlock(b,this.d,{answer:(id,answer)=>{this.d.userState.answers[id]=structuredClone(answer);const pageId=this.page.id;this.invalidate();this.paginate();const index=this.pages.findIndex(p=>p.id===pageId&&p.blocks.some(b=>b.id===id));if(index>=0)this.pageIndex=index;this.render();},check:(id,value)=>{this.d.userState.checks[id]=value;this.remember()},edit:()=>{},image:b=>this.showImage(b)});
@@ -371,9 +372,9 @@ class ReaderApp {
     m.foot.append(button('返回阅读',m.close,'quiet'),print);
   }
   showImage(b:Block){const asset=this.d.assets.find(a=>a.id===b.assetId);if(!asset)return;const m=modal(b.title||this.t('图片','Image'));const img=el('img','reader-image');img.src=asset.data;img.alt=b.alt||'';m.body.append(img);if(b.caption)m.body.append(el('p','',b.caption));if(asset.source)m.body.append(el('p','',asset.source+(asset.license?' · '+asset.license:'')));m.foot.append(button(this.t('关闭','Close'),m.close,'primary'))}
-  showAbout(){const m=modal('Paper Notebook','一张纸的亲切，一本教材的认真。');m.body.append(el('p','','让 AI 生成图文并茂的教程，在这里离线阅读、圈画和复习。2.1.0 · MIT'));
+  showAbout(){const m=modal('Paper Notebook','一张纸的亲切，一本教材的认真。');m.body.append(el('p','','让 AI 生成图文并茂的教程，在这里离线阅读、圈画和复习。'));
     const links=el('nav','project-links');links.setAttribute('aria-label','项目导航');
-    for(const [name,url] of [['项目首页 ↗','https://burntroses.github.io/paper-notebook/'],['用 AI 制作一本 ↗','https://burntroses.github.io/paper-notebook/chat-start.html'],['☆ 给纸上灵感一颗 Star ↗','https://github.com/BurntRoses/paper-notebook'],['源码与许可 ↗','https://github.com/BurntRoses/paper-notebook/blob/main/LICENSE']]){const a=el('a','',name);a.href=url;a.target='_blank';a.rel='noopener noreferrer';links.append(a);}m.body.append(links);
+    for(const [name,url] of [['项目首页 ↗','https://burntroses.github.io/paper-notebook/'],['用 AI 制作一本 ↗','https://burntroses.github.io/paper-notebook/chat-start.html'],['☆ 给纸上灵感一颗 Star ↗','https://github.com/BurntRoses/paper-notebook'],['使用许可 ↗','https://github.com/BurntRoses/paper-notebook/blob/main/LICENSE']]){const a=el('a','',name);a.href=url;a.target='_blank';a.rel='noopener noreferrer';links.append(a);}m.body.append(links);
     const details=el('details');details.append(el('summary','','第三方许可'),el('pre','license-text',notices));m.body.append(details);m.foot.append(button('继续阅读',m.close,'primary'))}
 }
 new ReaderApp(embedded||structuredClone(introNotebook));

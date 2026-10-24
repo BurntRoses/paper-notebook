@@ -15,7 +15,8 @@ for(const orientation of ['landscape','portrait']){
    page.header=scale(page.header);page.heading=scale(page.heading);page.blocks=page.blocks.map(scale);if(page.fragments)page.fragments=page.fragments.map(scale);page.coordinateSpace='raster-pixels';
   }
   const svg=(body)=>`<svg xmlns="http://www.w3.org/2000/svg" width="${dim.width}" height="${dim.height}" viewBox="${viewBox}">${body}</svg>`;
-  const full=svg(page.paths.map(p=>p.xml).join(''));
+  const transform=(p,xml)=>p.transform?`<g transform="${p.transform}">${xml}</g>`:xml;
+  const full=svg(page.paths.map(p=>transform(p,p.xml)).join(''));
   await sharp(base).composite([{input:Buffer.from(full)}]).png().toFile(dir+`${orientation}-${n}-full.png`);
   await mkdir(dir+`ink-${orientation}-${n}`,{recursive:true});
   const queue=Array.from({length:steps+1},(_,i)=>i);
@@ -32,7 +33,7 @@ for(const orientation of ['landscape','portrait']){
       const nums=(d[1].match(/-?\d*\.?\d+(?:e[-+]?\d+)?/gi)||[]).map(Number);let len=0;for(let j=2;j+1<nums.length;j+=2)len+=Math.hypot(nums[j]-nums[j-2],nums[j+1]-nums[j-1]);len=Math.max(12,len);
       xml=xml.replace('<path',`<path stroke-dasharray="${len} ${len}" stroke-dashoffset="${len*(1-p)}"`);
      }
-    }paths.push(xml);
+    }paths.push(transform(path,xml));
    }
    await sharp(Buffer.from(svg(paths.join('')))).png().toFile(dir+`ink-${orientation}-${n}/${String(i).padStart(3,'0')}.png`);
   };

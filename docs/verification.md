@@ -2,6 +2,14 @@
 
 当前入口为 `dist/downloads/paper-notebook.html`。正文固定排版，圈画工具位于页脚，学习记录位于侧栏；翻页使用仿真、覆盖、滑动和无动画预设。
 
+## 本轮视觉与公开入口复查
+
+纸页增加内嵌纤维纹理，黑板增加擦拭残痕、粉笔灰、木质托槽与粉笔；这些小型原生 SVG 随 HTML 内嵌。左右页角均无箭头文字，原有拖拽、取消和提交保留，集中浏览器测试已回归。日夜主题、实际 A4 PDF、离线记录和阅读位置恢复继续通过。
+
+首页集中产品说明、自动比例影片、机器学习试读与制作入口；`promo.html`、`start.html`、`promo-motion.html` 分别跳转到首页、试读和影片段落。导航只保留试读、制作笔记和 GitHub；移除手动方向/章节按钮、制作规格与源素材链接。网站发布使用明确文件白名单，生产脚本、源 JSON、源素材包、单独配乐和验证记录不进入 GitHub Pages。
+
+影片重新捕获全部自然续页，画面按实际坐标组合，不缩小阅读器行距。单独捕获无正文纸面用于背景，避免正文被重复为纹理；竖版 UI 镜头加入夜间纸张。重新生成横竖成片、封面和 14 张源页宣传图；成片已完整解码检查，未发现黑帧。影片旋转保留时间与播放/暂停状态，快速来回旋转通过。HTTP 测试服务器需要支持媒体 Range 请求（例如 Vite preview 或正式静态托管）；无 Range 的普通 Python 静态服务可能无法任意定位影片。
+
 ## 构建与数据
 
 TypeScript 检查、Vite 构建及离线发布构建通过。32 项模型测试通过，覆盖数据校验、稳定 ID、Markdown 往返、AI 更新基线、个人记录保留、Unicode 锚点、客观与主观题、内嵌素材、脚本转义、纸幅方向、旧笔迹迁移、笔迹比例、学科视觉和完整个人副本。
@@ -37,9 +45,9 @@ CLI 已对 `examples/paper-notebook.json` 运行 validate，结果为 7 个源�
 
 翻页检查覆盖键盘、横向/纵向拖拽、Escape 取消、双页快速反向、屏幕旋转及系统减少动态效果。完成后页码与正文一致，无残留动画。手机打印仍使用独立 A4 尺寸，不受窄屏阅读尺寸影响。
 
-发布页面检查覆盖 30 个同站目标、两套完整生成指令的复制及剪贴板失败回退、文本导入和 HTML 下载、横竖视频与 Skill 包。结果见 [发布页面报告](verification/hosting-report.json)。提示在文件状态确认后才询问主题，首轮明确结束等待；两套路径均说明单 HTML 交付。
+发布页面本轮检查覆盖 11 个同站目标、两套完整生成指令的复制及剪贴板失败回退、文本导入和 HTML 下载、影片自动适配与 Skill 运行包。额外验证旧入口跳转、公开页面无制作规格与源包链接、内部制作资源返回 404，以及 360px 手机至桌面的五种视口。结果见 [发布页面报告](verification/hosting-report.json)。提示在文件状态确认后才询问主题，首轮明确结束等待；两套路径均说明单 HTML 交付。
 
-以下材料提取、推广片与历史布局报告保留各自记录日期，不代表本轮重新执行了 OCR 或视频制作。
+以下材料提取与历史布局报告保留各自记录日期。本轮重新捕获全部宣传图与影片画面并生成横竖成片，未重新执行 OCR 或原创音乐作曲。
 
 ## 材料与生成工作流
 
@@ -49,11 +57,11 @@ CLI 已对 `examples/paper-notebook.json` 运行 validate，结果为 7 个源�
 
 ## 推介片、产品笔记与对话生成
 
-新增产品笔记使用同一 PageSurface，共八张源页，内容源为 `src/product-story.ts`。横竖共 16 张纸页检查无溢出，报告见 [product-pages.json](verification/product-pages.json)。上右圈注改为沿椭圆切线交错收笔，种子稳定，往返翻页形状不变。
+新增产品笔记使用同一 PageSurface，共八张源页，内容源为 `src/product-story.ts`。横竖共 16 个逻辑页、21 张实际纸页逐张检查无溢出且所有源内容块均进入影片素材，报告见 [product-pages.json](verification/product-pages.json)。上右圈注改为沿椭圆切线交错收笔，种子稳定，往返翻页形状不变。
 
-主推广影片为 64 秒产品推介片：Skill 与对话生成入口 → 长篇 AI 回答的阅读负担 → 结构 → 圈画 → 学科 → 材料要求 → 沉浸离线 → 开始使用。画面取自真实笔记的正文、黑板、图示、代码和 SVG 笔迹，再作节拍纸页编排。两版规格为 1920×1080 / 1080×1920、30fps、H264/AAC，配原创 120 BPM 立体声配乐，新增电钢琴、马林巴、钢片琴和短长笛音色，对应指令、公式、圈注、星标、代码及保存等画面；中段减鼓后恢复。完整解码、黑帧、响度与峰值检查见 [product-film-report.json](verification/product-film-report.json)。逐段检查联系表：[横屏](screenshots/product-film-landscape-contact.png)、[竖屏](screenshots/product-film-portrait-contact.png)。制作命令与素材来源见 [promo-production.md](promo-production.md)。旧 48 秒操作视频保留为历史资产，推广主入口不再使用。
+主推广影片为 64 秒产品推介片：先材料后需求 → 长篇 AI 回答的阅读负担 → 结构 → 圈画 → 学科 → 材料要求 → 沉浸离线 → 开始使用。画面取自真实笔记的正文、黑板、图示、代码和 SVG 笔迹，再作节拍纸页编排。两版规格为 1920×1080 / 1080×1920、30fps、H264/AAC，配原创 120 BPM 立体声配乐，新增电钢琴、马林巴、钢片琴和短长笛音色，对应指令、公式、圈注、星标、代码及保存等画面；中段减鼓后恢复。完整解码、黑帧、响度与峰值检查见 [product-film-report.json](verification/product-film-report.json)。逐段检查联系表：[横屏](screenshots/product-film-landscape-contact.png)、[竖屏](screenshots/product-film-portrait-contact.png)。制作命令与素材来源见 [promo-production.md](promo-production.md)。旧操作视频位于工作区归档，不进入网站发布。
 
-32 项模型/数据测试通过，包括完整回答外套 Markdown 围栏、文本导入示例与 Python 对话构建器测试。通用对话使用包经过真实解压、标准库构建、ZIP 完整性和正式校验器验证；生成的 HTML 以 file:// 离线打开，检查圈注、翻页和再次返回。通用指令内的完整示例从导入 UI 进入空白阅读器，实际下载 HTML 后断网重开，公式、例题和原生图示保留。复制按钮的离线回退、播放器 file:// 章节定位也通过。包验证命令为 `node tools/verify-chat-package.mjs`，结果见 [chat-package-report.json](verification/chat-package-report.json)。浏览器与播放器验收记录见 [product-delivery-report.json](verification/product-delivery-report.json)。测试未连接远程 ChatGPT 或 DeepSeek 账号，能力取决于对话环境是否提供文件/代码工具；无工具时交付完整导入稿。
+32 项模型/数据测试通过，包括完整回答外套 Markdown 围栏、文本导入示例与 Python 对话构建器测试。通用对话使用包经过真实解压、标准库构建、ZIP 完整性和正式校验器验证；生成的 HTML 以 file:// 离线打开，检查圈注、翻页和再次返回。通用指令内的完整示例从导入 UI 进入空白阅读器，实际下载 HTML 后断网重开，公式、例题和原生图示保留。复制按钮的离线回退、首页播放器在 file:// 下自动适配屏幕并保留暂停进度也通过。包验证命令为 `node tools/verify-chat-package.mjs`，结果见 [chat-package-report.json](verification/chat-package-report.json)。浏览器与播放器验收记录见 [product-delivery-report.json](verification/product-delivery-report.json)。测试未连接远程 ChatGPT 或 DeepSeek 账号，能力取决于对话环境是否提供文件/代码工具；无工具时交付完整导入稿。
 
 原 14 张学科横竖海报继续来自实际页面，清单见 `public/promo/poster-manifest.json`；新推介片各段封面存放于 `public/promo/story/film-*-poster-*.png`。可复建纸页源图和几何数据位于 `production/promo/story/`，笔迹帧属于忽略发布的 `output/` 缓存。
 

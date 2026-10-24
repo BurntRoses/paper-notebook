@@ -7,6 +7,8 @@
   "frames": 1920,
   "notebookId": "paper-notebook-product-story",
   "source": "examples/product-notebook.json",
+  "productionSource": "production/promo/story",
+  "renderCache": "output/promo/story",
   "motion": "Native paper fragments, camera reframing, SVG stroke/clip reveals, beat-aligned paper wipes",
   "screenRecording": false,
   "music": "product-film-music.wav",

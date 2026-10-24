@@ -1,5 +1,7 @@
 {
-  "pages": 16,
+  "logicalPages": 16,
+  "physicalSheets": 21,
+  "allBlocksCaptured": true,
   "errors": [],
   "source": "production reader, Chromium headless, CSS geometry and raster in the same viewport",
   "physicalDevices": false

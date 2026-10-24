@@ -12,7 +12,7 @@ Local IndexedDB drafts restore learning records; downloaded copies support long-
 
 ## Generate a notebook
 
-Open [the generation page](https://burntroses.github.io/paper-notebook/chat-start.html). Choose **Copy for Agent** or **Copy for a web chat**, then paste the complete prompt alongside your topic and materials. The Agent prompt includes the repository, Skill and runtime URLs so the agent can retrieve its tools. The web-chat prompt includes the complete import format; paste the model’s answer into the blank reader.
+Open [the generation page](https://burntroses.github.io/paper-notebook/chat-start.html). Choose **Copy for Agent** or **Copy for a web chat**, then send the complete prompt and follow its request for reference files or “no files” before choosing your topic. The Agent prompt includes the repository, Skill and runtime URLs so the agent can retrieve its tools. The web-chat prompt includes the complete import format; paste the model’s answer into the blank reader.
 
 ## Local development
 
@@ -23,7 +23,7 @@ npm run preview -- --port 4173
 npm run install-skill
 ```
 
-Open `/start.html`, `/promo.html` or `/promo-motion.html`. The installer creates a self-contained Skill with references, reader assets and a bundled CLI. Existing installations are archived. Node 20.19+ is required; no MCP server registration is needed.
+Open `dist/promo.html` for the product home, with reading, film and creation in one place. The film follows the screen ratio automatically; legacy entries redirect to the matching home section. The installer creates a self-contained Skill with references, reader assets and a bundled CLI. Existing installations are archived. Node 20.19+ is required; no MCP server registration is needed.
 
 Ask: “I want to learn machine learning. Use Paper Notebook to create a tutorial.” The agent collects missing goals, prior knowledge, difficulty, writing style, short-term or course scope, time, material fidelity and exercise preference. Strict source mode preserves supplied questions, answers, order and objective claims. OCR retains raw recognition, page references, uncertainties, corrections and terminology separately. Native choice controls depend on the host. ChatGPT, DeepSeek and other text-only chats can use the copyable prompt at `chat-start.html` to output complete Markdown/TXT for import into the blank reader. Chats with Python and file tools can build real HTML/JSON/ZIP files using `paper-notebook-chat.zip`; a plain text chat does not install the Skill or create attachments.
 
@@ -42,8 +42,6 @@ Updates preserve stable IDs and include `extensions.baseRevision`. Legacy data s
 
 MIT code; third-party notices remain in `licenses/`. The GitHub Pages workflow publishes the product pages, reader, media and downloads while preserving the offline release. See [hosting](docs/hosting.md), [first use](docs/first-use.md), [content contract](docs/content-contract.md), [components](docs/components.md) and [verification](docs/verification.md).
 
-## Workspace organization
-
-`dist/` is the final offline reader, static promotion pages and downloads. `public/promo/` contains only final media and posters. `production/promo/story/` retains native page captures, SVG and geometry for rebuilding the film. `output/` is ignored scratch space and can be regenerated. Superseded editor sources, operation recordings and intermediate QA artifacts are in the parent workspace’s `archives/2026-10-23-cleanup/` with SHA-256 provenance.
+The public site uses an explicit publishing allowlist. Production scripts, storyboards, source bundles and verification reports remain in the repository and development release.
 
 The primary deliverable is one automatically named `<title>-v<revision>.html`, with fonts, assets, editable source and selected study records embedded. ZIP, JSON, Markdown and page PNG are advanced exports. The separate PDF panel supports A4 portrait/landscape via system print with light paper, 12pt text and at least 12mm margins. Anchored marks reflow; freehand is preserved in original-page appendices.

@@ -12,19 +12,28 @@ try {
   const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, acceptDownloads: true });
   const page = await context.newPage();
   page.on('pageerror', error => errors.push(error.message));
-  for (const route of ['', 'promo.html', 'start.html', 'chat-start.html', 'promo-motion.html']) {
+  for (const [route,hash] of [['',''],['promo.html',''],['start.html','#read'],['promo-motion.html','#film'],['chat-start.html',null]]) {
     const response = await page.goto(base + route);
     assert.equal(response.status(), 200, route);
+    if(hash!==null)await page.waitForURL(url=>url.pathname===new URL(base).pathname&&url.hash===hash);
+    assert.deepEqual(await page.locator('.site-header nav a').allTextContents(),['试读','制作笔记','GitHub ☆']);
+    assert.equal(await page.locator('.site-trail,.site-support').count(),0);
+    assert.equal(await page.locator('a[href$=".mp4"],a[href*="promo-source"],a[href*="film-script"],a[href*="docs/"]').count(),0);
+    assert.doesNotMatch(await page.locator('body').innerText(),/64 秒|30 fps|原创配乐|分镜脚本|脚本与影片素材/);
     for (const url of await page.locator('a[href],img[src],iframe[src],video[src],script[src],link[rel=stylesheet]').evaluateAll(nodes => nodes.map(node => new URL(node.getAttribute('href') || node.getAttribute('src'), location.href).href))) {
       if (url.startsWith(base) && !url.includes('#')) links.add(url);
     }
     if (!route) {
-      assert.equal(await page.getByRole('heading', { name: 'Paper Notebook', exact: true }).count(), 1);
+      assert.match(await page.locator('h1').innerText(),/在纸页里，[\s]*把知识读明白。/);
+      await page.locator('#read').scrollIntoViewIfNeeded();
       await page.frameLocator('.reader-preview').locator('.page-surface').waitFor();
+      await page.evaluate(()=>scrollTo(0,0));
       await page.screenshot({ path: out + '/homepage.png' });
-      checks.push('Product home embeds the actual working reader');
+      checks.push('One product home embeds the actual reader; legacy pages redirect to the matching section');
     }
   }
+  for(const route of ['docs/product-film-script.md','downloads/paper-notebook-promo-source.zip','downloads/machine-learning.json','promo/product-film-script.json','promo/product-film-music.wav'])assert.equal((await context.request.get(base+route)).status(),404,route);
+  checks.push('Public deployment excludes production scripts, source bundles, source JSON and standalone music; navigation has three clear actions');
   for (const url of links) {
     const response = await context.request.head(url);
     assert.equal(response.status(), 200, url);
@@ -96,15 +105,33 @@ try {
   checks.push('Text-only chat example imports with a real formula and circle, then downloads as HTML');
 
   await page.goto(base + 'promo-motion.html');
+  await page.waitForURL(url=>url.hash==='#film');
+  assert.equal(await page.getByRole('button',{name:'竖屏',exact:true}).count(),0);
+  await page.locator('video').evaluate(v=>{v.preload='auto';v.load()});
   await page.waitForFunction(() => document.querySelector('video')?.readyState >= 1);
   assert.deepEqual(await page.locator('video').evaluate(v => [v.duration, v.videoWidth, v.videoHeight]), [64, 1920, 1080]);
-  await page.getByRole('button', { name: '竖屏', exact: true }).click();
-  await page.waitForFunction(() => document.querySelector('video')?.videoWidth === 1080);
-  assert.deepEqual(await page.locator('video').evaluate(v => [v.duration, v.videoWidth, v.videoHeight]), [64, 1080, 1920]);
-  await page.getByRole('button', { name: '00:32 公式、原文与代码', exact: true }).click();
-  await page.waitForFunction(() => { const v = document.querySelector('video'); return !v.seeking && v.currentTime >= 32; });
-  await page.locator('video').evaluate(v => v.pause());
-  checks.push('Both film formats load at full resolution and chapter seek works');
+  await page.waitForFunction(()=>{const v=document.querySelector('video');return v.seekable.length&&v.seekable.end(0)>40});
+  await page.locator('video').evaluate(v=>new Promise(resolve=>{v.addEventListener('seeked',resolve,{once:true});v.currentTime=32}));
+  await page.setViewportSize({width:390,height:844});
+  await page.waitForFunction(() => {const v=document.querySelector('video');return v.videoWidth===1080&&!v.seeking&&v.currentTime>=32});
+  assert.equal(await page.locator('video').evaluate(v=>v.paused),true);
+  await page.locator('video').evaluate(v=>v.play());
+  await page.setViewportSize({width:1180,height:820});
+  await page.waitForFunction(()=>{const v=document.querySelector('video');return v.videoWidth===1920&&!v.paused&&v.currentTime>=32});
+  // Reverse two rotations while metadata is still loading.
+  await page.setViewportSize({width:820,height:1180});
+  await page.waitForFunction(()=>document.querySelector('video').dataset.orientation==='portrait');
+  await page.setViewportSize({width:1180,height:820});
+  await page.waitForFunction(()=>{const v=document.querySelector('video');return v.videoWidth===1920&&!v.paused&&!v.seeking&&v.currentTime>=32});
+  await page.locator('video').evaluate(v=>v.pause());
+  checks.push('Film follows screen ratio automatically; rotation and rapid reversal preserve time and playback state');
+  for(const [width,height]of [[360,780],[390,844],[820,1180],[1180,820],[1440,1000]]){
+    await page.setViewportSize({width,height});await page.goto(base);
+    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${width}×${height}`);
+    const expected=width>height?'landscape':'portrait';await page.waitForFunction(o=>document.querySelector('video')?.dataset.orientation===o,expected);
+    if(width===390)await page.screenshot({path:out+'/home-phone.png',fullPage:true});
+  }
+  checks.push('Home and automatic film/poster selection fit phone, tablet and desktop viewports');
 
   const skill = await context.request.get(base + 'downloads/paper-notebook-skill.zip');
   assert.equal(skill.status(), 200);
@@ -113,7 +140,7 @@ try {
   const sha256 = createHash('sha256').update(body).digest('hex');
   checks.push('Portable Skill ZIP downloads successfully');
   assert.deepEqual(errors, []);
-  const report = { date: new Date().toISOString(), base, checks, errors, skillSHA256: sha256, scope: 'Chromium over HTTP(S); browser imports and HTML download, both films and all primary page links' };
+  const report = { date: new Date().toISOString(), base, checks, errors, skillSHA256: sha256, scope: 'Chromium over HTTP(S); browser imports and HTML download, responsive films, legacy redirects, public exposure restrictions and all primary page links' };
   await writeFile(out + '/report.json', JSON.stringify(report, null, 2));
   console.log(JSON.stringify(report, null, 2));
 } finally {

@@ -1,0 +1,10 @@
+/* Small, embedded vector textures: paper fibres and the traces of an erased board. */
+.reader-app-root .page-surface,.surface-measure .page-surface{background-image:linear-gradient(90deg,#9a825a13,transparent 7%,transparent 95%,#8e765c14),url('../../assets/paper-grain.svg'),url('../../assets/paper-cotton.webp');background-size:100% 100%,256px 256px,420px 420px;background-blend-mode:multiply,soft-light,multiply}
+.paper-fibers{background:repeating-linear-gradient(94deg,transparent 0 90px,#89785c08 91px,transparent 92px 185px),url('../../assets/paper-grain.svg');background-size:auto,384px 384px;mix-blend-mode:multiply;opacity:.44}
+html[data-paper-theme=paper-night] .paper-fibers{opacity:.32;mix-blend-mode:soft-light}
+.page-surface [data-visual=blackboard]{background:linear-gradient(110deg,#1c352f22,#5f7b6422 47%,#122c2944) padding-box,url('../../assets/chalkboard-grain.svg') center/cover padding-box,linear-gradient(115deg,#28443d,#315046 58%,#29473e) padding-box,repeating-linear-gradient(2deg,#b99b6c 0 2px,#a88b5f 3px,#c3a575 5px,#aa895c 7px) border-box;box-shadow:inset 0 0 0 1px #142f2b,inset 0 5px 13px #0a1c1777,0 1px 0 #e9d9b6,2px 4px 3px #40362024}
+.page-surface [data-visual=blackboard]:before{background:radial-gradient(ellipse 70% 11% at 42% 95%,#eaf0dc1c,transparent 80%),linear-gradient(176deg,transparent 0 75%,#e1e6cb07 76% 77%,transparent 78%);border-color:#c0d0ba16}
+.page-surface [data-visual=blackboard] .formula,.page-surface [data-visual=blackboard] .block-title{text-shadow:.35px .45px .2px #e7f0d850,-.3px 0 .5px #faffde38}
+.page-surface [data-visual=blackboard]:after{height:8px;bottom:-8px;background:linear-gradient(97deg,transparent 0 79%,#f8efdb 79% 84%,transparent 84% 86%,#d7dbc4 86% 89%,transparent 89%) 0 0/100% 3px no-repeat,linear-gradient(#cbb38c,#9d8058 50%,#705a40);box-shadow:0 2px 3px #30230f55}
+.page-corner{font-size:0;color:transparent}
+@media print{#print-root .paper-fibers{display:none}}

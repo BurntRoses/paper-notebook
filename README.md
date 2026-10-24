@@ -9,7 +9,7 @@ AI 结构化教程的离线阅读器。Agent 按学习目标和材料整理内�
 ## 生成入口
 
 - Agent：打开 [生成入口](public/chat-start.html#agent)，点击“复制给 Agent”，与材料一起发送。指令带有仓库和 Skill 地址，Agent 自行获取工具、确认学习要求并生成独立 HTML（源数据和记录内嵌）。
-- ChatGPT、DeepSeek 等网页端模型：在 [同一入口](public/chat-start.html#chat) 点击“复制给网页端模型”，与主题和材料一起发送。将完整结果粘贴到空白阅读器，导入并保存离线 HTML。指令已包含排版格式。
+- ChatGPT、DeepSeek 等网页端模型：在 [同一入口](public/chat-start.html#chat) 点击“复制给网页端模型”，先发送指令，按提示上传材料或回复“没有文件”。将完整结果粘贴到空白阅读器，导入并保存离线 HTML。指令已包含排版格式。
 
 对 Agent 可直接说：“请使用 GitHub 仓库 https://github.com/BurntRoses/paper-notebook 中的 Paper Notebook Skill，为我制作学习笔记。先读取 `skills/paper-notebook/SKILL.md`，按 Skill 先等待文件或“没有文件”，再用选择题确认学习要求，并交付一个自动命名的离线 HTML。” Agent 需要能访问仓库并使用 Skill／文件工具；文字对话模型则按生成指令输出阅读器可导入的完整内容。
 
@@ -21,7 +21,7 @@ npm run build
 npm run preview -- --port 4173
 ```
 
-打开 `dist/downloads/paper-notebook.html` 阅读结构化学习指南；`dist/downloads/paper-notebook-product.html` 用笔记介绍产品；`dist/promo-motion.html` 播放基于同一本笔记制作的 64 秒推介片，含横竖两版与原创配乐。
+打开 `dist/promo.html` 预览产品首页，试读、影片和制作入口集中在这里。线上影片随屏幕比例自动适配；旧首页、示例入口和影片入口自动跳转到对应位置。
 
 ```sh
 npm run install-skill
@@ -50,14 +50,10 @@ node tools/writing-check.mjs notebook.json
 
 下载默认包含全部个人记录，可取消勾选生成公开副本。默认下载只保存 HTML；ZIP、JSON、Markdown 和当前页 PNG 收在“高级导出”。“导出 PDF”可选择 A4 横向或纵向，通过系统打印另存为 PDF；浅色排版、12pt 正文、12mm 留白，学习记录可选，文字标记重排，自由笔迹放在原页附录。本机草稿用于恢复，下载副本用于长期保存与转移设备。旧笔迹保留原始坐标，缺少原纸幅时在“记录”的待定位列表中手动关联。
 
-`dist/downloads/` 含空白容器、三类主题示例、便携 Skill、通用对话使用包、产品笔记、工具包及离线合集。`public/promo/` 仅含发布使用的海报、影片、最终配乐和封面。八张原生纸页及坐标源位于 `production/promo/story/`；笔迹展开帧写入已忽略的 `output/`，不进入发布目录。旧录屏、旧编辑器、过程截图及历史输出已完整校验后收进工作区 `../archives/2026-10-23-cleanup/`，映射和哈希见 归档目录中的 `manifest.json`。
+`dist/downloads/` 保留离线文件与开发构建接口。公开网站采用单独白名单，只发布产品首页、制作入口、阅读器及页面使用的素材；制作脚本、分镜、源素材包和验证记录仅保留在仓库与开发构建中。
 
 ## 资料与许可
 
 [首次使用](docs/first-use.md) · [协议](docs/content-contract.md) · [组件](docs/components.md) · [交付](docs/delivery.md) · [验证记录](docs/verification.md)
 
 新增代码 MIT。Humanizer 与 Humanizer-zh 固定引用版本及 MIT 声明保留于 licenses/。现有材质与第三方资源继续保留来源。在线发布使用 GitHub Pages，部署目录与离线交付分开，见[托管说明](docs/hosting.md)。
-
-## 工作区目录
-
-最终成果入口见上一级 [成果索引](../README.md)。本项目只保留当前阅读器与可重建最终素材的源码；`production/promo/story/` 是影片页面源，`public/promo/` 是发布素材，`dist/` 是已构建的离线交付。`output/` 是可再生成的工作缓存；`node_modules/` 是保留的本机开发依赖。历史资产在上一级 `archives/`，不再混入源码与下载包。

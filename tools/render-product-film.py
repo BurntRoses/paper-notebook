@@ -33,7 +33,8 @@ def smooth(v):v=clamp(v);return v*v*(3-2*v)
 
 # The background is the notebook's own paper and ruling, sampled from a blank
 # part of its second page. No independently painted imitation page is used.
-blank=bases[1].crop((int(bases[1].width*.12),int(bases[1].height*.76),int(bases[1].width*.92),int(bases[1].height*.92)))
+paper=Image.open(SOURCE/f'blank-{ORIENTATION}.png').convert('RGBA')
+blank=paper.crop((int(paper.width*.12),int(paper.height*.26),int(paper.width*.92),int(paper.height*.78)))
 BG=Image.new('RGBA',(W,H),(250,247,232,255))
 for y in range(0,H,blank.height):
     for x in range(0,W,blank.width):BG.alpha_composite(blank,(x,y))
@@ -98,7 +99,7 @@ def render_scene(scene,t):
     frame=BG.copy();source=page_at(scene,t)
     if scene not in [1,7]:header(frame,scene,t)
     if scene==0:
-        panel(frame,0,'pain-context',source,t,.05,.25 if PORTRAIT else .29,.12,.88)
+        panel(frame,0,'pain-context',source,t,.05,.25 if PORTRAIT else .29,.17,.88)
         # The source code's three real two-line paragraphs, measured in the DOM.
         # They pile in on the beat, then settle into one reading column.
         for k,box in enumerate(meta[0]['fragments']):

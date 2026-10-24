@@ -1,17 +1,19 @@
 {
-  "date": "2026-10-24T08:47:01.913Z",
-  "base": "http://127.0.0.1:5178/paper-notebook-kit/output/site/",
+  "date": "2026-10-24T10:50:12.217Z",
+  "base": "http://127.0.0.1:5180/paper-notebook-kit/output/site/",
   "checks": [
-    "Product home embeds the actual working reader",
-    "All 30 same-site navigation, image, film and download targets return HTTP 200",
+    "One product home embeds the actual reader; legacy pages redirect to the matching section",
+    "Public deployment excludes production scripts, source bundles, source JSON and standalone music; navigation has three clear actions",
+    "All 11 same-site navigation, image, film and download targets return HTTP 200",
     "Both generation prompts wait for files/no-files before topic choices and describe single HTML delivery",
     "Both copy buttons put the complete, self-contained instructions on the clipboard; no download step",
     "Clipboard-denied fallback reveals and selects each complete prompt; mobile layout fits the viewport",
     "Text-only chat example imports with a real formula and circle, then downloads as HTML",
-    "Both film formats load at full resolution and chapter seek works",
+    "Film follows screen ratio automatically; rotation and rapid reversal preserve time and playback state",
+    "Home and automatic film/poster selection fit phone, tablet and desktop viewports",
     "Portable Skill ZIP downloads successfully"
   ],
   "errors": [],
-  "skillSHA256": "ca97f90c4f16e6370dcab888203e7b3a4bd7615c6d64b049c5713be84cf01bd6",
-  "scope": "Chromium over HTTP(S); browser imports and HTML download, both films and all primary page links"
+  "skillSHA256": "98bc0b5a976462d9b5f4d14640c9561077dedcdb39e0d7b79f0dcf43691290d6",
+  "scope": "Chromium over HTTP(S); browser imports and HTML download, responsive films, legacy redirects, public exposure restrictions and all primary page links"
 }

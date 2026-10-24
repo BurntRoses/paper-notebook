@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "paper-notebook-product-story",
-    "revision": 2,
+    "revision": 3,
     "title": "Paper Notebook · 产品笔记",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -14,8 +14,8 @@
     "sources": [
       {
         "id": "product-source",
-        "title": "Paper Notebook 2.0 已实现功能",
-        "locator": "src/reader、src/ui、skills/paper-notebook；本册为产品介绍，不是课程内容。"
+        "title": "Paper Notebook 阅读器",
+        "locator": "本册展示图文阅读、标记与离线保存功能。"
       },
       {
         "id": "product-spring",
@@ -35,24 +35,24 @@
         "pages": [
           {
             "id": "product-pain",
-            "title": "用 Skill，让 AI 生成学习笔记。",
-            "subtitle": "01 / Agent · ChatGPT · DeepSeek",
+            "title": "把想学的，变成一本图文笔记。",
+            "subtitle": "01 / 从你的材料开始",
             "subject": "general",
             "layout": "reading",
             "blocks": [
               {
                 "id": "pain-context",
                 "type": "prose",
-                "text": "在 Agent 中调用 Paper Notebook Skill；在 ChatGPT、DeepSeek 等对话中使用生成指令，输出后导入阅读器。",
+                "text": "把制作指令发给你常用的 AI。先上传材料，或回复没有文件，再选择主题、基础和学习目标。",
                 "study": {
                   "label": "用你常用的 AI，生成自己的笔记",
                   "marks": [
                     {
-                      "text": "Paper Notebook Skill",
+                      "text": "先上传材料",
                       "kind": "underline"
                     },
                     {
-                      "text": "DeepSeek",
+                      "text": "学习目标",
                       "kind": "circle"
                     }
                   ]
@@ -62,7 +62,7 @@
                 "id": "pain-fragments",
                 "type": "code",
                 "language": "Markdown",
-                "text": "学习主题：复利\n已有基础：初中数学\n讲解内容：定义、条件、推导和例题\n表达要求：简洁，说明公式变量\n输出格式：Paper Notebook 导入稿\n交付要求：完整内容，保留来源",
+                "text": "先提供：参考文件，或明确没有文件\n再选择：主题、基础和学习目标\n内容包括：概念、图解、推导和例题\n讲解要求：交代条件，说明每一步\n保存一本：可离线打开的笔记\n带上记录：圈画、疑问和练习答案",
                 "study": {
                   "label": "告诉 AI 学什么、怎么讲"
                 }
@@ -70,17 +70,17 @@
               {
                 "id": "pain-need",
                 "type": "quote",
-                "text": "Agent 直接构建文件；文字对话复制导入。",
+                "text": "AI 整理内容，你按自己的节奏读。",
                 "study": {
                   "visual": "extract",
-                  "label": "按当前 AI 环境的能力交付",
+                  "label": "从讲解到理解",
                   "marks": [
                     {
-                      "text": "构建文件",
+                      "text": "整理内容",
                       "kind": "highlight"
                     },
                     {
-                      "text": "复制导入",
+                      "text": "自己的节奏",
                       "kind": "underline"
                     }
                   ]
@@ -165,7 +165,7 @@
           },
           {
             "id": "product-structure",
-            "title": "条件、公式、例题，放在同一页。",
+            "title": "读条件，跟推导，用例题验算。",
             "subtitle": "03 / 同一主题，集中阅读",
             "subject": "stem",
             "layout": "cornell",
@@ -186,7 +186,7 @@
                 "blockId": "structure-example"
               }
             ],
-            "summary": "条件、推导、验算放在同一页；页边线索帮助回忆。",
+            "summary": "条件、推导、验算依次展开；页边线索帮助回忆。",
             "blocks": [
               {
                 "id": "structure-condition",
@@ -422,10 +422,10 @@
               {
                 "id": "fit-brief",
                 "type": "concept",
-                "title": "生成前，确认学习要求。",
-                "text": "临时补一章、准备考试，或系统学一门课。生成前说明已有基础、学习范围、讲解难度和练习需求。",
+                "title": "先交材料，再选学习目标。",
+                "text": "上传讲义、题库或已有笔记；没有文件也可以开始。随后选择已有基础、学习范围、难度和练习需求。",
                 "study": {
-                  "label": "Skill / ChatGPT / DeepSeek 对话",
+                  "label": "先材料，后需求",
                   "marks": [
                     {
                       "text": "已有基础",
@@ -460,7 +460,7 @@
               {
                 "id": "fit-boundary",
                 "type": "prose",
-                "text": "保留原题、答案和顺序；扩展解释另作说明。PDF 和扫描件可提取文字，识别疑点留给原件核对。",
+                "text": "有材料时保留原题和顺序；无材料时，AI 按可用能力检索资料、绘制图解。引用来源与补充解释分清楚。",
                 "study": {
                   "label": "原文保留，补充解释另列"
                 }
@@ -472,11 +472,11 @@
                 "nodes": [
                   {
                     "id": "brief",
-                    "label": "目标与材料"
+                    "label": "提供材料"
                   },
                   {
                     "id": "agent",
-                    "label": "AI 整理内容"
+                    "label": "确认学习需求"
                   },
                   {
                     "id": "reader",
@@ -509,8 +509,8 @@
               {
                 "id": "focus-read",
                 "type": "concept",
-                "title": "沉浸模式隐藏顶栏。",
-                "text": "横屏一张横版纸，竖屏一张竖版纸。翻页、目录和圈画收在边缘，阅读时以正文为主。",
+                "title": "纸页随屏幕调整。",
+                "text": "横竖屏自动排版，夜间换成深色纸张。收起工具，以正文为主，给图解与推导留出空间。",
                 "study": {
                   "label": "界面设计",
                   "marks": [
@@ -530,16 +530,16 @@
                 ],
                 "rows": [
                   [
-                    "习惯翻书",
-                    "仿真、覆盖、滑动，或关闭动画"
+                    "读得舒服",
+                    "日夜模式与字体选择"
                   ],
                   [
-                    "需要专注",
-                    "沉浸模式隐藏顶栏"
+                    "留一份纸本",
+                    "导出 A4 横版或竖版 PDF"
                   ],
                   [
                     "换个地方继续读",
-                    "下载含个人记录的副本"
+                    "保存含学习记录的 HTML"
                   ]
                 ],
                 "study": {
@@ -607,7 +607,7 @@
                   },
                   {
                     "id": "start-a3",
-                    "text": "Agent 调用 Skill；ChatGPT、DeepSeek 用对话指令。"
+                    "text": "复制制作指令，用自己的材料做下一本。"
                   }
                 ],
                 "study": {
@@ -641,7 +641,7 @@
     ]
   },
   "userState": {
-    "updatedAt": "2026-10-22T18:00:00.000Z",
+    "updatedAt": "2026-10-24T18:00:00.000Z",
     "lastPageId": "product-pain",
     "notes": [],
     "annotations": [],
@@ -672,7 +672,7 @@
   },
   "assets": [],
   "extensions": {
-    "baseRevision": 1,
+    "baseRevision": 2,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",
