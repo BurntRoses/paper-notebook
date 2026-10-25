@@ -1,0 +1,25 @@
+/* Quiet controls: spacing and surface colour supply the grouping. */
+.sheet-dialog{border:0;border-radius:14px;box-shadow:0 24px 80px #0b14144a}
+.sheet-dialog:focus{outline:none}
+.dialog-head,.dialog-foot{border:0;background:var(--raised)}
+.dialog-head{padding-top:18px;padding-bottom:8px}
+.dialog-foot{padding-top:10px;padding-bottom:18px}
+.close-dialog{display:inline-flex;align-items:center;justify-content:center;flex:0 0 44px;width:44px;height:44px;padding:0;border:0;border-radius:50%;background:transparent;color:var(--muted)}
+.close-dialog svg{width:20px;height:20px;display:block}
+.close-dialog:hover{background:var(--hover);color:var(--ink)}
+.paper-choice-trigger{border:0;border-radius:8px;box-shadow:none;padding-block:11px}
+.paper-choice-list,.reader-file-menu{border:0;border-radius:10px;box-shadow:0 10px 35px var(--turn-shadow)}
+.reader-header,.reader-sidebar,.sidebar-tabs,.reader-navigation,.sidebar-search{border:0}
+.reader-navigation .stationery,.reader-navigation .reader-selection-toolbar,.mark-inspector{border:0}
+.sidebar-search{background:var(--field)}
+.project-links a,.export-card{border:0;border-radius:9px}
+.export-advanced{border:0}
+/* Textbook sections breathe on the paper instead of sitting in nested cards.
+   Keep the board's wooden edge and the meaningful lines inside tables/diagrams. */
+.page-surface .content-block:not([data-visual=blackboard]){border:0;outline:0;box-shadow:none}
+.page-surface .content-block[data-frame=bracket]:before,.page-surface .content-block[data-frame=bracket]:after{border:0}
+.page-surface .content-block[data-frame=bracket]:before{inset:18px auto 18px 0;width:3px;height:auto;background:var(--figure-line);opacity:.35;border-radius:70% 10% 60% 20%}
+.page-surface .block-code pre{border:0}
+button:focus:not(:focus-visible),summary:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:none}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.sheet-dialog[tabindex]:focus-visible,.content-block:focus{outline:none}

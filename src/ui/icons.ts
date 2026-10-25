@@ -6,6 +6,7 @@ const paths = {
   moon:'M20.5 14.3A9 9 0 0 1 9.7 3.5 9 9 0 1 0 20.5 14.3Z',
   type:'m3 18 5-12 5 12M5 14h6M16 11h5m-5 0v7m5-7v7m-5-4h5',
   expand:'M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5',
+  close:'m6 6 12 12M18 6 6 18',
 } as const;
 export function icon(name:keyof typeof paths){
   const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');

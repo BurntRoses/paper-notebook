@@ -1,0 +1,17 @@
+/* The only moving layers are paper. The desk and reader chrome stay mounted. */
+.reader-stage>.page-transition{position:absolute;inset:0 0 auto;z-index:10;overflow:clip;contain:layout paint style;pointer-events:none;background:transparent;border-radius:0;perspective:none}
+.turn-sheet{position:absolute;isolation:isolate}
+.turn-contained{clip-path:inset(0 round 3px)}
+.turn-front,.turn-back{position:absolute;inset:0;transform-origin:0 0;will-change:clip-path,transform;backface-visibility:hidden}
+.turn-front{z-index:1;contain:layout style}
+.page-transition .page-surface{box-shadow:none;backface-visibility:visible}
+.turn-front>.paper-slot{margin:0}
+.turn-back{z-index:3;background:linear-gradient(var(--fold-angle,90deg),var(--corner),transparent 30%,transparent 70%,var(--corner)),url('../../assets/paper-grain.svg') center/256px,var(--page-back);background-blend-mode:multiply,soft-light,normal;box-shadow:inset 0 0 0 1px var(--line)}
+.turn-back:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,var(--turn-shadow),transparent 12%,transparent 82%,var(--turn-shadow));opacity:.28;pointer-events:none}
+.turn-back-content{position:absolute;inset:0;transform:scaleX(-1)}
+.turn-back-content>.paper-slot{margin:0}
+.turn-printed-back{background:var(--paper)}
+.turn-shadow{position:absolute;z-index:2;transform-origin:0 0;background:linear-gradient(90deg,transparent,var(--turn-shadow) 48%,transparent);will-change:transform,opacity;pointer-events:none}
+.turn-still{z-index:-1}
+.page-transition[data-mode=slide] .turn-front,.page-transition[data-mode=cover] .turn-front{box-shadow:12px 0 30px var(--turn-shadow)}
+@media(prefers-reduced-motion:reduce){.page-transition{display:none}}

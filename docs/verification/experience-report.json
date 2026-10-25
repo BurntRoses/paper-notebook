@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-24T10:10:05.589Z",
+  "date": "2026-10-25T09:11:29.731Z",
   "checks": [
     "night paper, sidebar, all lesson components, dialogs and font menu reach 4.5:1; header SVGs align; logo restores focus",
     "one versioned HTML download embeds notes, marks and answers and can be saved again with networking disabled",

@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-25T09:10:36.986Z",
+  "checks": [
+    "Turning keeps chrome and the actual outgoing paper mounted; transparent scene has no full-page brightness filter",
+    "Fold screenshots captured in both themes with a textured back and crease shadow",
+    "Drag directly controls the fold; Escape restores the original paper; release continues from the same fold",
+    "Interrupted rebound and resize retain the original sheet and keep its page number synchronized",
+    "Rapid reversal reaches the newest page; spread uses one folding leaf and the printed reverse side",
+    "Spread boundary drags clamp to a valid page and returning the pointer fully flattens the fold",
+    "Portrait/tablet and phone folds support both axes and keyboard corner activation without overflow; printed SVG references stay local",
+    "Settings opens without an automatic close-button rectangle; borderless controls retain keyboard focus and pointer close"
+  ],
+  "errors": [],
+  "scope": "Chromium desktop, portrait tablet and phone viewports; real devices not exercised; references: https://nodlik.github.io/StPageFlip/"
+}

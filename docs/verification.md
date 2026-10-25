@@ -1,6 +1,14 @@
-# 结构化学习阅读器验收 · 2026-10-24
+# 结构化学习阅读器验收 · 2026-10-25
 
 当前入口为 `dist/downloads/paper-notebook.html`。正文固定排版，圈画工具位于页脚，学习记录位于侧栏；翻页使用仿真、覆盖、滑动和无动画预设。
+
+## 本轮翻页与组件复查
+
+翻页保留工具栏、目录与实际离开的纸页，只替换正文纸面；透明动画层不再使用整页亮度滤镜或整页淡出。相邻纸页、字形与图片提前准备，点击翻页等待目标纸面就绪。仿真折页按移动折线裁切并反射纸背，叠加主题对应的纸背颜色、纹理和折痕阴影；横向双页只翻一张纸，背面显示下一张纸的实际内容。实现参考 [StPageFlip](https://nodlik.github.io/StPageFlip/) 的纸面分层思路，未引入新的翻页依赖。
+
+[翻页报告](verification/turn-report.json) 的 8 组浏览器检查覆盖连续翻页与快速反向、横纵拖拽、返回起点、取消与回弹中断、奇数起始双页和首尾边界、屏幕旋转、减少动态效果、临时纸背的 SVG 引用以及键盘页角操作。两个几何测试验证四个方向的纸面裁切、反射和双页间隙处的落点。检查未发现页面脚本错误；本轮没有测量原生设备帧率。
+
+弹窗、菜单和正文移除多余的矩形外框及双线轮廓，通过留白、文字层级和浅色面区分内容；黑板木框、表格和图示的必要线条保留。弹窗打开时焦点落在对话框，关闭按钮使用无边框 SVG；键盘 Tab 操作仍有可见焦点。深浅主题、桌面、平板及手机截图已检查。17 组阅读器回归、7 组体验回归通过，包括离线 HTML 往返、实际 A4 PDF 和学习记录。
 
 ## 本轮视觉与公开入口复查
 
@@ -12,7 +20,7 @@
 
 ## 构建与数据
 
-TypeScript 检查、Vite 构建及离线发布构建通过。32 项模型测试通过，覆盖数据校验、稳定 ID、Markdown 往返、AI 更新基线、个人记录保留、Unicode 锚点、客观与主观题、内嵌素材、脚本转义、纸幅方向、旧笔迹迁移、笔迹比例、学科视觉和完整个人副本。
+TypeScript 检查、Vite 构建及离线发布构建通过。34 项模型测试通过，覆盖折页几何、数据校验、稳定 ID、Markdown 往返、AI 更新基线、个人记录保留、Unicode 锚点、客观与主观题、内嵌素材、脚本转义、纸幅方向、旧笔迹迁移、笔迹比例、学科视觉和完整个人副本。
 
 CLI 已对 `examples/paper-notebook.json` 运行 validate，结果为 7 个源页面、无警告；build 保留独立 HTML、源 JSON 和 ZIP 接口；面向学习者默认只交付一个自动命名的离线 HTML。便携 Skill 随发布重建，包含相同的阅读器、校验协议、OCR 工作流和 CLI。
 
@@ -71,6 +79,7 @@ CLI 已对 `examples/paper-notebook.json` 运行 validate，结果为 7 个源�
 npm test
 npm run build
 node tests/reader-browser.mjs
+node tests/turn-browser.mjs
 node tests/experience-browser.mjs
 node tools/prepare-pages.mjs
 node tests/hosting-browser.mjs
