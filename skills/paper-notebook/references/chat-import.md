@@ -39,7 +39,7 @@ python scripts/build_reader.py notebook.json --out output
 ```
 
 ```notebook-block
-{"id":"growth-formula","type":"formula","latex":"P_n=P_0(1+r)^n","text":"P₀ 是初始金额，r 是每期增长率，n 是期数。","study":{"visual":"blackboard"}}
+{"id":"growth-formula","type":"formula","latex":"P_n=P_0(1+r)^n","text":"期间无额外存取，每期增长率保持不变。","parameters":[{"symbol":"P_0","name":"初始金额","description":"增长开始前的本金，本例为 100 元。"},{"symbol":"r","name":"每期增长率","description":"以小数表示，10% 写作 0.1；每期金额乘以 1.1。"},{"symbol":"n","name":"期数","description":"累计增长的次数，n=2 表示连续增长两期。"},{"symbol":"P_n","name":"第 n 期金额","description":"函数输出，本例两期后为 100×1.1²=121 元。"}],"study":{"visual":"blackboard"}}
 ```
 
 ```notebook-block

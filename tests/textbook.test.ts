@@ -1,10 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {importText,exportMarkdown} from '../src/io/markdown';
-import {blankDocument,blocksOf,pagesOf} from '../src/model/types';
-import {parseDocument} from '../src/model/document';
+import {blankDocument,blocksOf,pagesOf,textOf,parameterText} from '../src/model/types';
+import {parseDocument,resolveSelector} from '../src/model/document';
 import {slimFonts,artifactStem} from '../src/io/packaging';
 import {machineLearning} from '../src/machine-learning';
+import {authoredAnnotations} from '../src/model/study';
 
 test('page directives bind Cornell cues and charts to the correct source page and survive export',()=>{
  const input='# 教材\n## 数据\n### 关系\n```notebook-page\n'+JSON.stringify({id:'data-page',layout:'cornell',summary:'两个观测值。',cues:[{id:'data-cue',text:'图上有几个点？',blockId:'observed'}]})+'\n```\n```notebook-block\n'+JSON.stringify({id:'observed',type:'chart',chartType:'scatter',xLabel:'输入',yLabel:'结果',series:[{id:'s',label:'观测',points:[{x:1,y:3},{x:2,y:5}]}],keepTogether:true,study:{role:'evidence',frame:'pencil'}})+'\n```';
@@ -29,11 +30,26 @@ test('artifact filenames are readable, versioned and safe on major desktop files
 });
 test('machine learning textbook validates, distinguishes examples and supplies reproducible numerical visuals',()=>{
  const {document,warnings}=parseDocument(machineLearning);assert.deepEqual(warnings,[]);
- assert.equal(document.notebook.chapters.length,4);assert.equal(pagesOf(document).length,11);
+ assert.equal(document.notebook.chapters.length,4);assert.equal(pagesOf(document).length,12);
  const blocks=blocksOf(document);assert.equal(blocks.filter(b=>b.type==='exercise').length,0);
  assert.ok(blocks.filter(b=>b.type==='chart').length>=3);assert.ok(blocks.filter(b=>b.type==='example').every(b=>b.steps?.length&&b.result));
  const loss=blocks.find(b=>b.id==='ml-loss-curve')!;
  for(const point of loss.series![0].points)assert.equal(point.y,2.5*(point.x-2)**2);
  assert.equal(1-.1*(5*(1-2)),1.5);assert.equal(2.5*(1.5-2)**2,.625);
  for(const p of pagesOf(document))for(const cue of p.cues||[])assert.ok(p.blocks.some(b=>b.id===cue.blockId));
+ const chart=blocks.find(b=>b.id==='ml-parameter-chart')!;
+ for(const [i,s]of chart.series!.entries())for(const p of s.points)assert.equal(p.y,i===1?2*p.x+1:i===2?p.x+2:p.x+1);
+ assert.equal(document.notebook.revision,2);assert.equal(document.extensions.baseRevision,1);
+ assert.ok(blocks.filter(b=>b.type==='formula').every(b=>b.parameters?.every(p=>p.description.length>20)));
+});
+test('formula symbol rows validate and roundtrip with addressable explanations and compatible legacy text',()=>{
+ const original=structuredClone(machineLearning),round=importText(exportMarkdown(original)).document;
+ assert.deepEqual(round.notebook,original.notebook);
+ const b=blocksOf(round).find(b=>b.id==='ml-linear')!,text=textOf(b),row=parameterText(b.parameters![2]),start=text.indexOf(row);
+ assert.ok(start>b.text!.length);assert.deepEqual(resolveSelector(round,{blockId:b.id,start,end:start+row.length,exact:row,prefix:'',suffix:''}),{status:'resolved',start,end:start+row.length});
+ const old=structuredClone(original);delete blocksOf(old).find(b=>b.id==='ml-linear')!.parameters;assert.doesNotThrow(()=>parseDocument(old));
+ for(const field of ['symbol','name','description']as const){const invalid=structuredClone(original);blocksOf(invalid).find(b=>b.id==='ml-linear')!.parameters![0][field]='';assert.throws(()=>parseDocument(invalid));}
+ const oldText='Legacy explanation';assert.equal(textOf({id:'old',type:'formula',latex:'x+y',text:oldText}),oldText);
+ b.study!.marks=[{text:b.parameters![0].description,kind:'underline'}];
+ const mark=authoredAnnotations(round,'ml-model')[0];assert.equal(mark.color,'#345d76');assert.equal(resolveSelector(round,mark.selectors[0]).status,'resolved');
 });

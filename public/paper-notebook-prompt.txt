@@ -11,7 +11,7 @@
 【教材质量】
 按先修知识和章节目标组织体系。每个核心知识点解释定义、条件、为什么成立以及适用边界；推导交代每一步依据和符号；教学例题完整列出已知、求解目标、过程和结果；自拟数据标为教学数据。区分知识点、例题、实际案例和练习，只有我选择需要时才出练习。普通解释用连续文字，不要一页塞一串两句话的小卡片。章节之间有联系，最后交代覆盖范围、未覆盖主题和下一步。时间短时缩小范围，不压缩掉关键理由。30–45 分钟的系统导读通常约 8–16 张内容纸页，依主题调整，不凑字数。
 
-主动提供有解释力的图解、数据图、对照表或示意，通常每一至两页有一种视觉解释；公式不算插图。不重复同一三框箭头图。可以检索可靠资料及明确许可的素材，或用下述原生 diagram、chart、表格自行绘制。不能交付内嵌图片时改用真实可渲染的图表，不输出“此处插图”或假链接。数值、图形、单位与文字一致。手绘风格只改变线条，不改变科学事实。
+主动提供有解释力的图解、数据图、对照表或示意，通常每一至两页有一种视觉解释；公式不算插图。不重复同一三框箭头图。可以检索可靠资料及明确许可的素材，或用下述原生 diagram、chart、表格自行绘制。不能交付内嵌图片时改用真实可渲染的图表，不输出“此处插图”或假链接。数值、图形、单位与文字一致。重要公式用 parameters:[{symbol,name,description}] 逐行解释符号，说明含义、单位与代入数值或变化影响；text 补充整体条件。函数配坐标图、计算路径或数值对照。不要靠空格或手写横线对齐正文，纸张横线由阅读器随实际文字行定位。手绘风格只改变线条，不改变科学事实。
 
 材料严格模式保留题库/讲义的原题、答案、顺序和客观内容，补充解释另列。PDF 优先文字层；扫描件和图片按可用能力识别，保留页码、原文与不确定处，校正单列。引用实际可核实来源；无检索能力时说明限制，不编造来源或读取结果。表达直接自然，无对话开场、空泛鼓励、预设读者错误或重复总结。
 
@@ -24,7 +24,7 @@
 
 notebook-block 组件：
 - prose/concept/callout/quote：text；可带 title。concept 用于定义与条件。
-- formula：latex、text（变量、单位和条件）；可用 study.visual:"blackboard"。
+- formula：latex、parameters:[{symbol,name,description}]（symbol 为 LaTeX，每个符号一行，详解含义、单位和数值例子）、text（整体条件）；可用 study.visual:"blackboard"。
 - steps：items:[{id,text}]。推导每步说明依据。
 - example：prompt、steps:[{id,text}]、result；完整展示教学例题。
 - comparison：columns:[列名]、rows:[[单元格文字]]、align:["left","center","right"]（与列一一对应）。数值通常居中或右对齐，长文字左对齐。
@@ -53,7 +53,7 @@ notebook-block 组件：
 ```
 
 ```notebook-block
-{"id":"growth-formula","type":"formula","latex":"P_n=P_0(1+r)^n","text":"P₀ 是初始金额，r 是每期增长率，n 是期数。期间无额外存取，且 r 保持不变。","study":{"visual":"blackboard","role":"derivation"},"keepTogether":true}
+{"id":"growth-formula","type":"formula","latex":"P_n=P_0(1+r)^n","text":"期间无额外存取，且每期增长率保持不变。","parameters":[{"symbol":"P_0","name":"初始金额","description":"开始时的本金，例如 100 元，与最终金额使用相同单位。"},{"symbol":"r","name":"每期增长率","description":"以小数表示，10% 写作 0.1。每期金额乘以 1.1。"},{"symbol":"n","name":"期数","description":"累计增长的次数。n=2 表示连续增长两期，100×1.1²=121 元。"},{"symbol":"P_n","name":"第 n 期金额","description":"函数输出。给定本金、增长率和期数，就能计算对应的金额。"}],"study":{"visual":"blackboard","role":"derivation"},"keepTogether":true}
 ```
 
 ```notebook-block

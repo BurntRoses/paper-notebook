@@ -5,7 +5,7 @@ import { el, button, copyText, select } from './dom';
 import { projection } from './projection';
 import { codeTokens } from './code';
 import { grade } from '../model/document';
-import type { Answer, Block, NotebookDocument } from '../model/types';
+import { parameterText, type Answer, type Block, type NotebookDocument } from '../model/types';
 export interface BlockActions { answer:(id:string,answer:Answer)=>void;check:(id:string,value:boolean)=>void; edit:(b:Block)=>void; image:(b:Block)=>void }
 export function diagramSVG(b:Block){
  const NS='http://www.w3.org/2000/svg',s=document.createElementNS(NS,'svg'),nodes=b.nodes||[],horizontal=b.arrangement==='row'&&nodes.length<=4&&!matchMedia('(max-width:599px)').matches,cols=horizontal?Math.max(1,nodes.length):nodes.length>4?2:1,width=horizontal?nodes.length*360:cols===1?460:760,nodeW=horizontal?220:cols===1?300:244,gap=82;
@@ -31,7 +31,21 @@ export function renderBlock(b:Block,d:NotebookDocument,actions:BlockActions){
   case 'steps':case 'checklist':{const list=el(b.type==='steps'?'ol':'ul');if(list instanceof HTMLOListElement)list.start=Number(b._stepStart||1);let offset=0;b.items?.forEach(item=>{const li=el('li');if(b.type==='checklist'){const check=el('input');check.type='checkbox';check.checked=!!d.userState.checks[item.id];check.setAttribute('aria-label',item.text);check.onchange=()=>actions.check(item.id,check.checked);li.append(check);}projection(li,item.text,offset);offset+=item.text.length+1;list.append(li);});root.append(list);break;}
   case 'example':{text(b.prompt||'','p',0,'example-prompt');let offset=b.prompt?(b.prompt.length+1):0;const list=el('ol');list.start=Number(b._stepStart||1);b.steps?.forEach(item=>{const li=el('li');projection(li,item.text,offset);offset+=item.text.length+1;list.append(li);});root.append(list);text(b.result||'','p',offset,'example-result');break;}
   case 'comparison':{const wrap=el('div','table-scroll');wrap.tabIndex=0;wrap.setAttribute('aria-label',b.title||'对照表，可横向滚动');const table=el('table'),head=el('thead'),tr=el('tr');let offset=0;const cell=(tag:'td'|'th',c:string,col:number)=>{const n=el(tag);if(tag==='th')n.setAttribute('scope','col');const values=(b.rows||[]).map(r=>r[col]||'');const numeric=values.length>0&&values.every(v=>/^[\s+−–—\d.,%￥$€×÷=()/^:：eE²³⁰¹⁻≤≥]+$/.test(v));n.style.textAlign=b.align?.[col]||(tag==='th'||numeric?'center':'left');projection(n,c,offset);offset+=c.length+1;return n;};b.columns?.forEach((c,i)=>tr.append(cell('th',c,i)));offset+=Number(b._rowOffset||0);head.append(tr);const body=el('tbody');b.rows?.forEach(row=>{const r=el('tr');row.forEach((c,i)=>r.append(cell('td',c,i)));body.append(r);});table.append(head,body);wrap.append(table);root.append(wrap);break;}
-  case 'formula':{const formula=el('div','formula');try{formula.innerHTML=katex.renderToString(b.latex||'',{displayMode:true,throwOnError:false,trust:false,strict:'warn',output:'htmlAndMathml'});}catch{formula.textContent=b.latex||'';}root.append(formula);if(b.text)text(b.text);break;}
+  case 'formula':{
+   const math=(latex:string,displayMode:boolean)=>{const n=el('div',displayMode?'formula':'parameter-symbol');try{n.innerHTML=katex.renderToString(latex,{displayMode,throwOnError:false,trust:false,strict:'warn',output:'htmlAndMathml'});}catch{n.textContent=latex;}return n;};
+   const formula=math(b.latex||'',true);
+   if(b.parameters?.length){
+    root.classList.add('formula-explained');
+    // The formula owns the chalkboard; explanations read naturally on the paper.
+    const board=el('div','formula-board');if(root.dataset.visual==='blackboard'){root.dataset.visual='plain';board.dataset.visual='blackboard';board.dataset.frame='plain';}
+    board.append(...root.childNodes,formula);root.append(board);
+    const list=el('dl','formula-parameters');list.setAttribute('aria-label','符号说明');
+    let offset=Number(b._parameterOffset??((b.text||b.latex||'').length+1));
+    for(const p of b.parameters){const row=el('div','formula-parameter'),symbol=el('dt'),meaning=el('dd');symbol.append(math(p.symbol,false));projection(meaning,parameterText(p),offset);offset+=parameterText(p).length+1;row.append(symbol,meaning);list.append(row);}
+    root.append(list);
+   }else root.append(formula);
+   if(b.text)text(b.text,'p',0,'formula-context');break;
+  }
   case 'code':{const head=el('div','code-head',b.language||'code');head.append(button('复制代码',()=>copyText(b.text||''),'text-button','⧉'));const pre=el('pre');pre.tabIndex=0;const code=el('code'),span=projection(code,b.text||'');span.replaceChildren(...codeTokens(b.text||'',b.language).map(t=>el('span','code-token token-'+t.kind,t.text)));pre.append(code);root.append(head,pre);break;}
   case 'image':{const asset=d.assets.find(a=>a.id===b.assetId);if(asset){const figure=el('figure'),image=el('img');image.src=asset.data;image.alt=b.alt||'';image.loading='lazy';image.decoding='async';image.onclick=()=>actions.image(b);figure.append(image);if(b.caption)figure.append(el('figcaption','',b.caption));if(asset.source)figure.append(el('small','asset-source',`${asset.source} · ${asset.license||'用户提供'}`));root.append(figure);}else root.append(el('p','muted','图片尚未提供。'));break;}
   case 'diagram':{root.append(diagramSVG(b));if(b.caption)root.append(el('p','figure-caption',b.caption));break;}

@@ -9,7 +9,7 @@
 | steps | items: [{id,text}] | 操作或推导顺序 |
 | example | prompt, steps: [{id,text}], result | 有条件和过程的完整例子 |
 | comparison | columns: string[], rows: string[][] | 相同维度的对照 |
-| formula | latex, text? | 公式及变量/单位/条件说明 |
+| formula | latex, text?, parameters?: [{symbol,name,description}] | 主公式、逐行符号解释、适用条件 |
 | code | text, language? | 保留缩进，只展示、不执行 |
 | quote | text, attribution? | 可追踪原文或明确标为教学自拟的旁注 |
 | callout | text, tone? | 注意事项、待核实点 |
@@ -37,3 +37,5 @@
 小型 diagram 可设 `arrangement: "row"`，最多四个节点横向排列；手机自动转为纵向，更复杂的关系使用默认分层排布。code 保留缩进，显示语言与复制按钮，语法颜色仅作用于文字，不执行程序。
 
 需要解释代码或关键概念时，可用 `study.explanations: [{text, note}]`，最多三条。text 必须是实际正文的子串；阅读器从对应文字行尾引线至旁注，窄页将解释移至下方，保持原文和缩进。标记的星标、勾记位于文字右上角行间，框线留出文字四周空间。
+
+公式的 `parameters` 每项独占一行：`symbol` 使用 LaTeX，`name` 是简短名称，`description` 解释含义、单位、变化影响或具体代入。`text` 补充整体条件，不重复堆叠符号释义。长列表按完整条目续页，主公式在续页重复；旧版只有 `latex/text` 的内容仍可导入。函数配实际坐标图、计算路径或数值对照，图文数值保持一致。不要用空格或手写横线模拟版面。

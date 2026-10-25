@@ -1,5 +1,6 @@
 export type BlockType = 'prose'|'concept'|'steps'|'example'|'comparison'|'formula'|'code'|'quote'|'image'|'diagram'|'chart'|'callout'|'checklist'|'exercise';
 export interface Item { id: string; text: string }
+export interface FormulaParameter { symbol:string; name:string; description:string }
 export interface DiagramNode { id: string; label: string; x?: number; y?: number }
 export type StudyMarkKind='highlight'|'underline'|'circle'|'wave'|'box'|'bracket'|'check'|'star'|'dots';
 export interface StudyPresentation {visual?:'plain'|'blackboard'|'extract'|'sketch';role?:'definition'|'intuition'|'derivation'|'example'|'evidence'|'takeaway'|'recall';frame?:'auto'|'plain'|'pencil'|'tape'|'double'|'margin';label?:string;aside?:string;explanations?:{text:string;note:string}[];tone?:'blue'|'red'|'olive'|'gold';marks?:{text:string;kind:StudyMarkKind;color?:string;seed?:number}[]}
@@ -8,6 +9,7 @@ export interface Block {
   study?:StudyPresentation;
   items?: Item[]; steps?: Item[]; prompt?: string; result?: string;
   columns?: string[]; rows?: string[][]; latex?: string; language?: string;
+  parameters?:FormulaParameter[];
   align?: ('left'|'center'|'right')[]; keepTogether?:boolean;
   chartType?:'scatter'|'line'|'bar';xLabel?:string;yLabel?:string;series?:{id:string;label:string;points:{x:number;y:number;label?:string}[]}[];
   sourceRefs?: { sourceId: string; locator?: string }[]; verification?: string;
@@ -60,4 +62,5 @@ export function userState(pageId=''): NotebookDocument['userState'] { return {up
 export const pagesOf = (d: NotebookDocument) => d.notebook.chapters.flatMap(c=>c.pages);
 export const blocksOf = (d: NotebookDocument) => pagesOf(d).flatMap(p=>p.blocks);
 export function blankDocument(): NotebookDocument { const id=uid('page');return {schemaVersion:'1.0.0',notebook:{id:uid('notebook'),revision:1,title:'结构化学习笔记',language:'zh-CN',goals:[],sources:[],chapters:[{id:uid('chapter'),title:'学习内容',pages:[{id,title:'导入教程',layout:'cornell',blocks:[]}]}]},userState:userState(id),assets:[],extensions:{}}; }
-export function textOf(b: Block): string { if(b.type==='comparison')return [...(b.columns||[]),...(b.rows||[]).flat()].join('\n');return [b.text||b.question||b.prompt||b.latex||'',...(b.items||b.steps||[]).map(i=>i.text),b.result||''].filter(Boolean).join('\n'); }
+export const parameterText=(p:FormulaParameter)=>p.name+'：'+p.description;
+export function textOf(b: Block): string { if(b.type==='comparison')return [...(b.columns||[]),...(b.rows||[]).flat()].join('\n');return [b.text||b.question||b.prompt||b.latex||'',...(b.items||b.steps||[]).map(i=>i.text),b.result||'',...(b.parameters||[]).map(parameterText)].filter(Boolean).join('\n'); }

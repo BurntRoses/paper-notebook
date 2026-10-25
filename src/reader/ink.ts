@@ -2,6 +2,7 @@ import { getStroke } from 'perfect-freehand';
 import { resolveInText } from '../model/document';
 import { inkPoints } from '../model/paper';
 import { circleStroke } from './circle';
+import { drawRuling } from './ruling';
 import { blocksOf, textOf, type Annotation, type NotebookDocument, type Selector } from '../model/types';
 const NS='http://www.w3.org/2000/svg';
 const svg=(tag:string,attrs:Record<string,string|number>)=>{const n=document.createElementNS(NS,tag);for(const [k,v] of Object.entries(attrs))n.setAttribute(k,String(v));return n;};
@@ -66,6 +67,7 @@ export function drawInk(paper:HTMLElement,annotations:Annotation[],d:NotebookDoc
   }
  }
  drawExplanations(paper,overlay,d,base,sx,sy);
+ drawRuling(paper);
 }
 function drawExplanations(paper:HTMLElement,overlay:SVGSVGElement,d:NotebookDocument,base:DOMRect,sx:number,sy:number){
  for(const [noteIndex,note] of [...paper.querySelectorAll<HTMLElement>('[data-explain-target]')].entries()){

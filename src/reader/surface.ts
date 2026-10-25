@@ -1,4 +1,4 @@
-import { pagesOf, type Block, type NotebookDocument, type Page, type PaperShape } from '../model/types';
+import { pagesOf, parameterText, type Block, type NotebookDocument, type Page, type PaperShape } from '../model/types';
 import { frameFor, paperSize, safeBoundary } from '../model/paper';
 import { el } from '../ui/dom';
 export interface SurfacePage extends Page {part:number;totalParts:number}
@@ -24,6 +24,7 @@ export class PageSurface {
  }
  block(page:Page,b:Block){
   const node=this.renderBlock(b),offset=(b as FragmentBlock)._offset||0;
+  if(b._figureHeight)node.querySelector<HTMLElement>('.notebook-chart')?.style.setProperty('max-height',b._figureHeight+'px');
   if(this.printRoot&&b._printScale)node.style.zoom=String(b._printScale);
   if((b as FragmentBlock)._oversize){node.classList.add('oversize-object');node.style.maxHeight='var(--body-height)';}
   if(offset)node.querySelectorAll<HTMLElement>('.ink-text').forEach(s=>s.dataset.offset=String(Number(s.dataset.offset||0)+offset));
@@ -48,7 +49,11 @@ export class PageSurface {
    const limit=()=>article.querySelector<HTMLElement>('.reader-page-body')!.clientHeight;
    const height=()=>content.scrollHeight;
    const flush=()=>{result.push({...source,blocks,part:part++,totalParts:1});blocks=[];article=this.make(source,part);content=article.querySelector<HTMLElement>('.reader-content')!;measure.replaceChildren(article);};
-   const append=(b:Block)=>{const n=this.block(source,b);content.append(n);return n;};
+   const append=(b:Block)=>{const n=this.block(source,b);content.append(n);
+    // Preserve readable captions when a chart shares a sheet with a heading.
+    // Only shrink the drawing; the text keeps the reader's selected size.
+    if(!this.printRoot&&b.type==='chart'){const chart=n.querySelector<SVGSVGElement>('.notebook-chart'),overflow=n.getBoundingClientRect().height-limit();if(chart&&overflow>0){const h=Math.max(150,chart.getBoundingClientRect().height-overflow-12);chart.style.maxHeight=h+'px';b._figureHeight=h;}}
+    return n;};
    const commit=(b:Block)=>{let node=append(b);if(this.printRoot&&height()>limit()+1&&!blocks.length){const scale=Math.min(1,(limit()-20)/node.getBoundingClientRect().height);node.remove();b={...b,_printScale:scale};node=append(b);}blocks.push(b);};
    for(const sourceBlock of source.blocks){
     let b:FragmentBlock={...sourceBlock},guard=0;
@@ -64,6 +69,15 @@ export class PageSurface {
       let cut=safeBoundary(b.text,lo);if(cut<1&&blocks.length){flush();continue;}if(cut<1)cut=safeBoundary(b.text,Math.min(b.text.length,200));
       if(cut<b.text.length){const sentence=Math.max(...['。','！','？','；','\n'].map(mark=>b.text!.lastIndexOf(mark,cut-1)));if(sentence>cut*.7)cut=sentence+1;const lineBreak=b.text.lastIndexOf('\n',cut);const space=b.text.lastIndexOf(' ',cut);const word=Math.max(lineBreak,space);if(word>cut-35&&word>0)cut=word+1;}
       const head={...b,text:b.text.slice(0,cut)};commit(head);const rest=b.text.slice(cut);if(!rest)break;flush();b={...b,title:undefined,text:rest,_offset:(b._offset||0)+cut};continue;
+     }
+     if(b.type==='formula'&&(b.parameters?.length||0)>1){
+      const parameters=b.parameters!,offset=Number(b._parameterOffset??((b.text||b.latex||'').length+1));let take=0;
+      for(let i=1;i<=parameters.length;i++){const probe=append({...b,parameters:parameters.slice(0,i),text:i===parameters.length?b.text:undefined,_parameterOffset:offset}),fits=height()<=limit();probe.remove();if(!fits)break;take=i;}
+      if(!take&&blocks.length){flush();continue;}
+      if(parameters.length-take===1&&take>2)take--;
+      // Keep each symbol and its explanation together, repeating the live formula on continuation sheets.
+      if(take>0){const head={...b,parameters:parameters.slice(0,take),text:take===parameters.length?b.text:undefined,_parameterOffset:offset};commit(head);if(take===parameters.length)break;
+       flush();b={...b,title:undefined,parameters:parameters.slice(take),_parameterOffset:offset+parameters.slice(0,take).reduce((sum,p)=>sum+parameterText(p).length+1,0)};continue;}
      }
      if(this.printRoot&&b.type==='code'&&b.text?.includes('\n')){
       const lines=b.text.split('\n');let take=0;

@@ -1254,6 +1254,125 @@
                   }
                 }
               }
+            },
+            "role": {
+              "enum": [
+                "definition",
+                "intuition",
+                "derivation",
+                "example",
+                "evidence",
+                "takeaway",
+                "recall"
+              ]
+            },
+            "frame": {
+              "enum": [
+                "auto",
+                "plain",
+                "pencil",
+                "tape",
+                "double",
+                "margin"
+              ]
+            }
+          }
+        },
+        "align": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "left",
+              "center",
+              "right"
+            ]
+          }
+        },
+        "keepTogether": {
+          "type": "boolean"
+        },
+        "chartType": {
+          "enum": [
+            "scatter",
+            "line",
+            "bar"
+          ]
+        },
+        "xLabel": {
+          "type": "string"
+        },
+        "yLabel": {
+          "type": "string"
+        },
+        "series": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "label",
+              "points"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "points": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 200,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "x",
+                    "y"
+                  ],
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "label": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 30,
+          "items": {
+            "type": "object",
+            "required": [
+              "symbol",
+              "name",
+              "description"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "symbol": {
+                "type": "string",
+                "minLength": 1
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1
+              }
             }
           }
         }
@@ -1436,6 +1555,23 @@
                   ]
                 }
               }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "chart"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "chartType",
+              "series",
+              "xLabel",
+              "yLabel"
             ]
           }
         }

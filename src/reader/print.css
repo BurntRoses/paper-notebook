@@ -25,6 +25,11 @@
 #print-root .print-sheet:not(.ink-appendix) .block-steps li,#print-root .print-sheet:not(.ink-appendix) .block-example li{line-height:1.85;margin-bottom:3mm}
 #print-root .print-sheet:not(.ink-appendix) .content-block[data-frame]:not([data-frame=plain]),#print-root .print-sheet:not(.ink-appendix) .block-example,#print-root .print-sheet:not(.ink-appendix) .block-formula{padding:4mm}
 #print-root .print-sheet:not(.ink-appendix) .formula{overflow:visible;font-size:12pt;padding:1mm 0}
+#print-root .text-ruling{display:none}
+#print-root .print-sheet:not(.ink-appendix) .formula-explained{padding:0;background:transparent}
+#print-root .formula-parameters{font-size:11pt;line-height:1.85;gap:2mm}
+#print-root .formula-board{padding:3mm;margin-bottom:3mm}
+#print-root .formula-parameter{column-gap:3mm}
 #print-root .print-sheet:not(.ink-appendix) .katex-display > .katex{white-space:normal}
 #print-root .print-sheet:not(.ink-appendix) .katex-display > .katex > .katex-html{white-space:normal;text-align:left;overflow-wrap:normal}
 #print-root .print-sheet:not(.ink-appendix) .formula p{font-size:11pt}

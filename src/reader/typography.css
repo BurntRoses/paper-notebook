@@ -1,0 +1,21 @@
+/* Ruling is measured after font loading and layout. No page-wide lines through
+   headings, illustrations, formula fractions or differently sized captions. */
+.page-surface[data-ruling=lined] .reader-page-body{background-image:none}
+.text-ruling{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;user-select:none;overflow:hidden;z-index:0;color:var(--line)}
+.text-ruling line{stroke:currentColor;stroke-width:.7;opacity:.62}
+.page-surface .reader-content,.page-surface .cornell-cues{position:relative;z-index:1}
+.page-surface .content-block p,.page-surface .block-title{line-height:var(--rule)}
+.page-surface .figure-caption,.page-surface .block-image figcaption{line-height:calc(var(--rule) * .85)}
+.page-surface .formula-explained:not([data-visual=blackboard]){padding:0;margin-block:0 28px;background:transparent}
+.formula-board{position:relative;padding:12px 22px;margin-bottom:18px;break-inside:avoid}
+.page-surface .formula-board[data-visual=blackboard]{padding:16px 24px;color:#fffbe6}
+.page-surface .formula-board[data-visual=blackboard] .formula{color:#fffbe6}
+.page-surface .formula-board[data-visual=blackboard] .study-label{color:#e7ebc4}
+.page-surface .formula-board .study-label{margin-bottom:4px}
+.page-surface .formula-parameters{display:flex;flex-direction:column;gap:12px;margin:0;padding:0 4px;font-size:.9em;line-height:var(--rule)}
+.formula-parameter{display:grid;grid-template-columns:minmax(2.6em,max-content) minmax(0,1fr);column-gap:18px;align-items:baseline;break-inside:avoid;page-break-inside:avoid}
+.formula-parameter dt{margin:0;text-align:center;color:var(--heading);font-size:1.05em}
+.formula-parameter dd{margin:0;min-width:0}
+.parameter-symbol{display:inline-block;max-width:100%;overflow-wrap:normal}
+.page-surface .formula-explained .formula-context{margin:18px 4px 0;font-size:.85em;line-height:var(--rule);color:var(--muted)}
+@media(max-width:599px){.formula-parameter{column-gap:14px}.page-surface .formula-parameters{gap:14px}}

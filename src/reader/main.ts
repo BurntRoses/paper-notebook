@@ -6,6 +6,7 @@ import './textbook.css';
 import './theme.css';
 import './materials.css';
 import './chrome.css';
+import './typography.css';
 import './turn.css';
 import './print.css';
 import { PageTurn, captureSheets } from './turn';

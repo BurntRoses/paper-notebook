@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "notebook-ml-foundations",
-    "revision": 1,
+    "revision": 2,
     "title": "机器学习入门：从样本到泛化",
     "subtitle": "用图、表与一次手算串起学习流程",
     "language": "zh-CN",
@@ -258,14 +258,36 @@
           {
             "id": "ml-model",
             "title": "一条直线如何做出预测",
-            "layout": "cornell",
+            "layout": "reading",
             "subject": "stem",
             "blocks": [
               {
                 "id": "ml-linear",
                 "type": "formula",
                 "latex": "\\hat y=wx+b",
-                "text": "x 是输入，ŷ 是预测，w 是斜率，b 是截距。固定 w、b 后，每个 x 对应一个预测。线性关系是模型假设，不是数据必须服从的规律。",
+                "text": "固定 w、b 后，每个输入对应一个预测。直线描述当前模型的假设；真实数据允许偏离这条线。",
+                "parameters": [
+                  {
+                    "symbol": "x",
+                    "name": "输入",
+                    "description": "预测时已知的特征值。本例取 x=2，表示样本 B 的输入；它随样本改变。"
+                  },
+                  {
+                    "symbol": "\\hat y",
+                    "name": "预测值",
+                    "description": "模型算出的结果。w=1、b=1 时，输入 2 得到预测 3；真实标签 y=4 需另作比较。"
+                  },
+                  {
+                    "symbol": "w",
+                    "name": "斜率参数",
+                    "description": "输入每增加 1，预测增加 w。w=2 时，输入从 1 变为 2，预测增加 2。"
+                  },
+                  {
+                    "symbol": "b",
+                    "name": "截距参数",
+                    "description": "输入为 0 时的预测。只增大 b 会使整条直线向上平移，斜率保持原值。"
+                  }
+                ],
                 "keepTogether": true,
                 "study": {
                   "role": "derivation",
@@ -300,6 +322,152 @@
                 "id": "ml-model-cue-0",
                 "text": "参数与样本有什么不同？",
                 "blockId": "ml-linear"
+              }
+            ]
+          },
+          {
+            "id": "ml-parameters",
+            "title": "看图理解：斜率与截距怎样改变直线",
+            "layout": "reading",
+            "subject": "stem",
+            "blocks": [
+              {
+                "id": "ml-parameter-chart",
+                "type": "chart",
+                "chartType": "line",
+                "title": "每次只改变一个参数",
+                "xLabel": "输入 x",
+                "yLabel": "预测 ŷ",
+                "series": [
+                  {
+                    "id": "ml-line-base",
+                    "label": "基准：ŷ=x+1",
+                    "points": [
+                      {
+                        "x": 0,
+                        "y": 1
+                      },
+                      {
+                        "x": 1,
+                        "y": 2
+                      },
+                      {
+                        "x": 2,
+                        "y": 3
+                      },
+                      {
+                        "x": 3,
+                        "y": 4
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ml-line-slope",
+                    "label": "改 w：ŷ=2x+1",
+                    "points": [
+                      {
+                        "x": 0,
+                        "y": 1
+                      },
+                      {
+                        "x": 1,
+                        "y": 3
+                      },
+                      {
+                        "x": 2,
+                        "y": 5
+                      },
+                      {
+                        "x": 3,
+                        "y": 7
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ml-line-intercept",
+                    "label": "改 b：ŷ=x+2",
+                    "points": [
+                      {
+                        "x": 0,
+                        "y": 2
+                      },
+                      {
+                        "x": 1,
+                        "y": 3
+                      },
+                      {
+                        "x": 2,
+                        "y": 4
+                      },
+                      {
+                        "x": 3,
+                        "y": 5
+                      }
+                    ]
+                  }
+                ],
+                "caption": "同一坐标系内，改 w 的直线仍经过 (0,1)，但变得更陡；改 b 的直线与基准平行，每个 x 处的预测都增加 1。图上各点按对应公式准确计算。",
+                "study": {
+                  "role": "intuition",
+                  "frame": "plain"
+                },
+                "keepTogether": true
+              },
+              {
+                "id": "ml-function-path",
+                "type": "diagram",
+                "title": "沿着函数走一遍：输入 2，w=1，b=1",
+                "arrangement": "row",
+                "nodes": [
+                  {
+                    "id": "ml-f-input",
+                    "label": "输入 x=2"
+                  },
+                  {
+                    "id": "ml-f-multiply",
+                    "label": "乘以 w：1×2=2"
+                  },
+                  {
+                    "id": "ml-f-output",
+                    "label": "加上 b：2+1=3"
+                  }
+                ],
+                "edges": [
+                  {
+                    "from": "ml-f-input",
+                    "to": "ml-f-multiply",
+                    "label": "乘法"
+                  },
+                  {
+                    "from": "ml-f-multiply",
+                    "to": "ml-f-output",
+                    "label": "平移"
+                  }
+                ],
+                "caption": "这条计算路径与图中的基准直线对应，输出就是 x=2 时纵轴上的预测值 3。",
+                "study": {
+                  "role": "example",
+                  "frame": "plain"
+                },
+                "keepTogether": true
+              },
+              {
+                "id": "ml-parameter-boundary",
+                "type": "prose",
+                "text": "比较参数影响时，应固定另一个参数。图中展示的是三个候选规则，尚未决定哪条直线更合适；下一步需要对照样本标签，用损失函数进行比较。若真实特征有单位，w 的单位为输出单位除以输入单位，b 与输出使用相同单位。"
+              }
+            ],
+            "summary": "斜率决定输入变化引起的预测变化，截距决定整体上下平移；图像与代入计算描述同一规则。",
+            "cues": [
+              {
+                "id": "ml-parameters-cue-0",
+                "text": "改 w 与改 b，图像怎样不同？",
+                "blockId": "ml-parameter-chart"
+              },
+              {
+                "id": "ml-parameters-cue-1",
+                "text": "输入 2 怎样得到预测 3？",
+                "blockId": "ml-function-path"
               }
             ]
           },
@@ -394,7 +562,39 @@
                 "id": "ml-mse",
                 "type": "formula",
                 "latex": "J(w,b)=\\frac{1}{n}\\sum_{i=1}^{n}(wx_i+b-y_i)^2",
-                "text": "n 是样本数，i 标记第 i 个样本。若 y 有单位，MSE 的单位是 y 单位的平方。训练目标是在训练数据上减小 J。",
+                "text": "各项依次经历预测、求差、平方、求和与平均。若标签带单位，MSE 使用该单位的平方。",
+                "parameters": [
+                  {
+                    "symbol": "J(w,b)",
+                    "name": "训练损失",
+                    "description": "当前参数在这批样本上的平均平方误差。更换 w 或 b，通常会改变这个分数。"
+                  },
+                  {
+                    "symbol": "n",
+                    "name": "样本数",
+                    "description": "参与本次平均的记录数量。本例有 A、B、C 三条记录，所以 n=3。"
+                  },
+                  {
+                    "symbol": "i",
+                    "name": "样本下标",
+                    "description": "从 1 到 n 依次取每条记录。求和符号 Σ 表示这些记录的平方误差相加。"
+                  },
+                  {
+                    "symbol": "x_i",
+                    "name": "第 i 个输入",
+                    "description": "第 i 条样本的特征。本例样本 B 对应 x₂=2，代入后得到预测 wx₂+b。"
+                  },
+                  {
+                    "symbol": "y_i",
+                    "name": "第 i 个标签",
+                    "description": "第 i 条样本的已知真实结果。样本 B 的 y₂=4，与预测值逐条配对求差。"
+                  },
+                  {
+                    "symbol": "w,\\ b",
+                    "name": "待选择的参数",
+                    "description": "同一批样本共用的斜率与截距。训练固定数据，寻找使 J 较小的参数。"
+                  }
+                ],
                 "keepTogether": true,
                 "study": {
                   "role": "derivation",
@@ -453,7 +653,19 @@
                 "id": "ml-simple-loss",
                 "type": "formula",
                 "latex": "J(w)=\\frac{(w-2)^2+(2w-4)^2}{2}=\\frac{5}{2}(w-2)^2",
-                "text": "合并时使用 2w−4=2(w−2)。只有在这个固定截距、两样本的例子中，J 才简化为右侧表达式。",
+                "text": "两项分别来自样本 (1,2)、(2,4)。由于 2w−4=2(w−2)，平方后第二项是第一项的 4 倍，取平均得到系数 5/2。",
+                "parameters": [
+                  {
+                    "symbol": "w",
+                    "name": "唯一待学参数",
+                    "description": "这里固定 b=0，仅改变斜率。w=2 时，预测分别为 2 和 4，恰好对应两条标签。"
+                  },
+                  {
+                    "symbol": "J(w)",
+                    "name": "损失函数",
+                    "description": "输入一个候选 w，输出一个非负损失。w=1 时 J=2.5；w=2 时 J=0。下图横轴是参数，纵轴是损失。"
+                  }
+                ],
                 "keepTogether": true,
                 "study": {
                   "role": "derivation",
@@ -529,14 +741,36 @@
           {
             "id": "ml-update",
             "title": "手算一次梯度下降",
-            "layout": "cornell",
+            "layout": "reading",
             "subject": "stem",
             "blocks": [
               {
                 "id": "ml-update-rule",
                 "type": "formula",
                 "latex": "\\frac{dJ}{dw}=5(w-2),\\qquad w_{new}=w-\\eta\\frac{dJ}{dw}",
-                "text": "η>0 是学习率。导数表示 J 在当前位置对 w 的变化率；沿负导数方向移动一个小步，以减小损失。一般问题需要检查步长，不能保证任意学习率都有效。",
+                "text": "导数表达式来自上一页的两样本损失。实际使用时，应检查更新后的损失；学习率过大可能越过低点并使损失上升。",
+                "parameters": [
+                  {
+                    "symbol": "w",
+                    "name": "更新前参数",
+                    "description": "本次计算的出发点。例题从 w=1 开始，在损失曲线上对应高度 J=2.5。"
+                  },
+                  {
+                    "symbol": "\\frac{dJ}{dw}",
+                    "name": "当前位置的导数",
+                    "description": "描述损失随 w 变化的局部趋势。w=1 时值为 −5，说明适当增大 w 可降低损失。"
+                  },
+                  {
+                    "symbol": "\\eta",
+                    "name": "学习率",
+                    "description": "大于 0 的步长系数。取 0.1 时，本次参数变化为 −0.1×(−5)=+0.5。"
+                  },
+                  {
+                    "symbol": "w_{new}",
+                    "name": "更新后参数",
+                    "description": "旧参数减去学习率乘导数。本次得到 1.5，代回损失函数后 J=0.625。"
+                  }
+                ],
                 "keepTogether": true,
                 "study": {
                   "role": "derivation",
@@ -875,6 +1109,7 @@
   },
   "assets": [],
   "extensions": {
+    "baseRevision": 1,
     "readerProfile": {
       "font": "hand",
       "lineSpacing": 1.85,

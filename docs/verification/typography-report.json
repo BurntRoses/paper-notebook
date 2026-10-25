@@ -1,0 +1,68 @@
+{
+  "date": "2026-10-25T15:27:14.867Z",
+  "checks": [
+    "symbol rows survive screen reflow intact with exact text anchors, separate rows and no formula scrollboxes",
+    "ruling stays below actual text across three fonts, spacing choices, both themes and desktop/tablet/phone viewports",
+    "new parameter explanations remain selectable and annotatable after zoom",
+    "grid, dotted and blank paper retain their own settings while lined paper follows text",
+    "portrait and landscape A4 projections retain every formula explanation once without screen ruling"
+  ],
+  "layouts": [
+    {
+      "width": 1440,
+      "height": 1000,
+      "font": "hand",
+      "spacing": 1.85,
+      "theme": "paper-light",
+      "issues": [],
+      "lines": 8,
+      "textLines": 3,
+      "background": "none"
+    },
+    {
+      "width": 1180,
+      "height": 820,
+      "font": "serif",
+      "spacing": 1.65,
+      "theme": "paper-night",
+      "issues": [],
+      "lines": 10,
+      "textLines": 3,
+      "background": "none"
+    },
+    {
+      "width": 820,
+      "height": 1180,
+      "font": "sans",
+      "spacing": 2.05,
+      "theme": "paper-light",
+      "issues": [],
+      "lines": 11,
+      "textLines": 5,
+      "background": "none"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "font": "hand",
+      "spacing": 1.85,
+      "theme": "paper-night",
+      "issues": [],
+      "lines": 7,
+      "textLines": 8,
+      "background": "none"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "font": "sans",
+      "spacing": 2.05,
+      "theme": "paper-light",
+      "issues": [],
+      "lines": 15,
+      "textLines": 7,
+      "background": "none"
+    }
+  ],
+  "errors": []
+}
