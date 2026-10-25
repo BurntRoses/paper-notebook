@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-24T10:50:12.217Z",
+  "date": "2026-10-24T18:02:31.112Z",
   "base": "http://127.0.0.1:5180/paper-notebook-kit/output/site/",
   "checks": [
     "One product home embeds the actual reader; legacy pages redirect to the matching section",
@@ -9,11 +9,11 @@
     "Both copy buttons put the complete, self-contained instructions on the clipboard; no download step",
     "Clipboard-denied fallback reveals and selects each complete prompt; mobile layout fits the viewport",
     "Text-only chat example imports with a real formula and circle, then downloads as HTML",
-    "Film follows screen ratio automatically; rotation and rapid reversal preserve time and playback state",
+    "Film follows screen ratio automatically; delayed media and rapid reversal preserve time/play state, resume during seek and clear loading feedback",
     "Home and automatic film/poster selection fit phone, tablet and desktop viewports",
     "Portable Skill ZIP downloads successfully"
   ],
   "errors": [],
-  "skillSHA256": "98bc0b5a976462d9b5f4d14640c9561077dedcdb39e0d7b79f0dcf43691290d6",
+  "skillSHA256": "d0efd4f167e5163def0ab414e1f6079b83aab7d1a3f16cd95234b70f019dcf52",
   "scope": "Chromium over HTTP(S); browser imports and HTML download, responsive films, legacy redirects, public exposure restrictions and all primary page links"
 }

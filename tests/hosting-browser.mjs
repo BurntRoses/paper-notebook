@@ -116,15 +116,28 @@ try {
   await page.waitForFunction(() => {const v=document.querySelector('video');return v.videoWidth===1080&&!v.seeking&&v.currentTime>=32});
   assert.equal(await page.locator('video').evaluate(v=>v.paused),true);
   await page.locator('video').evaluate(v=>v.play());
+  await page.locator('video').evaluate(v=>{
+    window.filmResumeRequests=[];
+    const play=v.play.bind(v);
+    v.play=()=>{window.filmResumeRequests.push({orientation:v.dataset.orientation,seeking:v.seeking,time:v.currentTime});return play()};
+  });
+  // Delayed media headers reproduce rotation while a new source is buffering.
+  await page.route('**/*.mp4',async route=>{await new Promise(resolve=>setTimeout(resolve,250));await route.continue()});
   await page.setViewportSize({width:1180,height:820});
+  await page.waitForFunction(()=>document.querySelector('video').getAttribute('aria-busy')==='true');
+  assert.equal(await page.locator('.film-status').textContent(),'影片加载中…');
   await page.waitForFunction(()=>{const v=document.querySelector('video');return v.videoWidth===1920&&!v.paused&&v.currentTime>=32});
+  assert.ok(await page.evaluate(()=>window.filmResumeRequests.some(r=>r.orientation==='landscape'&&r.seeking&&r.time>=32)),'Resume playback while the restored frame is still seeking');
   // Reverse two rotations while metadata is still loading.
   await page.setViewportSize({width:820,height:1180});
   await page.waitForFunction(()=>document.querySelector('video').dataset.orientation==='portrait');
   await page.setViewportSize({width:1180,height:820});
   await page.waitForFunction(()=>{const v=document.querySelector('video');return v.videoWidth===1920&&!v.paused&&!v.seeking&&v.currentTime>=32});
+  await page.waitForFunction(()=>!document.querySelector('video').hasAttribute('aria-busy'));
+  assert.equal(await page.locator('.film-status').textContent(),'');
+  await page.unroute('**/*.mp4');
   await page.locator('video').evaluate(v=>v.pause());
-  checks.push('Film follows screen ratio automatically; rotation and rapid reversal preserve time and playback state');
+  checks.push('Film follows screen ratio automatically; delayed media and rapid reversal preserve time/play state, resume during seek and clear loading feedback');
   for(const [width,height]of [[360,780],[390,844],[820,1180],[1180,820],[1440,1000]]){
     await page.setViewportSize({width,height});await page.goto(base);
     assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${width}×${height}`);

@@ -34,6 +34,10 @@ try{
  await promo.setViewportSize({width:1080,height:1920});await promo.waitForFunction(()=>{const v=document.querySelector('video');return v.videoWidth===1080&&!v.seeking&&v.currentTime>=35.5});
  assert.equal(await promo.locator('video').evaluate(v=>v.paused),true);
  await promo.setViewportSize({width:1440,height:1000});await promo.waitForFunction(()=>{const v=document.querySelector('video');return v.videoWidth===1920&&!v.seeking&&v.currentTime>=35.5});
- await promo.locator('video').scrollIntoViewIfNeeded();await promo.screenshot({path:root+'/docs/screenshots/product-film-player.png'});checks.push('The file:// homepage film automatically follows rotation while preserving playback position and pause state');
+ await promo.locator('video').scrollIntoViewIfNeeded();
+ // Wait for an actually presented frame, rather than capturing the native
+ // loading spinner between seek completion and the compositor update.
+ await promo.locator('video').evaluate(async v=>{const frame=new Promise(resolve=>v.requestVideoFrameCallback(resolve));await v.play();await frame;v.pause()});
+ await promo.screenshot({path:root+'/docs/screenshots/product-film-player.png'});checks.push('The file:// homepage film automatically follows rotation while preserving playback position and pause state');
  assert.deepEqual(errors,[]);await mkdir('docs/verification',{recursive:true});await writeFile('docs/verification/product-delivery-report.json',JSON.stringify({date:new Date().toISOString(),checks,errors,scope:'Chromium, including file:// offline Python-built HTML and text import/export; no remote ChatGPT or DeepSeek account session or physical devices used'},null,2));console.log(checks.join('\n'));
 }finally{await browser.close();}
