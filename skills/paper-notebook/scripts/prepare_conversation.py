@@ -17,7 +17,7 @@ REQUIRED = ('START-HERE.md', 'SKILL.md', 'assets/reader.html',
             'references/notebook.schema.json')
 
 # preset-download-response:start
-DOWNLOAD_MESSAGE = "当前对话无法自动取得阅读器。请[下载官方构建包](https://burntroses.github.io/paper-notebook/downloads/paper-notebook-conversation.zip)，将 ZIP 原样上传到这里（无需解压）。已有材料和回答会保留，收到后继续用原版阅读器生成离线 HTML。"
+DOWNLOAD_MESSAGE = "当前对话无法自动取得阅读器。请[下载官方构建包](https://burntroses.github.io/paper-notebook/downloads/paper-notebook-conversation.zip)，将 ZIP 上传到这里，无需解压。若下载后只看到 paper-notebook 文件夹，请右键压缩整个文件夹，再上传生成的 ZIP。已有材料和回答会保留，收到后继续生成离线 HTML。"
 # preset-download-response:end
 
 
@@ -28,8 +28,11 @@ def validate_archive(archive):
         for entry in package.infolist():
             path = PurePosixPath(entry.filename)
             if (path.is_absolute() or '..' in path.parts or '\\' in entry.filename
-                    or not path.parts or path.parts[0] != 'paper-notebook'
-                    or stat.S_ISLNK(entry.external_attr >> 16)):
+                    or not path.parts or stat.S_ISLNK(entry.external_attr >> 16)):
+                raise ValueError('Unsafe archive entry: ' + entry.filename)
+            if path.parts[0] == '__MACOSX' or path.name == '.DS_Store':
+                continue
+            if path.parts[0] != 'paper-notebook':
                 raise ValueError('Unsafe archive entry: ' + entry.filename)
         if package.testzip() is not None:
             raise ValueError('Incomplete or corrupt ZIP')
@@ -92,7 +95,10 @@ def main():
                     source = 'download'
                 stage = 'runtime'
                 with zipfile.ZipFile(archive) as package:
-                    package.extractall(temporary + '/extracted')
+                    for entry in package.infolist():
+                        path = PurePosixPath(entry.filename)
+                        if path.parts[0] == 'paper-notebook' and path.name != '.DS_Store':
+                            package.extract(entry, temporary + '/extracted')
                 args.out.mkdir(parents=True, exist_ok=True)
                 shutil.move(temporary + '/extracted/paper-notebook', runtime)
         html = smoke_build(runtime)

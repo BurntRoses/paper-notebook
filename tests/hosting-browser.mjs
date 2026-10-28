@@ -49,6 +49,10 @@ try {
   const uploadedPackage=await packageDownload;assert.equal(uploadedPackage.suggestedFilename(),'paper-notebook-conversation.zip');
   assert.equal((await readFile(await uploadedPackage.path())).subarray(0,2).toString(),'PK');
   checks.push('Conversation route offers a real ZIP as a manual fallback; copying instructions is the primary action');
+  await page.locator('#download-help summary').click();
+  assert.match(await page.locator('#download-help').innerText(),/paper-notebook[\s\S]*压缩[\s\S]*无需重新下载/);
+  assert.match(await page.locator('#download-help').innerText(),/Safari[\s\S]*安全的/);
+  checks.push('Auto-expanded downloads have a folder-recompression recovery path and optional Safari setting instructions');
   const prompt = await page.getByLabel('对话模型提示词', { exact: true }).inputValue();
   assert.equal(prompt, await readFile('skills/paper-notebook/prompts/conversation-model.txt', 'utf8'));
   const repositoryPrompt = await page.getByLabel('编程智能体提示词', { exact: true }).inputValue();

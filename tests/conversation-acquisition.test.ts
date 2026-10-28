@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {execFile} from 'node:child_process';
 import {createServer} from 'node:http';
-import {mkdtemp,readFile,writeFile,rm} from 'node:fs/promises';
+import {access,mkdtemp,readFile,writeFile,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join,resolve} from 'node:path';
 import {promisify} from 'node:util';
@@ -73,11 +73,31 @@ test('manual upload is requested only after an actual failed download, including
  }
 });
 
+test('a Finder-recompressed folder uploads without keeping macOS metadata',async()=>{
+ const directory=await mkdtemp(join(tmpdir(),'paper-finder-'));
+ try{
+  const archive=join(directory,'paper-notebook.zip');
+  await writeFile(archive,await fixture({
+   '__MACOSX/._paper-notebook':strToU8('Finder metadata'),
+   '__MACOSX/paper-notebook/._SKILL.md':strToU8('Finder metadata'),
+   '.DS_Store':strToU8('Finder metadata'),
+   'paper-notebook/.DS_Store':strToU8('Finder metadata'),
+  }));
+  const result=await prepare(['--archive',archive,'--out',join(directory,'runtime')]);
+  assert.equal(result.code,0,JSON.stringify(result.report));assert.equal(result.report.source,'attachment');
+  assert.equal(result.report.manualUploadRequired,false);
+  await assert.rejects(access(join(result.report.runtime,'.DS_Store')));
+  await assert.rejects(access(join(directory,'runtime/__MACOSX')));
+ }finally{await rm(directory,{recursive:true,force:true})}
+});
+
 test('invalid uploaded archives are reported as runtime errors without writing outside the output',async()=>{
  const directory=await mkdtemp(join(tmpdir(),'paper-invalid-'));
  try{
-  const archive=join(directory,'invalid.zip');await writeFile(archive,await fixture({'paper-notebook/../../outside.txt':strToU8('invalid')}));
-  const result=await prepare(['--archive',archive,'--out',join(directory,'runtime')]);
-  assert.equal(result.code,1);assert.equal(result.report.status,'runtime_invalid');assert.equal(result.report.manualUploadRequired,false);assert.match(result.report.detail,/Unsafe archive entry/);
+  for(const name of ['paper-notebook/../../outside.txt','__MACOSX/../../outside.txt']){
+   const archive=join(directory,'invalid.zip');await writeFile(archive,await fixture({[name]:strToU8('invalid')}));
+   const result=await prepare(['--archive',archive,'--out',join(directory,'runtime')]);
+   assert.equal(result.code,1);assert.equal(result.report.status,'runtime_invalid');assert.equal(result.report.manualUploadRequired,false);assert.match(result.report.detail,/Unsafe archive entry/);
+  }
  }finally{await rm(directory,{recursive:true,force:true})}
 });

@@ -18,6 +18,8 @@ The existing reader is mandatory: author `notebook.json`, then use the supplied 
 
 When Python is available, save the helper from its direct source and run `python prepare_conversation.py --out paper-notebook-runtime`. It returns a JSON report after a real smoke build. Use `--archive /path/to/uploaded.zip` only when a package is already available or automatic acquisition failed. A `runtime_invalid` report means verification or building failed; fix that error instead of treating it as a missing attachment. Node-only environments can download/extract with their file tools and use the bundled Node commands above.
 
+Some browsers automatically expand ZIP downloads. If the user only sees a `paper-notebook` folder, ask them to compress that entire folder and upload the resulting ZIP; no new download or repeated brief is needed. The filename may differ from the original archive. Keep the folder containing `START-HERE.md` at the archive root and ignore macOS Finder metadata (`__MACOSX` and `.DS_Store`). A local agent that can access the extracted files should reuse them directly. Safari users who prefer to retain downloaded archives can turn off “Open safe files after downloading” in Safari Settings → General; do not change their browser settings for them.
+
 ## Prepare the brief
 
 1. If reference-material status is unknown, the first response only asks the user to upload files or reply “没有文件”. Mention that reliable sources will be researched when possible if no files are supplied. End the turn and wait.

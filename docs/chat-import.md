@@ -25,3 +25,5 @@
 HTML 是文本文件，仓库中的规范和脚本也可以直接读取。交付时仍须获取完整阅读器及其内嵌资源并实际写出成品；不能将仓库源码 `index.html`、网页检索摘要或截断的 HTML 当作可用产物。下载能力、文件执行能力和附件交付能力应分别验证。手动上传 ZIP 是下载受限时的备用路径，不是所有对话环境的必经步骤。
 
 获取失败时，直接输出 [预置下载回复](../skills/paper-notebook/references/responses/download-unavailable.zh-CN.txt)：提供可点击的官方构建包链接，请用户将 ZIP 原样上传，无需解压；收到后保留材料和已答问题继续。明确不支持文件生成或附件时，输出 [预置能力回复](../skills/paper-notebook/references/responses/file-delivery-unavailable.zh-CN.txt)。外部提示词无需重复这些内部规则。
+
+若浏览器已自动解压，只需右键压缩整个 `paper-notebook` 文件夹，再上传生成的 ZIP，无需重新下载。准备脚本兼容重新压缩时附带的 Finder 元数据，不会将它们复制进运行时。Safari 可在“设置 → 通用”中取消“下载后打开‘安全的’文件”来保留下载的压缩包；见 [Apple 设置说明](https://support.apple.com/zh-cn/guide/safari/ibrw1072/mac)。
