@@ -12,6 +12,8 @@ Local IndexedDB drafts restore learning records; downloaded copies support long-
 
 ## Generate a notebook
 
+**AI entry point: [creation instructions](skills/paper-notebook/SKILL.md).** Select workspace building or [conversation file delivery](skills/paper-notebook/references/conversation-start.md) by available tools. External prompts contain one sentence; acquisition, validation and delivery rules stay in the repository.
+
 Open [the generation page](https://burntroses.github.io/paper-notebook/chat-start.html) or the [prompt directory](skills/paper-notebook/prompts/README.md). Choose by available tools: a coding agent edits the repository and builds the HTML in its workspace; a conversation environment reuses available runtime files or downloads the portable ZIP itself, builds with Node or Python and attaches a downloadable HTML. A manual ZIP upload is a fallback after an actual download failure or an explicit download restriction. Workflow details stay in the repository. If the environment lacks file delivery tools, it must explain this before collecting learning preferences. Markdown, TXT and pasted source code cannot replace the HTML artifact.
 
 ## Local development

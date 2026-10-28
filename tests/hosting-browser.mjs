@@ -51,18 +51,18 @@ try {
   checks.push('Conversation route offers a real ZIP as a manual fallback; copying instructions is the primary action');
   const prompt = await page.getByLabel('对话模型提示词', { exact: true }).inputValue();
   assert.equal(prompt, await readFile('skills/paper-notebook/prompts/conversation-model.txt', 'utf8'));
-  assert.ok(prompt.includes('paper-notebook-conversation.zip'));
   const repositoryPrompt = await page.getByLabel('编程智能体提示词', { exact: true }).inputValue();
   assert.equal(repositoryPrompt, await readFile('skills/paper-notebook/prompts/coding-agent.txt', 'utf8'));
   for(const text of [prompt,repositoryPrompt]){
-    assert.ok(text.length < 1200, `Prompt should stay concise (${text.length} chars)`);
+    assert.ok(text.trim().length < 160, `Prompt should stay concise (${text.length} chars)`);
+    assert.equal(text.trim().split(/\r?\n/).length,1);
+    assert.ok(text.includes('https://github.com/BurntRoses/paper-notebook'));
     assert.doesNotMatch(text,/Codex|ChatGPT|DeepSeek|WorkBuddy/i);
     assert.doesNotMatch(text,/只输出.*Markdown|交付 Markdown|输出完整.*Markdown/);
     assert.match(text,/HTML/);
   }
   checks.push('Short provider-neutral prompts route by available tools and require HTML file delivery');
-  assert.ok(repositoryPrompt.includes('skills/paper-notebook/SKILL.md'));
-  assert.ok(repositoryPrompt.includes('构建'));
+  assert.ok(repositoryPrompt.includes('工作区'));
   assert.ok(prompt.includes('可下载的单文件离线 HTML'));
   await page.getByRole('button', { name: '复制给编程智能体', exact: true }).click();
   await page.waitForFunction(() => /已复制|已选中/.test(document.querySelector('#repository-status').textContent));

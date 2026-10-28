@@ -12,10 +12,12 @@ AI 结构化教程的离线阅读器。Agent 按学习目标和材料整理内�
 
 [仓库中的完整提示词目录](skills/paper-notebook/prompts/README.md)按工具能力区分两种环境；网页复制按钮与此目录自动同步。
 
-- 编程智能体：打开 [生成入口](public/chat-start.html#agent)，点击“复制给编程智能体”，与材料一起发送。指令只提供仓库地址、Skill 入口和目标，由智能体读取项目规范并按当前能力构建文件。
+**AI 执行入口：[制作规范](skills/paper-notebook/SKILL.md)。** 根据工具能力选择工作区构建或[对话文件交付](skills/paper-notebook/references/conversation-start.md)，按仓库规则完成材料确认、获取工具、校验和单 HTML 交付。
+
+- 编程智能体：打开 [生成入口](public/chat-start.html#agent)，点击“复制给编程智能体”，与材料一起发送。一句话提供仓库地址、任务和交付方式，执行细节由智能体从仓库读取。
 - 对话模型：在[同一入口](public/chat-start.html#chat)点击“复制给对话模型”，提供材料或回复“没有文件”。AI 优先复用已有工具，否则自动下载对话构建包，用 Node 或 Python 构建并附上可下载的单文件离线 HTML。只有实际下载失败或下载受限时，才需要手动上传 ZIP；不支持文件交付时会明确说明。
 
-通用委托示例：“请基于 https://github.com/BurntRoses/paper-notebook，按 `skills/paper-notebook/SKILL.md` 为我制作学习笔记。” AI 需要能访问仓库；能否直接生成 HTML 取决于当前环境是否提供文件与构建工具。
+通用委托示例：“请按 https://github.com/BurntRoses/paper-notebook 仓库内的指引，为我制作教材式学习笔记，并交付单文件离线 HTML。” AI 需要能访问仓库；能否直接生成 HTML 取决于当前环境是否提供文件与构建工具。
 
 ## 本地运行与安装
 

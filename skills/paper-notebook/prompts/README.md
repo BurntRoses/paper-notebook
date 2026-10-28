@@ -11,4 +11,4 @@
 
 成品都是一个可离线打开的 HTML，内嵌阅读器、字体、素材、源数据与学习记录。不能创建并附加文件的对话环境应在需求问答前说明限制，不得用 Markdown、TXT 或聊天中的源码代替成品。
 
-外部提示词只写项目入口、任务和交付方式。详细规则维护在 [Skill](../SKILL.md) 与 [对话流程](../references/conversation-start.md)，不需要用户手动拼接。网页复制按钮通过 `tools/sync-prompts.mjs` 从本目录同步，避免多份提示词各自漂移。
+外部提示词各用一句话，只写仓库地址、任务和交付方式。下载地址、运行时、校验、回退和交付细节统一维护在 [Skill](../SKILL.md) 与 [对话流程](../references/conversation-start.md)，不需要用户手动拼接。网页复制按钮通过 `tools/sync-prompts.mjs` 从本目录同步，避免多份提示词各自漂移。

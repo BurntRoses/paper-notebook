@@ -13,16 +13,12 @@
 <article class="route" id="agent"><span class="step">01 / WORKSPACE</span><h2>编程智能体：编辑产物</h2><p>在当前仓库内编辑源数据，运行项目校验与构建，交付离线 HTML。</p>
 <div class="actions"><button id="copy-repository" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"/></svg>复制给编程智能体</button></div>
 <p id="repository-status" class="note copy-status" role="status" aria-live="polite">适用于能访问仓库、编辑文件并运行项目命令的智能体。</p>
-<details id="agent-instructions"><summary>查看将要复制的指令</summary><textarea id="repository-prompt" readonly aria-label="编程智能体提示词">请使用 https://github.com/BurntRoses/paper-notebook 为我制作教材式学习笔记。复用本地仓库或获取仓库，按 `skills/paper-notebook/SKILL.md` 确认材料、补齐需求，编辑源数据并校验构建，在工作区交付实际生成的单文件离线 HTML。
+<details id="agent-instructions"><summary>查看将要复制的指令</summary><textarea id="repository-prompt" readonly aria-label="编程智能体提示词">请按 https://github.com/BurntRoses/paper-notebook 仓库内的指引，为我制作教材式学习笔记，并在工作区生成单文件离线 HTML。
 </textarea></details></article>
 <article class="route" id="chat"><span class="step">02 / FILE ATTACHMENT</span><h2>对话模型：生成可下载文件</h2><p>复制提示词，与参考材料一起发送。AI 会先自行获取必要工具，生成可下载的离线 HTML。</p>
 <div class="actions"><button id="copy" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"/></svg>复制给对话模型</button><a class="action" href="downloads/paper-notebook-conversation.zip" download>备用：下载构建包</a></div>
 <p id="status" class="note copy-status" role="status" aria-live="polite">通常无需手动下载。只有 AI 实际下载失败或环境限制下载时，再将备用 ZIP 上传；已有材料和答案继续沿用。</p>
-<details id="chat-instructions"><summary>查看将要复制的指令</summary><textarea id="prompt" readonly aria-label="对话模型提示词">请使用 https://github.com/BurntRoses/paper-notebook 制作教材式学习笔记，交付可下载的单文件离线 HTML。
-
-对话构建包：https://burntroses.github.io/paper-notebook/downloads/paper-notebook-conversation.zip
-
-优先复用已有文件，否则自行下载构建包，读取 START-HERE.md，用 Node 或 Python 校验生成。只有实际获取失败后才请我上传 ZIP；不要默认要求手动下载。保留已有材料和回答，只补问缺项。成品须附实际 HTML 文件，不用 Markdown、TXT 或源码代替；无法创建附件时立即说明。
+<details id="chat-instructions"><summary>查看将要复制的指令</summary><textarea id="prompt" readonly aria-label="对话模型提示词">请按 https://github.com/BurntRoses/paper-notebook 仓库内的指引，为我制作教材式学习笔记，并交付可下载的单文件离线 HTML。
 </textarea></details></article>
 </div>
 <section class="read-next"><div><h2>笔记生成后，在这里阅读。</h2><p>将成品 HTML 保存到电脑，用浏览器打开。脚本、字体和素材都在文件内；聊天附件预览不等于完整浏览器。</p></div><a class="action" href="downloads/blank-notebook.html">打开空白阅读器 ↗</a></section>
