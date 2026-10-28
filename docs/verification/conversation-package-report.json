@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-28T17:15:46.006Z",
+  "date": "2026-10-28T17:59:47.981Z",
   "archive": "paper-notebook-conversation.zip",
   "entries": 28,
   "promptMatches": true,
@@ -50,13 +50,13 @@
     },
     "warnings": []
   },
-  "build": "{\"id\": \"paper-notebook-product-story\", \"revision\": 3, \"schemaValidated\": true, \"coreReferencesChecked\": true, \"bundledReaderMatches\": true, \"studyMarks\": {\"valid\": true, \"required\": true, \"total\": 31, \"byKind\": {\"underline\": 5, \"circle\": 6, \"highlight\": 6, \"star\": 4, \"box\": 3, \"check\": 3, \"wave\": 1, \"dots\": 2, \"bracket\": 1}, \"markedPages\": [\"product-pain\", \"product-idea\", \"product-structure\", \"product-marks\", \"product-subjects\", \"product-fit\", \"product-focus\", \"product-start\"], \"unmarkedPages\": [], \"invalidTargets\": []}, \"browserInspected\": false, \"htmlBytes\": 2037783, \"html\": \"Paper-Notebook-·-产品笔记-v3.html\", \"zip\": \"Paper-Notebook-·-产品笔记-v3.zip\"}",
+  "build": "{\"id\": \"paper-notebook-product-story\", \"revision\": 3, \"schemaValidated\": true, \"coreReferencesChecked\": true, \"bundledReaderMatches\": true, \"studyMarks\": {\"valid\": true, \"required\": true, \"total\": 31, \"byKind\": {\"underline\": 5, \"circle\": 6, \"highlight\": 6, \"star\": 4, \"box\": 3, \"check\": 3, \"wave\": 1, \"dots\": 2, \"bracket\": 1}, \"markedPages\": [\"product-pain\", \"product-idea\", \"product-structure\", \"product-marks\", \"product-subjects\", \"product-fit\", \"product-focus\", \"product-start\"], \"unmarkedPages\": [], \"invalidTargets\": []}, \"browserInspected\": false, \"htmlBytes\": 2038055, \"html\": \"Paper-Notebook-·-产品笔记-v3.html\", \"zip\": \"Paper-Notebook-·-产品笔记-v3.zip\"}",
   "nodeReport": {
     "id": "paper-notebook-product-story",
     "revision": 3,
     "html": "Paper-Notebook-·-产品笔记-v3.html",
     "zip": "Paper-Notebook-·-产品笔记-v3.zip",
-    "htmlBytes": 2037783,
+    "htmlBytes": 2038055,
     "bundledReaderMatches": true,
     "sourceMatches": true,
     "studyMarks": {

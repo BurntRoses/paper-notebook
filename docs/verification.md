@@ -1,6 +1,14 @@
 # 结构化学习阅读器验收 · 2026-10-25
 
-当前入口为 `dist/downloads/paper-notebook.html`。正文固定排版，圈画工具位于页脚，学习记录位于侧栏；翻页使用仿真、覆盖、滑动和无动画预设。
+当前入口为 `dist/downloads/paper-notebook.html`。正文固定排版，选区旁提供快捷栏，右侧工作台管理便签、书签与续学清单；翻页使用仿真、覆盖、滑动和无动画预设。
+
+## 学习工作台与窗口适配 · 2026-10-29
+
+48 项模型测试、TypeScript 检查与生产构建通过。[工作台报告](verification/workspace-report.json) 记录 Chromium 和 WebKit 的实际离线文件检查：首次功能引导、选区快捷栏、关联/独立便签、页/文字书签及目录标识、方向键/空格/回车翻页、输入批注期间暂停快捷键、续学记录筛选、HTML 下载与离线重开。导出分别核对文字标记和自由笔迹，原文锚点及所选记录完整保留。
+
+打开 18px 文档时保留原字号，自动纸面缩放不超过 1 倍；用户主动放大仍生效。1180×820 至 1920×1080 的窗口检查中，正文始终为 18px，测试首张纸的文字容量从 756 字增加到 Chromium 的 2079 字、WebKit 的 2106 字。横竖纸、单双页、沉浸模式和手机选区栏边界一并检查。书签返回原文时仅高亮对应原句，移除按钮提供 44×44 点击区域。
+
+[独立文件报告](verification/standalone-size-report.json) 另行核对 Node 与 Python 构建的 HTML，在两个浏览器引擎中以单独文件打开、显示作者圈画、下载及再次打开；外部依赖请求和页面脚本错误均为零。[便携包报告](verification/conversation-package-report.json) 核对官方阅读器外壳、源数据、作者标记及两种离线构建路径。未运行外部对话模型、原生 Safari 应用或真实触屏设备。
 
 ## 对话工具自动获取 · 2026-10-28
 
@@ -59,7 +67,7 @@ CLI 已对 `examples/paper-notebook.json` 运行 validate，结果为 7 个源�
 
 默认下载只触发一个“教程名-v版本.html”。实际下载后禁网重开，验证笔记、文字标记、作答和再次保存；ZIP、JSON、Markdown 和当前页 PNG 保留为高级导出。字库按正文 Unicode 分片瘦身，中文、生僻字、英文、数学符号与新增笔记使用手写、衬线、无衬线的系统回退链。原色图片保持原色。
 
-机器学习示例的原生概念图、数据图、分步推导和案例在深浅主题下检查。手绘边框按稳定 ID 选择，黑板公式保持不透明背景；定义、推导、例题、证据和练习通过角色区分。表头居中，数值列默认居中，解释列左对齐。
+机器学习示例的原生概念图、数据图、分步推导和案例在深浅主题下检查。手绘边框按稳定 ID 选择，黑板公式保持不透明背景；定义、推导、例题、证据和练习通过角色区分。表头与对应数据列使用相同对齐：数值列默认居中，解释列左对齐，也可在源数据中逐列指定。
 
 实际通过 Chromium 生成 A4 纵向和横向 PDF，输出在 `output/pdf/machine-learning-A4-portrait.pdf`（14 页）与 `output/pdf/machine-learning-A4-landscape.pdf`（24 页）。独立浅色纸张使用 12pt 正文、四周至少 12mm 留白，等待字体和图像就绪后重新分页；核对源内容完整、纸张尺寸及正文边界。压力检查覆盖 60 行表格的重复表头、95 行代码逐行保留、18 步推导连续编号、宽公式、图片、学习记录及自由笔迹原页附录。Poppler 渲染检查全书联系表及代表页面，并核对图表横轴标题与图例的间距；完成或取消打印后恢复分页/连续阅读的位置、主题和缩放。
 
@@ -93,6 +101,7 @@ npm run build
 node tests/reader-browser.mjs
 node tests/turn-browser.mjs
 node tests/experience-browser.mjs
+node tests/workspace-browser.mjs
 node tools/prepare-pages.mjs
 node tests/hosting-browser.mjs
 node tools/check-paper-layout.mjs
@@ -103,6 +112,6 @@ node tools/notebook.mjs validate examples/paper-notebook.json
 node tools/notebook.mjs build examples/paper-notebook.json --out output/guide
 ```
 
-浏览器脚本需 Playwright/Chromium，默认由本地静态服务提供 `dist/`。可设置 `PLAYWRIGHT_MODULE`、`NOTEBOOK_BASE`；视频检查需 ffmpeg，可设置 `FFMPEG`。原桌面及较早 reader-extra/media 测试属于历史记录，当前结论以上述报告为准。
+浏览器脚本需 Playwright 及对应浏览器；工作台与独立文件检查使用 Chromium 和 WebKit，直接读取本地 HTML，其余脚本默认由本地静态服务提供 `dist/`。可设置 `PLAYWRIGHT_MODULE`、`NOTEBOOK_BASE`；视频检查需 ffmpeg，可设置 `FFMPEG`。原桌面及较早 reader-extra/media 测试属于历史记录，当前结论以上述报告为准。
 
 检查使用本机 Chromium 和视口模拟，尚未完成真实 iPhone/iPad、Android、Safari、读屏软件、原生系统打印对话框或低内存设备验收。PDF 文件由 Chromium 实际输出，系统“另存为 PDF”界面的人工操作未执行。本次没有重新进行性能基准，未宣称原生设备帧率或陌生用户可用性结论。

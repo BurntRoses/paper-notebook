@@ -23,7 +23,8 @@
     "check:writing": "node tools/writing-check.mjs",
     "test:reader": "node tests/reader-browser.mjs",
     "test:hosting": "node tests/hosting-browser.mjs",
-    "test:experience": "node tests/experience-browser.mjs"
+    "test:experience": "node tests/experience-browser.mjs",
+    "test:workspace": "node tests/workspace-browser.mjs"
   },
   "dependencies": {
     "ajv": "^8.17.1",

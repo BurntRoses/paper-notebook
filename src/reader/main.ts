@@ -20,6 +20,7 @@ import { PageSurface, type SurfacePage } from './surface';
 import { indexForReadingAnchor, indexForBookmark } from './anchors';
 import { authoredAnnotations } from '../model/study';
 import { PaperEditor, readingMarks } from './editor';
+import { flashPassage } from './ink';
 import { paperShape, paperSize } from '../model/paper';
 import { saveDraft, loadDraft } from '../model/store';
 import { unzipSync, strFromU8 } from 'fflate';
@@ -60,7 +61,7 @@ class ReaderApp {
   private printState:{anchor:Anchor;index:number;x:number;y:number}|undefined;private printRestoring=false;
   private turnView:PageTurn|undefined;private warmTick=0;private pageCache=new Map<number,HTMLElement[]>();
   constructor(d:NotebookDocument){
-    this.d=d;if(d.userState.preferences.fontSize===18)d.userState.preferences.fontSize=24;this.sessionBooks.set(d.notebook.id,d);
+    this.d=d;this.sessionBooks.set(d.notebook.id,d);
     this.profile={font:'hand',lineSpacing:1.85,layout:'single',direction:'horizontal',sidebar:innerWidth<1000?'collapsed':'open',theme:'paper-light',motion:'full',pageShape:'auto',transition:'turn',...(d.extensions.readerProfile as Partial<ReaderPresentation>||{})};
     this.editor=new PaperEditor(this,appRoot);
     this.sidebarOpen=innerWidth>=800&&this.profile.sidebar==='open';setLocale(this.en?'en':'zh');
@@ -136,7 +137,7 @@ class ReaderApp {
     const reveal=button('显示阅读控制',()=>this.wakeChrome(),'reveal-controls','•••');appRoot.append(reveal);
     this.fitPages();this.editor.paint();this.remember();this.restore(a);this.wakeChrome();this.warmPages();
   }
-  fitPages(){const stage=appRoot.querySelector<HTMLElement>('.reader-stage')!,columns=this.actualLayout()==='spread'?2:1,gap=this.immersive?0:24;stage.style.overflowX=this.zoom>1?'auto':'clip';const wrap=stage.querySelector<HTMLElement>('.reader-page-wrap');if(wrap){wrap.style.width=this.zoom>1?'max-content':'100%';wrap.style.overflow='visible';}for(const paper of wrap?.querySelectorAll<HTMLElement>('.page-surface')||[]){const width=Math.max(240,(stage.clientWidth-gap-(columns-1)*16)/columns),height=Math.max(300,innerHeight-(this.immersive?0:76)),scale=Math.min(width/paper.offsetWidth,height/paper.offsetHeight,2)*this.zoom,slot=paper.parentElement!;paper.style.transform=`scale(${scale})`;slot.style.width=paper.offsetWidth*scale+'px';slot.style.height=paper.offsetHeight*scale+'px';slot.style.setProperty('--paper-scale',String(scale));}this.positionNavigation();}
+  fitPages(){const stage=appRoot.querySelector<HTMLElement>('.reader-stage')!,columns=this.actualLayout()==='spread'?2:1,gap=this.immersive?0:24;stage.style.overflowX=this.zoom>1?'auto':'clip';const wrap=stage.querySelector<HTMLElement>('.reader-page-wrap');if(wrap){wrap.style.width=this.zoom>1?'max-content':'100%';wrap.style.overflow='visible';}for(const paper of wrap?.querySelectorAll<HTMLElement>('.page-surface')||[]){const width=Math.max(240,(stage.clientWidth-gap-(columns-1)*16)/columns),height=Math.max(300,innerHeight-(this.immersive?0:76)),scale=Math.min(width/paper.offsetWidth,height/paper.offsetHeight,1)*this.zoom,slot=paper.parentElement!;paper.style.transform=`scale(${scale})`;slot.style.width=paper.offsetWidth*scale+'px';slot.style.height=paper.offsetHeight*scale+'px';slot.style.setProperty('--paper-scale',String(scale));}this.positionNavigation();}
   positionNavigation(){const nav=appRoot.querySelector<HTMLElement>('.reader-navigation'),paper=appRoot.querySelector<HTMLElement>('.page-surface');if(!nav||!paper)return;const r=paper.getBoundingClientRect();nav.style.left=(r.left+r.width/2)+'px';nav.style.top=Math.min(innerHeight-56,r.bottom-58)+'px';nav.style.maxWidth=Math.max(280,r.width-24)+'px';}
   setImmersive(value=!this.immersive){const a=this.anchor();this.immersive=value;this.sidebarOpen=false;this.toolsOpen=false;this.invalidate();this.render(a);window.scrollTo(0,0);}
   wakeChrome(){clearTimeout(this.chromeTick);appRoot.classList.remove('immersive-quiet');const nav=appRoot.querySelector<HTMLElement>('.reader-navigation');if(nav)nav.inert=false;if(this.immersive)this.chromeTick=window.setTimeout(()=>{if(this.toolsOpen||this.toolbar||this.sidebarOpen||document.querySelector('dialog[open]')||nav?.contains(document.activeElement))return;appRoot.classList.add('immersive-quiet');if(nav)nav.inert=true;},2600);}
@@ -201,7 +202,7 @@ class ReaderApp {
     }else if(this.rightPanel==='bookmarks'){
       body.append(button(this.t('为当前页加书签','Bookmark this page'),()=>this.addPageBookmark(),'workspace-action'));
       const bookmarks=this.d.userState.bookmarks||[];if(!bookmarks.length)body.append(el('p','empty-state',this.t('还没有书签。','No bookmarks yet.')));
-      for(const raw of bookmarks){const b=typeof raw==='string'?{id:raw,pageId:raw,kind:'page' as const}:raw;const card=el('article','workspace-bookmark');const label=b.kind==='text'?(b.selector?.exact||'文字书签'):this.pages.find(p=>p.id===b.pageId)?.title||b.pageId;card.append(button((b.kind==='text'?'⚑ ':'▮ ')+label,()=>b.kind==='text'&&b.selector?this.goSelector(b.pageId,b.selector):this.goPage(indexForBookmark(this.pages,this.d,b),true),'workspace-quote'),button('移除书签',()=>{this.d.userState.bookmarks=this.d.userState.bookmarks.filter(x=>(typeof x==='string'?x:x.id)!==b.id);this.remember();this.editor.paint();this.refreshWorkspace();this.refreshSidebar()},'record-remove'));body.append(card);}
+      for(const raw of bookmarks){const b=typeof raw==='string'?{id:raw,pageId:raw,kind:'page' as const}:raw;const card=el('article','workspace-bookmark');const label=b.kind==='text'?(b.selector?.exact||'文字书签'):this.pages.find(p=>p.id===b.pageId)?.title||b.pageId;card.append(button((b.kind==='text'?'⚑ ':'▮ ')+label,()=>b.kind==='text'&&b.selector?this.goSelector(b.pageId,b.selector):this.goPage(indexForBookmark(this.pages,this.d,b),true),'workspace-quote'),button('移除书签',()=>{this.d.userState.bookmarks=this.d.userState.bookmarks.filter(x=>(typeof x==='string'?x:x.id)!==b.id);this.remember();this.editor.paint();this.refreshWorkspace();this.refreshSidebar()},'record-remove','×'));body.append(card);}
     }else{
       body.append(el('p','workspace-intro',this.t('整理当前阅读的关注点，导出后交给下一轮对话。','Collect what matters here and carry it into the next session.')));
       for(const q of this.d.userState.doubts.filter(q=>q.status==='open')){const card=el('article','workspace-question');card.append(button(q.question,()=>this.showDoubt(q),'workspace-quote'),button('完成此疑问',()=>{q.status='resolved';this.remember();this.refreshWorkspace()},'quiet'),button('删除疑问',()=>{this.d.userState.doubts=this.d.userState.doubts.filter(x=>x.id!==q.id);this.remember();this.refreshWorkspace()},'quiet'));body.append(card);}body.append(button(this.t('导出续学提示','Export next-session prompt'),()=>this.showFollowupExport(),'workspace-action'));
@@ -315,7 +316,7 @@ class ReaderApp {
     const resolved=resolveSelector(this.d,selector);
     if(resolved.status!=='resolved'){toast(this.t('原文待重新关联，记录仍保留。','The passage needs relinking. Your record is kept.'));return;}
     const index=this.indexForAnchor({pageId,blockId:selector.blockId,textOffset:resolved.start});this.goPage(index,true);
-    requestAnimationFrame(()=>{const target=this.anchorNode({pageId,blockId:selector.blockId,textOffset:resolved.start});target?.focus({preventScroll:true});target?.classList.add('reader-located');target?.querySelectorAll<HTMLElement>('.ink-text').forEach(n=>{const offset=Number(n.dataset.offset||0);if(offset<resolved.end&&offset+(n.textContent?.length||0)>resolved.start)n.classList.add('passage-located');});});
+    requestAnimationFrame(()=>{const target=this.anchorNode({pageId,blockId:selector.blockId,textOffset:resolved.start});target?.focus({preventScroll:true});const paper=target?.closest<HTMLElement>('.page-surface');if(paper)flashPassage(paper,this.d,selector);});
   }
   updateProgress(){
     appRoot.querySelectorAll<HTMLElement>('[data-page-link]').forEach(n=>n.setAttribute('aria-current',n.dataset.pageLink===this.page.id?'page':'false'));

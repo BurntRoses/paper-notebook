@@ -28,6 +28,13 @@ export function selectorRects(paper:HTMLElement,d:NotebookDocument,selector:Sele
   const offset=Number(span.dataset.offset||0),start=Math.max(0,resolved.start-offset),end=Math.min(span.textContent?.length||0,resolved.end-offset);if(end>start){const r=rangeFor(span,start,end);if(r)rects.push(...r.getClientRects());}
  }return lineRects(rects);
 }
+export function flashPassage(paper:HTMLElement,d:NotebookDocument,selector:Selector){
+ const overlay=paper.querySelector('.ink-overlay');if(!overlay)return;
+ overlay.querySelector('.passage-located')?.remove();
+ const base=paper.getBoundingClientRect(),sx=paper.offsetWidth/base.width,sy=paper.offsetHeight/base.height,group=svg('g',{class:'passage-located'});
+ for(const r of selectorRects(paper,d,selector))group.append(svg('rect',{x:(r.left-base.left)*sx-2,y:(r.top-base.top)*sy,width:r.width*sx+4,height:r.height*sy,rx:2}));
+ overlay.prepend(group);window.setTimeout(()=>group.remove(),2600);
+}
 export function drawInk(paper:HTMLElement,annotations:Annotation[],d:NotebookDocument,pages?:SurfacePage[]){
  const overlay=paper.querySelector<SVGSVGElement>('.ink-overlay');if(!overlay)return;overlay.replaceChildren();
  paper.querySelectorAll('strong.bold-ink,span.red-ink').forEach(n=>n.replaceWith(...n.childNodes));paper.querySelectorAll('.ink-text').forEach(n=>n.normalize());

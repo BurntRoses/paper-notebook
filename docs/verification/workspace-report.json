@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-28T17:59:56.364Z",
+  "results": [
+    {
+      "engine": "chromium",
+      "smallWindow": {
+        "font": "18px",
+        "scale": 1,
+        "characters": 756,
+        "pages": 43
+      },
+      "maximized": {
+        "font": "18px",
+        "scale": 1,
+        "characters": 2079,
+        "pages": 27
+      },
+      "guide": true,
+      "keyboard": true,
+      "selectionToolbar": true,
+      "linkedAndFreeNotes": true,
+      "pageAndTextBookmarks": true,
+      "followupChoices": true,
+      "offlineSaveAndReopen": true,
+      "mobileToolbar": true,
+      "externalRequests": [],
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "smallWindow": {
+        "font": "18px",
+        "scale": 1,
+        "characters": 756,
+        "pages": 43
+      },
+      "maximized": {
+        "font": "18px",
+        "scale": 1,
+        "characters": 2106,
+        "pages": 27
+      },
+      "guide": true,
+      "keyboard": true,
+      "selectionToolbar": true,
+      "linkedAndFreeNotes": true,
+      "pageAndTextBookmarks": true,
+      "followupChoices": true,
+      "offlineSaveAndReopen": true,
+      "mobileToolbar": true,
+      "externalRequests": [],
+      "errors": []
+    }
+  ],
+  "scope": "Chromium and WebKit, isolated file HTML, blocked network, desktop window sizes and emulated phone; physical touch devices not exercised."
+}
