@@ -42,12 +42,13 @@ try {
 
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
   await page.goto(base + 'chat-start.html');
-  const packageLink=page.getByRole('link',{name:'① 下载对话构建包',exact:true});
+  assert.equal(await page.locator('#chat .actions > :first-child').getAttribute('id'),'copy');
+  const packageLink=page.getByRole('link',{name:'备用：下载构建包',exact:true});
   assert.equal(await packageLink.getAttribute('href'),'downloads/paper-notebook-conversation.zip');
   const packageDownload=page.waitForEvent('download');await packageLink.click();
   const uploadedPackage=await packageDownload;assert.equal(uploadedPackage.suggestedFilename(),'paper-notebook-conversation.zip');
   assert.equal((await readFile(await uploadedPackage.path())).subarray(0,2).toString(),'PK');
-  checks.push('Conversation route downloads the real ZIP for upload, without relying on model network access');
+  checks.push('Conversation route offers a real ZIP as a manual fallback; copying instructions is the primary action');
   const prompt = await page.getByLabel('对话模型提示词', { exact: true }).inputValue();
   assert.equal(prompt, await readFile('skills/paper-notebook/prompts/conversation-model.txt', 'utf8'));
   assert.ok(prompt.includes('paper-notebook-conversation.zip'));

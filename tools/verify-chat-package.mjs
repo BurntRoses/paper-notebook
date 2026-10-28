@@ -12,7 +12,7 @@ for(const [name,bytes] of Object.entries(files)){
  assert.ok(target.startsWith(destination+'/'),'package path must stay inside its output folder');
  await mkdir(dirname(target),{recursive:true});await writeFile(target,bytes);
 }
-for(const name of ['SKILL.md','START-HERE.md','assets/reader.html','assets/blank-notebook.json','prompts/README.md','prompts/conversation-model.txt','scripts/build_reader.py','scripts/notebook.mjs','references/notebook.schema.json','references/conversation-start.md','references/content-contract.md','references/components.md','references/writing.md','references/reader-output.md'])assert.ok(files['paper-notebook/'+name],name);
+for(const name of ['SKILL.md','START-HERE.md','assets/reader.html','assets/blank-notebook.json','prompts/README.md','prompts/conversation-model.txt','scripts/build_reader.py','scripts/prepare_conversation.py','scripts/notebook.mjs','references/notebook.schema.json','references/conversation-start.md','references/content-contract.md','references/components.md','references/writing.md','references/reader-output.md'])assert.ok(files['paper-notebook/'+name],name);
 assert.equal(strFromU8(files['paper-notebook/START-HERE.md']),await readFile('skills/paper-notebook/references/conversation-start.md','utf8'));
 assert.equal(strFromU8(files['paper-notebook/prompts/conversation-model.txt']),await readFile('public/paper-notebook-prompt.txt','utf8'));
 const kit=resolve(destination,'paper-notebook'),source=await readFile('examples/product-notebook.json','utf8');

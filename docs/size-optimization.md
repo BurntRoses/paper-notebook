@@ -17,4 +17,4 @@
 
 占用较大且收益低的完整生僻字库已移出默认运行包。运行时纹理仅约 48 KB，压缩它们对总大小收益很小，故保留原效果。概念类小示例此前已只用核心字库，大小仍约 1.71 MB。用户自己加入的大照片、扫描页或截图可能成为新的主要占用，生成时只下载实际用到的素材，并按显示尺寸选择分辨率；公式和标签保持清晰，成品不在打开时联网取素材。
 
-对话包先由用户下载并上传，模型使用附件内的 Node 或 Python 构建，无需网络或依赖安装。生成的两类 HTML 都已单独复制到空目录，在 Chromium 断网模式和 WebKit 阻断外部依赖的条件下打开、显示正文与圈注并再次导出；没有其他资源请求。记录见 [standalone-size-report.json](verification/standalone-size-report.json)。
+对话包由 AI 优先复用或自动下载，实际下载失败或下载受限时才请用户上传。获取工具后，Node 与 Python 构建均无需网络或依赖安装。生成的两类 HTML 都已单独复制到空目录，在 Chromium 断网模式和 WebKit 阻断外部依赖的条件下打开、显示正文与圈注并再次导出；没有其他资源请求。记录见 [standalone-size-report.json](verification/standalone-size-report.json)。

@@ -1,7 +1,7 @@
 {
-  "date": "2026-10-28T10:19:29.665Z",
+  "date": "2026-10-28T11:08:56.168Z",
   "archive": "paper-notebook-conversation.zip",
-  "entries": 22,
+  "entries": 23,
   "promptMatches": true,
   "pythonBuild": true,
   "nodeBuild": true,
@@ -16,13 +16,13 @@
     "assets": 0,
     "warnings": []
   },
-  "build": "{\"id\": \"paper-notebook-product-story\", \"revision\": 3, \"schemaValidated\": true, \"coreReferencesChecked\": true, \"browserInspected\": false, \"htmlBytes\": 2013688, \"html\": \"Paper-Notebook-·-产品笔记-v3.html\", \"zip\": \"Paper-Notebook-·-产品笔记-v3.zip\"}",
+  "build": "{\"id\": \"paper-notebook-product-story\", \"revision\": 3, \"schemaValidated\": true, \"coreReferencesChecked\": true, \"browserInspected\": false, \"htmlBytes\": 2013607, \"html\": \"Paper-Notebook-·-产品笔记-v3.html\", \"zip\": \"Paper-Notebook-·-产品笔记-v3.zip\"}",
   "nodeReport": {
     "id": "paper-notebook-product-story",
     "revision": 3,
     "html": "Paper-Notebook-·-产品笔记-v3.html",
     "zip": "Paper-Notebook-·-产品笔记-v3.zip",
-    "htmlBytes": 2013688,
+    "htmlBytes": 2013607,
     "warnings": []
   },
   "scope": "Local attachment extraction, independent Python and Node builds without fetching resources, and shared schema validation. No remote chat service/API used; browser results are recorded separately."

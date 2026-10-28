@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-28",
+  "realReleasePackage": true,
+  "automaticDownloadAndSmokeBuild": true,
+  "existingRuntimeReuse": true,
+  "attachmentWithoutNetwork": true,
+  "results": [
+    {
+      "source": "download",
+      "status": "ready",
+      "manualUploadRequired": false
+    },
+    {
+      "source": "existing",
+      "status": "ready",
+      "manualUploadRequired": false
+    },
+    {
+      "source": "attachment",
+      "status": "ready",
+      "manualUploadRequired": false
+    }
+  ],
+  "scope": "Actual release ZIP fetched over local HTTP and built using the Python preparation helper. Unit tests cover denied/corrupt downloads and bounded retry. No remote conversation model was run."
+}
