@@ -87,3 +87,25 @@ const p11=page('ml-recap','连接整条学习链',[
  {id:'ml-references',type:'callout',title:'延伸阅读',text:'Google Machine Learning Crash Course 的 Linear regression、Gradient descent；scikit-learn User Guide 的 Supervised learning、Cross-validation 与 Common pitfalls。来源侧栏提供入口。教学计算由本册给定数据独立完成。',sourceRefs:[{sourceId:'ml-google'},{sourceId:'ml-sklearn-cv'},{sourceId:'ml-sklearn-pitfalls'}]},
 ], '任务、数据、模型、损失、训练与评估组成一条有条件的推理链；每个环节都需要清楚定义。',[{text:'本册已经讲清什么？',blockId:'ml-recap-scope'},{text:'下一步需要哪些先修？',blockId:'ml-next-step'}],'reading');
 export const machineLearning:NotebookDocument={schemaVersion:'1.0.0',notebook:{id:'notebook-ml-foundations',revision:2,title:'机器学习入门：从样本到泛化',subtitle:'用图、表与一次手算串起学习流程',language:'zh-CN',goals:['区分样本、特征、标签、模型与损失','手算线性预测、均方误差及一次梯度下降','解释训练、验证、测试与泛化的关系'],sources:[{id:'ml-google',title:'Google · Machine Learning Crash Course',url:'https://developers.google.com/machine-learning/crash-course/linear-regression'},{id:'ml-sklearn-cv',title:'scikit-learn · Cross-validation',url:'https://scikit-learn.org/stable/modules/cross_validation.html'},{id:'ml-sklearn-pitfalls',title:'scikit-learn · Common pitfalls and recommended practices',url:'https://scikit-learn.org/stable/common_pitfalls.html'}],chapters:[{id:'ml-ch-data',title:'一 · 任务与数据',pages:[p1,p2,p3]},{id:'ml-ch-model',title:'二 · 模型与损失',pages:[p4,p4b,p5,p6]},{id:'ml-ch-train',title:'三 · 参数怎样学出来',pages:[p7,p8]},{id:'ml-ch-evaluate',title:'四 · 评估、边界与联系',pages:[p9,p10,p11]}]},userState:userState('ml-task'),assets:[],extensions:{baseRevision:1,readerProfile:{font:'hand',lineSpacing:1.85,layout:'single',theme:'paper-light'}}};
+
+// Editorial choices anchored to actual lesson phrases, never automatic decoration.
+const emphasis:Record<string,NonNullable<Block['study']>['marks']>={
+ 'ml-learning':[{text:'模型参数',kind:'circle'},{text:'独立检验',kind:'underline'}],
+ 'ml-observation':[{text:'预测时可获得',kind:'dots'}],
+ 'ml-model-choice':[{text:'评价方式和误判代价',kind:'underline'}],
+ 'ml-linear':[{text:'固定 w、b',kind:'underline'}],
+ 'ml-parameter-boundary':[{text:'固定另一个参数',kind:'check'}],
+ 'ml-residual-explain':[{text:'预测减标签',kind:'circle'}],
+ 'ml-loss-definition':[{text:'先对每个误差平方，再取平均',kind:'dots'}],
+ 'ml-loss-example':[{text:'J=2/3≈0.667',kind:'check'}],
+ 'ml-gradient-intuition':[{text:'将截距固定为 0',kind:'underline'}],
+ 'ml-update-rule':[{text:'学习率过大',kind:'box'}],
+ 'ml-gradient-example':[{text:'w_new=1−0.1×(−5)=1.5',kind:'check'}],
+ 'ml-split-table':[{text:'最终方案固定后才使用',kind:'underline'}],
+ 'ml-overfit-definition':[{text:'过拟合',kind:'circle'},{text:'新样本表现',kind:'dots'}],
+ 'ml-next-step':[{text:'先写一页任务定义与数据字典',kind:'check'}],
+};
+for(const chapter of machineLearning.notebook.chapters)for(const page of chapter.pages)for(const block of page.blocks){
+ if(emphasis[block.id])block.study={...block.study,marks:emphasis[block.id]};
+}
+machineLearning.notebook.revision=3;machineLearning.extensions.baseRevision=2;

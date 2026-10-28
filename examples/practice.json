@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "notebook-observe-plant",
-    "revision": 1,
+    "revision": 2,
     "title": "给窗边的植物做一份记录",
     "subtitle": "用具体现象与日期建立观察记录。",
     "author": "Paper Notebook",
@@ -32,7 +32,15 @@
               {
                 "id": "plant-intro",
                 "type": "prose",
-                "text": "“叶子看起来不太好”很难帮助下一次判断。换一种记录方式：叶片的位置、颜色变化、盆土干湿、最近一次浇水日期。先记录看见的东西，随后写可能的解释。"
+                "text": "“叶子看起来不太好”很难帮助下一次判断。换一种记录方式：叶片的位置、颜色变化、盆土干湿、最近一次浇水日期。先记录看见的东西，随后写可能的解释。",
+                "study": {
+                  "marks": [
+                    {
+                      "text": "先记录看见的东西",
+                      "kind": "underline"
+                    }
+                  ]
+                }
               },
               {
                 "id": "plant-steps",
@@ -60,7 +68,15 @@
                 "id": "plant-warn",
                 "type": "callout",
                 "tone": "warning",
-                "text": "不同植物需要不同的水分和光照。这套记录方法不提供通用浇水处方；养护操作需核对植物种类及条件。"
+                "text": "不同植物需要不同的水分和光照。这套记录方法不提供通用浇水处方；养护操作需核对植物种类及条件。",
+                "study": {
+                  "marks": [
+                    {
+                      "text": "植物种类及条件",
+                      "kind": "dots"
+                    }
+                  ]
+                }
               },
               {
                 "id": "plant-log",
@@ -113,7 +129,19 @@
                 "id": "plant-concept",
                 "type": "concept",
                 "title": "观察 ≠ 原因",
-                "text": "“两片老叶变黄”是观察。“缺水导致变黄”是原因判断，还需要植物种类、浇水和根系状态等证据。"
+                "text": "“两片老叶变黄”是观察。“缺水导致变黄”是原因判断，还需要植物种类、浇水和根系状态等证据。",
+                "study": {
+                  "marks": [
+                    {
+                      "text": "原因判断",
+                      "kind": "circle"
+                    },
+                    {
+                      "text": "还需要植物种类、浇水和根系状态等证据",
+                      "kind": "underline"
+                    }
+                  ]
+                }
               },
               {
                 "id": "plant-match",
@@ -155,7 +183,7 @@
     ]
   },
   "userState": {
-    "updatedAt": "2026-10-24T09:15:22.330Z",
+    "updatedAt": "2026-10-28T17:09:26.824Z",
     "lastPageId": "plant-1",
     "notes": [],
     "annotations": [],
@@ -194,6 +222,7 @@
       "transition": "turn",
       "theme": "paper-light",
       "motion": "full"
-    }
+    },
+    "baseRevision": 1
   }
 }

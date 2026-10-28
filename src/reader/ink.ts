@@ -3,7 +3,9 @@ import { resolveInText } from '../model/document';
 import { inkPoints } from '../model/paper';
 import { circleStroke } from './circle';
 import { drawRuling } from './ruling';
-import { blocksOf, textOf, type Annotation, type NotebookDocument, type Selector } from '../model/types';
+import { indexForBookmark } from './anchors';
+import type { SurfacePage } from './surface';
+import { blocksOf, textOf, type Annotation, type Bookmark, type NotebookDocument, type Selector } from '../model/types';
 const NS='http://www.w3.org/2000/svg';
 const svg=(tag:string,attrs:Record<string,string|number>)=>{const n=document.createElementNS(NS,tag);for(const [k,v] of Object.entries(attrs))n.setAttribute(k,String(v));return n;};
 const random=(seed:number)=>()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
@@ -26,7 +28,7 @@ export function selectorRects(paper:HTMLElement,d:NotebookDocument,selector:Sele
   const offset=Number(span.dataset.offset||0),start=Math.max(0,resolved.start-offset),end=Math.min(span.textContent?.length||0,resolved.end-offset);if(end>start){const r=rangeFor(span,start,end);if(r)rects.push(...r.getClientRects());}
  }return lineRects(rects);
 }
-export function drawInk(paper:HTMLElement,annotations:Annotation[],d:NotebookDocument){
+export function drawInk(paper:HTMLElement,annotations:Annotation[],d:NotebookDocument,pages?:SurfacePage[]){
  const overlay=paper.querySelector<SVGSVGElement>('.ink-overlay');if(!overlay)return;overlay.replaceChildren();
  paper.querySelectorAll('strong.bold-ink,span.red-ink').forEach(n=>n.replaceWith(...n.childNodes));paper.querySelectorAll('.ink-text').forEach(n=>n.normalize());
  const base=paper.getBoundingClientRect(),width=paper.offsetWidth,height=paper.offsetHeight,sx=width/base.width,sy=height/base.height;
@@ -67,7 +69,18 @@ export function drawInk(paper:HTMLElement,annotations:Annotation[],d:NotebookDoc
   }
  }
  drawExplanations(paper,overlay,d,base,sx,sy);
+ drawBookmarks(paper,overlay,d,base,sx,sy,pages);
  drawRuling(paper);
+}
+function drawBookmarks(paper:HTMLElement,overlay:SVGSVGElement,d:NotebookDocument,base:DOMRect,sx:number,sy:number,pages?:SurfacePage[]){
+ const list=(d.userState.bookmarks||[]).map((b,i)=>typeof b==='string'?({id:`legacy-${b}-${i}`,pageId:b,kind:'page' as const}):b as Bookmark);
+ const page=list.filter(b=>{if(b.pageId!==paper.dataset.page||b.kind!=='page')return false;if(pages){const target=pages[indexForBookmark(pages,d,b)];return target?.id===paper.dataset.page&&target.part===Number(paper.dataset.part||0);}return b.selector?selectorRects(paper,d,b.selector).length>0:b.sheet===undefined||b.sheet===Number(paper.dataset.part||0);});
+ if(page.length){const x=paper.offsetWidth-70,y=34;const n=svg('path',{d:`M ${x} ${y} h 22 v 28 l -11 -7 l -11 7 Z`,fill:'#b8794d',stroke:'#724f3c','stroke-width':1.5});n.dataset.bookmark=page[0].id;n.classList.add('page-bookmark-ink');overlay.append(n);}
+ const width=paper.offsetWidth;
+ for(const b of list.filter(x=>x.pageId===paper.dataset.page&&x.kind==='text'&&x.selector)){
+  const rect=selectorRects(paper,d,b.selector!)[0];if(!rect)continue;
+  const x=Math.min(width-24,(rect.right-base.left)*sx+7),y=Math.max(18,(rect.top-base.top)*sy-4),n=svg('path',{d:`M ${x} ${y} h 13 v 20 l -6.5 -4 l -6.5 4 Z`,fill:'#b8794d',stroke:'#724f3c','stroke-width':1});n.dataset.bookmark=b.id;n.classList.add('text-bookmark-ink');overlay.append(n);
+ }
 }
 function drawExplanations(paper:HTMLElement,overlay:SVGSVGElement,d:NotebookDocument,base:DOMRect,sx:number,sy:number){
  for(const [noteIndex,note] of [...paper.querySelectorAll<HTMLElement>('[data-explain-target]')].entries()){

@@ -34,7 +34,7 @@
 .page-surface .cornell-summary{font-size:calc(var(--reading-size) * .78);line-height:1.8;padding:10px 16px;height:102px;background:#dfe5c52e}
 .page-surface .summary-label{font: .63em/1.7 system-ui;margin-bottom:3px;letter-spacing:.06em}
 .page-surface .oversize-object{scrollbar-width:thin;border-bottom:2px dashed #9a927c66}
-.page-surface .oversize-object:after{content:'↕ 此内容保持完整，可在框内滚动';display:block;font:13px/1.8 system-ui;color:var(--muted);text-align:center;padding-top:10px}
+
 .sidebar-support{margin-top:28px;padding:18px 10px 4px;border-top:1px dashed #8b9d7f66;font:12px/1.9 system-ui;color:#64756c}.sidebar-support p{margin:0 0 9px}.sidebar-support a{display:inline-block;padding-block:5px}.sidebar-support nav{display:flex;gap:14px;flex-wrap:wrap}.support-star{color:#8a6730;font-weight:600}.theme-toggle{font-size:20px}
 .notebook-chart{display:block;width:100%;height:auto;max-height:375px;font-family:var(--book-font);color:var(--figure-ink);overflow:visible}.notebook-chart text{fill:currentColor;stroke:none}.chart-grid{stroke:#8a9d8e35;stroke-width:1;stroke-dasharray:4 7;fill:none}.chart-axis{stroke:currentColor;stroke-width:1.8;fill:none}.chart-tick{font-size:16px}.chart-axis-label{font-size:19px}.chart-legend{font-size:17px}.chart-point-label{font-size:16px}.chart-series-0{color:#426e85}.chart-series-1{color:#ad6655}.chart-series-2{color:#6b8651}.chart-series-3{color:#9e7d31}.chart-line{fill:none;stroke:currentColor;stroke-width:2.3;stroke-linejoin:round;stroke-linecap:round}.chart-point{fill:var(--figure-paper);stroke:currentColor;stroke-width:2.2}.chart-bar{fill:currentColor;fill-opacity:.65;stroke:currentColor;stroke-width:1}
 

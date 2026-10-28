@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "notebook-growth",
-    "revision": 1,
+    "revision": 2,
     "title": "复利的递推关系",
     "subtitle": "用一个具体数值，理解指数与复利。",
     "author": "Paper Notebook",
@@ -32,13 +32,29 @@
               {
                 "id": "growth-intro",
                 "type": "prose",
-                "text": "一个假想账户初始有 100 元，每期增长 10%，不取出利息。第一期后是 110 元，第二期增长的基础变成了 110 元，因此增加 11 元。这里的 10% 只是教学假设，不代表实际收益。"
+                "text": "一个假想账户初始有 100 元，每期增长 10%，不取出利息。第一期后是 110 元，第二期增长的基础变成了 110 元，因此增加 11 元。这里的 10% 只是教学假设，不代表实际收益。",
+                "study": {
+                  "marks": [
+                    {
+                      "text": "增长的基础",
+                      "kind": "circle"
+                    }
+                  ]
+                }
               },
               {
                 "id": "growth-eq",
                 "type": "formula",
                 "latex": "P_{n+1}=P_n(1+r), \\qquad P_n=P_0(1+r)^n",
-                "text": "P₀ 是初始值，r 是每期增长率，n 是期数。每一期的增长率相同，但增加的绝对数值不同。"
+                "text": "P₀ 是初始值，r 是每期增长率，n 是期数。每一期的增长率相同，但增加的绝对数值不同。",
+                "study": {
+                  "marks": [
+                    {
+                      "text": "每一期的增长率相同",
+                      "kind": "dots"
+                    }
+                  ]
+                }
               },
               {
                 "id": "growth-table",
@@ -80,7 +96,15 @@
                     "text": "第三期末：121 × 1.1 = 133.1。"
                   }
                 ],
-                "result": "三期一共增加 33.1，而每期固定加 10 只会增加 30。"
+                "result": "三期一共增加 33.1，而每期固定加 10 只会增加 30。",
+                "study": {
+                  "marks": [
+                    {
+                      "text": "三期一共增加 33.1",
+                      "kind": "check"
+                    }
+                  ]
+                }
               }
             ]
           },
@@ -93,7 +117,15 @@
               {
                 "id": "growth-bound",
                 "type": "callout",
-                "text": "这个公式假设每期增长率恒定，增长继续计入本金，期间没有额外存入或取出。条件改变时，需要重新建立模型。"
+                "text": "这个公式假设每期增长率恒定，增长继续计入本金，期间没有额外存入或取出。条件改变时，需要重新建立模型。",
+                "study": {
+                  "marks": [
+                    {
+                      "text": "期间没有额外存入或取出",
+                      "kind": "underline"
+                    }
+                  ]
+                }
               },
               {
                 "id": "growth-path",
@@ -166,7 +198,7 @@
     ]
   },
   "userState": {
-    "updatedAt": "2026-10-24T09:15:22.330Z",
+    "updatedAt": "2026-10-28T17:09:26.824Z",
     "lastPageId": "growth-1",
     "notes": [],
     "annotations": [],
@@ -205,6 +237,7 @@
       "transition": "turn",
       "theme": "paper-light",
       "motion": "full"
-    }
+    },
+    "baseRevision": 1
   }
 }

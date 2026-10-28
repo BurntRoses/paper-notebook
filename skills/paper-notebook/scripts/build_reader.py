@@ -9,6 +9,7 @@ import re
 import zipfile
 import unicodedata
 from verify_reader import verify
+from study_quality import check_study_marks
 
 
 def validate(value, rule, schema, path='$'):
@@ -109,10 +110,11 @@ def slim_fonts(template, doc):
     return re.sub(r'@font-face\s*\{[^{}]*\}',face,template)
 
 
-def build(source, template, schema_path, notices, output):
+def build(source, template, schema_path, notices, output, allow_unmarked=False):
     doc=json.loads(source.read_text(encoding='utf-8-sig'),parse_constant=lambda v:(_ for _ in ()).throw(ValueError('invalid JSON number: '+v)))
     schema=json.loads(schema_path.read_text(encoding='utf-8'))
     validate(doc,schema,schema);check_references(doc)
+    study_marks=check_study_marks(doc, allow_unmarked)
     template_text=template.read_text(encoding='utf-8')
     if re.search(r'src=[\"\'][^\"\']*/src/',template_text):raise ValueError('Use the bundled reader.html template')
     data=json.dumps(doc,ensure_ascii=False,separators=(',',':')).replace('<','\\u003c').replace('\u2028','\\u2028').replace('\u2029','\\u2029')
@@ -125,10 +127,10 @@ def build(source, template, schema_path, notices, output):
     notice=notices.read_text(encoding='utf-8')
     output.mkdir(parents=True,exist_ok=True)
     (output/(stem+'.html')).write_text(result,encoding='utf-8');(output/'notebook.json').write_text(text,encoding='utf-8')
-    reader_check=verify(output/(stem+'.html'),template,source)
+    reader_check=verify(output/(stem+'.html'),template,source,allow_unmarked)
     with zipfile.ZipFile(output/(stem+'.zip'),'w',zipfile.ZIP_DEFLATED) as bundle:
         bundle.writestr(stem+'.html',result);bundle.writestr('notebook.json',text);bundle.writestr('THIRD_PARTY_NOTICES.txt',notice);bundle.writestr('打开我-README.txt','打开 '+stem+'.html 即可离线阅读；notebook.json 保留源数据。\nPaper Notebook · https://github.com/BurntRoses/paper-notebook')
-    report={'id':doc['notebook']['id'],'revision':doc['notebook']['revision'],'schemaValidated':True,'coreReferencesChecked':True,'bundledReaderMatches':reader_check['bundledReaderMatches'],'browserInspected':False,'htmlBytes':len(result.encode()),'html':stem+'.html','zip':stem+'.zip'}
+    report={'id':doc['notebook']['id'],'revision':doc['notebook']['revision'],'schemaValidated':True,'coreReferencesChecked':True,'bundledReaderMatches':reader_check['bundledReaderMatches'],'studyMarks':study_marks,'browserInspected':False,'htmlBytes':len(result.encode()),'html':stem+'.html','zip':stem+'.zip'}
     (output/'build-report.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
     return report
 
@@ -140,6 +142,7 @@ if __name__=='__main__':
     parser.add_argument('--template',type=Path,default=base/'assets/reader.html')
     parser.add_argument('--schema',type=Path,default=base/'references/notebook.schema.json')
     parser.add_argument('--notices',type=Path,default=base/'assets/THIRD_PARTY_NOTICES.txt')
+    parser.add_argument('--allow-unmarked',action='store_true',help='Only for an explicit request for unmarked content')
     a=parser.parse_args()
-    try:print(json.dumps(build(a.source,a.template,a.schema,a.notices,a.out),ensure_ascii=False))
+    try:print(json.dumps(build(a.source,a.template,a.schema,a.notices,a.out,a.allow_unmarked),ensure_ascii=False))
     except (ValueError,KeyError,OSError) as error:parser.exit(1,str(error)+'\n')

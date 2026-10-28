@@ -8,6 +8,7 @@ import { productStory } from '../src/product-story.ts';
 import {buildSkill} from './build-skill.mjs';
 import {slimFonts,artifactStem,bundleReadme} from '../src/io/packaging.ts';
 import {machineLearning} from '../src/machine-learning.ts';
+import {verifyBundledReader} from '../src/io/reader-proof.ts';
 import { blankDocument } from '../src/model/types.ts';
 import { parseDocument, scriptJSON } from '../src/model/document.ts';
 const root=fileURLToPath(new URL('../',import.meta.url));
@@ -16,7 +17,7 @@ const template=await readFile(root+'dist/index.html','utf8');
 const notices=await readFile(root+'THIRD_PARTY_NOTICES.txt');
 await mkdir(root+'dist/downloads',{recursive:true});await mkdir(root+'examples',{recursive:true});
 const artifacts=[];
-const build=(document)=>{let replaced=false;const html=template.replace(/(<script\b[^>]*\bid=["']notebook-data["'][^>]*>)[\s\S]*?(<\/script>)/,(_,open,close)=>{replaced=true;return open+scriptJSON(document)+close;});if(!replaced)throw new Error('Missing notebook-data slot');return slimFonts(html,document);};
+const build=(document)=>{let replaced=false;const html=template.replace(/(<script\b[^>]*\bid=["']notebook-data["'][^>]*>)[\s\S]*?(<\/script>)/,(_,open,close)=>{replaced=true;return open+scriptJSON(document)+close;});if(!replaced)throw new Error('Missing notebook-data slot');const result=slimFonts(html,document);verifyBundledReader(result,template,document);return result;};
 const blank=blankDocument();blank.notebook.id='notebook-blank';
 for(const [name,doc] of [['blank-notebook',blank],['paper-notebook',introNotebook],['paper-notebook-product',productStory],['machine-learning',machineLearning],...examples.map((d,i)=>[['concept','formula','practice'][i],d])]){
  parseDocument(doc);const html=build(doc),json=JSON.stringify(doc,null,2);

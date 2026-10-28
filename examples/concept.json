@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "notebook-observation",
-    "revision": 1,
+    "revision": 2,
     "title": "数字与证据",
     "subtitle": "从一张订单表，理解统计粒度与集合。",
     "author": "Paper Notebook",
@@ -44,7 +44,15 @@
                 "id": "obs-concept",
                 "type": "concept",
                 "title": "先给数字一个对象",
-                "text": "统计粒度，是每一条记录所代表的对象。先明确对象，再计数。三笔订单，可能来自一位顾客，也可能来自三位顾客。"
+                "text": "统计粒度，是每一条记录所代表的对象。先明确对象，再计数。三笔订单，可能来自一位顾客，也可能来自三位顾客。",
+                "study": {
+                  "marks": [
+                    {
+                      "text": "统计粒度",
+                      "kind": "circle"
+                    }
+                  ]
+                }
               },
               {
                 "id": "obs-table",
@@ -77,7 +85,15 @@
                 "id": "obs-key",
                 "type": "callout",
                 "tone": "note",
-                "text": "订单数是 3，顾客数是 1。数字没有互相矛盾，它们回答了两个问题。"
+                "text": "订单数是 3，顾客数是 1。数字没有互相矛盾，它们回答了两个问题。",
+                "study": {
+                  "marks": [
+                    {
+                      "text": "订单数是 3，顾客数是 1",
+                      "kind": "check"
+                    }
+                  ]
+                }
               },
               {
                 "id": "obs-question",
@@ -145,7 +161,15 @@
                     "id": "obs-step-3",
                     "text": "按目标计数，再挑几行原始记录手工核对。"
                   }
-                ]
+                ],
+                "study": {
+                  "marks": [
+                    {
+                      "text": "只看本月、已付款、未退款的订单",
+                      "kind": "underline"
+                    }
+                  ]
+                }
               },
               {
                 "id": "obs-example",
@@ -205,7 +229,15 @@
                 "id": "obs-formula",
                 "type": "formula",
                 "latex": "|A \\cup B| = |A| + |B| - |A \\cap B|",
-                "text": "A 和 B 是两组顾客。交集表示两边都出现过的人；这些人需要减去一次。"
+                "text": "A 和 B 是两组顾客。交集表示两边都出现过的人；这些人需要减去一次。",
+                "study": {
+                  "marks": [
+                    {
+                      "text": "减去一次",
+                      "kind": "dots"
+                    }
+                  ]
+                }
               },
               {
                 "id": "obs-sql",
@@ -330,7 +362,7 @@
     ]
   },
   "userState": {
-    "updatedAt": "2026-10-24T09:15:22.330Z",
+    "updatedAt": "2026-10-28T17:09:26.823Z",
     "lastPageId": "observation-1",
     "notes": [],
     "annotations": [
@@ -388,6 +420,7 @@
       "transition": "turn",
       "theme": "paper-light",
       "motion": "full"
-    }
+    },
+    "baseRevision": 1
   }
 }

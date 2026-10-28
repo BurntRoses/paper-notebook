@@ -4,6 +4,7 @@ from hashlib import sha256
 import json
 from pathlib import Path
 import re
+from study_quality import check_study_marks
 
 DATA = re.compile(r'(<script\b[^>]*\bid=["\']notebook-data["\'][^>]*>)([\s\S]*?)(</script>)')
 FACE = re.compile(r'@font-face\s*\{[^{}]*\}')
@@ -22,7 +23,7 @@ def shell(text):
     return FACE.sub(lambda m: '' if re.search(r'font-family:\s*["\']?StudyHand\b', m[0]) else m[0], text)
 
 
-def verify(artifact, template, source=None):
+def verify(artifact, template, source=None, allow_unmarked=False):
     original = template.read_text(encoding='utf-8')
     html = artifact.read_text(encoding='utf-8')
     if not all(marker in original for marker in ['page-surface', 'reader-content', 'StudyHand']):
@@ -39,6 +40,7 @@ def verify(artifact, template, source=None):
         raise ValueError('Embedded notebook data differs from the authored source')
     return {'valid': True, 'bundledReaderMatches': True,
             'sourceMatches': source is not None,
+            'studyMarks': check_study_marks(embedded, allow_unmarked),
             'readerShellSHA256': sha256(shell(original).encode()).hexdigest(),
             'htmlBytes': artifact.stat().st_size}
 
@@ -49,8 +51,9 @@ if __name__ == '__main__':
     parser.add_argument('artifact', type=Path)
     parser.add_argument('--template', type=Path, default=base / 'assets/reader.html')
     parser.add_argument('--source', type=Path)
+    parser.add_argument('--allow-unmarked', action='store_true', help='Only for an explicit request for unmarked content')
     args = parser.parse_args()
     try:
-        print(json.dumps(verify(args.artifact, args.template, args.source)))
+        print(json.dumps(verify(args.artifact, args.template, args.source, args.allow_unmarked)))
     except (OSError, ValueError, KeyError) as error:
         parser.exit(1, str(error) + '\n')

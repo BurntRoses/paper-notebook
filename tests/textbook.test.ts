@@ -8,6 +8,8 @@ import {parseDocument,resolveSelector} from '../src/model/document';
 import {slimFonts,artifactStem} from '../src/io/packaging';
 import {machineLearning} from '../src/machine-learning';
 import {authoredAnnotations} from '../src/model/study';
+import {checkStudyMarks} from '../src/model/study-quality';
+import {examples} from '../src/examples';
 
 test('page directives bind Cornell cues and charts to the correct source page and survive export',()=>{
  const input='# 教材\n## 数据\n### 关系\n```notebook-page\n'+JSON.stringify({id:'data-page',layout:'cornell',summary:'两个观测值。',cues:[{id:'data-cue',text:'图上有几个点？',blockId:'observed'}]})+'\n```\n```notebook-block\n'+JSON.stringify({id:'observed',type:'chart',chartType:'scatter',xLabel:'输入',yLabel:'结果',series:[{id:'s',label:'观测',points:[{x:1,y:3},{x:2,y:5}]}],keepTogether:true,study:{role:'evidence',frame:'pencil'}})+'\n```';
@@ -52,8 +54,18 @@ test('machine learning textbook validates, distinguishes examples and supplies r
  for(const p of pagesOf(document))for(const cue of p.cues||[])assert.ok(p.blocks.some(b=>b.id===cue.blockId));
  const chart=blocks.find(b=>b.id==='ml-parameter-chart')!;
  for(const [i,s]of chart.series!.entries())for(const p of s.points)assert.equal(p.y,i===1?2*p.x+1:i===2?p.x+2:p.x+1);
- assert.equal(document.notebook.revision,2);assert.equal(document.extensions.baseRevision,1);
+ assert.equal(document.notebook.revision,3);assert.equal(document.extensions.baseRevision,2);
  assert.ok(blocks.filter(b=>b.type==='formula').every(b=>b.parameters?.every(p=>p.description.length>20)));
+});
+test('downloadable authored examples carry intentional anchored emphasis',()=>{
+ for(const document of [...examples,machineLearning]){
+  const report=checkStudyMarks(document);assert.ok(report.total>0,document.notebook.id);
+  assert.ok(report.byKind.circle&&report.byKind.underline&&report.byKind.dots,document.notebook.id);
+  for(const page of pagesOf(document))for(const annotation of authoredAnnotations(document,page.id)){
+   for(const selector of annotation.selectors)assert.equal(resolveSelector(document,selector).status,'resolved');
+  }
+ }
+ assert.equal(checkStudyMarks(machineLearning).unmarkedPages.length,0);
 });
 test('formula symbol rows validate and roundtrip with addressable explanations and compatible legacy text',()=>{
  const original=structuredClone(machineLearning),round=importText(exportMarkdown(original)).document;

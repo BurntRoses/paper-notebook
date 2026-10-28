@@ -31,7 +31,7 @@ test('Node and Python reject substituted readers while allowing normal font trim
  try{
   writeFileSync(join(dir,'template.html'),template);writeFileSync(join(dir,'source.json'),JSON.stringify(source));
   for(const item of cases){
-   if(item.valid)assert.deepEqual(verifyBundledReader(item.html,template,source),{bundledReaderMatches:true,sourceMatches:true},item.name);
+   if(item.valid){const proof=verifyBundledReader(item.html,template,source);assert.equal(proof.bundledReaderMatches,true,item.name);assert.equal(proof.sourceMatches,true);assert.equal(proof.studyMarks.total,0);}
    else assert.throws(()=>verifyBundledReader(item.html,template,source),undefined,item.name);
    writeFileSync(join(dir,'artifact.html'),item.html);
    const result=spawnSync('python3',['skills/paper-notebook/scripts/verify_reader.py',join(dir,'artifact.html'),'--template',join(dir,'template.html'),'--source',join(dir,'source.json')],{encoding:'utf8'});

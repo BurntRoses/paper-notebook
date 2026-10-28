@@ -1,4 +1,5 @@
 import type {NotebookDocument} from '../model/types';
+import {checkStudyMarks} from '../model/study-quality';
 
 const dataSlot=()=>/(<script\b[^>]*\bid=["']notebook-data["'][^>]*>)([\s\S]*?)(<\/script>)/g;
 const faces=()=>/@font-face\s*\{[^{}]*\}/g;
@@ -13,12 +14,12 @@ function shell(html:string){
   .replace(faces(),face=>isReadingFace(face)?'':face);
 }
 
-export function verifyBundledReader(html:string,template:string,source?:NotebookDocument){
+export function verifyBundledReader(html:string,template:string,source?:NotebookDocument,allowUnmarked=false){
  if(!['page-surface','reader-content','StudyHand'].every(marker=>template.includes(marker)))throw new Error('The reference must be the bundled Paper Notebook reader template.');
  if(shell(html)!==shell(template))throw new Error('Reader shell differs from the bundled template. Do not deliver a custom HTML/CSS/JS reader; rebuild with the supplied builder.');
  const allowed=readingFaces(template),actual=readingFaces(html);
  if(!actual.length||actual.some(face=>!allowed.includes(face))||allowed.filter(face=>/U\+20-7E\b/i.test(face)).some(face=>!actual.includes(face)))throw new Error('The bundled reading fonts were removed or replaced.');
  const embedded=JSON.parse([...html.matchAll(dataSlot())][0][2]);
  if(source&&canonical(embedded)!==canonical(source))throw new Error('Embedded notebook data differs from the authored source.');
- return {bundledReaderMatches:true,sourceMatches:!!source};
+ return {bundledReaderMatches:true,sourceMatches:!!source,studyMarks:checkStudyMarks(embedded,allowUnmarked)};
 }

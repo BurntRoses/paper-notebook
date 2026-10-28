@@ -18,6 +18,7 @@ async function fixture(extra:Record<string,Uint8Array>={}){
   'paper-notebook/assets/THIRD_PARTY_NOTICES.txt':await readFile('THIRD_PARTY_NOTICES.txt'),
   'paper-notebook/scripts/build_reader.py':await readFile('skills/paper-notebook/scripts/build_reader.py'),
   'paper-notebook/scripts/verify_reader.py':await readFile('skills/paper-notebook/scripts/verify_reader.py'),
+  'paper-notebook/scripts/study_quality.py':await readFile('skills/paper-notebook/scripts/study_quality.py'),
   'paper-notebook/references/notebook.schema.json':await readFile('schemas/notebook.schema.json'),
  };
  return zipSync({...files,...extra});

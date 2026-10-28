@@ -1,7 +1,7 @@
 export type BlockType = 'prose'|'concept'|'steps'|'example'|'comparison'|'formula'|'code'|'quote'|'image'|'diagram'|'chart'|'callout'|'checklist'|'exercise';
 export interface Item { id: string; text: string }
 export interface FormulaParameter { symbol:string; name:string; description:string }
-export interface DiagramNode { id: string; label: string; x?: number; y?: number }
+export interface DiagramNode { id: string; label: string; x?: number; y?: number; shape?:'rounded'|'rectangle'|'circle'|'ellipse'|'diamond'|'hexagon'|'pill'|'document'|'cylinder' }
 export type StudyMarkKind='highlight'|'underline'|'circle'|'wave'|'box'|'bracket'|'check'|'star'|'dots';
 export interface StudyPresentation {visual?:'plain'|'blackboard'|'extract'|'sketch';role?:'definition'|'intuition'|'derivation'|'example'|'evidence'|'takeaway'|'recall';frame?:'auto'|'plain'|'pencil'|'tape'|'double'|'margin';label?:string;aside?:string;explanations?:{text:string;note:string}[];tone?:'blue'|'red'|'olive'|'gold';marks?:{text:string;kind:StudyMarkKind;color?:string;seed?:number}[]}
 export interface Block {
@@ -30,8 +30,9 @@ export interface Asset { id: string; name: string; data: string; mime: string; s
 export interface Selector { blockId: string; start: number; end: number; exact: string; prefix: string; suffix: string }
 export interface Annotation { id: string; kind: StudyMarkKind|'bold'|'red'|'strike'|'arrow'|'freehand'; selectors: Selector[]; color: string; width: number; seed: number; pageId: string; points?: number[][]; status?: 'resolved'|'ambiguous'|'orphaned'|'needs-placement'; coordinateSpace?:'legacy-width'|'normalized-page'; originalPoints?:number[][]; sourceSize?:{width:number;height:number}; shape?:PaperShape; sheet?:number; tool?:'pencil'|'pen'|'marker'|'arrow'; attachedBlockId?:string; blockFrame?:{x:number;y:number;width:number;height:number}; migration?:string }
 export type MaterialId = 'butter'|'rose'|'sage'|'lilac'|'kraft'|'glassine';
-export interface Note { id: string; pageId: string; blockId?: string; selector?: Selector; title: string; text: string; back: string; material: MaterialId; seed: number; x: number; y: number; z: number; face: 'front'|'back'; attached: boolean; collapsed: boolean; surface: 'page'|'desk'; width?:number;height?:number;sheet?:number;positions?:Partial<Record<PaperShape,ObjectFrame>> }
-export interface Doubt { id: string; pageId: string; selector: Selector; question: string; category?:'unclear'|'verify'|'question'; status: 'open'|'resolved'; answerNotebookId?: string; answerPageId?: string }
+export interface Note { id: string; pageId: string; blockId?: string; selector?: Selector; anchors?:{pageId:string;selector:Selector}[]; title: string; text: string; back: string; material: MaterialId; seed: number; x: number; y: number; z: number; face: 'front'|'back'; attached: boolean; collapsed: boolean; surface: 'page'|'desk'; width?:number;height?:number;sheet?:number;positions?:Partial<Record<PaperShape,ObjectFrame>> }
+export interface Bookmark { id: string; pageId: string; blockId?: string; selector?: Selector; kind: 'page'|'text'; label?: string; sheet?:number; createdAt?: string }
+export interface Doubt { id: string; pageId: string; selector: Selector; anchors?:{pageId:string;selector:Selector}[]; question: string; category?:'unclear'|'verify'|'question'; status: 'open'|'resolved'; answerNotebookId?: string; answerPageId?: string }
 export interface Answer { selected: string[]; text?: string; matches?: Record<string,string>; submitted: boolean }
 export interface ReadingAnchor {pageId:string;blockId?:string;offset:number;sheet?:number;textOffset?:number}
 export type TimerDisplay = 'digital'|'dial'|'minimal'|'focus';
@@ -44,7 +45,7 @@ export interface StudyBrief {languageStyle?:string;difficulty?:string;priorKnowl
 export interface NotebookDocument {
   schemaVersion: '1.0.0';
   notebook: { id: string; revision: number; title: string; subtitle?: string; author?: string; language: string; goals: string[]; sources: Source[]; chapters: Chapter[]; parent?: { notebookId: string; pageId?: string }; brief?: StudyBrief };
-  userState: { layouts?:Record<string,PagePlacements>; updatedAt: string; lastPageId: string; readingAnchor?:ReadingAnchor; notes: Note[]; annotations: Annotation[]; dismissedStudyMarks?:string[]; doubts: Doubt[]; answers: Record<string,Answer>; checks: Record<string,boolean>; bookmarks: string[]; readingPositions: Record<string,number>; preferences: Preferences };
+  userState: { layouts?:Record<string,PagePlacements>; updatedAt: string; lastPageId: string; readingAnchor?:ReadingAnchor; notes: Note[]; annotations: Annotation[]; dismissedStudyMarks?:string[]; doubts: Doubt[]; answers: Record<string,Answer>; checks: Record<string,boolean>; bookmarks: (string|Bookmark)[]; readingPositions: Record<string,number>; preferences: Preferences };
   assets: Asset[]; extensions: Record<string,unknown>;
 }
 export interface MaterialProfile { id: MaterialId; name: string; color: string; stiffness: number; damping: number; opacity: number; thickness: number; attachment: 'glue'|'clip'|'tape'|'hole' }

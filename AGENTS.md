@@ -8,4 +8,6 @@ The shipped reader is the required product, not a visual suggestion. Never write
 
 Preserve stable IDs during updates and include `extensions.baseRevision`. Personal notes, ink, answers and questions are separate user data. Ask for an image redraw decision only when it is relevant; explain token use. Use deterministic SVG for diagrams and preserve the geometry, labels, units and provenance of technical figures.
 
+Default tutorials include intentional authored `study.marks` anchored to exact phrases. Do not deliver a whole text tutorial with zero emphasis or rely on the reader to invent it. Check the build report's mark counts, kinds and unmarked pages; only an explicit request for unmarked content permits `--allow-unmarked`. Keep authored marks separate from personal annotations and verify they survive HTML download.
+
 For development: TypeScript + Vite; run the meaningful model/roundtrip tests and one consolidated browser pass after substantive feature work. Respect existing licenses. Do not add accounts, cloud generation or a hosted AI billing service to this offline toolkit.

@@ -1,4 +1,4 @@
-import { userState, type NotebookDocument, type Page } from './model/types';
+import { userState, type NotebookDocument, type Page, type StudyPresentation } from './model/types';
 function make(id:string,title:string,subtitle:string,pages:Page[],goals:string[]):NotebookDocument{
  return {schemaVersion:'1.0.0',notebook:{id,revision:1,title,subtitle,author:'Paper Notebook',language:'zh-CN',goals,sources:[{id:'source-editorial',title:'本项目编写的教学示例',status:'illustrative'}],chapters:[{id:`${id}-chapter`,title:'从问题到理解',pages}]},userState:userState(pages[0].id),assets:[],extensions:{}};
 }
@@ -57,3 +57,23 @@ practiceExample.notebook.chapters[0].pages[0].summary='一条可复查的记录�
 conceptExample.notebook.sources.push({id:'postgres-count',title:'PostgreSQL · Aggregate Functions',url:'https://www.postgresql.org/docs/current/functions-aggregate.html'});
 conceptExample.notebook.chapters[0].pages[2].blocks.find(b=>b.id==='obs-sql')!.sourceRefs=[{sourceId:'postgres-count',locator:'count(*) 与 count(DISTINCT expression)'}];
 for(const d of examples)d.extensions.readerProfile={layout:'auto',direction:'horizontal',sidebar:'open',pageShape:'auto',transition:'turn',theme:'paper-light',motion:'full'};
+
+const emphasis:Record<string,StudyPresentation['marks']>={
+ 'obs-concept':[{text:'统计粒度',kind:'circle'}],
+ 'obs-key':[{text:'订单数是 3，顾客数是 1',kind:'check'}],
+ 'obs-steps':[{text:'只看本月、已付款、未退款的订单',kind:'underline'}],
+ 'obs-formula':[{text:'减去一次',kind:'dots'}],
+ 'growth-intro':[{text:'增长的基础',kind:'circle'}],
+ 'growth-eq':[{text:'每一期的增长率相同',kind:'dots'}],
+ 'growth-steps':[{text:'三期一共增加 33.1',kind:'check'}],
+ 'growth-bound':[{text:'期间没有额外存入或取出',kind:'underline'}],
+ 'plant-intro':[{text:'先记录看见的东西',kind:'underline'}],
+ 'plant-warn':[{text:'植物种类及条件',kind:'dots'}],
+ 'plant-concept':[{text:'原因判断',kind:'circle'},{text:'还需要植物种类、浇水和根系状态等证据',kind:'underline'}],
+};
+for(const document of examples){
+ for(const chapter of document.notebook.chapters)for(const page of chapter.pages)for(const block of page.blocks){
+  if(emphasis[block.id])block.study={...block.study,marks:emphasis[block.id]};
+ }
+ document.notebook.revision=2;document.extensions.baseRevision=1;
+}

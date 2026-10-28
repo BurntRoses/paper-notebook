@@ -25,10 +25,18 @@ export function parseDocument(raw: unknown): { document: NotebookDocument; warni
     if(b.type==='chart'&&b.series?.some(s=>s.points.some(p=>!Number.isFinite(p.x)||!Number.isFinite(p.y))))throw new Error(`${b.id}: 图表数据须为有限数值。`);
     if(b.type==='diagram'){const nodeIds=new Set(b.nodes?.map(n=>n.id));if(nodeIds.size!==b.nodes?.length||b.edges?.some(e=>!nodeIds.has(e.from)||!nodeIds.has(e.to)))throw new Error(`${b.id}: 图示节点 ID 或连线无效。`);}
   }
-  for(const list of [d.userState.notes,d.userState.annotations,d.userState.doubts])for(const entry of list)add(entry.id,'userState');
   const pageIds=new Set(pagesOf(d).map(p=>p.id));
+  for(const list of [d.userState.notes,d.userState.annotations,d.userState.doubts])for(const entry of list)add(entry.id,'userState');
+  // Page-only bookmarks were strings in 1.0. Keep them readable while newer
+  // text bookmarks carry an exact selector and a stable id.
+  d.userState.bookmarks = d.userState.bookmarks.map((raw,index)=>typeof raw==='string'?({id:`bookmark-${raw}-${index}`,pageId:raw,kind:'page'}):raw);
+  for(const b of d.userState.bookmarks){if(typeof b==='string')continue;add(b.id,'bookmark');if(!pageIds.has(b.pageId))warnings.push(`书签 ${b.id} 指向的页面已移除。`);if(b.kind==='text'&&!b.selector)throw new Error(`书签 ${b.id} 缺少原文选区。`);if(b.selector&&resolveSelector(d,b.selector).status!=='resolved')warnings.push(`书签 ${b.id} 的原文待重新关联。`);}
   if(!pageIds.has(d.userState.lastPageId))d.userState.lastPageId=pagesOf(d)[0].id;
   for(const n of d.userState.notes)if(!pageIds.has(n.pageId)){warnings.push(`便签 ${n.id} 的原页面已移除，移入当前页待整理。`);n.pageId=d.userState.lastPageId;n.attached=false;}
+  for(const record of [...d.userState.notes,...d.userState.doubts]){
+    const anchors=record.anchors?.length?record.anchors:record.selector?[{pageId:record.pageId,selector:record.selector}]:[];
+    if(anchors.some(a=>!pageIds.has(a.pageId)||resolveSelector(d,a.selector).status!=='resolved'))warnings.push(`记录 ${record.id} 的原文待重新关联。`);
+  }
   migrateInk(d);
   for(const a of d.userState.annotations){if(a.status==='needs-placement') {warnings.push(`批注 ${a.id}: 待定位，原始数据已保留`);continue;}const statuses=a.selectors.map(s=>resolveSelector(d,s).status);a.status=statuses.includes('orphaned')?'orphaned':statuses.includes('ambiguous')?'ambiguous':'resolved';if(a.status!=='resolved')warnings.push(`批注 ${a.id}: ${a.status}`);}
   return {document:d,warnings};

@@ -480,6 +480,25 @@
               "sheet": {
                 "type": "integer",
                 "minimum": 0
+              },
+              "anchors": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "pageId",
+                    "selector"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "pageId": {
+                      "type": "string"
+                    },
+                    "selector": {
+                      "$ref": "#/definitions/selector"
+                    }
+                  }
+                }
               }
             }
           }
@@ -698,6 +717,25 @@
               },
               "answerPageId": {
                 "$ref": "#/definitions/id"
+              },
+              "anchors": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "pageId",
+                    "selector"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "pageId": {
+                      "type": "string"
+                    },
+                    "selector": {
+                      "$ref": "#/definitions/selector"
+                    }
+                  }
+                }
               }
             }
           }
@@ -741,7 +779,66 @@
         "bookmarks": {
           "type": "array",
           "items": {
-            "type": "string"
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "required": [
+                  "id",
+                  "pageId",
+                  "kind"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "$ref": "#/definitions/id"
+                  },
+                  "pageId": {
+                    "type": "string"
+                  },
+                  "blockId": {
+                    "$ref": "#/definitions/id"
+                  },
+                  "selector": {
+                    "$ref": "#/definitions/selector"
+                  },
+                  "kind": {
+                    "enum": [
+                      "page",
+                      "text"
+                    ]
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "createdAt": {
+                    "type": "string"
+                  },
+                  "sheet": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "kind": {
+                          "const": "text"
+                        }
+                      }
+                    },
+                    "then": {
+                      "required": [
+                        "selector"
+                      ]
+                    }
+                  }
+                ]
+              }
+            ]
           }
         },
         "readingPositions": {
@@ -1059,6 +1156,19 @@
               },
               "label": {
                 "type": "string"
+              },
+              "shape": {
+                "enum": [
+                  "rounded",
+                  "rectangle",
+                  "circle",
+                  "ellipse",
+                  "diamond",
+                  "hexagon",
+                  "pill",
+                  "document",
+                  "cylinder"
+                ]
               }
             }
           }

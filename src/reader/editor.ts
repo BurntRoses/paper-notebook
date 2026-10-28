@@ -2,7 +2,8 @@ import { authoredAnnotations, drawInk } from './ink';
 import { addAnnotation, captureSelection, type MarkKind, type SelectionPart } from './records';
 import type { Annotation, NotebookDocument, Page, PaperShape } from '../model/types';
 import { button, el, toast } from '../ui/dom';
-export interface EditorHost {d:NotebookDocument;page:Page;shape:PaperShape;render:()=>void;remember:()=>void;invalidate:()=>void}
+import type { SurfacePage } from './surface';
+export interface EditorHost {d:NotebookDocument;page:Page;pages:SurfacePage[];shape:PaperShape;render:()=>void;remember:()=>void;invalidate:()=>void;addNoteFromSelection?:(parts:SelectionPart[])=>void;addBookmarkFromSelection?:(parts:SelectionPart[])=>void;addDoubtFromSelection?:(parts:SelectionPart[],category:'unclear'|'explain'|'example')=>void}
 export const readingMarks:[MarkKind,string,string][]=[['highlight','荧光','▰'],['underline','下划线','U̲'],['circle','圈注','◯'],['wave','波浪线','〰'],['box','方框','▢'],['bracket','括注','〔〕'],['check','勾记','✓'],['star','重点星标','☆'],['dots','着重点','···']];
 /** A reader may mark an anchored passage; lesson content and page layout never change. */
 export class PaperEditor {
@@ -25,8 +26,12 @@ export class PaperEditor {
  mark(kind:MarkKind,parts=this.selection){if(!parts.length){toast('先选取需要标记的原文');return;}this.change(()=>addAnnotation(this.d,parts,kind));getSelection()?.removeAllRanges();this.selection=[];}
  toolbar(parts=this.selection){const bar=el('div','stationery');bar.setAttribute('role','toolbar');bar.setAttribute('aria-label','原文标记');bar.onpointerdown=e=>{this.cacheSelection();e.preventDefault();};
   for(const [kind,name,glyph] of readingMarks){const b=button(name,()=>this.mark(kind,parts),'stationery-tool',glyph);b.append(el('small','mark-name',name));bar.append(b);}
+  if(this.host.addNoteFromSelection)bar.append(this.quick('添加便签','＋',()=>this.host.addNoteFromSelection!(parts)));
+  if(this.host.addBookmarkFromSelection)bar.append(this.quick('加入书签','⚑',()=>this.host.addBookmarkFromSelection!(parts)));
+  if(this.host.addDoubtFromSelection){bar.append(this.quick('提出疑问','？',()=>this.host.addDoubtFromSelection!(parts,'unclear')),this.quick('展开讲解','↗',()=>this.host.addDoubtFromSelection!(parts,'explain')),this.quick('举例说明','▤',()=>this.host.addDoubtFromSelection!(parts,'example')));}
   const history=el('div','mark-history'),undo=button('撤销标记',this.undo,'stationery-tool','↶'),redo=button('重做标记',this.redo,'stationery-tool','↷');undo.disabled=!this.past.length;redo.disabled=!this.future.length;history.append(undo,redo);bar.append(history);return bar;
  }
+ quick(name:string,glyph:string,fn:()=>void){const b=button(name,fn,'stationery-tool quick-tool',glyph);b.append(el('small','mark-name',name));return b;}
  closeInspector(){this.inspector?.remove();this.inspector=null;this.selected=[];this.root.querySelectorAll('[data-selected]').forEach(n=>n.removeAttribute('data-selected'));}
  inspectAt(x:number,y:number){
   this.closeInspector();const hits=[...this.root.querySelectorAll<SVGGraphicsElement>('.ink-overlay [data-ink]')].filter(n=>{const r=n.getBoundingClientRect();const raw=n.dataset.rect?.split(',').map(Number),paper=n.closest<HTMLElement>('.page-surface')!;if(raw){const p=paper.getBoundingClientRect(),sx=p.width/paper.offsetWidth,sy=p.height/paper.offsetHeight;const left=p.left+raw[0]*sx,top=p.top+raw[1]*sy;return x>=Math.min(r.left,left)-7&&x<=Math.max(r.right,left+raw[2]*sx)+7&&y>=Math.min(r.top,top)-6&&y<=Math.max(r.bottom,top+raw[3]*sy)+7;}return x>=r.left-6&&x<=r.right+6&&y>=r.top-6&&y<=r.bottom+6;});
@@ -37,7 +42,7 @@ export class PaperEditor {
   panel.append(button('删除标记',()=>this.removeSelected()),button('取消选择',()=>this.closeInspector()));document.body.append(panel);this.inspector=panel;const r=panel.getBoundingClientRect();panel.style.left=Math.min(innerWidth-r.width-12,Math.max(12,x-30))+'px';panel.style.top=Math.min(innerHeight-r.height-12,Math.max(12,y+18))+'px';
  }
  removeSelected(){const ids=[...this.selected];this.closeInspector();this.change(()=>{this.d.userState.annotations=this.d.userState.annotations.filter(a=>!ids.includes(a.id));this.d.userState.dismissedStudyMarks=[...new Set([...(this.d.userState.dismissedStudyMarks||[]),...ids.filter(id=>id.startsWith('author-'))])];});}
- paint(root:ParentNode=this.root){for(const paper of root.querySelectorAll<HTMLElement>('.page-surface'))drawInk(paper,[...authoredAnnotations(this.d,paper.dataset.page!),...this.d.userState.annotations.filter(a=>a.pageId===paper.dataset.page)],this.d);}
+ paint(root:ParentNode=this.root){for(const paper of root.querySelectorAll<HTMLElement>('.page-surface'))drawInk(paper,[...authoredAnnotations(this.d,paper.dataset.page!),...this.d.userState.annotations.filter(a=>a.pageId===paper.dataset.page)],this.d,this.host.pages);}
  notes(container:HTMLElement){for(const note of this.d.userState.notes){const row=el('div','record-card');row.append(el('strong','record-label',note.title||'学习笔记'),el('p','record-text',note.text||note.back));if(note.selector)row.append(el('p','record-quote',note.selector.exact));container.append(row);}}
  pending(container:HTMLElement){for(const a of this.d.userState.annotations.filter(a=>a.status&&a.status!=='resolved')){const row=el('div','record-card pending-ink');row.append(el('strong','','待定位的历史标记'),el('p','',a.migration||a.selectors.map(s=>s.exact).join(' ')||'原始坐标已保留，当前阅读器不修改历史笔迹。'));container.append(row);}}
 }
