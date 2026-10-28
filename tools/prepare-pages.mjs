@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const dist = root + 'dist/';
 const site = root + 'output/site/';
-for (const path of ['index.html', 'promo.html', 'chat-start.html', 'downloads/blank-notebook.html', 'downloads/paper-notebook-skill.zip']) {
+for (const path of ['index.html', 'promo.html', 'chat-start.html', 'downloads/blank-notebook.html', 'downloads/paper-notebook-skill.zip', 'downloads/paper-notebook-conversation.zip']) {
   if (!(await stat(dist + path)).isFile()) throw new Error(`Missing release file: ${path}. Run the build first.`);
 }
 const [reader, home] = await Promise.all([
@@ -21,6 +21,7 @@ for(const path of ['chat-start.html','start.html','promo-motion.html','site.css'
 for(const name of ['blank-notebook','paper-notebook','paper-notebook-product','machine-learning','concept','formula','practice'])await cp(dist+'downloads/'+name+'.html',site+'downloads/'+name+'.html');
 // This is the runtime fetched by the AI creation instructions, not a promotional download.
 await cp(dist+'downloads/paper-notebook-skill.zip',site+'downloads/paper-notebook-skill.zip');
+await cp(dist+'downloads/paper-notebook-conversation.zip',site+'downloads/paper-notebook-conversation.zip');
 for(const path of ['paper-landscape-2.png','paper-portrait-2.png','paper-notebook-film.mp4','paper-notebook-film-portrait.mp4','story/film-landscape-poster-1.png','story/film-portrait-poster-1.png'])await cp(dist+'promo/'+path,site+'promo/'+path);
 await writeFile(site + 'reader.html', reader);
 await writeFile(site + 'index.html', home);

@@ -81,5 +81,5 @@ export function readerCopy(d:NotebookDocument,choices:ExportChoices){
 }
 export function questionPrompt(d:NotebookDocument){
   const questions=d.userState.doubts.filter(q=>q.status==='open');
-  return '请使用 Paper Notebook 生成关联答疑册。保留原文语境，核实问题涉及的条件、公式和来源，交付独立 HTML 与源 JSON。\n\n'+JSON.stringify({parent:{notebookId:d.notebook.id},title:d.notebook.title,revision:d.notebook.revision,doubtLinks:questions.map(q=>({doubtId:q.id,pageId:q.pageId,blockId:q.selector.blockId,quote:q.selector.exact,question:q.question,context:textOf(blocksOf(d).find(b=>b.id===q.selector.blockId)||{id:'missing',type:'prose',text:''})})),sources:d.notebook.sources},null,2);
+  return '请按 https://github.com/BurntRoses/paper-notebook 的 skills/paper-notebook/SKILL.md 生成关联答疑册。保留原文语境，核实条件、公式和来源。交付实际生成的单文件离线 HTML：对话环境附上可下载文件，编程智能体在工作区生成。不要用文字或源码代替成品。\n\n'+JSON.stringify({parent:{notebookId:d.notebook.id},title:d.notebook.title,revision:d.notebook.revision,doubtLinks:questions.map(q=>({doubtId:q.id,pageId:q.pageId,blockId:q.selector.blockId,quote:q.selector.exact,question:q.question,context:textOf(blocksOf(d).find(b=>b.id===q.selector.blockId)||{id:'missing',type:'prose',text:''})})),sources:d.notebook.sources},null,2);
 }

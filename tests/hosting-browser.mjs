@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
@@ -43,28 +43,28 @@ try {
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
   await page.goto(base + 'chat-start.html');
   assert.equal(await page.locator('a[download]').count(), 0);
-  const prompt = await page.getByLabel('通用生成指令', { exact: true }).inputValue();
-  assert.ok(prompt.includes('DeepSeek'));
-  const repositoryPrompt = await page.getByLabel('仓库 Skill 调用语句', { exact: true }).inputValue();
+  const prompt = await page.getByLabel('对话模型提示词', { exact: true }).inputValue();
+  assert.equal(prompt, await readFile('skills/paper-notebook/prompts/conversation-model.txt', 'utf8'));
+  assert.ok(prompt.includes('paper-notebook-conversation.zip'));
+  const repositoryPrompt = await page.getByLabel('编程智能体提示词', { exact: true }).inputValue();
+  assert.equal(repositoryPrompt, await readFile('skills/paper-notebook/prompts/coding-agent.txt', 'utf8'));
   for(const text of [prompt,repositoryPrompt]){
-    assert.ok(text.indexOf('第一条回复')<text.indexOf('领域或主题'));
-    assert.match(text,/结束本轮回复[，,]等待/);
-    assert.match(text,/第一条回复[\s\S]*没有文件[\s\S]*检索可靠/);
-    assert.match(text,/收到文件或确认[\s\S]*选择题/);
-    assert.ok(text.includes('教程名-v版本.html'));
-    assert.ok(text.includes('高级导出')||text.includes('ZIP/JSON'));
+    assert.ok(text.length < 1200, `Prompt should stay concise (${text.length} chars)`);
+    assert.doesNotMatch(text,/Codex|ChatGPT|DeepSeek|WorkBuddy/i);
+    assert.doesNotMatch(text,/只输出.*Markdown|交付 Markdown|输出完整.*Markdown/);
+    assert.match(text,/HTML/);
   }
-  checks.push('Both generation prompts wait for files/no-files before topic choices and describe single HTML delivery');
-  assert.ok(repositoryPrompt.includes('https://github.com/BurntRoses/paper-notebook'));
+  checks.push('Short provider-neutral prompts route by available tools and require HTML file delivery');
   assert.ok(repositoryPrompt.includes('skills/paper-notebook/SKILL.md'));
-  assert.ok(repositoryPrompt.includes('scripts') || repositoryPrompt.includes('构建脚本'));
-  await page.getByRole('button', { name: '复制给 Agent', exact: true }).click();
+  assert.ok(repositoryPrompt.includes('构建'));
+  assert.ok(prompt.includes('可下载的单文件离线 HTML'));
+  await page.getByRole('button', { name: '复制给编程智能体', exact: true }).click();
   await page.waitForFunction(() => /已复制|已选中/.test(document.querySelector('#repository-status').textContent));
   assert.equal(await page.evaluate(() => navigator.clipboard.readText()), repositoryPrompt);
-  await page.getByRole('button', { name: '复制给网页端模型', exact: true }).click();
+  await page.getByRole('button', { name: '复制给对话模型', exact: true }).click();
   await page.waitForFunction(() => /已复制|已选中/.test(document.querySelector('#status').textContent));
   assert.equal(await page.evaluate(() => navigator.clipboard.readText()), prompt);
-  checks.push('Both copy buttons put the complete, self-contained instructions on the clipboard; no download step');
+  checks.push('Both copy buttons put the complete concise instructions on the clipboard; no prompt download step');
 
   const fallback = await context.newPage();
   await fallback.addInitScript(() => {
@@ -72,7 +72,7 @@ try {
     document.execCommand = () => false;
   });
   await fallback.goto(base + 'chat-start.html');
-  for (const [button, field, status] of [['复制给 Agent', '#repository-prompt', '#repository-status'], ['复制给网页端模型', '#prompt', '#status']]) {
+  for (const [button, field, status] of [['复制给编程智能体', '#repository-prompt', '#repository-status'], ['复制给对话模型', '#prompt', '#status']]) {
     await fallback.getByRole('button', { name: button, exact: true }).click();
     await fallback.waitForFunction(selector => document.querySelector(selector).textContent.includes('已选中完整指令'), status);
     assert.ok(await fallback.locator(field).isVisible());
@@ -91,7 +91,7 @@ try {
   await page.waitForFunction(() => !!window.reader);
   await page.locator('.reader-files summary').click();
   await page.locator('.reader-file-menu').getByRole('button', { name: '导入', exact: true }).click();
-  await page.getByLabel('教程源文本', { exact: true }).fill(prompt.slice(prompt.indexOf('# 复利的增长基础')));
+  await page.getByLabel('教程源文本', { exact: true }).fill(await readFile('skills/paper-notebook/assets/example.md', 'utf8'));
   await page.getByRole('button', { name: '预览导入', exact: true }).click();
   await page.locator('.dialog-foot').getByRole('button', { name: '导入', exact: true }).click();
   assert.equal(await page.locator('[data-block=growth-formula]').count(), 1);
@@ -102,7 +102,7 @@ try {
   await page.locator('.dialog-foot').getByRole('button', { name: '下载离线 HTML', exact: true }).click();
   const file = await downloaded;
   await file.saveAs(out + '/imported-notebook.html');
-  checks.push('Text-only chat example imports with a real formula and circle, then downloads as HTML');
+  checks.push('Reader can import an existing structured source and export it as HTML');
 
   await page.goto(base + 'promo-motion.html');
   await page.waitForURL(url=>url.hash==='#film');
@@ -152,6 +152,10 @@ try {
   assert.equal(body.subarray(0, 2).toString(), 'PK');
   const sha256 = createHash('sha256').update(body).digest('hex');
   checks.push('Portable Skill ZIP downloads successfully');
+  const conversation = await context.request.get(base + 'downloads/paper-notebook-conversation.zip');
+  assert.equal(conversation.status(), 200);
+  assert.equal((await conversation.body()).subarray(0, 2).toString(), 'PK');
+  checks.push('Portable conversation build package is publicly available');
   assert.deepEqual(errors, []);
   const report = { date: new Date().toISOString(), base, checks, errors, skillSHA256: sha256, scope: 'Chromium over HTTP(S); browser imports and HTML download, responsive films, legacy redirects, public exposure restrictions and all primary page links' };
   await writeFile(out + '/report.json', JSON.stringify(report, null, 2));

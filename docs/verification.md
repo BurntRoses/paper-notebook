@@ -77,7 +77,7 @@ CLI 已对 `examples/paper-notebook.json` 运行 validate，结果为 7 个源�
 
 主推广影片为 64 秒产品推介片：先材料后需求 → 长篇 AI 回答的阅读负担 → 结构 → 圈画 → 学科 → 材料要求 → 沉浸离线 → 开始使用。画面取自真实笔记的正文、黑板、图示、代码和 SVG 笔迹，再作节拍纸页编排。两版规格为 1920×1080 / 1080×1920、30fps、H264/AAC，配原创 120 BPM 立体声配乐，新增电钢琴、马林巴、钢片琴和短长笛音色，对应指令、公式、圈注、星标、代码及保存等画面；中段减鼓后恢复。完整解码、黑帧、响度与峰值检查见 [product-film-report.json](verification/product-film-report.json)。逐段检查联系表：[横屏](screenshots/product-film-landscape-contact.png)、[竖屏](screenshots/product-film-portrait-contact.png)。制作命令与素材来源见 [promo-production.md](promo-production.md)。旧操作视频位于工作区归档，不进入网站发布。
 
-32 项模型/数据测试通过，包括完整回答外套 Markdown 围栏、文本导入示例与 Python 对话构建器测试。通用对话使用包经过真实解压、标准库构建、ZIP 完整性和正式校验器验证；生成的 HTML 以 file:// 离线打开，检查圈注、翻页和再次返回。通用指令内的完整示例从导入 UI 进入空白阅读器，实际下载 HTML 后断网重开，公式、例题和原生图示保留。复制按钮的离线回退、首页播放器在 file:// 下自动适配屏幕并保留暂停进度也通过。包验证命令为 `node tools/verify-chat-package.mjs`，结果见 [chat-package-report.json](verification/chat-package-report.json)。浏览器与播放器验收记录见 [product-delivery-report.json](verification/product-delivery-report.json)。测试未连接远程 ChatGPT 或 DeepSeek 账号，能力取决于对话环境是否提供文件/代码工具；无工具时交付完整导入稿。
+35 项模型/数据测试通过，包括内部结构化文本导入与 Python 对话构建器测试。通用对话构建包经过真实解压、标准库构建、ZIP 完整性和正式校验器验证；生成的 HTML 以 file:// 离线打开，检查圈注、翻页和再次返回。源样例从导入 UI 进入空白阅读器，实际下载 HTML 后断网重开，公式、例题和原生图示保留。复制按钮的离线回退、首页播放器在 file:// 下自动适配屏幕并保留暂停进度也通过。包验证命令为 `node tools/verify-chat-package.mjs`，结果见 [conversation-package-report.json](verification/conversation-package-report.json)。浏览器与播放器验收记录见 [product-delivery-report.json](verification/product-delivery-report.json)。测试不依赖特定厂商账号；对话交付需要当前环境具备文件创建和附件能力，否则明确报告限制。
 
 原 14 张学科横竖海报继续来自实际页面，清单见 `public/promo/poster-manifest.json`；新推介片各段封面存放于 `public/promo/story/film-*-poster-*.png`。可复建纸页源图和几何数据位于 `production/promo/story/`，笔迹帧属于忽略发布的 `output/` 缓存。
 

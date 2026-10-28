@@ -1,6 +1,6 @@
 # 调用与安装
 
-日常使用：打开 [生成入口](https://burntroses.github.io/paper-notebook/chat-start.html#agent)，点击“复制给 Agent”，与主题和材料一起发送。指令包含仓库、Skill 与完整运行包地址，由 Agent 获取工具并生成文件。网页端模型使用同页的“复制给网页端模型”，结果粘贴到空白阅读器即可导入。
+日常使用：打开[生成入口](https://burntroses.github.io/paper-notebook/chat-start.html)，按当前工具能力选择“复制给编程智能体”或“复制给对话模型”。编程智能体按 Skill 在仓库中编辑并构建；有文件能力的对话环境使用便携对话包并交付实际 HTML 附件。两条提示都保持简短，项目规范负责详细流程。
 
 以下安装方式用于开发环境或需要长期保留本地 Skill 的宿主。
 
@@ -10,8 +10,8 @@
 
 调用：“我想学习机器学习，用 Paper Notebook 制作教程。” Agent 先请用户上传参考文件或明确回复“没有文件”，提前说明无文件时会按当前能力检索可靠资料并原创绘图，然后结束本轮等待。收到材料答复后，先用选择题确认尚未明确的领域或主题，再补齐目标、基础、时间与练习选择，输出结构化数据，运行校验与构建。原生提问/选择控件仅在宿主支持时使用，其他环境采用文字问答；已经提供的信息不再重复询问。
 
-从公开代码仓库调用：“请使用 GitHub 仓库 https://github.com/BurntRoses/paper-notebook 中的 Paper Notebook Skill，为我制作学习笔记。先读取 skills/paper-notebook/SKILL.md；根据 Skill 先等待参考文件或“没有文件”，再用选择题补问未提供的学习要求，复用共享格式生成并只交付一个以教程名和版本命名的离线 HTML；JSON、ZIP 仅在需要时另外提供。” 如果 Agent 不能直接从远程仓库读取 Skill，先下载该仓库或其中的 `skills/paper-notebook/` 并安装；不要把纯文本对话误报为已安装 Skill。
+从公开仓库调用可直接说：“请基于 https://github.com/BurntRoses/paper-notebook，按 `skills/paper-notebook/SKILL.md` 为我制作学习笔记，并交付实际构建的离线 HTML。” 后续流程与交付要求以仓库当前版本为准。若当前环境无法读取仓库，说明缺少的访问能力；不要把文本回答说成已安装 Skill 或已构建文件。
 
-一句话委托安装：“安装 Paper Notebook Skill，并制作离线教程；先询问缺少的学习需求。” 公开仓库地址：https://github.com/BurntRoses/paper-notebook 。纯文字对话可以使用网站中的生成指令输出导入稿，由阅读器生成离线文件。
+一句话委托安装：“安装 Paper Notebook Skill，并制作离线教程；先询问缺少的学习需求。” 公开仓库地址：https://github.com/BurntRoses/paper-notebook 。对话环境应使用便携构建包并交付实际生成的 HTML 文件。
 
 CLI 使用 Skill 目录下 scripts/notebook.mjs：validate / build / convert。脚本不依赖原仓库位置或 node_modules。构建接口输出按教程标题和版本命名的 HTML、ZIP，另存 notebook.json 和构建报告；默认只附上 HTML 下载链接，其余文件用于高级编辑与迁移。HTML 内的“导出 PDF”可通过系统打印保存横向或纵向 A4。

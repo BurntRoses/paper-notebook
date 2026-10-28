@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-28T08:28:45.401Z",
+  "archive": "paper-notebook-conversation.zip",
+  "entries": 22,
+  "promptMatches": true,
+  "pythonBuild": true,
+  "exactSourcePreserved": true,
+  "embeddedSourceMatches": true,
+  "zipMatches": true,
+  "validation": {
+    "valid": true,
+    "id": "paper-notebook-product-story",
+    "pages": 8,
+    "blocks": 26,
+    "assets": 0,
+    "warnings": []
+  },
+  "build": "{\"id\": \"paper-notebook-product-story\", \"revision\": 3, \"schemaValidated\": true, \"coreReferencesChecked\": true, \"browserInspected\": false, \"htmlBytes\": 4375303, \"html\": \"Paper-Notebook-·-产品笔记-v3.html\", \"zip\": \"Paper-Notebook-·-产品笔记-v3.zip\"}",
+  "scope": "Local package extraction, Python standard-library build and shared schema validation. No remote chat service/API used; browser results are recorded separately."
+}

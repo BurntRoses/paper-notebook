@@ -1,0 +1,1 @@
+请使用 https://github.com/BurntRoses/paper-notebook 为我制作教材式学习笔记。复用本地仓库或获取仓库，按 `skills/paper-notebook/SKILL.md` 确认材料、补齐需求，编辑源数据并校验构建，在工作区交付实际生成的单文件离线 HTML。

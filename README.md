@@ -8,10 +8,12 @@ AI 结构化教程的离线阅读器。Agent 按学习目标和材料整理内�
 
 ## 生成入口
 
-- Agent：打开 [生成入口](public/chat-start.html#agent)，点击“复制给 Agent”，与材料一起发送。指令带有仓库和 Skill 地址，Agent 自行获取工具、确认学习要求并生成独立 HTML（源数据和记录内嵌）。
-- ChatGPT、DeepSeek 等网页端模型：在 [同一入口](public/chat-start.html#chat) 点击“复制给网页端模型”，先发送指令，按提示上传材料或回复“没有文件”。将完整结果粘贴到空白阅读器，导入并保存离线 HTML。指令已包含排版格式。
+[仓库中的完整提示词目录](skills/paper-notebook/prompts/README.md)按工具能力区分两种环境；网页复制按钮与此目录自动同步。
 
-对 Agent 可直接说：“请使用 GitHub 仓库 https://github.com/BurntRoses/paper-notebook 中的 Paper Notebook Skill，为我制作学习笔记。先读取 `skills/paper-notebook/SKILL.md`，按 Skill 先等待文件或“没有文件”，再用选择题确认学习要求，并交付一个自动命名的离线 HTML。” Agent 需要能访问仓库并使用 Skill／文件工具；文字对话模型则按生成指令输出阅读器可导入的完整内容。
+- 编程智能体：打开 [生成入口](public/chat-start.html#agent)，点击“复制给编程智能体”，与材料一起发送。指令只提供仓库地址、Skill 入口和目标，由智能体读取项目规范并按当前能力构建文件。
+- 对话模型：在[同一入口](public/chat-start.html#chat)点击“复制给对话模型”，上传材料或回复“没有文件”。支持创建文件的对话环境会使用便携构建包，最终附上可下载的单文件离线 HTML；不支持文件交付时会明确说明。
+
+通用委托示例：“请基于 https://github.com/BurntRoses/paper-notebook，按 `skills/paper-notebook/SKILL.md` 为我制作学习笔记。” AI 需要能访问仓库；能否直接生成 HTML 取决于当前环境是否提供文件与构建工具。
 
 ## 本地运行与安装
 

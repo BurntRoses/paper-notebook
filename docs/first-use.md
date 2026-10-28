@@ -2,13 +2,13 @@
 
 打开 start.html 或 promo.html，先体验概念、公式、实践三类教程。
 
-使用 Agent：打开 chat-start.html，点击“复制给 Agent”，发送完整指令。指令包含公开仓库、Skill 原文和完整运行资源地址；Agent 获取工具、先请你上传文件或回复“没有文件”，说明无文件时会按可用能力检索资料并绘图，然后结束本轮等待。收到答复后再用选择题确认尚未明确的主题与学习要求，默认交付一个“教程名-v版本.html”。双击即可离线阅读，无需额外素材目录。
+使用编程智能体：打开 chat-start.html，点击“复制给编程智能体”，发送指令和材料。智能体在仓库里读取 Skill、确认材料与缺失需求，使用项目 CLI 校验并构建单文件 HTML，留在工作区供你打开。
 
-使用 ChatGPT、DeepSeek 等网页端模型：在同一页点击“复制给网页端模型”，与主题和材料一起发送。完整指令自带导入格式；收到笔记后，在空白阅读器中选“文件 → 导入”，粘贴、预览并确认，再保存离线 HTML。
+使用对话模型：在同一页点击“复制给对话模型”，与参考材料一起发送。能创建并附加文件的对话环境会按提示下载便携构建包，运行 Python 构建器并交付可下载的单文件 HTML。无法创建或附加文件的环境必须说明限制，不以 Markdown/TXT 代替成品。
 
 阅读器顶部提供目录、日夜模式、阅读设置和文件夹图标；文件菜单包含导入、下载和导出 PDF。点击 Logo 可打开项目介绍、AI 制作入口与 GitHub 导航，关闭后继续阅读。目录含正文搜索、公式/图示/习题索引；记录区保存标记和历史问题；来源区列出参考材料。选中文字可添加荧光、圈注、波浪、框选、括注、勾记、星标或着重点。点击纸面上的已有标记可删除，重复同一标记不会叠加。
 
-导入窗口提供“生成前问答”：集中填写学习目标、已有基础、语言风格、短期速览或长期课程、学习路线、参考材料遵循程度、术语和 OCR 校正要求。PDF 优先提取文字层；图片与扫描件使用当前环境可用的 OCR，保留页码、原文和疑点，将校正与术语表交给 Agent。题库或讲义选择严格遵循时，题目、答案和顺序保持原样。
+导入窗口提供“生成前问答”：先按使用平台选择对话附件或编程工作区，再填写学习目标、已有基础、语言风格、短期速览或长期课程、学习路线、参考材料遵循程度、术语和 OCR 校正要求。复制的提示词会保留已填答案，只补问缺项。PDF 优先提取文字层；图片与扫描件使用当前环境可用的 OCR，保留页码、原文和疑点，将校正与术语表交给 AI。题库或讲义选择严格遵循时，题目、答案和顺序保持原样。
 
 阅读设置支持单页、双页、连续、纸张方向和翻页效果。左右方向可用页面边缘、横向触摸滑动或方向键；上下方向可用页缘与上下方向键。连续模式保留浏览器滚动。PageUp/PageDown、Home/End 也可导航。
 
@@ -20,6 +20,6 @@
 
 # Quick start
 
-Open chat-start.html, copy the Agent or web-chat prompt and send it with your topic and materials. The Agent retrieves the Skill and builds files. A web-chat model outputs structured Markdown for import into the blank HTML reader.
+Open chat-start.html and choose a prompt by available tools. A coding agent edits the repository and builds the HTML artifact. A conversation model with file attachment capability uses the portable conversation package and returns a downloadable HTML. Text-only output is not a substitute for the requested file.
 
 Read with the contents/search sidebar, layouts, light text marks, questions and optional exercises. Local drafts restore your work; download a copy for long-term storage. Personal records are optional in exported copies. The generated HTML opens offline without a server.

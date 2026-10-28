@@ -8,7 +8,7 @@
 | 路径 | 用途 |
 | --- | --- |
 | `/` | 产品介绍，嵌入实际笔记阅读器 |
-| `/chat-start.html` | Agent Skill、ChatGPT／DeepSeek 通用指令、空白阅读器入口 |
+| `/chat-start.html` | 按文件工具能力区分的通用提示词、空白阅读器入口 |
 | `/#read`、`/downloads/machine-learning.html` | 嵌入试读与完整机器学习示例 |
 | `/downloads/paper-notebook-product.html` | 产品介绍笔记 |
 | `/downloads/blank-notebook.html` | 导入 AI 输出、圈画并导出离线文件 |
@@ -37,4 +37,4 @@ pnpm exec vite preview --outDir output/site --host 127.0.0.1 --port 4173
 
 建议检查首页试读、横竖翻页、选字标记、通用指令复制、空白阅读器导入、HTML 下载后离线重开，以及宣传片播放、旋转时自动适配并保留进度。
 
-AI 内容由用户自己的 Agent 或 ChatGPT／DeepSeek 等对话生成；网站提供格式指令和浏览器中的导入、阅读与导出。个人记录保存在当前浏览器，跨设备使用需下载并转移个人副本。
+AI 内容由用户选择的编程智能体或对话模型生成；需要文件工具的路径直接构建 HTML，需要对话附件能力的路径使用便携构建包。网站提供导入、阅读与导出。个人记录保存在当前浏览器，跨设备使用需下载并转移个人副本。

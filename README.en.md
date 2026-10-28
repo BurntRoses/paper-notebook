@@ -12,7 +12,7 @@ Local IndexedDB drafts restore learning records; downloaded copies support long-
 
 ## Generate a notebook
 
-Open [the generation page](https://burntroses.github.io/paper-notebook/chat-start.html). Choose **Copy for Agent** or **Copy for a web chat**, then send the complete prompt and follow its request for reference files or “no files” before choosing your topic. The Agent prompt includes the repository, Skill and runtime URLs so the agent can retrieve its tools. The web-chat prompt includes the complete import format; paste the model’s answer into the blank reader.
+Open [the generation page](https://burntroses.github.io/paper-notebook/chat-start.html) or the [prompt directory](skills/paper-notebook/prompts/README.md). Choose by available tools: a coding agent edits the repository and builds the HTML in its workspace; a conversation environment executes the portable builder and attaches a downloadable HTML file. Workflow details stay in the repository. If the environment lacks file delivery tools, it must explain this before collecting learning preferences. Markdown, TXT and pasted source code cannot replace the HTML artifact.
 
 ## Local development
 
@@ -25,7 +25,7 @@ npm run install-skill
 
 Open `dist/promo.html` for the product home, with reading, film and creation in one place. The film follows the screen ratio automatically; legacy entries redirect to the matching home section. The installer creates a self-contained Skill with references, reader assets and a bundled CLI. Existing installations are archived. Node 20.19+ is required; no MCP server registration is needed.
 
-Ask: “I want to learn machine learning. Use Paper Notebook to create a tutorial.” The agent collects missing goals, prior knowledge, difficulty, writing style, short-term or course scope, time, material fidelity and exercise preference. Strict source mode preserves supplied questions, answers, order and objective claims. OCR retains raw recognition, page references, uncertainties, corrections and terminology separately. Native choice controls depend on the host. ChatGPT, DeepSeek and other text-only chats can use the copyable prompt at `chat-start.html` to output complete Markdown/TXT for import into the blank reader. Chats with Python and file tools can build real HTML/JSON/ZIP files using `paper-notebook-chat.zip`; a plain text chat does not install the Skill or create attachments.
+Ask: “Use Paper Notebook to create a tutorial about machine learning.” The project workflow collects only missing goals, prior knowledge, scope, time, language, material fidelity and exercise preferences. Choose the prompt route by available tools: coding agents edit the repository and leave a built HTML artifact; conversation environments with file creation and attachment tools use `paper-notebook-conversation.zip` and deliver one downloadable offline HTML. Markdown/TXT is never a substitute for the requested file. If a chat cannot create and attach files, it must say so.
 
 ```sh
 node tools/notebook.mjs validate notebook.json

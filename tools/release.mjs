@@ -27,7 +27,7 @@ for(const [name,doc] of [['blank-notebook',blank],['paper-notebook',introNoteboo
 for(const dir of ['licenses','skills','docs','schemas'])await cp(root+dir,root+'dist/'+dir,{recursive:true});
 const skillRoot=root+'dist/skills/paper-notebook/';
 await mkdir(skillRoot+'assets',{recursive:true});await mkdir(skillRoot+'scripts',{recursive:true});
-for(const name of ['content-contract','components','chat-import'])await cp(root+'docs/'+name+'.md',skillRoot+'references/'+name+'.md');
+for(const name of ['content-contract','components'])await cp(root+'docs/'+name+'.md',skillRoot+'references/'+name+'.md');
 await cp(root+'schemas/notebook.schema.json',skillRoot+'references/notebook.schema.json');
 await cp(root+'examples/blank-notebook.json',skillRoot+'assets/blank-notebook.json');
 await writeFile(skillRoot+'assets/reader.html',template);await cp(root+'THIRD_PARTY_NOTICES.txt',skillRoot+'assets/THIRD_PARTY_NOTICES.txt');
@@ -39,13 +39,12 @@ const excludedEntry=entry=>entry.name==='.DS_Store'||entry.name==='__pycache__'|
 const walk=async(path,prefix='')=>{const result={};for(const entry of await readdir(path,{withFileTypes:true})){if(excludedEntry(entry))continue;const name=prefix+entry.name;if(entry.isDirectory())Object.assign(result,await walk(path+'/'+entry.name,name+'/'));else if(entry.isFile())result[name]=new Uint8Array(await readFile(path+'/'+entry.name));}return result;};
 await writeFile(root+'dist/downloads/paper-notebook-skill.zip',zipSync(await walk(skillRoot,'paper-notebook/'),{level:6}));
 const chatFiles={};
-for(const dir of ['assets','references','scripts'])Object.assign(chatFiles,await walk(skillRoot+dir,'paper-notebook/'+dir+'/'));
-chatFiles['paper-notebook/CHAT-START.md']=new Uint8Array(await readFile(root+'skills/paper-notebook/references/chatgpt-start.md'));
+for(const dir of ['assets','prompts','references','scripts'])Object.assign(chatFiles,await walk(skillRoot+dir,'paper-notebook/'+dir+'/'));
+chatFiles['paper-notebook/SKILL.md']=new Uint8Array(await readFile(skillRoot+'SKILL.md'));
+chatFiles['paper-notebook/START-HERE.md']=new Uint8Array(await readFile(root+'skills/paper-notebook/references/conversation-start.md'));
 chatFiles['paper-notebook/assets/example.md']=new Uint8Array(await readFile(root+'examples/chat-import.md'));
-chatFiles['paper-notebook/CHATGPT-START.md']=chatFiles['paper-notebook/CHAT-START.md'];
 const chatZip=zipSync(chatFiles,{level:6});
-await writeFile(root+'dist/downloads/paper-notebook-chat.zip',chatZip);
-await writeFile(root+'dist/downloads/paper-notebook-chatgpt.zip',chatZip);
+await writeFile(root+'dist/downloads/paper-notebook-conversation.zip',chatZip);
 
 const promoSource={};
 for(const file of ['examples/product-notebook.json','src/product-story.ts','tools/render-product-film.py','tools/prepare-product-assets.mjs','tools/compose-product-music.py','tools/capture-product-story.mjs','tools/build-product-story.mjs','tools/verify-product-film.mjs','tools/verify-chat-package.mjs','docs/promo-production.md','docs/product-film-script.md','public/promo/product-film-script.json','public/promo/product-film-music.json','public/promo/product-film-music.wav','public/promo/product-film-music.mp3','THIRD_PARTY_NOTICES.txt','LICENSE'])promoSource[file]=new Uint8Array(await readFile(root+file));

@@ -1,11 +1,11 @@
 {
-  "date": "2026-10-25T05:01:01.357Z",
+  "date": "2026-10-28T08:21:37.334Z",
   "checks": [
-    "Offline start page embeds the complete portable prompt and supports the copy fallback",
+    "Offline start page embeds the concise provider-neutral prompt and supports the copy fallback",
     "Portable Python-built HTML opens offline, preserves source and deterministic circle on return",
-    "Reader brief offers concrete file build and text-only import routes",
-    "The portable prompt example imports through the offline UI with a blackboard formula, worked example and text mark",
-    "Text-only output exports to a real HTML file and reopens fully offline with native diagrams",
+    "Reader brief defaults to a downloadable HTML, switches to workspace delivery and retains every answer",
+    "A shared tutorial source imports through the offline UI with a blackboard formula, worked example and text mark",
+    "An actual HTML file reopens fully offline with native diagrams",
     "The file:// homepage film automatically follows rotation while preserving playback position and pause state"
   ],
   "errors": [],

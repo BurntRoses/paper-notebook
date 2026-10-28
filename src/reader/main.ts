@@ -12,7 +12,9 @@ import './print.css';
 import { PageTurn, captureSheets } from './turn';
 import { icon } from '../ui/icons';
 import { preparePrint, createPrintView, type PrintOptions } from './print';
-import generationInstructions from '../../skills/paper-notebook/assets/agent-prompt.txt?raw';
+import workspaceInstructions from '../../skills/paper-notebook/prompts/coding-agent.txt?raw';
+import conversationInstructions from '../../skills/paper-notebook/prompts/conversation-model.txt?raw';
+import { generationPrompt, type GenerationEnvironment } from '../study';
 import { PageSurface, type SurfacePage, type FragmentBlock } from './surface';
 import { authoredAnnotations } from '../model/study';
 import { PaperEditor, readingMarks } from './editor';
@@ -342,6 +344,7 @@ class ReaderApp {
     const brief=this.d.notebook.brief||{goal:'',level:'',minutes:30,materials:[],exercises:false,language:'中文',route:'systematic',imagePolicy:'original'};
     const m=modal(this.t('生成前问答','Brief before generation'),this.t('回答会写入生成提示，不会改动教程正文。','Answers shape the prompt and do not edit the lesson.'));
     m.dialog.classList.add('brief-interview');
+    const environment=select([['conversation',this.t('对话环境：下载 HTML 附件','Conversation: downloadable HTML')],['workspace',this.t('编程智能体：在工作区生成 HTML','Coding agent: HTML in workspace')]],'conversation');
     const goal=textarea(brief.goal,2);goal.placeholder=this.t('这次要解决什么问题？','What should this study solve?');
     const level=input(brief.level||'');level.placeholder=this.t('已有基础，例如“学过一次函数”','Prior knowledge');
     const minutes=input(String(brief.minutes||30));minutes.type='number';minutes.min='5';minutes.max='10000';
@@ -354,14 +357,15 @@ class ReaderApp {
     const fidelity=select([['strict','严格遵循材料：题库、讲义、原文优先'],['guided','以材料为主，允许补充必要背景'],['open','开放组织，可补充可靠来源']],brief.materialFidelity||'guided');
     const material=textarea((brief.materials||[]).join('\n'),3);material.placeholder=this.t('材料名称、文件、章节或题库范围','Files, chapters, question bank or scope');
     const terms=textarea(brief.termPolicy||'',2);terms.placeholder=this.t('术语表、统一译法、需要校正的词','Glossary, preferred translations or corrections');
-    m.body.append(label(this.t('参考材料','Reference materials'),material),el('p','brief-note','复制给 AI 后，先上传准备好的文件，或明确回复“没有文件”。无文件时，AI 将按可用能力检索可靠资料并绘制图解，再用选择题确认主题等需求。'),label(this.t('学习目标','Learning goal'),goal),label(this.t('基础情况','Prior knowledge'),level),label(this.t('预计时长（分钟）','Time in minutes'),minutes),label(this.t('语言风格','Language'),language),label(this.t('表达风格','Writing style'),style),label(this.t('难易程度','Difficulty'),difficulty),label(this.t('包含练习','Include exercises'),exercises),label(this.t('学习周期','Horizon'),horizon),label(this.t('内容路线','Route'),route),label(this.t('材料遵循程度','Material fidelity'),fidelity),label(this.t('术语与校正要求','Terms and corrections'),terms));
+    m.body.append(label(this.t('使用平台','Environment'),environment),label(this.t('参考材料','Reference materials'),material),el('p','brief-note','复制给 AI 后，先上传准备好的文件，或明确回复“没有文件”。无文件时，AI 将按可用能力检索可靠资料并绘制图解，再用选择题确认主题等需求。'),label(this.t('学习目标','Learning goal'),goal),label(this.t('基础情况','Prior knowledge'),level),label(this.t('预计时长（分钟）','Time in minutes'),minutes),label(this.t('语言风格','Language'),language),label(this.t('表达风格','Writing style'),style),label(this.t('难易程度','Difficulty'),difficulty),label(this.t('包含练习','Include exercises'),exercises),label(this.t('学习周期','Horizon'),horizon),label(this.t('内容路线','Route'),route),label(this.t('材料遵循程度','Material fidelity'),fidelity),label(this.t('术语与校正要求','Terms and corrections'),terms));
     const output=el('textarea','brief-output');output.readOnly=true;output.rows=8;output.setAttribute('aria-label',this.t('生成提示预览','Prompt preview'));
-    const make=()=>{const selected={goal:goal.value.trim(),level:level.value.trim(),minutes:Math.max(5,Number(minutes.value||30)),materials:material.value.split(/\n+/).map(x=>x.trim()).filter(Boolean),exercises:exercises.checked,language:language.value,languageStyle:style.value,difficulty:difficulty.value,route:route.value,horizon:horizon.value,materialFidelity:fidelity.value,termPolicy:terms.value.trim()};output.value=this.briefPrompt(selected);return selected;};
+    const make=()=>{const selected={goal:goal.value.trim(),level:level.value.trim(),minutes:Math.max(5,Number(minutes.value||30)),materials:material.value.split(/\n+/).map(x=>x.trim()).filter(Boolean),exercises:exercises.checked,language:language.value,languageStyle:style.value,difficulty:difficulty.value,route:route.value,horizon:horizon.value,materialFidelity:fidelity.value,termPolicy:terms.value.trim()};output.value=this.briefPrompt(selected,environment.value as GenerationEnvironment);return selected;};
     [goal,level,minutes,language,style,difficulty,exercises,horizon,route,fidelity,material,terms].forEach(n=>n.addEventListener('input',make));[language,style,difficulty,horizon,route,fidelity].forEach(n=>n.addEventListener('change',make));m.body.append(el('p','brief-note',this.t('上传 PDF、图片或扫描件时：先 OCR，保留页码与原文，再单独列出校正；严格材料模式下不擅自修题、改答案或补充材料之外的结论。','For PDFs, images or scans: OCR first, retain page references and raw text, then list corrections separately. Strict mode never rewrites questions, answers or source claims.')),output);make();
-    m.foot.append(button(this.t('复制给 Agent','Copy for agent'),()=>{make();void copyText(output.value)},'primary'),button(this.t('关闭','Close'),m.close,'quiet'));
+    environment.addEventListener('change',make);
+    m.foot.append(button(this.t('复制提示词','Copy prompt'),()=>{make();void copyText(output.value)},'primary'),button(this.t('关闭','Close'),m.close,'quiet'));
   }
-  briefPrompt(brief:Record<string,unknown>){
-    return generationInstructions+'\n\n以下是我已在阅读器填写的学习偏好。保留已有答案；若我尚未上传文件或明确说没有文件，仍先按上述流程等待文件，不要立刻生成。\n'+JSON.stringify(brief,null,2)+'\nPDF/扫描材料使用可用 OCR，保留页码、原文与疑点；严格材料模式不擅自修改题目、答案或顺序。';
+  briefPrompt(brief:Record<string,unknown>,environment:GenerationEnvironment='conversation'){
+    return generationPrompt(brief,{conversation:conversationInstructions,workspace:workspaceInstructions},environment);
   }
   generationPrompt(){return this.briefPrompt({goal:'',level:'',minutes:30,materials:[],language:'中文',route:'systematic',horizon:'short',materialFidelity:'guided',termPolicy:''});}
   showExport(){
