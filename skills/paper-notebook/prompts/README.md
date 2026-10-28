@@ -5,7 +5,9 @@
 | 使用环境 | 提示词 | 交付方式 |
 | --- | --- | --- |
 | 能访问仓库、编辑文件、运行命令的编程智能体 | [coding-agent.txt](coding-agent.txt) | 在工作区编辑、校验、构建，交付实际 HTML 文件 |
-| 能执行代码、创建并附加文件的网页或应用对话 | [conversation-model.txt](conversation-model.txt) | 使用便携包构建，交付可下载的 HTML 附件 |
+| 能执行代码、创建并附加文件的网页或应用对话 | [conversation-model.txt](conversation-model.txt) | 先下载便携包并上传，离线构建后交付 HTML 附件 |
+
+网页对话先[下载对话构建包](https://burntroses.github.io/paper-notebook/downloads/paper-notebook-conversation.zip)，将 ZIP、材料和短提示词一起发送。不需要解压、安装 Skill 或重新填写已有需求。包内 Node 与 Python 两条构建路径均不依赖联网；不能假定对话模型可自行下载 ZIP。
 
 成品都是一个可离线打开的 HTML，内嵌阅读器、字体、素材、源数据与学习记录。不能创建并附加文件的对话环境应在需求问答前说明限制，不得用 Markdown、TXT 或聊天中的源码代替成品。
 

@@ -6,7 +6,7 @@
 | notebook.json | 高级导出：agent 可修订的完整源内容与所选个人记录 |
 | 教程名-v版本.zip | 高级导出：同名 HTML、JSON、打开说明和许可；素材内嵌一次 |
 | blank-notebook.html | 聊天模型内容导入入口 |
-| paper-notebook-conversation.zip | 对话模型便携构建包：Python 标准库构建器、HTML 阅读器、Schema、规范和对话流程 |
+| paper-notebook-conversation.zip | 对话模型便携构建包：离线 Node/Python 构建器、精简字库、HTML 阅读器、Schema、规范和对话流程 |
 | paper-notebook-skill.zip | 独立 Skill、协议、组件、CLI 和阅读器 |
 | paper-notebook-toolkit.zip | 完整源码、素材、构建工具、测试、文档 |
 | paper-notebook-offline.zip | 空白容器和三类完整示例 |
@@ -17,8 +17,8 @@
 
 宣传页 promo.html 使用实际阅读器嵌入预览。promo-motion.html 播放 64 秒横竖两版产品推介片，支持章节定位、暂停和静音。画面取自实际产品笔记，H264/AAC MP4、纸页海报和配乐位于 promo/，源素材包与生成脚本一并交付。音乐为原创程序合成。
 
-chat-start.html 按可用工具提供两条简短指令。能操作仓库的编程智能体读取 Skill 并在工作区构建 HTML；能创建附件的对话环境使用便携包构建并交付可下载的 HTML。不能创建或附加文件时，应说明限制，不得以 Markdown、TXT 或源码代替成品。
+chat-start.html 按可用工具提供两条简短指令。能操作仓库的编程智能体读取 Skill 并在工作区构建 HTML；能创建附件的对话环境使用用户上传的便携 ZIP 构建并交付可下载的 HTML。不能创建或附加文件时，应说明限制，不得以 Markdown、TXT 或源码代替成品。
 
 历史成果与过程文件已按日期归档到工作区 `../archives/2026-10-23-cleanup/`；SHA-256 清单见其中 `manifest.json`。当前目录保留最终阅读器、产品笔记、横竖推广视频及可重建它们的源文件。
 
-成书按内容实际字符保留文楷 Unicode 字库分片；空白导入器保留完整分片以接受新主题。系统宋体与黑体选项不额外嵌入字体。离线合集不再内套各本 ZIP；只保留各本 HTML。
+成书按实际内容保留常用文楷字库分片；空白导入器保留常用字符目录，生僻字使用系统字体，不再附带完整 Unicode 字库。系统宋体与黑体选项不额外嵌入字体。离线合集不再内套各本 ZIP；只保留各本 HTML。

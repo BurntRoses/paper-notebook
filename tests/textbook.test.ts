@@ -1,5 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
 import {importText,exportMarkdown} from '../src/io/markdown';
 import {blankDocument,blocksOf,pagesOf,textOf,parameterText} from '../src/model/types';
 import {parseDocument,resolveSelector} from '../src/model/document';
@@ -22,6 +24,17 @@ test('Unicode font trimming keeps every used range, core UI, and complete blank 
  assert.equal(slimFonts(html,d),core+cjk+math);
  d.notebook.chapters[0].pages[0].blocks[0].text='𠀀';
  assert.equal(slimFonts(html,d),core+rare+math);
+});
+test('default font catalog stays compact, keeps its verified slices and omits full Unicode sources',()=>{
+ const catalog=JSON.parse(readFileSync('assets/fonts/reading/manifest.json','utf8'));
+ const css=readFileSync('src/reader/fonts.css','utf8');
+ assert.equal(catalog.coverage,8424);assert.equal(catalog.chunkGlyphs,64);assert.equal(catalog.outlineAndMetricsVerified,true);
+ assert.ok(catalog.bytes<2_200_000);assert.doesNotMatch(css,/wenkai-reading-/);
+ for(const file of catalog.files){
+  const bytes=readFileSync(file.path);assert.equal(bytes.length,file.bytes);assert.equal(createHash('sha256').update(bytes).digest('hex'),file.sha256);
+  assert.ok(file.path.endsWith('/core.woff2')||file.glyphs<=64);
+  assert.ok(css.includes(file.path.replace('assets/','../../assets/')));
+ }
 });
 test('artifact filenames are readable, versioned and safe on major desktop filesystems',()=>{
  assert.equal(artifactStem('线性回归 / 第一讲?',2),'线性回归-第一讲-v2');

@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-28T10:10:50.599Z",
+  "results": [
+    {
+      "engine": "chromium",
+      "runtime": "output",
+      "isolatedHTML": true,
+      "visibleLesson": true,
+      "annotation": true,
+      "exportHTML": true,
+      "externalDependencies": [],
+      "errors": []
+    },
+    {
+      "engine": "chromium",
+      "runtime": "node-output",
+      "isolatedHTML": true,
+      "visibleLesson": true,
+      "annotation": true,
+      "exportHTML": true,
+      "externalDependencies": [],
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "runtime": "output",
+      "isolatedHTML": true,
+      "visibleLesson": true,
+      "annotation": true,
+      "exportHTML": true,
+      "externalDependencies": [],
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "runtime": "node-output",
+      "isolatedHTML": true,
+      "visibleLesson": true,
+      "annotation": true,
+      "exportHTML": true,
+      "externalDependencies": [],
+      "errors": []
+    }
+  ],
+  "scope": "Chromium network-offline and WebKit with every non-embedded dependency blocked. Each HTML is copied by itself to a new directory; no adjacent fonts/scripts/images, source JSON, archive or server. This does not diagnose a user file that has not been provided."
+}

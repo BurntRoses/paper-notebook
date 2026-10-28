@@ -1,7 +1,7 @@
 import type { NotebookDocument } from '../model/types';
 
-/** Keep complete Unicode faces for an empty import reader; carry only the faces
- * used by an authored book. No network or font-subsetting dependency is needed. */
+/** Empty readers keep the common-character catalog; authored books keep only
+ * used slices and the UI core. No network or font tooling is needed at runtime. */
 export function slimFonts(html:string,d:NotebookDocument){
  if(!d.notebook.chapters.some(c=>c.pages.some(p=>p.blocks.length)))return html;
  const points=[...new Set([...JSON.stringify(d)].map(c=>c.codePointAt(0)!))];

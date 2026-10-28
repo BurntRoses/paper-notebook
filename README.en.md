@@ -12,7 +12,7 @@ Local IndexedDB drafts restore learning records; downloaded copies support long-
 
 ## Generate a notebook
 
-Open [the generation page](https://burntroses.github.io/paper-notebook/chat-start.html) or the [prompt directory](skills/paper-notebook/prompts/README.md). Choose by available tools: a coding agent edits the repository and builds the HTML in its workspace; a conversation environment executes the portable builder and attaches a downloadable HTML file. Workflow details stay in the repository. If the environment lacks file delivery tools, it must explain this before collecting learning preferences. Markdown, TXT and pasted source code cannot replace the HTML artifact.
+Open [the generation page](https://burntroses.github.io/paper-notebook/chat-start.html) or the [prompt directory](skills/paper-notebook/prompts/README.md). Choose by available tools: a coding agent edits the repository and builds the HTML in its workspace; a conversation environment uses the uploaded portable ZIP with Node or Python and attaches a downloadable HTML file. Workflow details stay in the repository. If the environment lacks file delivery tools, it must explain this before collecting learning preferences. Markdown, TXT and pasted source code cannot replace the HTML artifact.
 
 ## Local development
 

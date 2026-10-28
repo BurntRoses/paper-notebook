@@ -25,6 +25,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm test
       - run: pnpm build:pages
+      - run: node tools/verify-chat-package.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-artifact@v4
         with:

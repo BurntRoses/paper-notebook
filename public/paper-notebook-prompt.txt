@@ -1,6 +1,6 @@
-请按 Paper Notebook 项目规范，为我制作教材式学习笔记，并交付可下载的单文件离线 HTML。
+请用我上传的 paper-notebook-conversation.zip 制作教材式学习笔记，交付可下载的单文件离线 HTML。
 
 项目：https://github.com/BurntRoses/paper-notebook
 对话构建包：https://burntroses.github.io/paper-notebook/downloads/paper-notebook-conversation.zip
 
-读取包内 START-HERE.md，按流程确认材料与缺失需求，使用内置阅读器和构建器生成、校验 HTML，附上实际文件。不要用 Markdown、TXT 或聊天源码代替成品；若当前环境不能创建并附加文件，请在提问前说明限制。
+先从附件解压并读取 START-HERE.md，用可用的 Node 或 Python 构建器完成校验与生成，无需联网安装。材料和需求保留已有答案，只补问缺项。若缺少构建包，请先让我下载上面的 ZIP 并上传；不要反复尝试联网。成品须附实际 HTML 文件，不用 Markdown、TXT 或源码代替；无法创建附件时请立即说明。

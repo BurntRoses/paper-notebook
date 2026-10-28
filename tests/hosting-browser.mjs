@@ -42,7 +42,12 @@ try {
 
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
   await page.goto(base + 'chat-start.html');
-  assert.equal(await page.locator('a[download]').count(), 0);
+  const packageLink=page.getByRole('link',{name:'① 下载对话构建包',exact:true});
+  assert.equal(await packageLink.getAttribute('href'),'downloads/paper-notebook-conversation.zip');
+  const packageDownload=page.waitForEvent('download');await packageLink.click();
+  const uploadedPackage=await packageDownload;assert.equal(uploadedPackage.suggestedFilename(),'paper-notebook-conversation.zip');
+  assert.equal((await readFile(await uploadedPackage.path())).subarray(0,2).toString(),'PK');
+  checks.push('Conversation route downloads the real ZIP for upload, without relying on model network access');
   const prompt = await page.getByLabel('对话模型提示词', { exact: true }).inputValue();
   assert.equal(prompt, await readFile('skills/paper-notebook/prompts/conversation-model.txt', 'utf8'));
   assert.ok(prompt.includes('paper-notebook-conversation.zip'));
@@ -64,7 +69,7 @@ try {
   await page.getByRole('button', { name: '复制给对话模型', exact: true }).click();
   await page.waitForFunction(() => /已复制|已选中/.test(document.querySelector('#status').textContent));
   assert.equal(await page.evaluate(() => navigator.clipboard.readText()), prompt);
-  checks.push('Both copy buttons put the complete concise instructions on the clipboard; no prompt download step');
+  checks.push('Both copy buttons put the complete concise instructions on the clipboard');
 
   const fallback = await context.newPage();
   await fallback.addInitScript(() => {

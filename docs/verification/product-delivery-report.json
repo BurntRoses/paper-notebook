@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-28T08:21:37.334Z",
+  "date": "2026-10-28T10:10:53.185Z",
   "checks": [
     "Offline start page embeds the concise provider-neutral prompt and supports the copy fallback",
     "Portable Python-built HTML opens offline, preserves source and deterministic circle on return",

@@ -17,6 +17,10 @@ License references: [ambientCG](https://docs.ambientcg.com/license/), [Poly Have
 
 Rebuild textures with `python tools/build_materials.py` (Pillow + numpy). The font is a renamed subset of LXGW WenKai v1.530 retained from the previous package; missing glyphs fall back to the system serif font. `assets/manifest.json` records byte sizes and SHA-256 hashes.
 
+默认阅读器使用 `assets/fonts/reading/` 的常用字符字库：GB2312、原有界面核心、希腊/西里尔字母和常用科学符号。核心界面分片保留，其他分片最多 64 个字符，生成教程时按实际内容筛选。生僻字不从正文删除，使用系统字体显示。完整原始字库仅保留在仓库供重建，不进入阅读器、Skill 包或对话包。
+
+`python tools/build-reading-fonts.py` 使用开发依赖 `fonttools[woff]` 重建这些已提交的字体，并核对所保留字形的轮廓坐标和宽度。普通 Node/Python 构建和离线阅读不需要该依赖。覆盖范围、分片大小和 SHA-256 见 `assets/fonts/reading/manifest.json`。
+
 
 ## 阅读器 2.0 新资产
 

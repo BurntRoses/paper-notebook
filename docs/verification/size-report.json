@@ -1,0 +1,67 @@
+{
+  "date": "2026-10-28T10:19:29.718Z",
+  "unit": "bytes (MB values in documentation are decimal)",
+  "entries": [
+    {
+      "name": "reader.html",
+      "beforeBytes": 14755027,
+      "afterBytes": 4026859,
+      "savedBytes": 10728168,
+      "savedPercent": 72.7,
+      "fontCSSBytes": 3154455,
+      "scriptsBytes": 717868,
+      "embeddedImagesBytes": 48461
+    },
+    {
+      "name": "machine-learning.html",
+      "beforeBytes": 4151250,
+      "afterBytes": 1979886,
+      "savedBytes": 2171364,
+      "savedPercent": 52.3,
+      "fontCSSBytes": 1084448,
+      "scriptsBytes": 740902,
+      "embeddedImagesBytes": 48461
+    },
+    {
+      "name": "product.html",
+      "beforeBytes": 4375279,
+      "afterBytes": 2013664,
+      "savedBytes": 2361615,
+      "savedPercent": 54,
+      "fontCSSBytes": 1130776,
+      "scriptsBytes": 728352,
+      "embeddedImagesBytes": 48461
+    },
+    {
+      "name": "concept.html",
+      "beforeBytes": 1714280,
+      "afterBytes": 1714395,
+      "savedBytes": -115,
+      "savedPercent": 0,
+      "fontCSSBytes": 835072,
+      "scriptsBytes": 724787,
+      "embeddedImagesBytes": 48461
+    },
+    {
+      "name": "conversation.zip",
+      "beforeBytes": 11195453,
+      "afterBytes": 2886763,
+      "savedBytes": 8308690,
+      "savedPercent": 74.2
+    }
+  ],
+  "fontPolicy": {
+    "coverage": 8424,
+    "chunkGlyphs": 64,
+    "bytes": 2063056,
+    "outlineAndMetricsVerified": true
+  },
+  "visualComparison": {
+    "artifact": "machine-learning.html",
+    "firstPagePNGIdentical": true,
+    "firstPageSHA256": "c5980657e94d66f4ee751e0e9e8a5936c4f23bd93a77b96d258a4cc3e1b0393b",
+    "sameLessonText": true,
+    "samePagination": true
+  },
+  "scope": "Actual built files compared with a saved pre-change build. Original media and complete font sources remain in the repository, outside runtime packages. No model download-speed measurements or user-provided broken HTML were available."
+}
