@@ -30,7 +30,8 @@ export function createPrintView(source:NotebookDocument,options:PrintOptions,ori
  const style=el('style');style.id='print-page-size';style.textContent=`@page { size: A4 ${options.orientation}; margin: 0; }`;document.head.append(style);
  const dimensions=options.orientation==='portrait'?{width:mm(210),height:mm(297)}:{width:mm(297),height:mm(210)};
  const d=printDocument(source,options.includeRecords);
- const surface=new PageSurface(d,options.orientation,16,b=>{const n=renderBlock(b,d,{answer:()=>{},check:()=>{},edit:()=>{},image:()=>{}});(n as HTMLElement&{__block:unknown}).__block=blocksOf(source).find(s=>s.id===b.id)||b;return n;},dimensions,root);
+ const sourceBlocks=new Map(blocksOf(d).map(b=>[b.id,b]));
+ const surface=new PageSurface(d,options.orientation,16,b=>{const n=renderBlock(b,d,{answer:()=>{},check:()=>{},edit:()=>{},image:()=>{}},sourceBlocks.get(b.id)||b);(n as HTMLElement&{__block:unknown}).__block=sourceBlocks.get(b.id)||b;return n;},dimensions,root);
  const populate=()=>{
   root.replaceChildren();const sheets=surface.paginate();sheets.forEach((p,i)=>root.append(surface.render(p,i)));
   if(options.includeRecords&&original){

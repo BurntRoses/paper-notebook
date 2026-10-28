@@ -1,6 +1,7 @@
 import { pagesOf, parameterText, type Block, type NotebookDocument, type Page, type PaperShape } from '../model/types';
 import { frameFor, paperSize, safeBoundary } from '../model/paper';
 import { el } from '../ui/dom';
+import { fitFigureHeight } from '../ui/figures';
 export interface SurfacePage extends Page {part:number;totalParts:number}
 export type FragmentBlock=Block & {_offset?:number;_oversize?:boolean};
 /** A physical sheet is a view of existing page/block IDs, never a rewrite of the source. */
@@ -24,7 +25,7 @@ export class PageSurface {
  }
  block(page:Page,b:Block){
   const node=this.renderBlock(b),offset=(b as FragmentBlock)._offset||0;
-  if(b._figureHeight)node.querySelector<HTMLElement>('.notebook-chart')?.style.setProperty('max-height',b._figureHeight+'px');
+  if(b._figureHeight)fitFigureHeight(node,Number(b._figureHeight));
   if(this.printRoot&&b._printScale)node.style.zoom=String(b._printScale);
   if((b as FragmentBlock)._oversize){node.classList.add('oversize-object');node.style.maxHeight='var(--body-height)';}
   if(offset)node.querySelectorAll<HTMLElement>('.ink-text').forEach(s=>s.dataset.offset=String(Number(s.dataset.offset||0)+offset));
@@ -43,16 +44,18 @@ export class PageSurface {
  }
  paginate():SurfacePage[]{
   const measure=el('div','surface-measure');(this.printRoot||document.body).append(measure);const result:SurfacePage[]=[];
-  try{for(const source of pagesOf(this.d)){
+  try{for(const source of pagesOf(this.d)){const sourceStart=result.length;
    if(!this.printRoot&&source.layout==='free'&&source.blocks.every(b=>frameFor(this.d,source,this.shape,b.id))){const count=Math.max(1,...source.blocks.map(b=>(frameFor(this.d,source,this.shape,b.id)?.sheet||0)+1));for(let part=0;part<count;part++)result.push({...source,blocks:source.blocks.filter(b=>(frameFor(this.d,source,this.shape,b.id)?.sheet||0)===part),part,totalParts:count});continue;}
    let part=0,blocks:Block[]=[],article=this.make(source),content=article.querySelector<HTMLElement>('.reader-content')!;measure.replaceChildren(article);
    const limit=()=>article.querySelector<HTMLElement>('.reader-page-body')!.clientHeight;
    const height=()=>content.scrollHeight;
    const flush=()=>{result.push({...source,blocks,part:part++,totalParts:1});blocks=[];article=this.make(source,part);content=article.querySelector<HTMLElement>('.reader-content')!;measure.replaceChildren(article);};
    const append=(b:Block)=>{const n=this.block(source,b);content.append(n);
-    // Preserve readable captions when a chart shares a sheet with a heading.
-    // Only shrink the drawing; the text keeps the reader's selected size.
-    if(!this.printRoot&&b.type==='chart'){const chart=n.querySelector<SVGSVGElement>('.notebook-chart'),overflow=n.getBoundingClientRect().height-limit();if(chart&&overflow>0){const h=Math.max(150,chart.getBoundingClientRect().height-overflow-12);chart.style.maxHeight=h+'px';b._figureHeight=h;}}
+    // Fit the entire figure proportionally, with live captions at the selected size.
+    // Very tall technical maps keep their scroll viewport rather than tiny labels.
+    if(!this.printRoot){const media=n.querySelector<HTMLElement>('.figure-media');if(media){const initial=media.getBoundingClientRect().height;
+     for(let attempt=0;attempt<3;attempt++){const overflow=n.getBoundingClientRect().height-limit();if(overflow<=0)break;const h=media.getBoundingClientRect().height-overflow-18;if(h<initial*.5)break;fitFigureHeight(n,h);b._figureHeight=h;}
+    }}
     return n;};
    const commit=(b:Block)=>{let node=append(b);if(this.printRoot&&height()>limit()+1&&!blocks.length){const scale=Math.min(1,(limit()-20)/node.getBoundingClientRect().height);node.remove();b={...b,_printScale:scale};node=append(b);}blocks.push(b);};
    for(const sourceBlock of source.blocks){
@@ -103,7 +106,7 @@ export class PageSurface {
      b={...b,_oversize:true,...(this.printRoot?{_printScale:Math.min(1,(limit()-20)/ownHeight)}:{})};append(b);blocks.push(b);break;
     }
    }
-   if(blocks.length||part===0)flush();const own=result.filter(p=>p.id===source.id);own.forEach(p=>p.totalParts=own.length);
+   if(blocks.length||part===0)flush();const own=result.slice(sourceStart);own.forEach(p=>p.totalParts=own.length);
   }}finally{measure.remove();}return result;
  }
 }

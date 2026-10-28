@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "notebook-ml-foundations",
-    "revision": 3,
+    "revision": 4,
     "title": "机器学习入门：从样本到泛化",
     "subtitle": "用图、表与一次手算串起学习流程",
     "language": "zh-CN",
@@ -78,6 +78,11 @@
                 "caption": "训练利用已知结果；实际预测时，新样本的真实结果往往尚未获得。",
                 "study": {
                   "frame": "tape"
+                },
+                "figure": {
+                  "size": "wide",
+                  "ratio": "auto",
+                  "style": "sketch"
                 }
               },
               {
@@ -439,7 +444,12 @@
                   "role": "intuition",
                   "frame": "plain"
                 },
-                "keepTogether": true
+                "keepTogether": true,
+                "figure": {
+                  "size": "wide",
+                  "ratio": "3:2",
+                  "style": "sketch"
+                }
               },
               {
                 "id": "ml-function-path",
@@ -477,12 +487,17 @@
                   "role": "example",
                   "frame": "plain"
                 },
-                "keepTogether": true
+                "keepTogether": true,
+                "figure": {
+                  "size": "wide",
+                  "ratio": "auto",
+                  "style": "sketch"
+                }
               },
               {
                 "id": "ml-parameter-boundary",
                 "type": "prose",
-                "text": "比较参数影响时，应固定另一个参数。图中展示的是三个候选规则，尚未决定哪条直线更合适；下一步需要对照样本标签，用损失函数进行比较。若真实特征有单位，w 的单位为输出单位除以输入单位，b 与输出使用相同单位。",
+                "text": "比较参数影响时，应固定另一个参数。图中展示的是三个候选规则，尚未决定哪条直线更合适；下一步对照样本标签，计算各候选规则的损失。若真实特征有单位，w 的单位为输出单位除以输入单位，b 与输出使用相同单位。",
                 "study": {
                   "marks": [
                     {
@@ -562,6 +577,11 @@
                 "study": {
                   "frame": "pencil",
                   "role": "intuition"
+                },
+                "figure": {
+                  "size": "wide",
+                  "ratio": "3:2",
+                  "style": "sketch"
                 }
               },
               {
@@ -792,6 +812,11 @@
                 "caption": "图按九个准确计算值连线，展示损失谷地；连接线是离散示意，精确曲线由上面的二次函数给出。",
                 "study": {
                   "frame": "double"
+                },
+                "figure": {
+                  "size": "wide",
+                  "ratio": "3:2",
+                  "style": "sketch"
                 }
               }
             ],
@@ -1063,6 +1088,11 @@
                 "caption": "这些值仅说明一种可能的趋势，不是实测结果，也不是所有任务的必然曲线。示意中等级 3 的验证误差最低。",
                 "study": {
                   "frame": "pencil"
+                },
+                "figure": {
+                  "size": "wide",
+                  "ratio": "3:2",
+                  "style": "sketch"
                 }
               },
               {
@@ -1125,6 +1155,11 @@
                 "caption": "先确定数据角色，再开始模型选择；最终测试不应反过来充当反复调参的依据。",
                 "study": {
                   "frame": "margin"
+                },
+                "figure": {
+                  "size": "wide",
+                  "ratio": "auto",
+                  "style": "sketch"
                 }
               },
               {
@@ -1182,7 +1217,7 @@
     ]
   },
   "userState": {
-    "updatedAt": "2026-10-28T17:09:26.824Z",
+    "updatedAt": "2026-10-29T00:00:00.000Z",
     "lastPageId": "ml-task",
     "notes": [],
     "annotations": [],
@@ -1213,7 +1248,7 @@
   },
   "assets": [],
   "extensions": {
-    "baseRevision": 2,
+    "baseRevision": 3,
     "readerProfile": {
       "font": "hand",
       "lineSpacing": 1.85,

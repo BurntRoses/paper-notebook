@@ -35,7 +35,7 @@ const p4b=page('ml-parameters','看图理解：斜率与截距怎样改变直线
   {id:'ml-line-intercept',label:'改 b：ŷ=x+2',points:[{x:0,y:2},{x:1,y:3},{x:2,y:4},{x:3,y:5}]},
  ],caption:'同一坐标系内，改 w 的直线仍经过 (0,1)，但变得更陡；改 b 的直线与基准平行，每个 x 处的预测都增加 1。图上各点按对应公式准确计算。',study:{role:'intuition',frame:'plain'},keepTogether:true},
  {id:'ml-function-path',type:'diagram',title:'沿着函数走一遍：输入 2，w=1，b=1',arrangement:'row',nodes:[{id:'ml-f-input',label:'输入 x=2'},{id:'ml-f-multiply',label:'乘以 w：1×2=2'},{id:'ml-f-output',label:'加上 b：2+1=3'}],edges:[{from:'ml-f-input',to:'ml-f-multiply',label:'乘法'},{from:'ml-f-multiply',to:'ml-f-output',label:'平移'}],caption:'这条计算路径与图中的基准直线对应，输出就是 x=2 时纵轴上的预测值 3。',study:{role:'example',frame:'plain'},keepTogether:true},
- prose('ml-parameter-boundary','比较参数影响时，应固定另一个参数。图中展示的是三个候选规则，尚未决定哪条直线更合适；下一步需要对照样本标签，用损失函数进行比较。若真实特征有单位，w 的单位为输出单位除以输入单位，b 与输出使用相同单位。'),
+ prose('ml-parameter-boundary','比较参数影响时，应固定另一个参数。图中展示的是三个候选规则，尚未决定哪条直线更合适；下一步对照样本标签，计算各候选规则的损失。若真实特征有单位，w 的单位为输出单位除以输入单位，b 与输出使用相同单位。'),
 ], '斜率决定输入变化引起的预测变化，截距决定整体上下平移；图像与代入计算描述同一规则。',[{text:'改 w 与改 b，图像怎样不同？',blockId:'ml-parameter-chart'},{text:'输入 2 怎样得到预测 3？',blockId:'ml-function-path'}],'reading');
 const p5=page('ml-visual','散点、直线与残差',[
  {id:'ml-fit-chart',type:'chart',chartType:'line',title:'同一组数据与同一个预测规则',xLabel:'输入 x（教学标量）',yLabel:'标签 / 预测',series:[{id:'ml-observed',label:'真实标签 y',points:[{x:1,y:2},{x:2,y:4},{x:3,y:5}]},{id:'ml-predicted',label:'预测 ŷ=x+1',points:[{x:1,y:2},{x:2,y:3},{x:3,y:4}]}],caption:'点的纵向差是预测误差。真实标签之间的连线仅帮助对照三个样本，不表示中间位置已经观测到数据。',study:{frame:'pencil',role:'intuition'}},
@@ -108,4 +108,11 @@ const emphasis:Record<string,NonNullable<Block['study']>['marks']>={
 for(const chapter of machineLearning.notebook.chapters)for(const page of chapter.pages)for(const block of page.blocks){
  if(emphasis[block.id])block.study={...block.study,marks:emphasis[block.id]};
 }
-machineLearning.notebook.revision=3;machineLearning.extensions.baseRevision=2;
+machineLearning.notebook.revision=4;machineLearning.extensions.baseRevision=3;
+
+machineLearning.userState.updatedAt='2026-10-29T00:00:00.000Z';
+
+for(const chapter of machineLearning.notebook.chapters)for(const page of chapter.pages)for(const block of page.blocks){
+ if(block.type==='chart')block.figure={size:'wide',ratio:'3:2',style:'sketch'};
+ if(block.type==='diagram')block.figure={size:'wide',ratio:'auto',style:'sketch'};
+}

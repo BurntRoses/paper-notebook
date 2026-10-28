@@ -1,3 +1,4 @@
+import { MarkHistory } from './mark-history';
 import { authoredAnnotations, drawInk } from './ink';
 import { addAnnotation, captureSelection, type MarkKind, type SelectionPart } from './records';
 import type { Annotation, NotebookDocument, Page, PaperShape } from '../model/types';
@@ -7,7 +8,7 @@ export interface EditorHost {d:NotebookDocument;page:Page;pages:SurfacePage[];sh
 export const readingMarks:[MarkKind,string,string][]=[['highlight','荧光','▰'],['underline','下划线','U̲'],['circle','圈注','◯'],['wave','波浪线','〰'],['box','方框','▢'],['bracket','括注','〔〕'],['check','勾记','✓'],['star','重点星标','☆'],['dots','着重点','···']];
 /** A reader may mark an anchored passage; lesson content and page layout never change. */
 export class PaperEditor {
- selection:SelectionPart[]=[];private inspector:HTMLElement|null=null;private selected:string[]=[];private down:{x:number;y:number}|null=null;private past:NotebookDocument[]=[];private future:NotebookDocument[]=[];
+ selection:SelectionPart[]=[];private inspector:HTMLElement|null=null;private selected:string[]=[];private down:{x:number;y:number}|null=null;private history=new MarkHistory();
  constructor(private host:EditorHost,private root:HTMLElement){
   document.addEventListener('selectionchange',()=>{this.cacheSelection();if(getSelection()?.toString())this.closeInspector();});
   root.addEventListener('pointerdown',e=>{this.down={x:e.clientX,y:e.clientY};});
@@ -16,10 +17,10 @@ export class PaperEditor {
   document.addEventListener('keydown',e=>{if(document.querySelector('dialog[open]')||(e.target as HTMLElement).closest('input,textarea,select'))return;if((e.key==='Delete'||e.key==='Backspace')&&this.selected.length){e.preventDefault();this.removeSelected();return;}if(e.key==='Escape')this.closeInspector();if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?this.redo():this.undo();}});
  }
  get d(){return this.host.d;}
- change(fn:()=>void){const before=structuredClone(this.d);fn();if(JSON.stringify(before.userState)!==JSON.stringify(this.d.userState)){this.past.push(before);if(this.past.length>60)this.past.shift();this.future=[];this.host.remember();}this.host.render();}
- undo=()=>{const before=this.past.pop();if(!before)return;this.future.push(structuredClone(this.d));this.d.userState.annotations=before.userState.annotations;this.d.userState.dismissedStudyMarks=before.userState.dismissedStudyMarks;this.host.render();};
- redo=()=>{const after=this.future.pop();if(!after)return;this.past.push(structuredClone(this.d));this.d.userState.annotations=after.userState.annotations;this.d.userState.dismissedStudyMarks=after.userState.dismissedStudyMarks;this.host.render();};
- reset(){this.past=[];this.future=[];this.selection=[];}
+ change(fn:()=>void){if(this.history.change(this.d.userState,fn))this.host.remember();this.host.render();}
+ undo=()=>{if(this.history.undo(this.d.userState)){this.host.remember();this.host.render();}};
+ redo=()=>{if(this.history.redo(this.d.userState)){this.host.remember();this.host.render();}};
+ reset(){this.history.reset();this.selection=[];}
  cancel(_render=true){this.closeInspector();this.selection=[];}
  choose(_tool:string){this.cacheSelection();}
  cacheSelection(){const parts=captureSelection();if(parts.length)this.selection=parts;}
@@ -29,7 +30,7 @@ export class PaperEditor {
   if(this.host.addNoteFromSelection)bar.append(this.quick('添加便签','＋',()=>this.host.addNoteFromSelection!(parts)));
   if(this.host.addBookmarkFromSelection)bar.append(this.quick('加入书签','⚑',()=>this.host.addBookmarkFromSelection!(parts)));
   if(this.host.addDoubtFromSelection){bar.append(this.quick('提出疑问','？',()=>this.host.addDoubtFromSelection!(parts,'unclear')),this.quick('展开讲解','↗',()=>this.host.addDoubtFromSelection!(parts,'explain')),this.quick('举例说明','▤',()=>this.host.addDoubtFromSelection!(parts,'example')));}
-  const history=el('div','mark-history'),undo=button('撤销标记',this.undo,'stationery-tool','↶'),redo=button('重做标记',this.redo,'stationery-tool','↷');undo.disabled=!this.past.length;redo.disabled=!this.future.length;history.append(undo,redo);bar.append(history);return bar;
+  const history=el('div','mark-history'),undo=button('撤销标记',this.undo,'stationery-tool','↶'),redo=button('重做标记',this.redo,'stationery-tool','↷');undo.disabled=!this.history.canUndo;redo.disabled=!this.history.canRedo;history.append(undo,redo);bar.append(history);return bar;
  }
  quick(name:string,glyph:string,fn:()=>void){const b=button(name,fn,'stationery-tool quick-tool',glyph);b.append(el('small','mark-name',name));return b;}
  closeInspector(){this.inspector?.remove();this.inspector=null;this.selected=[];this.root.querySelectorAll('[data-selected]').forEach(n=>n.removeAttribute('data-selected'));}

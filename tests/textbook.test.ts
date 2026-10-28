@@ -54,7 +54,7 @@ test('machine learning textbook validates, distinguishes examples and supplies r
  for(const p of pagesOf(document))for(const cue of p.cues||[])assert.ok(p.blocks.some(b=>b.id===cue.blockId));
  const chart=blocks.find(b=>b.id==='ml-parameter-chart')!;
  for(const [i,s]of chart.series!.entries())for(const p of s.points)assert.equal(p.y,i===1?2*p.x+1:i===2?p.x+2:p.x+1);
- assert.equal(document.notebook.revision,3);assert.equal(document.extensions.baseRevision,2);
+ assert.equal(document.notebook.revision,4);assert.equal(document.extensions.baseRevision,3);
  assert.ok(blocks.filter(b=>b.type==='formula').every(b=>b.parameters?.every(p=>p.description.length>20)));
 });
 test('downloadable authored examples carry intentional anchored emphasis',()=>{

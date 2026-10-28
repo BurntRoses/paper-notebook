@@ -1,0 +1,225 @@
+{
+  "date": "2026-10-28T18:42:22.782Z",
+  "results": [
+    {
+      "engine": "chromium",
+      "offline": true,
+      "figures": [
+        {
+          "size": "small",
+          "ratio": "1:1",
+          "width": 360,
+          "height": 360,
+          "overflow": false,
+          "imageWidth": 420,
+          "shapes": 0,
+          "pencils": 0
+        },
+        {
+          "size": "medium",
+          "ratio": "4:3",
+          "width": 620,
+          "height": 465,
+          "overflow": false,
+          "imageWidth": null,
+          "shapes": 3,
+          "pencils": 0
+        },
+        {
+          "size": "wide",
+          "ratio": "3:2",
+          "width": 755.859375,
+          "height": 503.90625,
+          "overflow": false,
+          "imageWidth": null,
+          "shapes": 0,
+          "pencils": 0
+        },
+        {
+          "size": "full",
+          "ratio": "16:9",
+          "width": 888.71875,
+          "height": 499.890625,
+          "overflow": false,
+          "imageWidth": null,
+          "shapes": 3,
+          "pencils": 3
+        },
+        {
+          "size": "medium",
+          "ratio": "3:4",
+          "width": 373.421875,
+          "height": 497.890625,
+          "overflow": false,
+          "imageWidth": 420,
+          "shapes": 0,
+          "pencils": 0
+        },
+        {
+          "size": "wide",
+          "ratio": "auto",
+          "width": 1219,
+          "height": 1443.546875,
+          "overflow": false,
+          "imageWidth": null,
+          "shapes": 9,
+          "pencils": 9
+        }
+      ],
+      "imageDecodeStable": true,
+      "oneOpenSelect": true,
+      "print": {
+        "sheets": 11,
+        "tables": 4,
+        "headers": [
+          "center",
+          "center",
+          "left",
+          "center",
+          "center",
+          "left",
+          "center",
+          "center",
+          "left",
+          "center",
+          "center",
+          "left"
+        ],
+        "sourcePreserved": true
+      },
+      "mobile": {
+        "width": 638,
+        "column": 638
+      },
+      "repagination": {
+        "same": true,
+        "counts": [
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        "times": [
+          13.800000071525574,
+          16.699999928474426,
+          17.90000009536743,
+          19.199999928474426,
+          14.300000071525574
+        ]
+      },
+      "externalRequests": 0,
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "offline": true,
+      "figures": [
+        {
+          "size": "small",
+          "ratio": "1:1",
+          "width": 360,
+          "height": 360,
+          "overflow": false,
+          "imageWidth": 420,
+          "shapes": 0,
+          "pencils": 0
+        },
+        {
+          "size": "medium",
+          "ratio": "4:3",
+          "width": 620,
+          "height": 465,
+          "overflow": false,
+          "imageWidth": null,
+          "shapes": 3,
+          "pencils": 0
+        },
+        {
+          "size": "wide",
+          "ratio": "3:2",
+          "width": 755.859375,
+          "height": 503.90625,
+          "overflow": false,
+          "imageWidth": null,
+          "shapes": 0,
+          "pencils": 0
+        },
+        {
+          "size": "full",
+          "ratio": "16:9",
+          "width": 888.71875,
+          "height": 499.890625,
+          "overflow": false,
+          "imageWidth": null,
+          "shapes": 3,
+          "pencils": 3
+        },
+        {
+          "size": "medium",
+          "ratio": "3:4",
+          "width": 373.421875,
+          "height": 497.890625,
+          "overflow": false,
+          "imageWidth": 420,
+          "shapes": 0,
+          "pencils": 0
+        },
+        {
+          "size": "wide",
+          "ratio": "auto",
+          "width": 1219,
+          "height": 1443.546875,
+          "overflow": false,
+          "imageWidth": null,
+          "shapes": 9,
+          "pencils": 9
+        }
+      ],
+      "imageDecodeStable": true,
+      "oneOpenSelect": true,
+      "print": {
+        "sheets": 11,
+        "tables": 4,
+        "headers": [
+          "center",
+          "center",
+          "left",
+          "center",
+          "center",
+          "left",
+          "center",
+          "center",
+          "left",
+          "center",
+          "center",
+          "left"
+        ],
+        "sourcePreserved": true
+      },
+      "mobile": {
+        "width": 638,
+        "column": 638
+      },
+      "repagination": {
+        "same": true,
+        "counts": [
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        "times": [
+          41,
+          40,
+          40,
+          41,
+          41
+        ]
+      },
+      "externalRequests": 0,
+      "errors": []
+    }
+  ]
+}

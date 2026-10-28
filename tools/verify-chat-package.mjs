@@ -12,7 +12,7 @@ for(const [name,bytes] of Object.entries(files)){
  assert.ok(target.startsWith(destination+'/'),'package path must stay inside its output folder');
  await mkdir(dirname(target),{recursive:true});await writeFile(target,bytes);
 }
-for(const name of ['SKILL.md','START-HERE.md','assets/reader.html','assets/blank-notebook.json','prompts/README.md','prompts/conversation-model.txt','prompts/coding-agent.txt','scripts/build_reader.py','scripts/verify_reader.py','scripts/study_quality.py','scripts/prepare_conversation.py','scripts/notebook.mjs','references/notebook.schema.json','references/conversation-start.md','references/workspace-start.md','references/responses/download-unavailable.zh-CN.txt','references/responses/file-delivery-unavailable.zh-CN.txt','references/content-contract.md','references/components.md','references/writing.md','references/reader-output.md'])assert.ok(files['paper-notebook/'+name],name);
+for(const name of ['SKILL.md','START-HERE.md','assets/reader.html','assets/blank-notebook.json','prompts/README.md','prompts/conversation-model.txt','prompts/coding-agent.txt','scripts/build_reader.py','scripts/verify_reader.py','scripts/study_quality.py','scripts/content_review.py','references/writing-rules.json','references/writing-review.md','references/multimodal.md','scripts/prepare_conversation.py','scripts/notebook.mjs','references/notebook.schema.json','references/conversation-start.md','references/workspace-start.md','references/responses/download-unavailable.zh-CN.txt','references/responses/file-delivery-unavailable.zh-CN.txt','references/content-contract.md','references/components.md','references/writing.md','references/reader-output.md'])assert.ok(files['paper-notebook/'+name],name);
 assert.equal(strFromU8(files['paper-notebook/START-HERE.md']),await readFile('skills/paper-notebook/references/conversation-start.md','utf8'));
 assert.equal(strFromU8(files['paper-notebook/prompts/conversation-model.txt']),await readFile('public/paper-notebook-prompt.txt','utf8'));
 for(const name of ['download-unavailable','file-delivery-unavailable']){
@@ -29,7 +29,7 @@ const run=(command,args,cwd=root,nodeOnly=false)=>{
 };
 const build=run(process.env.PYTHON||'python3',['scripts/build_reader.py','notebook.json','--out','output'],kit);
 const builtReport=JSON.parse(await readFile(kit+'/output/build-report.json','utf8'));
-assert.equal(builtReport.bundledReaderMatches,true);
+assert.equal(builtReport.bundledReaderMatches,true);assert.equal(builtReport.contentReview.advisory,true);
 assert.ok(builtReport.studyMarks.total>0);assert.deepEqual(builtReport.studyMarks.invalidTargets,[]);
 const html=await readFile(kit+'/output/'+builtReport.html,'utf8'),json=await readFile(kit+'/output/notebook.json','utf8');
 assert.deepEqual(JSON.parse(json),JSON.parse(source));
@@ -46,7 +46,7 @@ const nodeEmbedded=nodeHTML.match(/<script\b[^>]*\bid=["']notebook-data["'][^>]*
 assert.ok(nodeEmbedded);assert.deepEqual(JSON.parse(nodeEmbedded[1]),JSON.parse(source));
 assert.deepEqual(nodeReport.warnings,[]);
 assert.equal(nodeReport.bundledReaderMatches,true);assert.equal(nodeReport.sourceMatches,true);
-assert.deepEqual(nodeReport.studyMarks,builtReport.studyMarks);
+assert.deepEqual(nodeReport.studyMarks,builtReport.studyMarks);assert.deepEqual(nodeReport.contentReview,builtReport.contentReview);
 assert.doesNotMatch(nodeHTML,/<script\b[^>]*\bsrc\s*=|<link\b[^>]*rel=["']stylesheet["']/i);
 for(const [folder,report] of [['output',builtReport],['node-output',nodeReport]]){
  const artifact=folder+'/'+report.html;

@@ -1,6 +1,6 @@
 {
   "name": "paper-notebook-kit",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "private": false,
   "type": "module",
   "description": "A structured tutorial reader and a self-contained Skill for your own agent.",
@@ -24,7 +24,9 @@
     "test:reader": "node tests/reader-browser.mjs",
     "test:hosting": "node tests/hosting-browser.mjs",
     "test:experience": "node tests/experience-browser.mjs",
-    "test:workspace": "node tests/workspace-browser.mjs"
+    "test:workspace": "node tests/workspace-browser.mjs",
+    "test:quality": "node tests/quality-browser.mjs",
+    "benchmark:reader": "node tools/benchmark-reader.mjs"
   },
   "dependencies": {
     "ajv": "^8.17.1",

@@ -1,3 +1,4 @@
+import { growthFigure } from './growth-figure';
 import { userState, type NotebookDocument, type Page } from './model/types';
 // The showcase is an actual lesson: its marks, marginal notes and exercises use the reader contract.
 const pages:Page[]=[
@@ -5,6 +6,7 @@ const pages:Page[]=[
   {id:'intro-lead',type:'prose',study:{label:'01 · 一句话定义',tone:'blue',marks:[{text:'上一期的期末值',kind:'highlight'}]},text:'复利：每一期的增长，都以上一期的期末值为基础。新增的利息，也会参与下一期的增长。'},
   {id:'intro-read',type:'concept',title:'这份模型的条件',study:{tone:'red',explanations:[{text:'增长率恒定',note:'每一期使用相同的 r。'}],marks:[{text:'增长率恒定',kind:'circle'},{text:'没有额外存取',kind:'wave'}]},text:'这里假设每期增长率恒定、利息计入本金，期间没有额外存取。期数与增长率必须使用同一时间单位。'},
   {id:'intro-create',type:'comparison',study:{label:'02 · 放在一起比较',tone:'blue'},columns:['每期增长的基础','两期后的结果'],rows:[['单利：始终是初始本金','100 + 10 + 10 = 120'],['复利：上一期的期末值','100 × 1.1 × 1.1 = 121']]},
+  {id:'intro-area',type:'image',assetId:'growth-area',figure:{size:'medium',ratio:'1:1'},alt:'本金面积100，两个增长条各10，角落再次增长1。',caption:'面积分解：100 + 10 + 10 + 1 = 121。面积按金额同比例绘制，用于解释第二期的增长。'},
   {id:'intro-promise',type:'callout',study:{label:'多出的 1 元从哪里来',visual:'extract',tone:'red',marks:[{text:'第二期多出的 1 元',kind:'bracket'}]},text:'第二期多出的 1 元，来自第一期 10 元利息的再次增长：10 × 10% = 1。'}]},
  {id:'intro-principles',title:'每一期，都乘一次 1 + r',subtitle:'复利笔记 02 / 递推 → 通式 → 核算',subject:'stem',layout:'cornell',paper:{ruling:'lined',lineHeight:34},cues:[{id:'intro-cue-condition',text:'为什么乘 1 + r？',blockId:'intro-native'},{id:'intro-cue-formula',text:'n 次相乘',blockId:'intro-flow'},{id:'intro-cue-check',text:'用小数值核算',blockId:'intro-anchor'}],summary:'下一期 = 本期 × (1 + r)。重复 n 期，所以 Pₙ = P₀(1 + r)ⁿ。',blocks:[
   {id:'intro-native',type:'prose',study:{label:'01 · 从一期开始',tone:'blue',marks:[{text:'本期的值 + 本期的增长',kind:'underline'}]},text:'下一期的值 = 本期的值 + 本期的增长 = 本期的值 × (1 + r)。'},
@@ -14,6 +16,7 @@ const pages:Page[]=[
   {id:'intro-paper',type:'concept',title:'增长率与期数，要配套',study:{label:'01 · 单位检查',tone:'red',aside:'年利率 ↔ 年数\n月利率 ↔ 月数',marks:[{text:'同一个周期',kind:'circle'}]},text:'r 和 n 必须指向同一个周期。若题目给出每期增长 5%、共两期，就用 r = 0.05、n = 2。'},
   {id:'intro-tools',type:'steps',study:{label:'02 · 三个计算量',tone:'blue',marks:[{text:'5% 写成 0.05',kind:'underline'},{text:'期末总值',kind:'star'}]},items:[{id:'intro-review-1',text:'百分数转小数：5% 写成 0.05。'},{id:'intro-review-2',text:'确认复利次数：两期就是乘两次 1.05。'},{id:'intro-review-3',text:'区分期末总值与净增长：净增长还要减去本金。'}]},
   {id:'intro-templates',type:'exercise',study:{label:'03 · 一道验算',tone:'olive'},questionType:'single',question:'初始值 200，每期增长 5%，两期后是多少？',options:[{id:'intro-answer-a',text:'210'},{id:'intro-answer-b',text:'220'},{id:'intro-answer-c',text:'220.5'}],solution:['intro-answer-c'],explanation:'200 × 1.05² = 220.5。第二期以 210 为基础，增长 10.5。',points:1},
+  {id:'intro-growth-chart',type:'chart',title:'两期后的差异',figure:{size:'wide',ratio:'3:2'},chartType:'line',xLabel:'期数',yLabel:'期末值 / 元',series:[{id:'growth-simple',label:'单利 10%',points:[{x:0,y:100},{x:1,y:110},{x:2,y:120}]},{id:'growth-compound',label:'复利 10%',points:[{x:0,y:100},{x:1,y:110},{x:2,y:121}]}],caption:'初始值100元、每期10%；纵轴从0起，末点相差1元。'},
   {id:'intro-owned',type:'prose',study:{tone:'red',marks:[{text:'220 是单利结果',kind:'wave'}]},text:'220 是单利结果；复利结果多出的 0.5，来自第一期利息的再次增长。'}]},
  {id:'intro-start',title:'会套公式，还要会判断',subtitle:'复利笔记 04 / 反例与回忆线索',subject:'stem',layout:'reading',paper:{ruling:'lined',lineHeight:34},blocks:[
   {id:'intro-first',type:'callout',study:{label:'01 · 一个反例',tone:'red',marks:[{text:'不能直接套用',kind:'bracket'}]},text:'如果中途又存入 50 元，就不能直接套用 P₀(1 + r)ⁿ。新增资金的增长期数，可能与原本金不同。'},
@@ -41,5 +44,9 @@ const subjectPages:Page[]=[
   {id:'code-limit',type:'prose',text:'同一人有多个编号时，不同编号的数量不等于人数。',study:{label:'统计口径',visual:'extract',marks:[{text:'不同编号',kind:'star'}]}}
  ]}
 ];
-export const introNotebook:NotebookDocument={schemaVersion:'1.0.0',notebook:{id:'paper-notebook-introduction',revision:7,title:'复利 · 从递推到通式',author:'Paper Notebook',language:'zh-CN',goals:['区分单利与复利的增长基础','从递推关系理解复利通式','检查周期单位并核算增长结果'],sources:[{id:'source-spring',title:'杜甫《春望》',locator:'首联；原诗为公共领域作品，释读为教学解释。'},{id:'intro-source-math',title:'公式推导与数值核验',locator:'依据等比数列递推；100 × 1.1² = 121，200 × 1.05² = 220.5。'},{id:'intro-source-scope',title:'模型范围',locator:'恒定每期增长率、期末计入增长、无额外资金流；不包含税费及浮动利率。'}],chapters:[{id:'intro-chapter',title:'数学 / 增长模型',pages},{id:'subject-chapter',title:'不同学科的笔记',pages:subjectPages}]},userState:userState(pages[0].id),assets:[],extensions:{baseRevision:6,readerProfile:{layout:'single',direction:'horizontal',sidebar:'collapsed',pageShape:'auto',transition:'cover',theme:'paper-light',motion:'full'}}};
+export const introNotebook:NotebookDocument={schemaVersion:'1.0.0',notebook:{id:'paper-notebook-introduction',revision:8,title:'复利 · 从递推到通式',author:'Paper Notebook',language:'zh-CN',goals:['区分单利与复利的增长基础','从递推关系理解复利通式','检查周期单位并核算增长结果'],sources:[{id:'source-spring',title:'杜甫《春望》',locator:'首联；原诗为公共领域作品，释读为教学解释。'},{id:'intro-source-math',title:'公式推导与数值核验',locator:'依据等比数列递推；100 × 1.1² = 121，200 × 1.05² = 220.5。'},{id:'intro-source-scope',title:'模型范围',locator:'恒定每期增长率、期末计入增长、无额外资金流；不包含税费及浮动利率。'}],chapters:[{id:'intro-chapter',title:'数学 / 增长模型',pages},{id:'subject-chapter',title:'不同学科的笔记',pages:subjectPages}]},userState:userState(pages[0].id),assets:[{id:'growth-area',name:'复利面积.svg',mime:'image/svg+xml',data:'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(growthFigure),width:420,height:420,source:'Paper Notebook 原创教学图解',license:'MIT',verified:true}],extensions:{baseRevision:7,readerProfile:{layout:'single',direction:'horizontal',sidebar:'collapsed',pageShape:'auto',transition:'cover',theme:'paper-light',motion:'full'}}};
 introNotebook.userState.preferences.fontSize=24;
+
+introNotebook.userState.updatedAt='2026-10-29T00:00:00.000Z';
+
+for(const page of subjectPages)for(const b of page.blocks)if(b.type==='diagram')b.figure={size:'wide',ratio:'auto',style:'sketch'};

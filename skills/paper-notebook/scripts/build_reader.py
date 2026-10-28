@@ -10,6 +10,7 @@ import zipfile
 import unicodedata
 from verify_reader import verify
 from study_quality import check_study_marks
+from content_review import review_content
 
 
 def validate(value, rule, schema, path='$'):
@@ -130,7 +131,7 @@ def build(source, template, schema_path, notices, output, allow_unmarked=False):
     reader_check=verify(output/(stem+'.html'),template,source,allow_unmarked)
     with zipfile.ZipFile(output/(stem+'.zip'),'w',zipfile.ZIP_DEFLATED) as bundle:
         bundle.writestr(stem+'.html',result);bundle.writestr('notebook.json',text);bundle.writestr('THIRD_PARTY_NOTICES.txt',notice);bundle.writestr('打开我-README.txt','打开 '+stem+'.html 即可离线阅读；notebook.json 保留源数据。\nPaper Notebook · https://github.com/BurntRoses/paper-notebook')
-    report={'id':doc['notebook']['id'],'revision':doc['notebook']['revision'],'schemaValidated':True,'coreReferencesChecked':True,'bundledReaderMatches':reader_check['bundledReaderMatches'],'studyMarks':study_marks,'browserInspected':False,'htmlBytes':len(result.encode()),'html':stem+'.html','zip':stem+'.zip'}
+    report={'id':doc['notebook']['id'],'revision':doc['notebook']['revision'],'schemaValidated':True,'coreReferencesChecked':True,'bundledReaderMatches':reader_check['bundledReaderMatches'],'studyMarks':study_marks,'contentReview':review_content(doc),'browserInspected':False,'htmlBytes':len(result.encode()),'html':stem+'.html','zip':stem+'.zip'}
     (output/'build-report.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
     return report
 

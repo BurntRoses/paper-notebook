@@ -13,7 +13,7 @@ The current reader uses `src/reader/surface.ts`, CSS paper textures and native S
 
 License references: [ambientCG](https://docs.ambientcg.com/license/), [Poly Haven](https://polyhaven.com/license). Poly Haven is a recommended source; no Poly Haven asset is currently bundled. Do not attribute generated textures to a downloaded source that was not used.
 
-`licenses/` retains runtime dependency notices, font license, and MIT notices of the pinned Humanizer writing references. `THIRD_PARTY_NOTICES.txt` aggregates these into exported HTML and ZIP files. User uploads retain their own rights and provenance. Model redraws must retain the original asset relationship.
+`licenses/` retains runtime dependency notices, font license, and MIT notices of the pinned anti-defensive-writing, Humanizer and Humanizer-zh writing references. `THIRD_PARTY_NOTICES.txt` aggregates these into exported HTML and ZIP files. User uploads retain their own rights and provenance. Model redraws must retain the original asset relationship.
 
 Rebuild textures with `python tools/build_materials.py` (Pillow + numpy). The font is a renamed subset of LXGW WenKai v1.530 retained from the previous package; missing glyphs fall back to the system serif font. `assets/manifest.json` records byte sizes and SHA-256 hashes.
 
@@ -27,3 +27,5 @@ Rebuild textures with `python tools/build_materials.py` (Pillow + numpy). The fo
 阅读器纸面复用已许可的纸张纹理，阴影和装订细节由 CSS 生成。海报直接从正式 PageSurface 导出；最终宣传片从正式纸页捕获图文与 SVG，按分镜编排动效，音效配合关键画面生成。制作源与复现命令见 docs/promo-production.md。无独立仿笔记本宣传画布或外部录音。
 
 设计参考与读取结果见 docs/research/reader-design.md 和 reader-references.json。KaTeX 字体保留 WOFF2 以减少离线重复载荷，原 MIT 声明随运行时分发。旧桌面和便签源码收进根目录 archives 日期封存包，当前纸张、字体和纹理原件保留于 assets/，阅读器入口未加载其物理模块。
+
+写作参考的固定提交与改编范围见 [统一写作审阅规范](../skills/paper-notebook/references/writing-review.md)。新增复利面积 SVG 为项目原创 MIT 素材，几何尺寸与 100 + 10 + 10 + 1 = 121 对应。

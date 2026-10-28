@@ -9,6 +9,7 @@ import './chrome.css';
 import './typography.css';
 import './turn.css';
 import './workspace.css';
+import './figures.css';
 import './print.css';
 import { PageTurn, captureSheets } from './turn';
 import { icon } from '../ui/icons';
@@ -85,7 +86,8 @@ class ReaderApp {
     return {width,height:Math.max(420,innerHeight-(this.immersive?0:76))};
   }
   get readingSize(){return this.d.userState.preferences.fontSize*(innerWidth<600?1.5:1);}
-  paginate(){const key=JSON.stringify([this.d.notebook,this.d.userState.layouts,this.shape,this.readingSize,this.sheetSize,this.profile.font,this.profile.lineSpacing]);if(key===this.paginationKey)return;const old=this.sheets[this.pageIndex];this.d.extensions.readerProfile={...this.profile};this.sheets=new PageSurface(this.d,this.shape,this.readingSize,b=>this.block(b),this.sheetSize).paginate();this.paginationKey=key;if(old){const index=this.sheets.findIndex(p=>p.id===old.id&&p.part===old.part);this.pageIndex=index>=0?index:Math.min(this.pageIndex,this.sheets.length-1);}}
+  private sourceBlocks=new Map<string,Block>();
+  paginate(){const key=JSON.stringify([this.d.notebook,this.d.userState.layouts,this.shape,this.readingSize,this.sheetSize,this.profile.font,this.profile.lineSpacing]);if(key===this.paginationKey)return;const old=this.sheets[this.pageIndex];this.d.extensions.readerProfile={...this.profile};this.sourceBlocks=new Map(blocksOf(this.d).map(b=>[b.id,b]));this.sheets=new PageSurface(this.d,this.shape,this.readingSize,b=>this.block(b),this.sheetSize).paginate();this.paginationKey=key;if(old){const index=this.sheets.findIndex(p=>p.id===old.id&&p.part===old.part);this.pageIndex=index>=0?index:Math.min(this.pageIndex,this.sheets.length-1);}}
   get en(){return this.d.userState.preferences.language==='en'}
   async pageImage(){await document.fonts.ready;return pagePNG(appRoot.querySelector<HTMLElement>('.page-surface')!);}
   get marks(){return this.d.userState.annotations}
@@ -245,8 +247,8 @@ class ReaderApp {
     for(const side of ['left','right'] as const){const corner=button(side==='right'?'拖动页角到下一页':'拖动页角到上一页',()=>{},'page-corner corner-'+side,'');corner.dataset.corner=side;corner.addEventListener('click',event=>{if(event.detail===0)this.turn(side==='right'?1:-1)});paper.append(corner);}
     slot.append(paper);return slot;
   }
-  block(b:Block){const root=renderBlock(b,this.d,{answer:(id,answer)=>{this.d.userState.answers[id]=structuredClone(answer);const pageId=this.page.id;this.invalidate();this.paginate();const index=this.pages.findIndex(p=>p.id===pageId&&p.blocks.some(b=>b.id===id));if(index>=0)this.pageIndex=index;this.render();},check:(id,value)=>{this.d.userState.checks[id]=value;this.remember()},edit:()=>{},image:b=>this.showImage(b)});
-    (root as HTMLElement & {__block:Block}).__block=blocksOf(this.d).find(source=>source.id===b.id)||b;return root;
+  block(b:Block){const root=renderBlock(b,this.d,{answer:(id,answer)=>{this.d.userState.answers[id]=structuredClone(answer);const pageId=this.page.id;this.invalidate();this.paginate();const index=this.pages.findIndex(p=>p.id===pageId&&p.blocks.some(b=>b.id===id));if(index>=0)this.pageIndex=index;this.render();},check:(id,value)=>{this.d.userState.checks[id]=value;this.remember()},edit:()=>{},image:b=>this.showImage(b)},this.sourceBlocks.get(b.id)||b);
+    (root as HTMLElement & {__block:Block}).__block=this.sourceBlocks.get(b.id)||b;return root;
   }
   renderNavigation(){
     const footer=el('footer','reader-navigation');footer.setAttribute('aria-label',this.t('翻页','Page navigation'));const prev=button(this.t('上一页','Previous page'),()=>this.turn(-1),'reader-nav',this.profile.direction==='horizontal'?'←':'↑'),next=button(this.t('下一页','Next page'),()=>this.turn(1),'reader-nav',this.profile.direction==='horizontal'?'→':'↓');prev.disabled=this.pageIndex===0;next.disabled=this.pageIndex+this.step>=this.pages.length;
@@ -324,7 +326,7 @@ class ReaderApp {
     const buttons=appRoot.querySelectorAll<HTMLButtonElement>('.reader-nav');if(buttons[0])buttons[0].disabled=this.pageIndex===0;if(buttons[1])buttons[1].disabled=this.pageIndex+this.step>=this.pages.length;
   }
   bind(){
-    enhanceSelects();new MutationObserver(()=>enhanceSelects()).observe(document.body,{childList:true,subtree:true});
+    enhanceSelects();new MutationObserver(records=>{for(const record of records)for(const node of record.addedNodes)if(node instanceof HTMLElement&&(node.matches('select')||node.querySelector('select:not([data-choice])')))enhanceSelects(node);}).observe(document.body,{childList:true,subtree:true});
     document.addEventListener('click',e=>{const cue=(e.target as HTMLElement).closest<HTMLElement>('[data-cue-block]');if(cue)this.goBlock(cue.closest<HTMLElement>('[data-page]')!.dataset.page!,cue.dataset.cueBlock!);});
     document.addEventListener('keydown',e=>{
       if(e.key==='Escape'){if(this.immersive&&!document.querySelector('dialog[open]')){this.setImmersive(false);return;}this.cancelGesture(true);this.clearToolbar();if(this.rightSidebarOpen&&!document.querySelector('dialog[open]')){this.closeWorkspace();return;}if(this.sidebarOpen&&innerWidth<800&&!document.querySelector('dialog[open]'))this.toggleSidebar(false);return}

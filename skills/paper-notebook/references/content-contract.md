@@ -41,3 +41,10 @@ assets: id/name/data/mime，可附 source/license/originalAssetId/verified。支
 ## 保存与分享
 
 无账号。本机 IndexedDB 保存草稿，重开相同笔记时恢复较新记录。导出默认包含全部个人记录（圈画、自由笔、便签、排版、疑问、作答），取消勾选时生成公开正文副本。HTML、JSON、ZIP、结构化 Markdown 使用相同协议；默认下载一个 HTML，源数据、字体、素材与所选记录内嵌。ZIP、JSON 等保留在高级导出中。PDF 面板按 A4 横竖方向、12pt 正文和至少 12mm 留白重新分页后调用系统打印；文字标记随原文重排，自由笔迹保留为原页附录。内部 `PrintOptions` 仅控制方向和是否包含记录，不改变阅读器源数据格式。源 JSON 适合交回 agent 更新。
+
+
+## 图框与内容审阅
+
+`Block.figure` 为可选向后兼容字段，统一 image、diagram、chart 的尺寸、比例、对齐与手绘风格；字段详见 components.md。Asset 的 width/height 表示真实图片尺寸。固定占位与等比容纳用于稳定分页，标签与数据不裁切。
+
+Node validate/build 和 Python build 均输出 `contentReview`（advisory、automaticRewrite:false、writing、visuals、assets）。写作问题需要语义审阅，不自动删词。图表计数不包括对照表；素材清单标记未引用及超过 300 KB 的图片。审阅不修改源数据，也不分析个人批注。

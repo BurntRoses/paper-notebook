@@ -18,6 +18,8 @@ async function fixture(extra:Record<string,Uint8Array>={}){
   'paper-notebook/assets/THIRD_PARTY_NOTICES.txt':await readFile('THIRD_PARTY_NOTICES.txt'),
   'paper-notebook/scripts/build_reader.py':await readFile('skills/paper-notebook/scripts/build_reader.py'),
   'paper-notebook/scripts/verify_reader.py':await readFile('skills/paper-notebook/scripts/verify_reader.py'),
+  'paper-notebook/scripts/content_review.py':await readFile('skills/paper-notebook/scripts/content_review.py'),
+  'paper-notebook/references/writing-rules.json':await readFile('skills/paper-notebook/references/writing-rules.json'),
   'paper-notebook/scripts/study_quality.py':await readFile('skills/paper-notebook/scripts/study_quality.py'),
   'paper-notebook/references/notebook.schema.json':await readFile('schemas/notebook.schema.json'),
  };

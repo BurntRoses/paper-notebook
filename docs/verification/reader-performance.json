@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-28T18:37:19.171Z",
+  "node": "v24.22.1",
+  "scope": "Median of five local runs. Mark runs include one initial 3 MB document clone for both versions. Table timing isolates column alignment, excluding DOM/layout.",
+  "markHistory": {
+    "operations": 20,
+    "previousMs": 14.636,
+    "currentMs": 7.777,
+    "previousSnapshotBytes": 3057385,
+    "currentSnapshotBytes": 42397
+  },
+  "tableAlignment": {
+    "rows": 60,
+    "columns": 4,
+    "blocksBeforeTable": 200,
+    "renders": 10,
+    "previousMs": 10.317,
+    "currentMs": 0.037
+  }
+}

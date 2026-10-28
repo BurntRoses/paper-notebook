@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-28T17:59:56.364Z",
+  "date": "2026-10-28T18:42:33.885Z",
   "results": [
     {
       "engine": "chromium",
@@ -13,7 +13,7 @@
         "font": "18px",
         "scale": 1,
         "characters": 2079,
-        "pages": 27
+        "pages": 29
       },
       "guide": true,
       "keyboard": true,
@@ -38,7 +38,7 @@
         "font": "18px",
         "scale": 1,
         "characters": 2106,
-        "pages": 27
+        "pages": 29
       },
       "guide": true,
       "keyboard": true,

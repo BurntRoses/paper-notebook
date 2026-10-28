@@ -22,22 +22,26 @@ export async function copyText(text:string){try{await navigator.clipboard.writeT
 export function readFile(file:File){return new Promise<string>((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(String(r.result));r.onerror=()=>reject(r.error);r.readAsDataURL(file);});}
 export function pickFile(accept:string,multiple=false):Promise<File[]>{return new Promise(resolve=>{const n=el('input');n.type='file';n.accept=accept;n.multiple=multiple;n.hidden=true;document.body.append(n);n.addEventListener('change',()=>{resolve([...n.files||[]]);n.remove();});n.addEventListener('cancel',()=>{resolve([]);n.remove();});n.click();});}
 
+let activeChoice:{wrap:HTMLElement;close:()=>void}|null=null;
+let choiceOutsideBound=false;
 /** Keep a real select for values/forms, and present an accessible paper-styled listbox. */
 export function enhanceSelects(root:ParentNode=document){
- for(const n of root.querySelectorAll<HTMLSelectElement>('select:not([data-choice])')){
+ if(!choiceOutsideBound){document.addEventListener('pointerdown',e=>{if(activeChoice&&!activeChoice.wrap.contains(e.target as Node))activeChoice.close();});choiceOutsideBound=true;}
+ const selects=[...(root instanceof HTMLSelectElement&&!root.dataset.choice?[root]:[]),...root.querySelectorAll<HTMLSelectElement>('select:not([data-choice])')];
+ for(const n of selects){
   n.dataset.choice='true';n.tabIndex=-1;n.setAttribute('aria-hidden','true');const wrap=el('span','paper-choice'),trigger=button('',()=>toggle()),list=el('div','paper-choice-list');
   n.before(wrap);wrap.append(n,trigger,list);trigger.className='paper-choice-trigger';trigger.setAttribute('role','combobox');trigger.setAttribute('aria-haspopup','listbox');trigger.setAttribute('aria-expanded','false');
   const id='choice-'+Math.random().toString(36).slice(2);list.id=id;list.setAttribute('role','listbox');list.setAttribute('popover','manual');trigger.setAttribute('aria-controls',id);
   let index=0,opened=false;
   const sync=()=>{trigger.textContent=n.selectedOptions[0]?.textContent||'选择';trigger.disabled=n.disabled;trigger.setAttribute('aria-label',n.getAttribute('aria-label')||n.closest('label')?.querySelector('.field-label')?.textContent||n.closest('label')?.firstElementChild?.textContent||'选择');};
-  const close=()=>{opened=false;trigger.setAttribute('aria-expanded','false');if(list.matches(':popover-open'))list.hidePopover();else list.hidden=true;};
+  const close=()=>{if(activeChoice?.wrap===wrap)activeChoice=null;opened=false;trigger.setAttribute('aria-expanded','false');if(list.matches(':popover-open'))list.hidePopover();else list.hidden=true;};
   const focus=(i:number)=>{const options=[...list.querySelectorAll<HTMLButtonElement>('[role=option]')];index=Math.max(0,Math.min(options.length-1,i));options[index]?.focus();};
   const toggle=()=>{
-   if(opened){close();return;}sync();list.replaceChildren();[...n.options].forEach((o,i)=>{const b=button(o.textContent||'',()=>{n.value=o.value;n.dispatchEvent(new Event('change',{bubbles:true}));sync();close();if(trigger.isConnected)trigger.focus();});b.setAttribute('role','option');b.setAttribute('aria-selected',String(o.selected));b.disabled=o.disabled;list.append(b);});
+   if(opened){close();return;}activeChoice?.close();activeChoice={wrap,close};sync();list.replaceChildren();[...n.options].forEach((o,i)=>{const b=button(o.textContent||'',()=>{n.value=o.value;n.dispatchEvent(new Event('change',{bubbles:true}));sync();close();if(trigger.isConnected)trigger.focus();});b.setAttribute('role','option');b.setAttribute('aria-selected',String(o.selected));b.disabled=o.disabled;list.append(b);});
    const r=trigger.getBoundingClientRect(),width=Math.min(innerWidth-24,Math.max(190,r.width));list.style.width=width+'px';list.style.left=Math.min(Math.max(12,r.left),Math.max(12,innerWidth-width-12))+'px';list.style.top=Math.min(innerHeight-220,r.bottom+5)+'px';list.style.maxHeight=Math.min(300,innerHeight-40)+'px';list.hidden=false;list.showPopover?.();opened=true;trigger.setAttribute('aria-expanded','true');focus(Math.max(0,n.selectedIndex));
   };
   n.addEventListener('change',sync);trigger.addEventListener('keydown',e=>{if(['ArrowDown','ArrowUp','Enter',' '].includes(e.key)){e.preventDefault();toggle();}});
   list.addEventListener('keydown',e=>{if(e.key==='Escape'||e.key==='Tab'){close();trigger.focus();if(e.key==='Escape')e.preventDefault();}else if(['ArrowDown','ArrowUp','Home','End'].includes(e.key)){e.preventDefault();focus(e.key==='Home'?0:e.key==='End'?n.options.length-1:index+(e.key==='ArrowDown'?1:-1));}});
-  const outside=(e:PointerEvent)=>{if(!wrap.isConnected){document.removeEventListener('pointerdown',outside);return;}if(opened&&!wrap.contains(e.target as Node))close();};document.addEventListener('pointerdown',outside);sync();list.hidden=true;
+  sync();list.hidden=true;
  }
 }

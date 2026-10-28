@@ -4,9 +4,10 @@ export interface FormulaParameter { symbol:string; name:string; description:stri
 export interface DiagramNode { id: string; label: string; x?: number; y?: number; shape?:'rounded'|'rectangle'|'circle'|'ellipse'|'diamond'|'hexagon'|'pill'|'document'|'cylinder' }
 export type StudyMarkKind='highlight'|'underline'|'circle'|'wave'|'box'|'bracket'|'check'|'star'|'dots';
 export interface StudyPresentation {visual?:'plain'|'blackboard'|'extract'|'sketch';role?:'definition'|'intuition'|'derivation'|'example'|'evidence'|'takeaway'|'recall';frame?:'auto'|'plain'|'pencil'|'tape'|'double'|'margin';label?:string;aside?:string;explanations?:{text:string;note:string}[];tone?:'blue'|'red'|'olive'|'gold';marks?:{text:string;kind:StudyMarkKind;color?:string;seed?:number}[]}
+export interface FigureLayout {size?:'small'|'medium'|'wide'|'full';ratio?:'auto'|'1:1'|'4:3'|'3:2'|'16:9'|'3:4';align?:'left'|'center'|'right';style?:'sketch'|'precise'}
 export interface Block {
   id: string; type: BlockType | string; title?: string; text?: string;
-  study?:StudyPresentation;
+  study?:StudyPresentation; figure?:FigureLayout;
   items?: Item[]; steps?: Item[]; prompt?: string; result?: string;
   columns?: string[]; rows?: string[][]; latex?: string; language?: string;
   parameters?:FormulaParameter[];
@@ -26,7 +27,7 @@ export type PagePlacements=Partial<Record<PaperShape,Record<string,ObjectFrame>>
 export interface Page { id: string; title: string; subtitle?: string; subject?:'general'|'stem'|'literature'|'business'|'code'; layout?: 'reading'|'cornell'|'grid'|'exam'|'free'; paper?:PaperSettings; placements?:PagePlacements; blocks: Block[]; cues?: {id:string;text:string;blockId?:string}[]; summary?:string }
 export interface Chapter { id: string; title: string; pages: Page[] }
 export interface Source { id: string; title: string; url?: string; locator?: string; status?: string }
-export interface Asset { id: string; name: string; data: string; mime: string; source?: string; license?: string; originalAssetId?: string; verified?: boolean }
+export interface Asset { id: string; name: string; data: string; mime: string; source?: string; license?: string; originalAssetId?: string; verified?: boolean; width?:number; height?:number }
 export interface Selector { blockId: string; start: number; end: number; exact: string; prefix: string; suffix: string }
 export interface Annotation { id: string; kind: StudyMarkKind|'bold'|'red'|'strike'|'arrow'|'freehand'; selectors: Selector[]; color: string; width: number; seed: number; pageId: string; points?: number[][]; status?: 'resolved'|'ambiguous'|'orphaned'|'needs-placement'; coordinateSpace?:'legacy-width'|'normalized-page'; originalPoints?:number[][]; sourceSize?:{width:number;height:number}; shape?:PaperShape; sheet?:number; tool?:'pencil'|'pen'|'marker'|'arrow'; attachedBlockId?:string; blockFrame?:{x:number;y:number;width:number;height:number}; migration?:string }
 export type MaterialId = 'butter'|'rose'|'sage'|'lilac'|'kraft'|'glassine';

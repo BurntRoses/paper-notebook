@@ -1,0 +1,11 @@
+[
+ {"id":"staged-opener","pattern":"让我们一起|让我们来|接下来让我们|众所周知|显而易见|不言而喻|[Ll]et['’]s (?:dive in|delve|explore)|[Ww]ithout further ado","guidance":"直接说明对象、关系或操作；仅在确有读者共识或证明时保留判断。"},
+ {"id":"rhetorical-contrast","pattern":"不是[^。！？\\n]{1,60}而是|不仅仅?是[^。！？\\n]{1,60}更是|[Ii]t['’]s not[^.!?\\n]{1,70}(?:but|it['’]s)","guidance":"检查两端是否各有独立信息。只起拔高作用时直述结论；真实概念辨析和技术否定应保留。"},
+ {"id":"imagined-objection","pattern":"你可能误以为|你可能会认为|你一定以为|不要误会|[Dd]on['’]t get me wrong|[Ii]['’]m not saying","guidance":"仅回应材料或读者实际提出的疑问；避免预设读者理解错误。"},
+ {"id":"empty-inflation","pattern":"赋能|不可或缺的重要|具有深远意义|开启全新篇章|[Aa] testament to|[Ee]ver-evolving landscape|[Pp]ivotal role","guidance":"用已有事实说明具体作用；缺少依据时删去空泛评价，不补造数字或案例。"},
+ {"id":"vague-authority","pattern":"专家一致认为|研究表明|业内普遍认为|[Ee]xperts (?:argue|agree)|[Ss]tudies (?:show|prove)","guidance":"核对来源与适用对象，给出可追踪出处；保留真实归因和证据强度，不改成无来源的确定事实。"},
+ {"id":"stacked-hedges","pattern":"可能也许|或许可能|在某种程度上可能|[Cc]ould potentially|[Mm]ight arguably|[Ii]n some cases it may","guidance":"留下影响结论的那一项范围或不确定性，删去同义叠加。"},
+ {"id":"chat-residue","pattern":"希望这(?:对你|能帮)|作为(?:一个)?(?:AI|人工智能)|[Aa]s an AI|[Ii] hope this helps|[Ff]eel free to ask","guidance":"教材正文直接呈现知识；能力限制仅在确实影响任务时于交付说明交代。"},
+ {"id":"stock-closer","pattern":"总而言之|综上所述|通过以上[^。\\n]{0,30}我们(?:可以|能够)|[Ii]n conclusion|[Tt]hat is the real win","guidance":"总结应增加条件、联系或迁移方法；删除只重复上一段的收尾。"},
+ {"id":"nominalized-action","pattern":"进行(?:分析|比较|计算|说明|讨论|验证)","guidance":"优先使用“分析、比较、计算”等直接动词，保留必要的正式文体。"}
+]

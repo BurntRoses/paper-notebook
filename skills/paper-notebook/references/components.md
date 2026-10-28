@@ -51,3 +51,23 @@
 `keepTogether:true` 可用于重要完整块。默认就会将能在新页放下的块完整移到下一页；超高代码、公式、图、例题使用完整滚动框。仅超长正文、列表、表格会分页，表格保留表头。
 
 Markdown 的 `notebook-page` 围栏可在 ### 后指定 {id, layout, subject, cues:[{id,text,blockId}], summary}。默认 Cornell，宽图与长推导可选 reading。cues 引用本页实际块并可点击定位，续页只显示对应线索。summary 写有用结论，不放通用鼓励。
+
+
+## 手绘配图与版式 / Figure layout
+
+`image`、`diagram`、`chart` 共用可选 `figure`，旧笔记继续兼容。默认 `size: wide, ratio: auto, align: center, style: sketch`。
+
+| 字段 | 值与行为 | 选择依据 |
+| --- | --- | --- |
+| size | small：48% 列宽、上限 360；medium：76%、上限 620；wide/full：100% | small 用于细节；medium 用于对象图；宽图用 reading 页。数值是纸面逻辑像素。full 表示当前内容列，不覆盖侧栏。 |
+| ratio | auto / 1:1 / 4:3 / 3:2 / 16:9 / 3:4 | auto 使用 SVG/资产尺寸；固定比例预留完整图框，等比容纳内容，不裁切。 |
+| align | left / center / right | 控制图框在内容列的位置；不环绕正文。 |
+| style | sketch / precise | 原生框图默认叠加轻微铅笔描边；precise 使用单一精确轮廓。数据点和数值坐标始终准确。不会自动重绘上传图片。 |
+
+窄屏 small 扩至 70%，medium 扩至 100%，避免标签过小。图注随图框排列。位图资产 `assets[]` 可选 `width`、`height`（实际正整数像素），SVG 应带 `viewBox`。图片未知尺寸且未指定比例时先按 4:3 稳定占位；生成时应补齐真实尺寸。照片、扫描图和插画需要 alt、来源与许可。手绘技术几何保持真实比例，生成模型的图中文字应改为独立可读标签。
+
+```json
+{"id":"growth-plot","type":"chart","title":"同一初始值的两种增长","chartType":"line","figure":{"size":"wide","ratio":"3:2","style":"sketch"},"xLabel":"期数","yLabel":"期末值 / 元","series":[{"id":"compound","label":"复利 10%","points":[{"x":0,"y":100},{"x":1,"y":110},{"x":2,"y":121}]}],"caption":"教学数据；每期增长率恒定，期间无额外存取。"}
+```
+
+图像生成、压缩与审阅规则见 [multimodal.md](https://github.com/BurntRoses/paper-notebook/blob/main/skills/paper-notebook/references/multimodal.md)。写作规范及上游版本见 [writing-review.md](https://github.com/BurntRoses/paper-notebook/blob/main/skills/paper-notebook/references/writing-review.md)。

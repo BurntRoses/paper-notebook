@@ -1,5 +1,7 @@
 import { uiText } from './i18n';
 import { chartSVG } from './charts';
+import { figureLayout } from './figures';
+import { tableAlignments } from './tables';
 import katex from 'katex';
 import { el, button, copyText, select } from './dom';
 import { projection } from './projection';
@@ -8,15 +10,16 @@ import { grade } from '../model/document';
 import { parameterText, type Answer, type Block, type NotebookDocument } from '../model/types';
 export interface BlockActions { answer:(id:string,answer:Answer)=>void;check:(id:string,value:boolean)=>void; edit:(b:Block)=>void; image:(b:Block)=>void }
 export function diagramSVG(b:Block){
- const NS='http://www.w3.org/2000/svg',s=document.createElementNS(NS,'svg'),nodes=b.nodes||[],horizontal=b.arrangement==='row'&&nodes.length<=4&&!matchMedia('(max-width:599px)').matches,cols=horizontal?Math.max(1,nodes.length):nodes.length>4?2:1,width=horizontal?nodes.length*360:cols===1?460:760,nodeW=horizontal?220:cols===1?300:244,gap=82;
+ const NS='http://www.w3.org/2000/svg',s=document.createElementNS(NS,'svg'),nodes=b.nodes||[],horizontal=b.arrangement==='row'&&nodes.length>0&&nodes.length<=4&&!matchMedia('(max-width:599px)').matches,cols=horizontal?Math.max(1,nodes.length):nodes.length>4?2:1,width=horizontal?nodes.length*360:cols===1?460:760,nodeW=horizontal?220:cols===1?300:244,gap=82;
  const lines=(label:string,step=16)=>{const chars=[...label];const result:string[]=[];for(let i=0;i<chars.length;i+=step)result.push(chars.slice(i,i+step).join(''));return result.length?result:[''];};
  const nodeLines=(n:typeof nodes[number])=>lines(n.label,Math.max(4,Math.floor(nodeW*(n.shape==='diamond'?.52:['ellipse','circle','hexagon'].includes(n.shape||'')?.65:.8)/(cols===1?20:17))));
- const heights=nodes.map(n=>n.shape==='circle'?nodeW:Math.max(n.shape==='diamond'?100:64,nodeLines(n).length*22+(n.shape==='diamond'?48:36))),rowHeights:number[]=[];nodes.forEach((_,i)=>{const row=Math.floor(i/cols);rowHeights[row]=Math.max(rowHeights[row]||0,heights[i]);});const rowY=rowHeights.map((_,i)=>18+rowHeights.slice(0,i).reduce((sum,h)=>sum+h+gap,0));const height=36+rowHeights.reduce((sum,h)=>sum+h+gap,0)-gap;
+ const heights=nodes.map(n=>n.shape==='circle'?nodeW:Math.max(n.shape==='diamond'?100:64,nodeLines(n).length*22+(n.shape==='diamond'?48:36))),rowHeights:number[]=[];nodes.forEach((_,i)=>{const row=Math.floor(i/cols);rowHeights[row]=Math.max(rowHeights[row]||0,heights[i]);});const rowY:number[]=[];let nextY=18;for(const h of rowHeights){rowY.push(nextY);nextY+=h+gap;}const height=Math.max(80,nextY+18-gap);
  s.setAttribute('viewBox',`0 0 ${width} ${height}`);s.setAttribute('width',String(width));s.setAttribute('height',String(height));s.setAttribute('role','img');s.setAttribute('aria-label',b.title||'Diagram');s.classList.add('diagram');if(horizontal)s.dataset.arrangement='row';
  const make=(tag:string,attrs:Record<string,string|number>,text?:string)=>{const n=document.createElementNS(NS,tag);for(const [key,value]of Object.entries(attrs))n.setAttribute(key,String(value));if(text)n.textContent=text;return n;};
  const title=make('title',{},b.title||'Diagram'),description=make('desc',{},nodes.map(n=>n.label).join(' → '));s.append(title,description);const defs=make('defs',{}),marker=make('marker',{id:`arrow-${b.id}`,viewBox:'0 0 10 10',refX:9,refY:5,markerWidth:6,markerHeight:6,orient:'auto-start-reverse'});marker.append(make('path',{d:'M 0 0 L 10 5 L 0 10',fill:'none',stroke:'#547485','stroke-width':1.5}));defs.append(marker);s.append(defs);
  const positions=new Map<string,{x:number;y:number;h:number}>();nodes.forEach((n,i)=>positions.set(n.id,{x:horizontal?20+(i%cols)*360:cols===1?(width-nodeW)/2:38+(i%2)*390,y:rowY[Math.floor(i/cols)],h:heights[i]}));
  for(const e of b.edges||[]){const a=positions.get(e.from),z=positions.get(e.to);if(!a||!z)continue;const sameRow=Math.abs(a.y-z.y)<3,forward=z.x>a.x;const x1=sameRow?(forward?a.x+nodeW:a.x):a.x+nodeW/2,y1=sameRow?a.y+a.h/2:z.y>a.y?a.y+a.h:a.y,x2=sameRow?(forward?z.x-5:z.x+nodeW+5):z.x+nodeW/2,y2=sameRow?z.y+z.h/2:z.y>a.y?z.y-5:z.y+z.h+5;const d=sameRow?`M ${x1} ${y1} C ${(x1+x2)/2} ${y1} ${(x1+x2)/2} ${y2} ${x2} ${y2}`:`M ${x1} ${y1} C ${x1} ${(y1+y2)/2} ${x2} ${(y1+y2)/2} ${x2} ${y2}`;s.append(make('path',{d,fill:'none',stroke:'#547485','stroke-width':1.7,'marker-end':`url(#arrow-${b.id})`}));if(e.label){const rows=lines(e.label,sameRow?7:9);rows.forEach((line,j)=>s.append(make('text',{class:'diagram-edge-label',x:(x1+x2)/2+(sameRow?0:12),y:(y1+y2)/2+(sameRow?-12:0)+(j-(rows.length-1)/2)*19,'font-size':16,'text-anchor':sameRow?'middle':'start',fill:'#547485'},line)));}}
+ const outlines=make('g',{'aria-hidden':'true',class:'sketch-outlines'});
  nodes.forEach((n,i)=>{
   const p=positions.get(n.id)!,x=p.x,y=p.y,w=nodeW,h=p.h,shape=n.shape||'rounded',cx=x+w/2,cy=y+h/2;
   const paths:Record<string,string>={
@@ -29,11 +32,12 @@ export function diagramSVG(b:Block){
    cylinder:`M ${x} ${y+12} A ${w/2} 12 0 0 1 ${x+w} ${y+12} V ${y+h-12} A ${w/2} 12 0 0 1 ${x} ${y+h-12} Z M ${x} ${y+12} A ${w/2} 12 0 0 0 ${x+w} ${y+12}`
   };
   const attrs={class:'diagram-node','data-shape':shape,fill:i%2?'#e9e9dc':'#f4f0df',stroke:'#6b8995','stroke-width':1.3};
-  s.append(['ellipse','circle'].includes(shape)?make('ellipse',{...attrs,cx,cy,rx:w/2,ry:h/2}):make('path',{...attrs,d:paths[shape]||paths.rounded}));
+  const outline=['ellipse','circle'].includes(shape)?make('ellipse',{...attrs,cx,cy,rx:w/2,ry:h/2}):make('path',{...attrs,d:paths[shape]||paths.rounded});s.append(outline);
+  if(b.figure?.style!=='precise'){const pencil=outline.cloneNode(true) as SVGElement;pencil.classList.add('sketch-pencil');pencil.setAttribute('fill','none');pencil.setAttribute('transform',`translate(${i%2?.8:-.8} .7)`);outlines.append(pencil);}
   const rows=nodeLines(n);rows.forEach((line,j)=>s.append(make('text',{x:cx,y:cy+(j-(rows.length-1)/2)*22-(shape==='document'?5:0),'dominant-baseline':'central','text-anchor':'middle','font-size':cols===1?20:17,fill:'#3a5a6d'},line)));
- });return s;
+ });s.append(outlines);return s;
 }
-export function renderBlock(b:Block,d:NotebookDocument,actions:BlockActions){
+export function renderBlock(b:Block,d:NotebookDocument,actions:BlockActions,source:Block=b){
  const root=el('section',`content-block block-${b.type}`);root.dataset.block=b.id;root.tabIndex=-1;if(b.study){root.classList.add('study-block');root.dataset.tone=b.study.tone||'blue';root.dataset.visual=b.study.visual||'plain';if(b.study.label)root.append(el('div','study-label',b.study.label));}if(!b.study?.label){const names:Record<string,string>={definition:'定义 · 条件与边界',intuition:'直觉 · 先看关系',derivation:'推导 · 逐步说明',example:'例题 · 已知到结论',evidence:'证据 · 数据与出处',takeaway:'要点 · 适用范围',recall:'回忆 · 自己复述'};const role=b.study?.role||(b.type==='example'?'example':undefined);if(role)root.append(el('div','study-label role-label',names[role]));else if(b.type==='exercise')root.append(el('div','study-label role-label','练习 · 轮到你来判断'));}root.dataset.role=b.study?.role||b.type;const roles:Record<string,string[]>={definition:['double','pencil'],derivation:['bracket','margin'],example:['tape','fold'],evidence:['pencil','double'],recall:['fold','bracket'],exercise:['margin','pencil']};const variants=roles[root.dataset.role]||['pencil','tape','double','margin','fold','bracket'];let hash=0;for(const c of b.id)hash=(hash*31+c.charCodeAt(0))>>>0;root.dataset.frame=b.study?.frame&&b.study.frame!=='auto'?b.study.frame:(['diagram','image','chart','comparison','example'].includes(b.type)||!!roles[root.dataset.role])?variants[hash%variants.length]:'plain';if(b.title)root.append(el('h3','block-title',b.title));
  // The blackboard already owns its frame and chalk tray. A paper decoration
  // would replace its dark background and hide the light chalk text.
@@ -45,7 +49,7 @@ export function renderBlock(b:Block,d:NotebookDocument,actions:BlockActions){
   case 'quote':text(b.text||'');if(b.attribution)root.append(el('cite','',b.attribution));break;
   case 'steps':case 'checklist':{const list=el(b.type==='steps'?'ol':'ul');if(list instanceof HTMLOListElement)list.start=Number(b._stepStart||1);let offset=0;b.items?.forEach(item=>{const li=el('li');if(b.type==='checklist'){const check=el('input');check.type='checkbox';check.checked=!!d.userState.checks[item.id];check.setAttribute('aria-label',item.text);check.onchange=()=>actions.check(item.id,check.checked);li.append(check);}projection(li,item.text,offset);offset+=item.text.length+1;list.append(li);});root.append(list);break;}
   case 'example':{text(b.prompt||'','p',0,'example-prompt');let offset=b.prompt?(b.prompt.length+1):0;const list=el('ol');list.start=Number(b._stepStart||1);b.steps?.forEach(item=>{const li=el('li');projection(li,item.text,offset);offset+=item.text.length+1;list.append(li);});root.append(list);text(b.result||'','p',offset,'example-result');break;}
-  case 'comparison':{const wrap=el('div','table-scroll');wrap.tabIndex=0;wrap.setAttribute('aria-label',b.title||'对照表，可横向滚动');const table=el('table'),head=el('thead'),tr=el('tr');let offset=0;const cell=(tag:'td'|'th',c:string,col:number)=>{const n=el(tag);if(tag==='th')n.setAttribute('scope','col');const source=d.notebook.chapters.flatMap(c=>c.pages).flatMap(p=>p.blocks).find(source=>source.id===b.id)||b;const values=(source.rows||[]).map(r=>r[col]||'');const numeric=values.length>0&&values.every(v=>/^[\s+−–—\d.,%￥$€×÷=()/^:：eE²³⁰¹⁻≤≥]+$/.test(v));n.style.textAlign=b.align?.[col]||(numeric?'center':'left');projection(n,c,offset);offset+=c.length+1;return n;};b.columns?.forEach((c,i)=>tr.append(cell('th',c,i)));offset+=Number(b._rowOffset||0);head.append(tr);const body=el('tbody');b.rows?.forEach(row=>{const r=el('tr');row.forEach((c,i)=>r.append(cell('td',c,i)));body.append(r);});table.append(head,body);wrap.append(table);root.append(wrap);break;}
+  case 'comparison':{const alignments=tableAlignments(source);const wrap=el('div','table-scroll');wrap.tabIndex=0;wrap.setAttribute('aria-label',b.title||'对照表，可横向滚动');const table=el('table'),head=el('thead'),tr=el('tr');let offset=0;const cell=(tag:'td'|'th',c:string,col:number)=>{const n=el(tag);if(tag==='th')n.setAttribute('scope','col');n.style.textAlign=alignments[col]||'left';projection(n,c,offset);offset+=c.length+1;return n;};b.columns?.forEach((c,i)=>tr.append(cell('th',c,i)));offset+=Number(b._rowOffset||0);head.append(tr);const body=el('tbody');b.rows?.forEach(row=>{const r=el('tr');row.forEach((c,i)=>r.append(cell('td',c,i)));body.append(r);});table.append(head,body);wrap.append(table);root.append(wrap);break;}
   case 'formula':{
    const math=(latex:string,displayMode:boolean)=>{const n=el('div',displayMode?'formula':'parameter-symbol');try{n.innerHTML=katex.renderToString(latex,{displayMode,throwOnError:false,trust:false,strict:'warn',output:'htmlAndMathml'});}catch{n.textContent=latex;}return n;};
    const formula=math(b.latex||'',true);
@@ -62,9 +66,9 @@ export function renderBlock(b:Block,d:NotebookDocument,actions:BlockActions){
    if(b.text)text(b.text,'p',0,'formula-context');break;
   }
   case 'code':{const head=el('div','code-head',b.language||'code');head.append(button('复制代码',()=>copyText(b.text||''),'text-button','⧉'));const pre=el('pre');pre.tabIndex=0;const code=el('code'),span=projection(code,b.text||'');span.replaceChildren(...codeTokens(b.text||'',b.language).map(t=>el('span','code-token token-'+t.kind,t.text)));pre.append(code);root.append(head,pre);break;}
-  case 'image':{const asset=d.assets.find(a=>a.id===b.assetId);if(asset){const figure=el('figure'),image=el('img');image.src=asset.data;image.alt=b.alt||'';image.loading='lazy';image.decoding='async';image.onclick=()=>actions.image(b);figure.append(image);if(b.caption)figure.append(el('figcaption','',b.caption));if(asset.source)figure.append(el('small','asset-source',`${asset.source} · ${asset.license||'用户提供'}`));root.append(figure);}else root.append(el('p','muted','图片尚未提供。'));break;}
-  case 'diagram':{root.append(diagramSVG(b));if(b.caption)root.append(el('p','figure-caption',b.caption));break;}
-  case 'chart':{root.append(chartSVG(b));if(b.caption)root.append(el('p','figure-caption',b.caption));break;}
+  case 'image':{const asset=d.assets.find(a=>a.id===b.assetId);if(asset){const image=el('img');image.src=asset.data;image.alt=b.alt||'';image.loading='lazy';image.decoding='async';image.onclick=()=>actions.image(b);const figure=figureLayout(b,image,asset);if(asset.source)figure.append(el('small','asset-source',`${asset.source} · ${asset.license||'用户提供'}`));root.append(figure);}else root.append(el('p','muted','图片尚未提供。'));break;}
+  case 'diagram':{root.append(figureLayout(b,diagramSVG(b)));break;}
+  case 'chart':{root.append(figureLayout(b,chartSVG(b)));break;}
   case 'exercise':renderExercise(root,b,d,actions);break;
   default:root.append(el('p','muted',`暂不支持 ${b.type}，原始数据已保留。`),el('pre','unknown-block',JSON.stringify(b,null,2)));break;
  }

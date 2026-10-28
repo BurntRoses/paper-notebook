@@ -1,0 +1,9 @@
+{
+  "date": "2026-10-29",
+  "version": "2.2.0",
+  "independentViteAndReleaseRuns": 2,
+  "sameSource": true,
+  "identicalOutputs": 28,
+  "byteIdentical": true,
+  "scope": "Consecutive complete local builds before this report was added. Includes reader HTML, example HTML/JSON, manifest and ZIP packages. Dates, blank IDs and ZIP metadata remain fixed in source."
+}

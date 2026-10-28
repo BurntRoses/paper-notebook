@@ -50,3 +50,6 @@ MIT code; third-party notices remain in `licenses/`. The GitHub Pages workflow p
 The public site uses an explicit publishing allowlist. Production scripts, storyboards, source bundles and verification reports remain in the repository and development release.
 
 The primary deliverable is one automatically named `<title>-v<revision>.html`, with fonts, assets, editable source and selected study records embedded. ZIP, JSON, Markdown and page PNG are advanced exports. The separate PDF panel supports A4 portrait/landscape via system print with light paper, 12pt text and at least 12mm margins. Anchored marks reflow; freehand is preserved in original-page appendices.
+
+
+Version 2.2 adds direct writing review, hand-drawn illustration guidelines, shared figure sizing/aspect ratios, stable image placeholders and smaller mark-history snapshots. Node and Python builders share advisory rules. See [upgrade notes](docs/upgrade-2.2.md) for sources, measurements and validation. External prompts remain one sentence per environment.
