@@ -32,7 +32,10 @@ Ask: “Use Paper Notebook to create a tutorial about machine learning.” The p
 ```sh
 node tools/notebook.mjs validate notebook.json
 node tools/notebook.mjs build notebook.json --out output/tutorial
+node tools/notebook.mjs verify output/tutorial/<title>-v<revision>.html --source notebook.json
 ```
+
+The bundled reader is mandatory. If runtime acquisition fails, use the [preset download reply](skills/paper-notebook/references/responses/download-unavailable.zh-CN.txt) with the official ZIP link, then resume after the user uploads it unchanged. Never invent a replacement interface. The supplied Node and Python verifiers compare the complete reader shell and embedded source; local coding agents need only Node and can deliver a workspace file path. Chats that explicitly lack file delivery use the [preset capability reply](skills/paper-notebook/references/responses/file-delivery-unavailable.zh-CN.txt).
 
 Read one landscape sheet in landscape and one portrait sheet in portrait, with horizontal ruling by default. Optional spread and continuous layouts are available. Source text stays fixed and read-only. Header and footer controls provide navigation, selected-text marks and annotation tools; notes, questions, answers and sources are grouped in the sidebar. Page transition presets are simulated, cover, slide and none. No cloth simulation is loaded.
 

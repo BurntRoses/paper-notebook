@@ -8,6 +8,7 @@ from pathlib import Path
 import re
 import zipfile
 import unicodedata
+from verify_reader import verify
 
 
 def validate(value, rule, schema, path='$'):
@@ -124,9 +125,10 @@ def build(source, template, schema_path, notices, output):
     notice=notices.read_text(encoding='utf-8')
     output.mkdir(parents=True,exist_ok=True)
     (output/(stem+'.html')).write_text(result,encoding='utf-8');(output/'notebook.json').write_text(text,encoding='utf-8')
+    reader_check=verify(output/(stem+'.html'),template,source)
     with zipfile.ZipFile(output/(stem+'.zip'),'w',zipfile.ZIP_DEFLATED) as bundle:
         bundle.writestr(stem+'.html',result);bundle.writestr('notebook.json',text);bundle.writestr('THIRD_PARTY_NOTICES.txt',notice);bundle.writestr('打开我-README.txt','打开 '+stem+'.html 即可离线阅读；notebook.json 保留源数据。\nPaper Notebook · https://github.com/BurntRoses/paper-notebook')
-    report={'id':doc['notebook']['id'],'revision':doc['notebook']['revision'],'schemaValidated':True,'coreReferencesChecked':True,'browserInspected':False,'htmlBytes':len(result.encode()),'html':stem+'.html','zip':stem+'.zip'}
+    report={'id':doc['notebook']['id'],'revision':doc['notebook']['revision'],'schemaValidated':True,'coreReferencesChecked':True,'bundledReaderMatches':reader_check['bundledReaderMatches'],'browserInspected':False,'htmlBytes':len(result.encode()),'html':stem+'.html','zip':stem+'.zip'}
     (output/'build-report.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
     return report
 

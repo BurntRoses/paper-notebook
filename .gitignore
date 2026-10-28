@@ -8,3 +8,5 @@ test-results/
 output/
 tmp/
 production/promo/story/capture.html
+__pycache__/
+*.pyc

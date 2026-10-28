@@ -13,10 +13,11 @@ async function fixture(extra:Record<string,Uint8Array>={}){
  const files:Record<string,Uint8Array>={
   'paper-notebook/START-HERE.md':strToU8('Use the bundled builder.'),
   'paper-notebook/SKILL.md':strToU8('Build a notebook.'),
-  'paper-notebook/assets/reader.html':strToU8('<!doctype html><script id="notebook-data" type="application/json">{}</script>'),
+  'paper-notebook/assets/reader.html':await readFile('tests/fixtures/reader-template.html'),
   'paper-notebook/assets/blank-notebook.json':await readFile('examples/blank-notebook.json'),
   'paper-notebook/assets/THIRD_PARTY_NOTICES.txt':await readFile('THIRD_PARTY_NOTICES.txt'),
   'paper-notebook/scripts/build_reader.py':await readFile('skills/paper-notebook/scripts/build_reader.py'),
+  'paper-notebook/scripts/verify_reader.py':await readFile('skills/paper-notebook/scripts/verify_reader.py'),
   'paper-notebook/references/notebook.schema.json':await readFile('schemas/notebook.schema.json'),
  };
  return zipSync({...files,...extra});
@@ -67,6 +68,7 @@ test('manual upload is requested only after an actual failed download, including
   try{await withServer((_req,res)=>{requests++;res.writeHead(status);res.end('<html>Not a runtime ZIP</html>')},async url=>{
    const result=await prepare(['--url',url,'--out',join(directory,'runtime')]);
    assert.equal(result.code,1);assert.equal(result.report.status,'upload_required');assert.equal(result.report.stage,'download');assert.equal(result.report.manualUploadRequired,true);assert.equal(requests,2);
+   assert.equal(result.report.userMessage,(await readFile('skills/paper-notebook/references/responses/download-unavailable.zh-CN.txt','utf8')).trim());
   })}finally{await rm(directory,{recursive:true,force:true})}
  }
 });

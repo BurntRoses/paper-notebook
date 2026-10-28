@@ -1,0 +1,1 @@
+当前对话无法自动取得阅读器。请[下载官方构建包](https://burntroses.github.io/paper-notebook/downloads/paper-notebook-conversation.zip)，将 ZIP 原样上传到这里（无需解压）。已有材料和回答会保留，收到后继续用原版阅读器生成离线 HTML。

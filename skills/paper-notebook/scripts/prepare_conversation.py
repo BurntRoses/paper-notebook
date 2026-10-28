@@ -13,7 +13,12 @@ import zipfile
 PACKAGE_URL = 'https://burntroses.github.io/paper-notebook/downloads/paper-notebook-conversation.zip'
 REQUIRED = ('START-HERE.md', 'SKILL.md', 'assets/reader.html',
             'assets/blank-notebook.json', 'assets/THIRD_PARTY_NOTICES.txt', 'scripts/build_reader.py',
+            'scripts/verify_reader.py',
             'references/notebook.schema.json')
+
+# preset-download-response:start
+DOWNLOAD_MESSAGE = "当前对话无法自动取得阅读器。请[下载官方构建包](https://burntroses.github.io/paper-notebook/downloads/paper-notebook-conversation.zip)，将 ZIP 原样上传到这里（无需解压）。已有材料和回答会保留，收到后继续用原版阅读器生成离线 HTML。"
+# preset-download-response:end
 
 
 def validate_archive(archive):
@@ -97,10 +102,13 @@ def main():
         return 0
     except Exception as error:
         detail = error.stderr.strip() if isinstance(error, subprocess.CalledProcessError) else str(error)
-        print(json.dumps({'status': 'upload_required' if stage == 'download' else 'runtime_invalid',
+        response = {'status': 'upload_required' if stage == 'download' else 'runtime_invalid',
                           'stage': stage, 'detail': detail,
                           'manualUploadRequired': stage == 'download',
-                          'packageURL': args.url}))
+                          'packageURL': args.url}
+        if stage == 'download':
+            response['userMessage'] = DOWNLOAD_MESSAGE
+        print(json.dumps(response, ensure_ascii=False))
         return 1
 
 

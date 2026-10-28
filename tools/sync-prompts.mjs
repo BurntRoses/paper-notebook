@@ -9,3 +9,8 @@ for(const [id,prompt]of [['repository-prompt',agent],['prompt',chat]]){
  html=html.replace(slot,(_,open,close)=>open+escape(prompt)+close);
 }
 await writeFile(new URL('public/chat-start.html',root),html);await writeFile(new URL('public/paper-notebook-prompt.txt',root),chat);
+const message=(await readFile(new URL('skills/paper-notebook/references/responses/download-unavailable.zh-CN.txt',root),'utf8')).trim();
+const helperPath=new URL('skills/paper-notebook/scripts/prepare_conversation.py',root);
+const helper=await readFile(helperPath,'utf8'),slot=/# preset-download-response:start[\s\S]*?# preset-download-response:end/;
+if(!slot.test(helper))throw new Error('Missing download response slot');
+await writeFile(helperPath,helper.replace(slot,()=>`# preset-download-response:start\nDOWNLOAD_MESSAGE = ${JSON.stringify(message)}\n# preset-download-response:end`));

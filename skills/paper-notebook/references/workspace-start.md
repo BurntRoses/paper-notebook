@@ -1,0 +1,11 @@
+# Workspace workflow
+
+Use this route for an agent with local files and command execution. Node is sufficient; do not require Python or a chat attachment tool.
+
+1. Reuse the current checkout or installed portable Skill. Read `SKILL.md` and the relevant content/component references. Keep existing materials and preference answers.
+2. Reuse `dist/index.html` and existing project dependencies when available. In a source-only checkout, install the declared dependencies and run the project build. A portable Skill/conversation package already contains the compiled reader and bundled Node CLI, so it needs no dependency installation. Do not clone or download another copy when the required files are present.
+3. Author `notebook.json` from the blank source. In the repository run `node tools/notebook.mjs validate notebook.json` and `node tools/notebook.mjs build notebook.json --out output/my-notebook`. In a portable package use `node scripts/notebook.mjs` for the same commands.
+4. Run `node tools/notebook.mjs verify output/my-notebook/<title>-v<revision>.html --source notebook.json` (portable package: `node scripts/notebook.mjs verify ...`). This checks the complete immutable reader against the local bundled template, including CSS/JS and the embedded source. Preserve the reader's textures, fonts, Cornell layout and controls.
+5. Inspect the generated HTML offline when browser tools are available and provide the actual workspace file path. Keep content/source IDs, user records and selected references intact. File attachment support is not required for this route.
+
+If dependencies or runtime files cannot be acquired, use the preset `responses/download-unavailable.zh-CN.txt` to request the portable ZIP, then continue with the bundled Node CLI. Never build a substitute HTML/CSS/JS reader or call a matching JSON slot proof of visual compatibility. Runtime/schema errors should be fixed at their cause; they are not permission to change the interface.
