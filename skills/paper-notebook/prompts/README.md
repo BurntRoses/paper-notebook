@@ -14,3 +14,5 @@
 外部提示词各用一句话，只写仓库地址、任务和交付方式。下载地址、运行时、校验、回退和交付细节统一维护在 [Skill](../SKILL.md) 与 [对话流程](../references/conversation-start.md)，不需要用户手动拼接。网页复制按钮通过 `tools/sync-prompts.mjs` 从本目录同步，避免多份提示词各自漂移。
 
 编程智能体按 [工作区流程](../references/workspace-start.md) 使用 Node 构建和校验，无需 Python 或对话附件支持。对话下载失败时输出 [预置下载回复](../references/responses/download-unavailable.zh-CN.txt)；明确不支持文件交付时输出 [预置能力回复](../references/responses/file-delivery-unavailable.zh-CN.txt)。获取失败不能作为自行重写界面的理由。
+
+手动上传使用[备用构建包](https://burntroses.github.io/paper-notebook/downloads/paper-notebook-upload.zip)：外层仅包住原始构建 ZIP 和简短说明。直接上传外层 ZIP，或在浏览器自动解压后上传文件夹内的 paper-notebook-conversation.zip，均可继续。AI 自动获取仍使用原始构建包，减少一层操作。

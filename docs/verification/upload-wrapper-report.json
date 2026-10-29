@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-29T07:46:04.916Z",
+  "version": "2.2.1",
+  "outerBytes": 2927000,
+  "innerBytes": 2926436,
+  "overheadBytes": 564,
+  "modelTests": 57,
+  "actualWrapperSmokeBuild": true,
+  "results": [
+    {
+      "engine": "chromium",
+      "download": "paper-notebook-upload.zip",
+      "innerUnchanged": true,
+      "desktopAndMobile": true,
+      "promptsRemainOneLine": true,
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "download": "paper-notebook-upload.zip",
+      "innerUnchanged": true,
+      "desktopAndMobile": true,
+      "promptsRemainOneLine": true,
+      "errors": []
+    }
+  ],
+  "scope": "Actual browser download, content identity and responsive instructions. One-layer automatic expansion is simulated by extracting only the outer archive; Safari auto-open preference itself is not controlled by this test. Broader hosting run passed the download checks but timed out at unrelated film seek readiness."
+}

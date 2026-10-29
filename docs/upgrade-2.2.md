@@ -31,3 +31,7 @@ Node 与 Python 构建报告均有 `contentReview`：措辞线索、实际配图
 详见[配图与稳定性报告](verification/quality-browser-report.json)、[工作台报告](verification/workspace-report.json)、[对话包报告](verification/conversation-package-report.json)。
 
 复利示例约 1.94 MB，机器学习示例约 2.01 MB；新增配图为轻量 SVG，没有增加图片生成 SDK、外部运行时或完整字库。现有纸张纹理约 48 KB，压缩收益有限，保留效果。用户素材的大图与未用副本会在构建报告提示，是否压缩需结合细节价值判断。图像模型是否可用由宿主平台决定；绘图与排版规则不会虚构工具能力。
+
+## 2.2.1 下载兼容
+
+备用手动下载改用 `paper-notebook-upload.zip`，内含原始 `paper-notebook-conversation.zip` 和简短上传说明。浏览器只解压外层时，用户直接上传内层 ZIP；外层保留为 ZIP 时也可直接上传。获取脚本识别两种格式，仍校验内层完整性、路径和必要文件，不递归解压任意 ZIP。AI 自动下载继续使用原始构建包。外层按存储模式封装，不重复压缩，体积仅增加不到 1 KB。实际浏览器的自动解压由浏览器和系统设置控制，递归解压时仍支持重新压缩整个 runtime 文件夹。

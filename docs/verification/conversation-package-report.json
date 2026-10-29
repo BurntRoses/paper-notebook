@@ -1,7 +1,12 @@
 {
-  "date": "2026-10-28T18:47:12.699Z",
+  "date": "2026-10-29T07:46:06.595Z",
   "archive": "paper-notebook-conversation.zip",
+  "uploadArchive": "paper-notebook-upload.zip",
   "entries": 31,
+  "uploadWrapper": {
+    "innerMatches": true,
+    "overheadBytes": 564
+  },
   "promptMatches": true,
   "presetsMatch": true,
   "pythonBuild": true,

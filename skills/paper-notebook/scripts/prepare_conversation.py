@@ -18,25 +18,59 @@ REQUIRED = ('START-HERE.md', 'SKILL.md', 'assets/reader.html',
             'references/notebook.schema.json')
 
 # preset-download-response:start
-DOWNLOAD_MESSAGE = "当前对话无法自动取得阅读器。请[下载官方构建包](https://burntroses.github.io/paper-notebook/downloads/paper-notebook-conversation.zip)，将 ZIP 上传到这里，无需解压。若下载后只看到 paper-notebook 文件夹，请右键压缩整个文件夹，再上传生成的 ZIP。已有材料和回答会保留，收到后继续生成离线 HTML。"
+DOWNLOAD_MESSAGE = "当前对话无法自动取得阅读器。请[下载备用构建包](https://burntroses.github.io/paper-notebook/downloads/paper-notebook-upload.zip)，直接上传下载得到的 ZIP。若下载后出现 paper-notebook-upload 文件夹，上传其中的 paper-notebook-conversation.zip，无需解压内层。已有材料和回答继续沿用，收到后继续生成离线 HTML。"
 # preset-download-response:end
+
+
+def safe_entries(package):
+    seen = set()
+    for entry in package.infolist():
+        path = PurePosixPath(entry.filename)
+        if (path.is_absolute() or '..' in path.parts or '\\' in entry.filename
+                or not path.parts or stat.S_ISLNK(entry.external_attr >> 16)):
+            raise ValueError('Unsafe archive entry: ' + entry.filename)
+        if entry.filename in seen:
+            raise ValueError('Duplicate archive entry: ' + entry.filename)
+        seen.add(entry.filename)
+        if path.parts[0] == '__MACOSX' or path.name == '.DS_Store':
+            continue
+        yield entry, path
 
 
 def validate_archive(archive):
     with zipfile.ZipFile(archive) as package:
-        for name in REQUIRED:
-            package.getinfo('paper-notebook/' + name)
-        for entry in package.infolist():
-            path = PurePosixPath(entry.filename)
-            if (path.is_absolute() or '..' in path.parts or '\\' in entry.filename
-                    or not path.parts or stat.S_ISLNK(entry.external_attr >> 16)):
-                raise ValueError('Unsafe archive entry: ' + entry.filename)
-            if path.parts[0] == '__MACOSX' or path.name == '.DS_Store':
-                continue
+        for entry, path in safe_entries(package):
             if path.parts[0] != 'paper-notebook':
                 raise ValueError('Unsafe archive entry: ' + entry.filename)
+        for name in REQUIRED:
+            entry = package.getinfo('paper-notebook/' + name)
+            if entry.is_dir():
+                raise ValueError('Runtime file is a directory: ' + name)
         if package.testzip() is not None:
             raise ValueError('Incomplete or corrupt ZIP')
+
+
+def runtime_archive(archive, temporary):
+    """Accept the normal runtime or one official upload wrapper, never recurse."""
+    with zipfile.ZipFile(archive) as package:
+        entries = list(safe_entries(package))
+        if 'paper-notebook/START-HERE.md' in package.namelist():
+            validate_archive(archive)
+            return archive
+        nested = 'paper-notebook-upload/paper-notebook-conversation.zip'
+        allowed = {'paper-notebook-upload', nested, 'paper-notebook-upload/上传说明.txt'}
+        for entry, path in entries:
+            if str(path) not in allowed:
+                raise ValueError('Unexpected upload wrapper entry: ' + entry.filename)
+        inner = package.getinfo(nested)
+        if inner.is_dir() or inner.file_size > 64 * 1024 * 1024:
+            raise ValueError('Invalid or oversized nested runtime ZIP')
+        if package.testzip() is not None:
+            raise ValueError('Incomplete or corrupt upload ZIP')
+        target = Path(temporary) / 'unwrapped-runtime.zip'
+        target.write_bytes(package.read(inner))
+    validate_archive(target)
+    return target
 
 
 def download(url, destination):
@@ -69,7 +103,7 @@ def smoke_build(runtime):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--archive', type=Path, help='Reuse an uploaded ZIP without network access')
+    parser.add_argument('--archive', type=Path, help='Reuse an uploaded runtime ZIP or upload wrapper without network access')
     parser.add_argument('--url', default=PACKAGE_URL)
     parser.add_argument('--out', type=Path, default=Path('paper-notebook-runtime'))
     args = parser.parse_args()
@@ -82,13 +116,13 @@ def main():
                 archive = args.archive or Path(temporary) / 'conversation.zip'
                 stage = 'archive' if args.archive else 'download'
                 if args.archive:
-                    validate_archive(archive)
+                    archive = runtime_archive(archive, temporary)
                     source = 'attachment'
                 else:
                     for attempt in range(2):
                         try:
                             download(args.url, archive)
-                            validate_archive(archive)
+                            archive = runtime_archive(archive, temporary)
                             break
                         except Exception:
                             if attempt == 1:

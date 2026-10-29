@@ -6,7 +6,8 @@ import {tmpdir} from 'node:os';
 import {join,resolve} from 'node:path';
 import {promisify} from 'node:util';
 import test from 'node:test';
-import {zipSync,strToU8} from 'fflate';
+import {zipSync,strToU8,unzipSync} from 'fflate';
+import {conversationUpload} from '../tools/conversation-package.mjs';
 
 const run=promisify(execFile),helper=resolve('skills/paper-notebook/scripts/prepare_conversation.py');
 async function fixture(extra:Record<string,Uint8Array>={}){
@@ -102,5 +103,51 @@ test('invalid uploaded archives are reported as runtime errors without writing o
    const result=await prepare(['--archive',archive,'--out',join(directory,'runtime')]);
    assert.equal(result.code,1);assert.equal(result.report.status,'runtime_invalid');assert.equal(result.report.manualUploadRequired,false);assert.match(result.report.detail,/Unsafe archive entry/);
   }
+ }finally{await rm(directory,{recursive:true,force:true})}
+});
+
+
+test('upload wrapper preserves the inner ZIP byte-for-byte with less than 1 KB overhead',async()=>{
+ const runtime=await fixture(),wrapper=conversationUpload(runtime),entries=unzipSync(wrapper);
+ assert.deepEqual(Object.keys(entries),['paper-notebook-upload/paper-notebook-conversation.zip','paper-notebook-upload/上传说明.txt']);
+ assert.deepEqual(entries['paper-notebook-upload/paper-notebook-conversation.zip'],runtime);
+ assert.ok(wrapper.byteLength-runtime.byteLength<1024);
+ assert.deepEqual(conversationUpload(runtime),wrapper);
+});
+
+test('outer upload ZIP and its automatically expanded inner ZIP both build offline',async()=>{
+ const directory=await mkdtemp(join(tmpdir(),'paper-nested-'));let requests=0;
+ try{
+  const runtime=await fixture(),wrapper=conversationUpload(runtime);
+  const archive=join(directory,'paper-notebook-upload.zip');await writeFile(archive,wrapper);
+  // Simulate a browser expanding the outer ZIP only, preserving the ready-to-upload inner ZIP.
+  const inner=join(directory,'paper-notebook-conversation.zip');await writeFile(inner,unzipSync(wrapper)['paper-notebook-upload/paper-notebook-conversation.zip']);
+  await withServer((_req,res)=>{requests++;res.writeHead(403);res.end()},async url=>{
+   for(const [name,path]of [['outer',archive],['inner',inner]]){
+    const result=await prepare(['--archive',path,'--url',url,'--out',join(directory,name)]);
+    assert.equal(result.code,0,JSON.stringify(result.report));assert.equal(result.report.source,'attachment');assert.equal(result.report.manualUploadRequired,false);
+   }
+   assert.equal(requests,0);
+  });
+ }finally{await rm(directory,{recursive:true,force:true})}
+});
+
+test('downloaded upload wrappers build without a manual upload',async()=>{
+ const directory=await mkdtemp(join(tmpdir(),'paper-nested-download-'));
+ try{const wrapper=conversationUpload(await fixture());await withServer((_req,res)=>{res.writeHead(200,{'content-type':'application/zip'});res.end(wrapper)},async url=>{
+  const result=await prepare(['--url',url,'--out',join(directory,'runtime')]);assert.equal(result.code,0,JSON.stringify(result.report));assert.equal(result.report.source,'download');assert.equal(result.report.manualUploadRequired,false);
+ })}finally{await rm(directory,{recursive:true,force:true})}
+});
+
+test('upload wrappers reject traversal, corrupt inner archives and additional nesting',async()=>{
+ const directory=await mkdtemp(join(tmpdir(),'paper-invalid-wrapper-'));
+ try{
+  const normal=conversationUpload(await fixture());
+  const cases=[conversationUpload(strToU8('invalid ZIP')),conversationUpload(normal),conversationUpload(await fixture({'paper-notebook/../../outside.txt':strToU8('invalid')})),zipSync({...unzipSync(normal),'__MACOSX/../../outside.txt':strToU8('invalid')})];
+  for(let i=0;i<cases.length;i++){
+   const archive=join(directory,'invalid-'+i+'.zip');await writeFile(archive,cases[i]);
+   const result=await prepare(['--archive',archive,'--out',join(directory,'runtime-'+i)]);assert.equal(result.code,1);assert.equal(result.report.status,'runtime_invalid');assert.equal(result.report.manualUploadRequired,false);
+  }
+  await assert.rejects(access(join(directory,'outside.txt')));
  }finally{await rm(directory,{recursive:true,force:true})}
 });

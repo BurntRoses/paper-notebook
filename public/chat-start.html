@@ -16,9 +16,9 @@
 <details id="agent-instructions"><summary>查看将要复制的指令</summary><textarea id="repository-prompt" readonly aria-label="编程智能体提示词">请按 https://github.com/BurntRoses/paper-notebook 仓库内的指引，为我制作教材式学习笔记，并在工作区生成单文件离线 HTML。
 </textarea></details></article>
 <article class="route" id="chat"><span class="step">02 / FILE ATTACHMENT</span><h2>对话模型：生成可下载文件</h2><p>复制提示词，与参考材料一起发送。AI 会先自行获取必要工具，生成可下载的离线 HTML。</p>
-<div class="actions"><button id="copy" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"/></svg>复制给对话模型</button><a class="action" href="downloads/paper-notebook-conversation.zip" download>备用：下载构建包</a></div>
-<p id="status" class="note copy-status" role="status" aria-live="polite">通常无需手动下载。若 AI 提示获取失败，点击“下载构建包”，将 ZIP 原样上传，无需解压；已有材料和答案继续沿用。</p>
-<details id="download-help"><summary>下载后只有文件夹，没有 ZIP？</summary><p>浏览器可能已自动解压。右键点击下载得到的整个 <code>paper-notebook</code> 文件夹，选择“压缩”，再将生成的 ZIP 上传给 AI，无需重新下载。</p><p class="note">若希望 Safari 保留 ZIP：在“Safari 浏览器 → 设置 → 通用”中取消“下载后打开‘安全的’文件”，然后重新下载。<a href="https://support.apple.com/zh-cn/guide/safari/ibrw1072/mac" target="_blank" rel="noopener">Apple 设置说明 ↗</a></p></details>
+<div class="actions"><button id="copy" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"/></svg>复制给对话模型</button><a class="action" href="downloads/paper-notebook-upload.zip" download>备用：下载构建包</a></div>
+<p id="status" class="note copy-status" role="status" aria-live="polite">通常无需手动下载。若 AI 提示获取失败，点击“下载构建包”，直接上传下载得到的 ZIP；若出现文件夹，上传其中的 paper-notebook-conversation.zip，无需解压内层。已有材料和答案继续沿用。</p>
+<details id="download-help"><summary>下载后只有文件夹，没有 ZIP？</summary><p>浏览器可能已自动解压。备用下载现在多包一层：打开 <code>paper-notebook-upload</code> 文件夹，上传里面的 <code>paper-notebook-conversation.zip</code> 即可，无需解压内层。若下载后仍是 <code>paper-notebook-upload.zip</code>，直接上传它也可以。</p><p class="note">此前下载的 <code>paper-notebook</code> 文件夹仍可右键“压缩”后上传，无需重新下载。少数工具会继续解压内层；遇到这种情况也可压缩文件夹。Safari 可在“设置 → 通用”中取消“下载后打开‘安全的’文件”。<a href="https://support.apple.com/zh-cn/guide/safari/ibrw1072/mac" target="_blank" rel="noopener">Apple 设置说明 ↗</a></p></details>
 <details id="chat-instructions"><summary>查看将要复制的指令</summary><textarea id="prompt" readonly aria-label="对话模型提示词">请按 https://github.com/BurntRoses/paper-notebook 仓库内的指引，为我制作教材式学习笔记，并交付可下载的单文件离线 HTML。
 </textarea></details></article>
 </div>

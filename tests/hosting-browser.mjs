@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
+import {unzipSync} from 'fflate';
 
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const base = (process.env.NOTEBOOK_BASE || 'http://127.0.0.1:5178/paper-notebook-kit/output/site').replace(/\/$/, '') + '/';
@@ -44,13 +45,14 @@ try {
   await page.goto(base + 'chat-start.html');
   assert.equal(await page.locator('#chat .actions > :first-child').getAttribute('id'),'copy');
   const packageLink=page.getByRole('link',{name:'备用：下载构建包',exact:true});
-  assert.equal(await packageLink.getAttribute('href'),'downloads/paper-notebook-conversation.zip');
+  assert.equal(await packageLink.getAttribute('href'),'downloads/paper-notebook-upload.zip');
   const packageDownload=page.waitForEvent('download');await packageLink.click();
-  const uploadedPackage=await packageDownload;assert.equal(uploadedPackage.suggestedFilename(),'paper-notebook-conversation.zip');
-  assert.equal((await readFile(await uploadedPackage.path())).subarray(0,2).toString(),'PK');
-  checks.push('Conversation route offers a real ZIP as a manual fallback; copying instructions is the primary action');
+  const uploadedPackage=await packageDownload;assert.equal(uploadedPackage.suggestedFilename(),'paper-notebook-upload.zip');
+  const wrapper=await readFile(await uploadedPackage.path());assert.equal(wrapper.subarray(0,2).toString(),'PK');const inner=unzipSync(wrapper)['paper-notebook-upload/paper-notebook-conversation.zip'];assert.deepEqual(Buffer.from(inner),await readFile('dist/downloads/paper-notebook-conversation.zip'));
+  checks.push('Conversation route downloads a wrapper containing the unchanged runtime ZIP; copying instructions remains the primary action');
   await page.locator('#download-help summary').click();
   assert.match(await page.locator('#download-help').innerText(),/paper-notebook[\s\S]*压缩[\s\S]*无需重新下载/);
+  assert.match(await page.locator('#download-help').innerText(),/paper-notebook-upload[\s\S]*paper-notebook-conversation\.zip/);
   assert.match(await page.locator('#download-help').innerText(),/Safari[\s\S]*安全的/);
   checks.push('Auto-expanded downloads have a folder-recompression recovery path and optional Safari setting instructions');
   const prompt = await page.getByLabel('对话模型提示词', { exact: true }).inputValue();
@@ -165,7 +167,9 @@ try {
   const conversation = await context.request.get(base + 'downloads/paper-notebook-conversation.zip');
   assert.equal(conversation.status(), 200);
   assert.equal((await conversation.body()).subarray(0, 2).toString(), 'PK');
-  checks.push('Portable conversation build package is publicly available');
+  const upload = await context.request.get(base + 'downloads/paper-notebook-upload.zip');
+  assert.equal(upload.status(), 200);assert.equal((await upload.body()).subarray(0, 2).toString(), 'PK');
+  checks.push('Portable conversation build package and browser-safe upload wrapper are publicly available');
   assert.deepEqual(errors, []);
   const report = { date: new Date().toISOString(), base, checks, errors, skillSHA256: sha256, scope: 'Chromium over HTTP(S); browser imports and HTML download, responsive films, legacy redirects, public exposure restrictions and all primary page links' };
   await writeFile(out + '/report.json', JSON.stringify(report, null, 2));

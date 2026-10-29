@@ -6,7 +6,11 @@ import {spawnSync} from 'node:child_process';
 import {unzipSync,strFromU8} from 'fflate';
 
 const root=process.cwd(),destination=resolve(root,'output/conversation-package-check');
-const files=unzipSync(await readFile('dist/downloads/paper-notebook-conversation.zip'));
+const runtimeZIP=await readFile('dist/downloads/paper-notebook-conversation.zip');
+const wrapperZIP=await readFile('dist/downloads/paper-notebook-upload.zip'),uploadFiles=unzipSync(wrapperZIP);
+assert.deepEqual(Buffer.from(uploadFiles['paper-notebook-upload/paper-notebook-conversation.zip']),runtimeZIP);
+assert.ok(wrapperZIP.byteLength-runtimeZIP.byteLength<1024);
+const files=unzipSync(runtimeZIP);
 for(const [name,bytes] of Object.entries(files)){
  const target=resolve(destination,name);
  assert.ok(target.startsWith(destination+'/'),'package path must stay inside its output folder');
@@ -72,5 +76,5 @@ for(const args of [['scripts/build_reader.py','unmarked.json','--out','unmarked-
 run(process.execPath,['scripts/notebook.mjs','build','unmarked.json','--out','explicitly-unmarked','--allow-unmarked'],kit,true);
 assert.equal(JSON.parse(run(process.execPath,['scripts/notebook.mjs','verify','unmarked.html','--source','unmarked.json','--allow-unmarked'],kit,true)).studyMarks.required,false);
 await mkdir('docs/verification',{recursive:true});
-await writeFile('docs/verification/conversation-package-report.json',JSON.stringify({date:new Date().toISOString(),archive:'paper-notebook-conversation.zip',entries:Object.keys(files).length,promptMatches:true,presetsMatch:true,pythonBuild:true,nodeBuild:true,nodeWithoutPython:true,readerShellVerified:true,customReaderRejected:true,studyMarksVerified:true,missingStudyMarksRejected:true,exactSourcePreserved:true,embeddedSourceMatches:true,zipMatches:true,validation,build,nodeReport,scope:'Local package extraction, independent Python and Node builds without fetching resources, Node path with only Node on PATH, exact reader/source verification, authored-emphasis checks and substituted-reader rejection. No remote chat service/API used; browser results are recorded separately.'},null,2));
+await writeFile('docs/verification/conversation-package-report.json',JSON.stringify({date:new Date().toISOString(),archive:'paper-notebook-conversation.zip',uploadArchive:'paper-notebook-upload.zip',entries:Object.keys(files).length,uploadWrapper:{innerMatches:true,overheadBytes:wrapperZIP.byteLength-runtimeZIP.byteLength},promptMatches:true,presetsMatch:true,pythonBuild:true,nodeBuild:true,nodeWithoutPython:true,readerShellVerified:true,customReaderRejected:true,studyMarksVerified:true,missingStudyMarksRejected:true,exactSourcePreserved:true,embeddedSourceMatches:true,zipMatches:true,validation,build,nodeReport,scope:'Local package extraction, independent Python and Node builds without fetching resources, Node path with only Node on PATH, exact reader/source verification, authored-emphasis checks and substituted-reader rejection. No remote chat service/API used; browser results are recorded separately.'},null,2));
 console.log('Conversation package: preset replies, Node-only/Python builds, exact reader/source verification and substituted-reader rejection passed.');

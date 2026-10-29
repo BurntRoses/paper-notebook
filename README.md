@@ -73,3 +73,5 @@ node tools/writing-check.mjs notebook.json
 [首次使用](docs/first-use.md) · [协议](docs/content-contract.md) · [组件](docs/components.md) · [交付](docs/delivery.md) · [验证记录](docs/verification.md)
 
 新增代码 MIT。Humanizer 与 Humanizer-zh 固定引用版本及 MIT 声明保留于 licenses/。现有材质与第三方资源继续保留来源。在线发布使用 GitHub Pages，部署目录与离线交付分开，见[托管说明](docs/hosting.md)。
+
+备用构建包采用两层 ZIP，兼容浏览器自动解压：直接上传下载的 ZIP，或上传解压文件夹内的 `paper-notebook-conversation.zip`。AI 自动下载仍使用原始单层构建包。
