@@ -1,3 +1,32 @@
-.site-header{box-sizing:border-box;max-width:1280px;margin:auto;padding:16px 30px;display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid #81908344;color:#304f58;font:14px/1.6 system-ui,sans-serif}.site-header .site-brand{font:600 21px/1.5 Georgia,'Songti SC',serif;letter-spacing:.01em;white-space:nowrap}.site-header nav{display:flex;align-items:center;gap:24px;flex-wrap:wrap}.site-header a{display:inline-flex;align-items:center;min-height:44px;text-decoration:none;color:inherit}.site-header a:hover,.site-header [aria-current=page]{text-decoration:underline;text-underline-offset:6px}.site-header .site-star{color:#80642e}.site-header a:focus-visible{outline:2px solid #977746;outline-offset:4px}.first-files{padding:18px 22px;margin:26px 0 12px;border-left:3px solid #9fa979;background:#faf8ef;font:15px/1.95 system-ui;color:#526963}.first-files strong{display:block;color:#365b61;margin-bottom:5px}.steps-path{display:flex;flex-wrap:wrap;gap:10px 20px;margin-top:12px;font-size:13px;color:#7b805f}@media(max-width:700px){.site-header{padding:12px 18px;gap:10px}.site-header nav{gap:14px}.site-header .site-brand{font-size:18px}.site-header nav a{font-size:13px}}@media print{.site-header{display:none}}
-
-@media(max-width:480px){.site-header{flex-wrap:wrap;gap:0}.site-header nav{width:100%;justify-content:space-between;gap:10px}}
+.site-header{box-sizing:border-box;position:sticky;top:0;z-index:20;max-width:1280px;margin:auto;padding:12px 30px;display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid #81908344;background:#f1ede3f5;color:#304f58;font:14px/1.6 system-ui,sans-serif}
+.site-header .site-brand{font:600 21px/1.5 Georgia,'Songti SC',serif;letter-spacing:.01em;white-space:nowrap}
+.site-header a{display:inline-flex;align-items:center;min-height:44px;text-decoration:none;color:inherit}
+.site-shortcuts{position:relative}
+.site-menu-toggle{display:flex;align-items:center;justify-content:center;min-height:44px;padding:8px 16px;border:1px solid #87988b;border-radius:6px;background:#faf8ef;color:inherit;font:inherit;cursor:pointer;white-space:nowrap}
+.site-menu-toggle:hover,.site-menu-toggle[aria-expanded=true]{background:#e4e6d7}
+.site-header nav{position:absolute;right:0;top:calc(100% + 10px);width:210px;padding:8px;background:#fffdf5;border:1px solid #a3ad9488;border-radius:8px;box-shadow:0 12px 32px #493b2426}
+.site-header nav[hidden]{display:none}
+.site-header nav a{display:flex;padding:6px 14px;border-radius:4px}
+.site-header nav a:hover{background:#edeede}
+.site-header .site-star{color:#80642e}
+.site-header :focus-visible{outline:2px solid #977746;outline-offset:4px}
+.create .routes{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:28px 0 18px}
+.create .route{min-width:0;scroll-margin-top:90px;background:#faf8ef;border:1px solid #a3ad9455;border-radius:8px;padding:28px;box-shadow:0 3px 0 #d8d0bc55}
+.create .route h3{font-size:25px;margin:10px 0}
+.create .route p{font-size:15px;color:#5c716c;margin:10px 0}
+.create .step{color:#9b7950;font-size:12px;letter-spacing:.08em}
+.create .actions{gap:10px;margin-top:22px}
+.create button,.create .action{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:46px;font:14px/1.7 system-ui,sans-serif;cursor:pointer;border:1px solid #345f62;border-radius:5px;padding:10px 16px;text-decoration:none;background:#345f62;color:#fffdf5}
+.create button:hover{background:#274e51}
+.create .action{background:transparent;color:#345f62;border-color:#9aa79b}
+.create button svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.6}
+.create .route .note{font-size:13px;color:#6d7b70}
+.create .copy-status{min-height:46px;line-height:1.7}
+.create details{padding-top:12px;border-top:1px solid #8b9b8d40}
+.create summary{cursor:pointer;font-size:13px;color:#63756d;min-height:36px;align-content:center}
+.create textarea{box-sizing:border-box;display:block;width:100%;min-height:130px;resize:vertical;margin:10px 0 6px;padding:14px;color:#3d565b;background:#fffdf5;border:1px solid #a3ad9488;border-radius:5px;font:13px/1.8 ui-monospace,monospace}
+.create code{overflow-wrap:anywhere}
+.create .help p{font-size:14px;color:#63756d;margin-top:12px}
+.create :is(button,summary,textarea):focus-visible{outline:2px solid #977746;outline-offset:4px}
+@media(max-width:760px){.site-header{padding:10px 18px;gap:10px}.site-header .site-brand{font-size:18px}.site-menu-toggle{padding:8px 12px;font-size:13px}.create .routes{grid-template-columns:1fr;gap:18px}.create .route{padding:22px}.create .route h3{font-size:23px}}
+@media print{.site-header{display:none}}

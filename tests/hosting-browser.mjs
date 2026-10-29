@@ -3,21 +3,24 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import {unzipSync} from 'fflate';
 
-const { chromium } = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
+const { chromium, webkit } = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const base = (process.env.NOTEBOOK_BASE || 'http://127.0.0.1:5178/paper-notebook-kit/output/site').replace(/\/$/, '') + '/';
 const browser = await chromium.launch({ headless: true });
 const checks = [], errors = [], links = new Set();
 const out = process.cwd() + '/output/hosting';
 await mkdir(out, { recursive: true });
 try {
-  const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, acceptDownloads: true });
+  const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, acceptDownloads: true, reducedMotion: 'reduce' });
   const page = await context.newPage();
   page.on('pageerror', error => errors.push(error.message));
-  for (const [route,hash] of [['',''],['promo.html',''],['start.html','#read'],['promo-motion.html','#film'],['chat-start.html',null]]) {
+  for (const [route,hash] of [['',''],['promo.html',''],['start.html','#read'],['promo-motion.html','#film'],['chat-start.html','#create'],['chat-start.html#agent','#agent'],['chat-start.html#chat','#chat']]) {
     const response = await page.goto(base + route);
     assert.equal(response.status(), 200, route);
     if(hash!==null)await page.waitForURL(url=>url.pathname===new URL(base).pathname&&url.hash===hash);
-    assert.deepEqual(await page.locator('.site-header nav a').allTextContents(),['试读','制作笔记','GitHub ☆']);
+    assert.deepEqual(await page.locator('.site-header nav a').allTextContents(),['制作我的笔记','试读一本','观看演示','GitHub ☆']);
+    assert.equal(await page.locator('#site-menu').isVisible(),false);
+    assert.equal(await page.locator('.read-next,a[href="downloads/blank-notebook.html"]').count(),0);
+    assert.doesNotMatch(await page.locator('body').innerText(),/笔记生成后，在这里阅读|聊天附件预览不等于/);
     assert.equal(await page.locator('.site-trail,.site-support').count(),0);
     assert.equal(await page.locator('a[href$=".mp4"],a[href*="promo-source"],a[href*="film-script"],a[href*="docs/"]').count(),0);
     assert.doesNotMatch(await page.locator('body').innerText(),/64 秒|30 fps|原创配乐|分镜脚本|脚本与影片素材/);
@@ -34,13 +37,24 @@ try {
     }
   }
   for(const route of ['docs/product-film-script.md','downloads/paper-notebook-promo-source.zip','downloads/machine-learning.json','promo/product-film-script.json','promo/product-film-music.wav'])assert.equal((await context.request.get(base+route)).status(),404,route);
-  checks.push('Public deployment excludes production scripts, source bundles, source JSON and standalone music; navigation has three clear actions');
+  checks.push('Public deployment excludes production scripts, source bundles, source JSON and standalone music; navigation is consolidated in a single quick-access menu');
   for (const url of links) {
     const response = await context.request.head(url);
     assert.equal(response.status(), 200, url);
   }
   checks.push(`All ${links.size} same-site navigation, image, film and download targets return HTTP 200`);
 
+  const toggle=page.getByRole('button',{name:'快速开始 ＋',exact:true});
+  await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));
+  await toggle.click();assert.equal(await toggle.getAttribute('aria-expanded'),'true');
+  await page.screenshot({path:out+'/quick-menu.png'});
+  await page.keyboard.press('Escape');assert.equal(await toggle.getAttribute('aria-expanded'),'false');assert.ok(await toggle.evaluate(b=>b===document.activeElement));
+  await toggle.click();await page.locator('h1').click();assert.equal(await toggle.getAttribute('aria-expanded'),'false');
+  await toggle.click();await page.locator('#site-menu').getByRole('link',{name:'制作我的笔记',exact:true}).click();
+  assert.equal(new URL(page.url()).hash,'#create');assert.equal(await toggle.getAttribute('aria-expanded'),'false');
+  await toggle.focus();await page.keyboard.press('Enter');await page.keyboard.press('Tab');
+  assert.equal(await page.evaluate(()=>document.activeElement.textContent),'制作我的笔记');await page.keyboard.press('Escape');
+  checks.push('Quick menu opens with click/keyboard, closes on Escape/outside/link and restores keyboard focus');
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
   await page.goto(base + 'chat-start.html');
   assert.equal(await page.locator('#chat .actions > :first-child').getAttribute('id'),'copy');
@@ -96,7 +110,8 @@ try {
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
   await page.screenshot({ path: out + '/copy-phone.png', fullPage: true });
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.screenshot({ path: out + '/copy-desktop.png', fullPage: true });
+  await page.locator('#create').scrollIntoViewIfNeeded();
+  await page.screenshot({ path: out + '/copy-desktop.png' });
   checks.push('Clipboard-denied fallback reveals and selects each complete prompt; mobile layout fits the viewport');
 
   await page.goto(base + 'downloads/blank-notebook.html?demo');
@@ -116,47 +131,82 @@ try {
   await file.saveAs(out + '/imported-notebook.html');
   checks.push('Reader can import an existing structured source and export it as HTML');
 
-  await page.goto(base + 'promo-motion.html');
-  await page.waitForURL(url=>url.hash==='#film');
-  assert.equal(await page.getByRole('button',{name:'竖屏',exact:true}).count(),0);
-  await page.locator('video').evaluate(v=>{v.preload='auto';v.load()});
-  await page.waitForFunction(() => document.querySelector('video')?.readyState >= 1);
-  assert.deepEqual(await page.locator('video').evaluate(v => [v.duration, v.videoWidth, v.videoHeight]), [64, 1920, 1080]);
-  await page.waitForFunction(()=>{const v=document.querySelector('video');return v.seekable.length&&v.seekable.end(0)>40});
-  await page.locator('video').evaluate(v=>new Promise(resolve=>{v.addEventListener('seeked',resolve,{once:true});v.currentTime=32}));
-  await page.setViewportSize({width:390,height:844});
-  await page.waitForFunction(() => {const v=document.querySelector('video');return v.videoWidth===1080&&!v.seeking&&v.currentTime>=32});
-  assert.equal(await page.locator('video').evaluate(v=>v.paused),true);
-  await page.locator('video').evaluate(v=>v.play());
-  await page.locator('video').evaluate(v=>{
-    window.filmResumeRequests=[];
-    const play=v.play.bind(v);
-    v.play=()=>{window.filmResumeRequests.push({orientation:v.dataset.orientation,seeking:v.seeking,time:v.currentTime});return play()};
-  });
-  // Delayed media headers reproduce rotation while a new source is buffering.
-  await page.route('**/*.mp4',async route=>{await new Promise(resolve=>setTimeout(resolve,250));await route.continue()});
-  await page.setViewportSize({width:1180,height:820});
-  await page.waitForFunction(()=>document.querySelector('video').getAttribute('aria-busy')==='true');
-  assert.equal(await page.locator('.film-status').textContent(),'影片加载中…');
-  await page.waitForFunction(()=>{const v=document.querySelector('video');return v.videoWidth===1920&&!v.paused&&v.currentTime>=32});
-  assert.ok(await page.evaluate(()=>window.filmResumeRequests.some(r=>r.orientation==='landscape'&&r.seeking&&r.time>=32)),'Resume playback while the restored frame is still seeking');
-  // Reverse two rotations while metadata is still loading.
-  await page.setViewportSize({width:820,height:1180});
-  await page.waitForFunction(()=>document.querySelector('video').dataset.orientation==='portrait');
-  await page.setViewportSize({width:1180,height:820});
-  await page.waitForFunction(()=>{const v=document.querySelector('video');return v.videoWidth===1920&&!v.paused&&!v.seeking&&v.currentTime>=32});
-  await page.waitForFunction(()=>!document.querySelector('video').hasAttribute('aria-busy'));
-  assert.equal(await page.locator('.film-status').textContent(),'');
-  await page.unroute('**/*.mp4');
-  await page.locator('video').evaluate(v=>v.pause());
-  checks.push('Film follows screen ratio automatically; delayed media and rapid reversal preserve time/play state, resume during seek and clear loading feedback');
+  const mediaRequests=[];
+  const filmContext=await browser.newContext({viewport:{width:1440,height:1000}}),film=await filmContext.newPage();
+  film.on('pageerror',error=>errors.push(error.message));
+  film.on('request',r=>{if(r.url().endsWith('.mp4'))mediaRequests.push(r.url())});
+  await film.goto(base);
+  await film.waitForFunction(()=>[...document.querySelectorAll('video')].length===2&&[...document.querySelectorAll('video')].every(v=>v.readyState>=2&&v.preload==='auto'));
+  assert.ok(mediaRequests.some(url=>url.endsWith('/paper-notebook-film.mp4')));
+  assert.ok(mediaRequests.some(url=>url.endsWith('/paper-notebook-film-portrait.mp4')));
+  assert.equal(await film.locator('video:visible').count(),1);
+  await film.waitForFunction(()=>[...document.querySelectorAll('video')].every(v=>v.buffered.length&&v.buffered.end(v.buffered.length-1)>8));
+  const initialRequests=mediaRequests.length;
+  assert.deepEqual(await film.locator('#film-player').evaluate(v=>[v.duration,v.videoWidth,v.videoHeight]),[64,1920,1080]);
+  await film.locator('#film-player').evaluate(v=>new Promise(resolve=>{v.addEventListener('seeked',resolve,{once:true});v.currentTime=5}));
+  await film.setViewportSize({width:390,height:844});
+  await film.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.videoWidth===1080&&!v.seeking&&v.currentTime>=5&&!v.hasAttribute('aria-busy')});
+  assert.equal(await film.locator('#film-player').evaluate(v=>v.paused),true);
+  await film.locator('#film-player').evaluate(v=>v.play());
+  await film.waitForFunction(()=>document.querySelector('#film-player').currentTime>5.2);
+  await film.setViewportSize({width:1180,height:820});
+  await film.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.videoWidth===1920&&!v.paused&&!v.seeking&&v.currentTime>=5});
+  await film.setViewportSize({width:820,height:1180});
+  await film.setViewportSize({width:1180,height:820});
+  await film.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.videoWidth===1920&&!v.paused&&!v.seeking&&v.currentTime>=5&&!v.hasAttribute('aria-busy')});
+  assert.equal(await film.locator('.film-status').textContent(),'');
+  assert.equal(mediaRequests.length,initialRequests,'Rotation reuses both already buffered players');
+  await film.locator('#film-player').scrollIntoViewIfNeeded();
+  await film.screenshot({path:out+'/film-player.png'});
+  await filmContext.close();
+  checks.push('Both films buffer ahead before user interaction; rotation and rapid reversal retain time/play state without additional media requests');
   for(const [width,height]of [[360,780],[390,844],[820,1180],[1180,820],[1440,1000]]){
     await page.setViewportSize({width,height});await page.goto(base);
     assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${width}×${height}`);
-    const expected=width>height?'landscape':'portrait';await page.waitForFunction(o=>document.querySelector('video')?.dataset.orientation===o,expected);
+    const expected=width>height?'landscape':'portrait';await page.waitForFunction(o=>document.querySelector('#film-player')?.dataset.orientation===o,expected);
     if(width===390)await page.screenshot({path:out+'/home-phone.png',fullPage:true});
   }
   checks.push('Home and automatic film/poster selection fit phone, tablet and desktop viewports');
+
+  // Rotate before media headers arrive, then seek beyond the initial buffer.
+  const cold=await context.newPage();
+  cold.on('pageerror',error=>errors.push(error.message));
+  await cold.route('**/*.mp4',async route=>{await new Promise(resolve=>setTimeout(resolve,600));await route.continue()});
+  await cold.goto(base,{waitUntil:'domcontentloaded'});
+  await cold.setViewportSize({width:390,height:844});
+  await cold.setViewportSize({width:1440,height:1000});
+  await cold.waitForFunction(()=>{const v=document.querySelector('#film-player');return v?.videoWidth===1920&&v.readyState>=2&&!v.hasAttribute('aria-busy')});
+  await cold.locator('#film-player').evaluate(async v=>{v.currentTime=32;await v.play()});
+  await cold.waitForFunction(()=>document.querySelector('#film-player').currentTime>32.1);
+  await cold.setViewportSize({width:390,height:844});
+  await cold.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.videoWidth===1080&&!v.paused&&!v.seeking&&v.currentTime>=32&&!v.hasAttribute('aria-busy')});
+  await cold.close();
+  checks.push('Cold media headers and a seek beyond the initial buffer preserve playback through rotation');
+
+  const safari=await webkit.launch({headless:true});
+  try{
+    const sc=await safari.newContext({viewport:{width:1440,height:1000},reducedMotion:'reduce'}),sp=await sc.newPage();
+    sp.on('pageerror',error=>errors.push(error.message));
+    await sp.goto(base+'chat-start.html#chat');await sp.waitForURL(url=>url.hash==='#chat'&&url.pathname===new URL(base).pathname);
+    await sp.getByRole('button',{name:'快速开始 ＋',exact:true}).click();
+    assert.ok(await sp.locator('#site-menu').isVisible());await sp.keyboard.press('Escape');assert.equal(await sp.locator('#site-menu').isVisible(),false);
+    await sp.getByRole('button',{name:'复制给对话模型',exact:true}).click();
+    await sp.waitForFunction(()=>/已复制|已选中/.test(document.querySelector('#status').textContent));
+    await sp.waitForFunction(()=>[...document.querySelectorAll('video')].every(v=>v.readyState>=2&&v.preload==='auto'));
+    await sp.locator('#film-player').evaluate(v=>new Promise(resolve=>{v.addEventListener('seeked',resolve,{once:true});v.currentTime=32}));
+    await sp.setViewportSize({width:390,height:844});
+    await sp.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.videoWidth===1080&&!v.seeking&&v.currentTime>=32&&!v.hasAttribute('aria-busy')});
+    assert.equal(await sp.locator('#film-player').evaluate(v=>v.paused),true);
+    await sp.locator('#film-player').evaluate(v=>v.play());
+    await sp.setViewportSize({width:1440,height:1000});
+    await sp.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.videoWidth===1920&&!v.paused&&!v.seeking&&v.currentTime>=32&&!v.hasAttribute('aria-busy')});
+    await sp.setViewportSize({width:390,height:844});
+    await sp.locator('#create').scrollIntoViewIfNeeded();
+    assert.ok(await sp.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+    await sp.screenshot({path:out+'/safari-create-phone.png'});
+    await sc.close();
+  }finally{await safari.close()}
+  checks.push('WebKit also passes merged legacy entry, menu, copy, mobile layout and paused/playing rotation at 32 seconds');
 
   const skill = await context.request.get(base + 'downloads/paper-notebook-skill.zip');
   assert.equal(skill.status(), 200);
@@ -171,7 +221,7 @@ try {
   assert.equal(upload.status(), 200);assert.equal((await upload.body()).subarray(0, 2).toString(), 'PK');
   checks.push('Portable conversation build package and browser-safe upload wrapper are publicly available');
   assert.deepEqual(errors, []);
-  const report = { date: new Date().toISOString(), base, checks, errors, skillSHA256: sha256, scope: 'Chromium over HTTP(S); browser imports and HTML download, responsive films, legacy redirects, public exposure restrictions and all primary page links' };
+  const report = { date: new Date().toISOString(), base, checks, errors, skillSHA256: sha256, scope: 'Chromium and WebKit over HTTP(S); browser imports and HTML download, responsive films, legacy redirects, public exposure restrictions and all primary page links' };
   await writeFile(out + '/report.json', JSON.stringify(report, null, 2));
   console.log(JSON.stringify(report, null, 2));
 } finally {

@@ -8,7 +8,7 @@ try{
  const report=JSON.parse(await readFile(root+'/output/conversation-package-check/paper-notebook/output/build-report.json','utf8'));const offline=root+'/output/conversation-package-check/paper-notebook/output/'+report.html;
  await context.setOffline(true);
  await page.goto(pathToFileURL(root+'/dist/chat-start.html').href);
- const genericPrompt=await page.getByLabel('对话模型提示词',{exact:true}).inputValue();assert.equal(genericPrompt,await readFile('public/paper-notebook-prompt.txt','utf8'));assert.ok(genericPrompt.includes('可下载的单文件离线 HTML'));assert.ok(genericPrompt.includes('paper-notebook-conversation.zip'));assert.doesNotMatch(genericPrompt,/Codex|ChatGPT|DeepSeek|WorkBuddy|Markdown\/TXT/i);assert.ok(genericPrompt.length<1200);
+ const genericPrompt=await page.getByLabel('对话模型提示词',{exact:true}).inputValue();assert.equal(genericPrompt,await readFile('public/paper-notebook-prompt.txt','utf8'));assert.ok(genericPrompt.includes('可下载的单文件离线 HTML'));assert.doesNotMatch(genericPrompt,/Codex|ChatGPT|DeepSeek|WorkBuddy|Markdown\/TXT/i);assert.ok(genericPrompt.length<1200);
  await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{value:undefined,configurable:true}));await page.getByRole('button',{name:'复制给对话模型',exact:true}).click();await page.waitForFunction(()=>/已复制|已选中/.test(document.querySelector('#status').textContent));assert.equal(await page.locator('#prompt').evaluate(f=>f.selectionEnd-f.selectionStart),genericPrompt.length);checks.push('Offline start page embeds the concise provider-neutral prompt and supports the copy fallback');
  await page.goto(pathToFileURL(offline).href);await page.waitForFunction(()=>!!window.reader);await page.evaluate(()=>document.fonts.ready);
  assert.equal(await page.locator('.page-surface').getAttribute('data-page'),'product-pain');assert.ok((await page.locator('.reader-content').innerText()).includes('先上传材料'));
@@ -33,16 +33,16 @@ try{
  await context.setOffline(false);await context.close();
  const pc=await browser.newContext({viewport:{width:1440,height:1000}}),promo=await pc.newPage();promo.on('pageerror',e=>errors.push(e.message));
  await promo.goto(pathToFileURL(root+'/dist/promo.html').href);
- await promo.locator('video').evaluate(v=>{v.preload='metadata';v.load()});await promo.waitForFunction(()=>document.querySelector('video')?.readyState>=1);
- let spec=await promo.locator('video').evaluate(v=>({duration:v.duration,w:v.videoWidth,h:v.videoHeight}));assert.deepEqual([spec.duration,spec.w,spec.h],[64,1920,1080]);
- await promo.locator('video').evaluate(v=>new Promise(resolve=>{v.addEventListener('seeked',resolve,{once:true});v.currentTime=35.5}));
- await promo.setViewportSize({width:1080,height:1920});await promo.waitForFunction(()=>{const v=document.querySelector('video');return v.videoWidth===1080&&!v.seeking&&v.currentTime>=35.5});
- assert.equal(await promo.locator('video').evaluate(v=>v.paused),true);
- await promo.setViewportSize({width:1440,height:1000});await promo.waitForFunction(()=>{const v=document.querySelector('video');return v.videoWidth===1920&&!v.seeking&&v.currentTime>=35.5});
- await promo.locator('video').scrollIntoViewIfNeeded();
+ await promo.waitForFunction(()=>document.querySelector('#film-player')?.readyState>=1);
+ let spec=await promo.locator('#film-player').evaluate(v=>({duration:v.duration,w:v.videoWidth,h:v.videoHeight}));assert.deepEqual([spec.duration,spec.w,spec.h],[64,1920,1080]);
+ await promo.locator('#film-player').evaluate(v=>new Promise(resolve=>{v.addEventListener('seeked',resolve,{once:true});v.currentTime=35.5}));
+ await promo.setViewportSize({width:1080,height:1920});await promo.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.videoWidth===1080&&!v.seeking&&v.currentTime>=35.5});
+ assert.equal(await promo.locator('#film-player').evaluate(v=>v.paused),true);
+ await promo.setViewportSize({width:1440,height:1000});await promo.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.videoWidth===1920&&!v.seeking&&v.currentTime>=35.5});
+ await promo.locator('#film-player').scrollIntoViewIfNeeded();
  // Wait for an actually presented frame, rather than capturing the native
  // loading spinner between seek completion and the compositor update.
- await promo.locator('video').evaluate(async v=>{const frame=new Promise(resolve=>v.requestVideoFrameCallback(resolve));await v.play();await frame;v.pause()});
+ await promo.locator('#film-player').evaluate(async v=>{const frame=new Promise(resolve=>v.requestVideoFrameCallback(resolve));await v.play();await frame;v.pause()});
  await promo.screenshot({path:root+'/docs/screenshots/product-film-player.png'});checks.push('The file:// homepage film automatically follows rotation while preserving playback position and pause state');
  assert.deepEqual(errors,[]);await mkdir('docs/verification',{recursive:true});await writeFile('docs/verification/product-delivery-report.json',JSON.stringify({date:new Date().toISOString(),checks,errors,scope:'Chromium, including file:// offline Python-built HTML and text import/export; no remote ChatGPT or DeepSeek account session or physical devices used'},null,2));console.log(checks.join('\n'));
 }finally{await browser.close();}

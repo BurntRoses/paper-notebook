@@ -2,7 +2,7 @@
 
 打开 start.html 或 promo.html，先体验概念、公式、实践三类教程。
 
-使用编程智能体：打开 chat-start.html，点击“复制给编程智能体”，发送指令和材料。智能体在仓库里读取 Skill、确认材料与缺失需求，使用项目 CLI 校验并构建单文件 HTML，留在工作区供你打开。
+使用编程智能体：打开首页的制作区域，点击“复制给编程智能体”，发送指令和材料。智能体在仓库里读取 Skill、确认材料与缺失需求，使用项目 CLI 校验并构建单文件 HTML，留在工作区供你打开。
 
 使用对话模型：在同一页点击“复制给对话模型”，发送参考材料和指令即可。AI 优先复用已有工具，否则自动下载对话构建包，使用 Node 或 Python 校验构建，交付可下载的单文件 HTML。只有实际下载失败或环境明确限制下载时，才需要手动上传备用 ZIP。无法创建或附加文件的环境必须说明限制，不以 Markdown/TXT 代替成品。
 
@@ -20,6 +20,6 @@
 
 # Quick start
 
-Open chat-start.html and choose a prompt by available tools. A coding agent edits the repository and builds the HTML artifact. A conversation model with file attachment capability uses the portable conversation package and returns a downloadable HTML. Text-only output is not a substitute for the requested file.
+Open the creation section on the homepage and choose a prompt by available tools. A coding agent edits the repository and builds the HTML artifact. A conversation model with file attachment capability uses the portable conversation package and returns a downloadable HTML. Text-only output is not a substitute for the requested file.
 
 Read with the contents/search sidebar, layouts, light text marks, questions and optional exercises. Local drafts restore your work; download a copy for long-term storage. Personal records are optional in exported copies. The generated HTML opens offline without a server.

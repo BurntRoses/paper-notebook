@@ -212,7 +212,7 @@ name='paper-notebook-film'+('-portrait' if PORTRAIT else '')
 OUT.mkdir(parents=True,exist_ok=True)
 output=OUT/(name+'.mp4')
 temporary=OUT/(name+'.rendering.mp4')
-cmd=[ffmpeg,'-y','-loglevel','error','-f','rawvideo','-pix_fmt','rgb24','-s',f'{W}x{H}','-r',str(FPS),'-i','-','-i',str(OUT/'product-film-music.wav'),'-t',str(DURATION),'-c:v','libx264','-preset','medium','-crf','18','-pix_fmt','yuv420p','-c:a','aac','-b:a','192k','-movflags','+faststart',str(temporary)]
+cmd=[ffmpeg,'-y','-loglevel','error','-f','rawvideo','-pix_fmt','rgb24','-s',f'{W}x{H}','-r',str(FPS),'-i','-','-i',str(OUT/'product-film-music.wav'),'-t',str(DURATION),'-c:v','libx264','-preset','slow','-crf','24','-g',str(FPS*2),'-pix_fmt','yuv420p','-c:a','aac','-b:a','96k','-movflags','+faststart',str(temporary)]
 process=subprocess.Popen(cmd,stdin=subprocess.PIPE)
 try:
     for n in range(DURATION*FPS):
@@ -223,6 +223,6 @@ try:
 except BaseException:
     process.kill();temporary.unlink(missing_ok=True);raise
 temporary.replace(output)
-manifest={'orientation':ORIENTATION,'width':W,'height':H,'fps':FPS,'duration':DURATION,'frames':DURATION*FPS,'notebookId':'paper-notebook-product-story','source':'examples/product-notebook.json','productionSource':'production/promo/story','renderCache':'output/promo/story','motion':'Native paper fragments, camera reframing, SVG stroke/clip reveals, beat-aligned paper wipes','screenRecording':False,'music':'product-film-music.wav','script':'product-film-script.json','file':output.name}
+manifest={'orientation':ORIENTATION,'width':W,'height':H,'fps':FPS,'duration':DURATION,'frames':DURATION*FPS,'notebookId':'paper-notebook-product-story','source':'examples/product-notebook.json','productionSource':'production/promo/story','renderCache':'output/promo/story','motion':'Native paper fragments, camera reframing, SVG stroke/clip reveals, beat-aligned paper wipes','screenRecording':False,'music':'product-film-music.wav','script':'product-film-script.json','file':output.name,'encoding':{'video':'H.264','crf':24,'preset':'slow','keyframeSeconds':2,'audio':'AAC 96 kb/s','fastStart':True},'bytes':output.stat().st_size}
 (OUT/(name+'.json')).write_text(json.dumps(manifest,ensure_ascii=False,indent=2))
 print(output,flush=True)

@@ -1,19 +1,25 @@
 {
-  "date": "2026-10-24T18:02:31.112Z",
-  "base": "http://127.0.0.1:5180/paper-notebook-kit/output/site/",
+  "date": "2026-10-29T09:10:15.158Z",
+  "base": "http://127.0.0.1:5182/",
   "checks": [
     "One product home embeds the actual reader; legacy pages redirect to the matching section",
-    "Public deployment excludes production scripts, source bundles, source JSON and standalone music; navigation has three clear actions",
-    "All 11 same-site navigation, image, film and download targets return HTTP 200",
-    "Both generation prompts wait for files/no-files before topic choices and describe single HTML delivery",
-    "Both copy buttons put the complete, self-contained instructions on the clipboard; no download step",
+    "Public deployment excludes production scripts, source bundles, source JSON and standalone music; navigation is consolidated in a single quick-access menu",
+    "All 12 same-site navigation, image, film and download targets return HTTP 200",
+    "Quick menu opens with click/keyboard, closes on Escape/outside/link and restores keyboard focus",
+    "Conversation route downloads a wrapper containing the unchanged runtime ZIP; copying instructions remains the primary action",
+    "Auto-expanded downloads have a folder-recompression recovery path and optional Safari setting instructions",
+    "Short provider-neutral prompts route by available tools and require HTML file delivery",
+    "Both copy buttons put the complete concise instructions on the clipboard",
     "Clipboard-denied fallback reveals and selects each complete prompt; mobile layout fits the viewport",
-    "Text-only chat example imports with a real formula and circle, then downloads as HTML",
-    "Film follows screen ratio automatically; delayed media and rapid reversal preserve time/play state, resume during seek and clear loading feedback",
+    "Reader can import an existing structured source and export it as HTML",
+    "Both films buffer ahead before user interaction; rotation and rapid reversal retain time/play state without additional media requests",
     "Home and automatic film/poster selection fit phone, tablet and desktop viewports",
-    "Portable Skill ZIP downloads successfully"
+    "Cold media headers and a seek beyond the initial buffer preserve playback through rotation",
+    "WebKit also passes merged legacy entry, menu, copy, mobile layout and paused/playing rotation at 32 seconds",
+    "Portable Skill ZIP downloads successfully",
+    "Portable conversation build package and browser-safe upload wrapper are publicly available"
   ],
   "errors": [],
-  "skillSHA256": "d0efd4f167e5163def0ab414e1f6079b83aab7d1a3f16cd95234b70f019dcf52",
-  "scope": "Chromium over HTTP(S); browser imports and HTML download, responsive films, legacy redirects, public exposure restrictions and all primary page links"
+  "skillSHA256": "dfd1cd5b9f3501bc766406c7951415804045b6fb0d7f5550c0853b5a330297d9",
+  "scope": "Chromium and WebKit over HTTP(S); browser imports and HTML download, responsive films, legacy redirects, public exposure restrictions and all primary page links"
 }

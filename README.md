@@ -2,7 +2,7 @@
 
 AI 结构化教程的离线阅读器。Agent 按学习目标和材料整理内容，阅读器呈现概念、推理、公式、图示、练习和来源。
 
-[在线体验](https://burntroses.github.io/paper-notebook/) · [生成笔记](https://burntroses.github.io/paper-notebook/chat-start.html) · [GitHub 源码](https://github.com/BurntRoses/paper-notebook)
+[在线体验](https://burntroses.github.io/paper-notebook/) · [生成笔记](https://burntroses.github.io/paper-notebook/#create) · [GitHub 源码](https://github.com/BurntRoses/paper-notebook)
 
 **成品默认只有一个“教程名-v版本.html”，双击即可离线阅读。** 横屏默认一张横版纸，竖屏一张竖版纸，默认宽松康奈尔版式并带横线。正文、图文和 SVG 笔迹共用 PageSurface；双页为可选项。学习记录集中在侧栏，本机草稿自动保存。
 
@@ -18,8 +18,8 @@ AI 结构化教程的离线阅读器。Agent 按学习目标和材料整理内�
 
 **必须复用本仓库阅读器，不得重新设计 HTML/CSS/JS 界面。** 示例中的纸张纹理、手写字体、康奈尔栏和翻页来自完整运行时，不能仅凭教材文字或 JSON 仿写。获取失败时保留内容，使用[预置回复](skills/paper-notebook/references/responses/download-unavailable.zh-CN.txt)给出构建包下载链接，请用户将 ZIP 原样上传，无需解压。交付前运行 `node tools/notebook.mjs verify <成品.html> --source notebook.json`（便携包使用 `node scripts/notebook.mjs`）；Python 环境可用包内 `scripts/verify_reader.py`。两条路径均核对原版阅读器与源数据。
 
-- 编程智能体：打开 [生成入口](public/chat-start.html#agent)，点击“复制给编程智能体”，与材料一起发送。一句话提供仓库地址、任务和交付方式，执行细节由智能体从仓库读取。
-- 对话模型：在[同一入口](public/chat-start.html#chat)点击“复制给对话模型”，提供材料或回复“没有文件”。AI 优先复用已有工具，否则自动下载对话构建包，用 Node 或 Python 构建并附上可下载的单文件离线 HTML。只有实际下载失败或下载受限时，才需要手动上传 ZIP；不支持文件交付时会明确说明。
+- 编程智能体：打开 [生成入口](public/promo.html#agent)，点击“复制给编程智能体”，与材料一起发送。一句话提供仓库地址、任务和交付方式，执行细节由智能体从仓库读取。
+- 对话模型：在[同一入口](public/promo.html#chat)点击“复制给对话模型”，提供材料或回复“没有文件”。AI 优先复用已有工具，否则自动下载对话构建包，用 Node 或 Python 构建并附上可下载的单文件离线 HTML。只有实际下载失败或下载受限时，才需要手动上传 ZIP；不支持文件交付时会明确说明。
 
 通用委托示例：“请按 https://github.com/BurntRoses/paper-notebook 仓库内的指引，为我制作教材式学习笔记，并交付单文件离线 HTML。” AI 需要能访问仓库；能否直接生成 HTML 取决于当前环境是否提供文件与构建工具。
 

@@ -13,5 +13,14 @@
   "screenRecording": false,
   "music": "product-film-music.wav",
   "script": "product-film-script.json",
-  "file": "paper-notebook-film-portrait.mp4"
+  "file": "paper-notebook-film-portrait.mp4",
+  "encoding": {
+    "video": "H.264",
+    "crf": 24,
+    "preset": "slow",
+    "keyframeSeconds": 2,
+    "audio": "AAC 96 kb/s",
+    "fastStart": true
+  },
+  "bytes": 15603570
 }

@@ -2,7 +2,7 @@
 
 A focused reader for structured tutorials created by your own agent. The agent writes and checks content; one shared renderer handles typography, layouts, diagrams, formulas, questions and optional exercises.
 
-[Live site](https://burntroses.github.io/paper-notebook/) · [Generate a notebook](https://burntroses.github.io/paper-notebook/chat-start.html) · [Source](https://github.com/BurntRoses/paper-notebook)
+[Live site](https://burntroses.github.io/paper-notebook/) · [Generate a notebook](https://burntroses.github.io/paper-notebook/#create) · [Source](https://github.com/BurntRoses/paper-notebook)
 
 Delivery is one clearly named offline HTML file. Fonts, media, editable source and selected records are embedded; advanced exports remain available for editing. Start by uploading references or replying “no files”; the AI ends that response and waits before asking topic and learning-brief choices. Without references, it uses reliable web sources when retrieval is available and original diagrams.
 
@@ -14,7 +14,7 @@ Local IndexedDB drafts restore learning records; downloaded copies support long-
 
 **AI entry point: [creation instructions](skills/paper-notebook/SKILL.md).** Select workspace building or [conversation file delivery](skills/paper-notebook/references/conversation-start.md) by available tools. External prompts contain one sentence; acquisition, validation and delivery rules stay in the repository.
 
-Open [the generation page](https://burntroses.github.io/paper-notebook/chat-start.html) or the [prompt directory](skills/paper-notebook/prompts/README.md). Choose by available tools: a coding agent edits the repository and builds the HTML in its workspace; a conversation environment reuses available runtime files or downloads the portable ZIP itself, builds with Node or Python and attaches a downloadable HTML. A manual ZIP upload is a fallback after an actual download failure or an explicit download restriction. Workflow details stay in the repository. If the environment lacks file delivery tools, it must explain this before collecting learning preferences. Markdown, TXT and pasted source code cannot replace the HTML artifact.
+Open [the generation page](https://burntroses.github.io/paper-notebook/#create) or the [prompt directory](skills/paper-notebook/prompts/README.md). Choose by available tools: a coding agent edits the repository and builds the HTML in its workspace; a conversation environment reuses available runtime files or downloads the portable ZIP itself, builds with Node or Python and attaches a downloadable HTML. A manual ZIP upload is a fallback after an actual download failure or an explicit download restriction. Workflow details stay in the repository. If the environment lacks file delivery tools, it must explain this before collecting learning preferences. Markdown, TXT and pasted source code cannot replace the HTML artifact.
 
 ## Local development
 

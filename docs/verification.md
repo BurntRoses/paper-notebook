@@ -115,3 +115,7 @@ node tools/notebook.mjs build examples/paper-notebook.json --out output/guide
 浏览器脚本需 Playwright 及对应浏览器；工作台与独立文件检查使用 Chromium 和 WebKit，直接读取本地 HTML，其余脚本默认由本地静态服务提供 `dist/`。可设置 `PLAYWRIGHT_MODULE`、`NOTEBOOK_BASE`；视频检查需 ffmpeg，可设置 `FFMPEG`。原桌面及较早 reader-extra/media 测试属于历史记录，当前结论以上述报告为准。
 
 检查使用本机 Chromium 和视口模拟，尚未完成真实 iPhone/iPad、Android、Safari、读屏软件、原生系统打印对话框或低内存设备验收。PDF 文件由 Chromium 实际输出，系统“另存为 PDF”界面的人工操作未执行。本次没有重新进行性能基准，未宣称原生设备帧率或陌生用户可用性结论。
+
+## 2.3 首页与播放
+
+57 项模型与往返测试、Node/Python 对话构建校验通过。首页合并制作指令，旧 chat-start 链接保留对应锚点；Chromium 与 WebKit 检查快捷菜单、复制、下载和五档布局。视频在交互前即请求横竖两版并提前缓冲；检查覆盖已缓冲进度、32 秒进度、延迟媒体响应及快速反转，保留暂停/播放状态。已缓存区间的旋转没有增加媒体请求，浏览器仍决定预加载深度。详见更新后的[发布页面报告](verification/hosting-report.json)。

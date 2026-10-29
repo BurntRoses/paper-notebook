@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-24T10:48:52.330Z",
+  "date": "2026-10-29T10:25:40.154Z",
   "report": [
     {
       "file": "/Users/luohonggen/Desktop/notebook/paper-notebook-kit/public/promo/paper-notebook-film.mp4",
@@ -11,7 +11,7 @@
       "codec": "H264/AAC stereo 48kHz",
       "fullDecode": true,
       "blackFrames": false,
-      "lufs": -15.6,
+      "lufs": -15.7,
       "truePeak": -1.2,
       "contact": "/Users/luohonggen/Desktop/notebook/paper-notebook-kit/docs/screenshots/product-film-decoded-landscape.png"
     },
@@ -25,7 +25,7 @@
       "codec": "H264/AAC stereo 48kHz",
       "fullDecode": true,
       "blackFrames": false,
-      "lufs": -15.6,
+      "lufs": -15.7,
       "truePeak": -1.2,
       "contact": "/Users/luohonggen/Desktop/notebook/paper-notebook-kit/docs/screenshots/product-film-decoded-portrait.png"
     }
