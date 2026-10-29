@@ -1,10 +1,10 @@
 import { MarkHistory } from './mark-history';
 import { authoredAnnotations, drawInk } from './ink';
-import { addAnnotation, captureSelection, type MarkKind, type SelectionPart } from './records';
+import { addAnnotation, setTextColor, captureSelection, type MarkKind, type SelectionPart } from './records';
 import type { Annotation, NotebookDocument, Page, PaperShape } from '../model/types';
 import { button, el, toast } from '../ui/dom';
 import type { SurfacePage } from './surface';
-export interface EditorHost {d:NotebookDocument;page:Page;pages:SurfacePage[];shape:PaperShape;render:()=>void;remember:()=>void;invalidate:()=>void;addNoteFromSelection?:(parts:SelectionPart[])=>void;addBookmarkFromSelection?:(parts:SelectionPart[])=>void;addDoubtFromSelection?:(parts:SelectionPart[],category:'unclear'|'explain'|'example')=>void}
+export interface EditorHost {d:NotebookDocument;page:Page;pages:SurfacePage[];shape:PaperShape;render:()=>void;remember:()=>void;invalidate:()=>void;refreshAnnotations?:()=>void;addNoteFromSelection?:(parts:SelectionPart[])=>void;addBookmarkFromSelection?:(parts:SelectionPart[])=>void;addDoubtFromSelection?:(parts:SelectionPart[],category:'unclear'|'explain'|'example')=>void}
 export const readingMarks:[MarkKind,string,string][]=[['highlight','荧光','▰'],['underline','下划线','U̲'],['circle','圈注','◯'],['wave','波浪线','〰'],['box','方框','▢'],['bracket','括注','〔〕'],['check','勾记','✓'],['star','重点星标','☆'],['dots','着重点','···']];
 /** A reader may mark an anchored passage; lesson content and page layout never change. */
 export class PaperEditor {
@@ -12,24 +12,28 @@ export class PaperEditor {
  constructor(private host:EditorHost,private root:HTMLElement){
   document.addEventListener('selectionchange',()=>{this.cacheSelection();if(getSelection()?.toString())this.closeInspector();});
   root.addEventListener('pointerdown',e=>{this.down={x:e.clientX,y:e.clientY};});
-  root.addEventListener('pointerup',e=>{const down=this.down;this.down=null;if(!down||Math.hypot(e.clientX-down.x,e.clientY-down.y)>6||(e.target as HTMLElement).closest('button,input,select,textarea,dialog'))return;window.setTimeout(()=>{if(getSelection()?.toString())return;this.inspectAt(e.clientX,e.clientY)},0);});
+  root.addEventListener('pointerup',e=>{if(e.button!==0)return;const down=this.down;this.down=null;if(!down||Math.hypot(e.clientX-down.x,e.clientY-down.y)>6||(e.target as HTMLElement).closest('button,input,select,textarea,dialog'))return;window.setTimeout(()=>{if(getSelection()?.toString())return;this.inspectAt(e.clientX,e.clientY)},0);});
   document.addEventListener('pointerdown',e=>{if(this.inspector&&!this.inspector.contains(e.target as Node))this.closeInspector();});
   document.addEventListener('keydown',e=>{if(document.querySelector('dialog[open]')||(e.target as HTMLElement).closest('input,textarea,select'))return;if((e.key==='Delete'||e.key==='Backspace')&&this.selected.length){e.preventDefault();this.removeSelected();return;}if(e.key==='Escape')this.closeInspector();if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?this.redo():this.undo();}});
  }
  get d(){return this.host.d;}
- change(fn:()=>void){if(this.history.change(this.d.userState,fn))this.host.remember();this.host.render();}
- undo=()=>{if(this.history.undo(this.d.userState)){this.host.remember();this.host.render();}};
- redo=()=>{if(this.history.redo(this.d.userState)){this.host.remember();this.host.render();}};
+ private refresh(){if(this.host.refreshAnnotations)this.host.refreshAnnotations();else this.host.render();}
+ change(fn:()=>void){if(this.history.change(this.d.userState,fn))this.host.remember();this.refresh();}
+ undo=()=>{if(this.history.undo(this.d.userState)){this.host.remember();this.refresh();}};
+ redo=()=>{if(this.history.redo(this.d.userState)){this.host.remember();this.refresh();}};
  reset(){this.history.reset();this.selection=[];}
  cancel(_render=true){this.closeInspector();this.selection=[];}
  choose(_tool:string){this.cacheSelection();}
  cacheSelection(){const parts=captureSelection();if(parts.length)this.selection=parts;}
- mark(kind:MarkKind,parts=this.selection){if(!parts.length){toast('先选取需要标记的原文');return;}this.change(()=>addAnnotation(this.d,parts,kind));getSelection()?.removeAllRanges();this.selection=[];}
+ mark(kind:MarkKind,parts=this.selection){if(!parts.length){toast('先选取需要标记的原文');return;}getSelection()?.removeAllRanges();this.selection=[];this.change(()=>addAnnotation(this.d,parts,kind));}
  toolbar(parts=this.selection){const bar=el('div','stationery');bar.setAttribute('role','toolbar');bar.setAttribute('aria-label','原文标记');bar.onpointerdown=e=>{this.cacheSelection();e.preventDefault();};
   for(const [kind,name,glyph] of readingMarks){const b=button(name,()=>this.mark(kind,parts),'stationery-tool',glyph);b.append(el('small','mark-name',name));bar.append(b);}
   if(this.host.addNoteFromSelection)bar.append(this.quick('添加便签','＋',()=>this.host.addNoteFromSelection!(parts)));
   if(this.host.addBookmarkFromSelection)bar.append(this.quick('加入书签','⚑',()=>this.host.addBookmarkFromSelection!(parts)));
   if(this.host.addDoubtFromSelection){bar.append(this.quick('提出疑问','？',()=>this.host.addDoubtFromSelection!(parts,'unclear')),this.quick('展开讲解','↗',()=>this.host.addDoubtFromSelection!(parts,'explain')),this.quick('举例说明','▤',()=>this.host.addDoubtFromSelection!(parts,'example')));}
+  bar.append(this.quick('加粗','B',()=>this.mark('bold',parts)));
+  const palette=el('div','text-colors');palette.setAttribute('role','group');palette.setAttribute('aria-label','文字颜色');
+  for(const [name,color] of [['蓝色','#285f9e'],['红色','#b1483d'],['绿色','#357344'],['紫色','#8055a0'],['棕色','#996325'],['恢复原色','']] as const){const b=button('文字颜色：'+name,()=>{getSelection()?.removeAllRanges();this.selection=[];this.change(()=>setTextColor(this.d,parts,color||undefined))},'text-color','A');b.style.setProperty('--swatch',color||'var(--ink)');palette.append(b)}bar.append(palette);
   const history=el('div','mark-history'),undo=button('撤销标记',this.undo,'stationery-tool','↶'),redo=button('重做标记',this.redo,'stationery-tool','↷');undo.disabled=!this.history.canUndo;redo.disabled=!this.history.canRedo;history.append(undo,redo);bar.append(history);return bar;
  }
  quick(name:string,glyph:string,fn:()=>void){const b=button(name,fn,'stationery-tool quick-tool',glyph);b.append(el('small','mark-name',name));return b;}

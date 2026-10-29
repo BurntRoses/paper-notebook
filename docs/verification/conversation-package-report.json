@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-29T08:52:58.264Z",
+  "date": "2026-10-29T11:42:21.202Z",
   "archive": "paper-notebook-conversation.zip",
   "uploadArchive": "paper-notebook-upload.zip",
   "entries": 31,
@@ -118,13 +118,13 @@
     },
     "warnings": []
   },
-  "build": "{\"id\": \"paper-notebook-product-story\", \"revision\": 3, \"schemaValidated\": true, \"coreReferencesChecked\": true, \"bundledReaderMatches\": true, \"studyMarks\": {\"valid\": true, \"required\": true, \"total\": 31, \"byKind\": {\"underline\": 5, \"circle\": 6, \"highlight\": 6, \"star\": 4, \"box\": 3, \"check\": 3, \"wave\": 1, \"dots\": 2, \"bracket\": 1}, \"markedPages\": [\"product-pain\", \"product-idea\", \"product-structure\", \"product-marks\", \"product-subjects\", \"product-fit\", \"product-focus\", \"product-start\"], \"unmarkedPages\": [], \"invalidTargets\": []}, \"contentReview\": {\"advisory\": true, \"automaticRewrite\": false, \"writing\": {\"warnings\": []}, \"visuals\": {\"pages\": [{\"pageId\": \"product-pain\", \"characters\": 154, \"figures\": 0, \"tables\": 0}, {\"pageId\": \"product-idea\", \"characters\": 63, \"figures\": 1, \"tables\": 0}, {\"pageId\": \"product-structure\", \"characters\": 123, \"figures\": 0, \"tables\": 0}, {\"pageId\": \"product-marks\", \"characters\": 79, \"figures\": 1, \"tables\": 0}, {\"pageId\": \"product-subjects\", \"characters\": 92, \"figures\": 0, \"tables\": 0}, {\"pageId\": \"product-fit\", \"characters\": 103, \"figures\": 1, \"tables\": 0}, {\"pageId\": \"product-focus\", \"characters\": 132, \"figures\": 0, \"tables\": 1}, {\"pageId\": \"product-start\", \"characters\": 74, \"figures\": 0, \"tables\": 0}], \"figures\": 3, \"tables\": 1, \"warnings\": []}, \"assets\": []}, \"browserInspected\": false, \"htmlBytes\": 2045611, \"html\": \"Paper-Notebook-·-产品笔记-v3.html\", \"zip\": \"Paper-Notebook-·-产品笔记-v3.zip\"}",
+  "build": "{\"id\": \"paper-notebook-product-story\", \"revision\": 3, \"schemaValidated\": true, \"coreReferencesChecked\": true, \"bundledReaderMatches\": true, \"studyMarks\": {\"valid\": true, \"required\": true, \"total\": 31, \"byKind\": {\"underline\": 5, \"circle\": 6, \"highlight\": 6, \"star\": 4, \"box\": 3, \"check\": 3, \"wave\": 1, \"dots\": 2, \"bracket\": 1}, \"markedPages\": [\"product-pain\", \"product-idea\", \"product-structure\", \"product-marks\", \"product-subjects\", \"product-fit\", \"product-focus\", \"product-start\"], \"unmarkedPages\": [], \"invalidTargets\": []}, \"contentReview\": {\"advisory\": true, \"automaticRewrite\": false, \"writing\": {\"warnings\": []}, \"visuals\": {\"pages\": [{\"pageId\": \"product-pain\", \"characters\": 154, \"figures\": 0, \"tables\": 0}, {\"pageId\": \"product-idea\", \"characters\": 63, \"figures\": 1, \"tables\": 0}, {\"pageId\": \"product-structure\", \"characters\": 123, \"figures\": 0, \"tables\": 0}, {\"pageId\": \"product-marks\", \"characters\": 79, \"figures\": 1, \"tables\": 0}, {\"pageId\": \"product-subjects\", \"characters\": 92, \"figures\": 0, \"tables\": 0}, {\"pageId\": \"product-fit\", \"characters\": 103, \"figures\": 1, \"tables\": 0}, {\"pageId\": \"product-focus\", \"characters\": 132, \"figures\": 0, \"tables\": 1}, {\"pageId\": \"product-start\", \"characters\": 74, \"figures\": 0, \"tables\": 0}], \"figures\": 3, \"tables\": 1, \"warnings\": []}, \"assets\": []}, \"browserInspected\": false, \"htmlBytes\": 2050592, \"html\": \"Paper-Notebook-·-产品笔记-v3.html\", \"zip\": \"Paper-Notebook-·-产品笔记-v3.zip\"}",
   "nodeReport": {
     "id": "paper-notebook-product-story",
     "revision": 3,
     "html": "Paper-Notebook-·-产品笔记-v3.html",
     "zip": "Paper-Notebook-·-产品笔记-v3.zip",
-    "htmlBytes": 2045611,
+    "htmlBytes": 2050592,
     "bundledReaderMatches": true,
     "sourceMatches": true,
     "studyMarks": {

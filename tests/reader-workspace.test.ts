@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { blankDocument, parameterText, textOf, type Block, type Selector } from '../src/model/types';
 import { parseDocument, mergeUpdate } from '../src/model/document';
 import { indexForBookmark, indexForReadingAnchor } from '../src/reader/anchors';
-import { bookmarkFor, questionPrompt, readerCopy } from '../src/reader/records';
+import { bookmarkFor, questionPrompt, readerCopy, setTextColor } from '../src/reader/records';
 
 test('passage and page bookmarks follow source offsets through repagination',()=>{
   const d=blankDocument(),p=d.notebook.chapters[0].pages[0];
@@ -46,4 +46,17 @@ test('linked and free notes, bookmarks and next-session choices survive save and
   assert.deepEqual(privateOff.userState.notes,[]);assert.deepEqual(privateOff.userState.bookmarks,[]);assert.deepEqual(privateOff.userState.doubts,[]);assert.deepEqual(privateOff.userState.annotations,[]);
   const incoming=structuredClone(d);incoming.extensions.baseRevision=d.notebook.revision;incoming.notebook.chapters[0].pages[0].blocks[0].text='补充背景。'+p.blocks[0].text;
   const updated=mergeUpdate(d,incoming);assert.deepEqual(updated.document.userState.notes,d.userState.notes);assert.deepEqual(updated.warnings,[]);
+});
+
+
+test('text recolouring splits old ranges, resets locally and survives a document roundtrip',()=>{
+ const d=blankDocument(),p=d.notebook.chapters[0].pages[0],text='甲乙丙丁戊己庚辛壬癸';p.blocks=[{id:'colour-passage',type:'prose',text}];
+ const part=(start:number,end:number)=>[{pageId:p.id,selector:{blockId:'colour-passage',start,end,exact:text.slice(start,end),prefix:text.slice(0,start),suffix:text.slice(end)}}];
+ setTextColor(d,part(1,9),'#285f9e');setTextColor(d,part(3,6),'#357344');
+ const ranges=()=>d.userState.annotations.flatMap(a=>a.selectors.map(s=>[s.start,s.end,a.color]));
+ assert.deepEqual(ranges(),[[1,3,'#285f9e'],[6,9,'#285f9e'],[3,6,'#357344']]);
+ setTextColor(d,part(4,8));assert.deepEqual(ranges(),[[1,3,'#285f9e'],[8,9,'#285f9e'],[3,4,'#357344']]);
+ const saved=parseDocument(JSON.parse(JSON.stringify(readerCopy(d,{marks:true,questions:false,answers:false,legacy:false})))).document;
+ assert.deepEqual(saved.userState.annotations,d.userState.annotations);assert.equal(saved.notebook.chapters[0].pages[0].blocks[0].text,text);
+ setTextColor(d,part(0,10));assert.deepEqual(d.userState.annotations,[]);
 });

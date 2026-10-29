@@ -212,7 +212,7 @@ name='paper-notebook-film'+('-portrait' if PORTRAIT else '')
 OUT.mkdir(parents=True,exist_ok=True)
 output=OUT/(name+'.mp4')
 temporary=OUT/(name+'.rendering.mp4')
-cmd=[ffmpeg,'-y','-loglevel','error','-f','rawvideo','-pix_fmt','rgb24','-s',f'{W}x{H}','-r',str(FPS),'-i','-','-i',str(OUT/'product-film-music.wav'),'-t',str(DURATION),'-c:v','libx264','-preset','slow','-crf','24','-g',str(FPS*2),'-pix_fmt','yuv420p','-c:a','aac','-b:a','96k','-movflags','+faststart',str(temporary)]
+cmd=[ffmpeg,'-y','-loglevel','error','-f','rawvideo','-pix_fmt','rgb24','-s',f'{W}x{H}','-r',str(FPS),'-i','-','-i',str(OUT/'product-film-music.wav'),'-t',str(DURATION),'-vf',f'scale={720 if PORTRAIT else 1280}:{1280 if PORTRAIT else 720}:flags=lanczos','-c:v','libx264','-preset','slow','-crf','26','-maxrate','1100k','-bufsize','2200k','-g',str(FPS*2),'-pix_fmt','yuv420p','-c:a','aac','-b:a','80k','-movflags','+faststart',str(temporary)]
 process=subprocess.Popen(cmd,stdin=subprocess.PIPE)
 try:
     for n in range(DURATION*FPS):
@@ -223,6 +223,6 @@ try:
 except BaseException:
     process.kill();temporary.unlink(missing_ok=True);raise
 temporary.replace(output)
-manifest={'orientation':ORIENTATION,'width':W,'height':H,'fps':FPS,'duration':DURATION,'frames':DURATION*FPS,'notebookId':'paper-notebook-product-story','source':'examples/product-notebook.json','productionSource':'production/promo/story','renderCache':'output/promo/story','motion':'Native paper fragments, camera reframing, SVG stroke/clip reveals, beat-aligned paper wipes','screenRecording':False,'music':'product-film-music.wav','script':'product-film-script.json','file':output.name,'encoding':{'video':'H.264','crf':24,'preset':'slow','keyframeSeconds':2,'audio':'AAC 96 kb/s','fastStart':True},'bytes':output.stat().st_size}
+manifest={'orientation':ORIENTATION,'width':720 if PORTRAIT else 1280,'height':1280 if PORTRAIT else 720,'fps':FPS,'duration':DURATION,'frames':DURATION*FPS,'notebookId':'paper-notebook-product-story','source':'examples/product-notebook.json','productionSource':'production/promo/story','renderCache':'output/promo/story','motion':'Native paper fragments, camera reframing, SVG stroke/clip reveals, beat-aligned paper wipes','screenRecording':False,'music':'product-film-music.wav','script':'product-film-script.json','file':output.name,'encoding':{'video':'H.264','crf':26,'preset':'slow','maxrate':'1100 kb/s','buffer':'2200 kb/s','keyframeSeconds':2,'audio':'AAC 80 kb/s','fastStart':True},'bytes':output.stat().st_size}
 (OUT/(name+'.json')).write_text(json.dumps(manifest,ensure_ascii=False,indent=2))
 print(output,flush=True)

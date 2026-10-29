@@ -7,7 +7,7 @@ export interface SelectionPart { pageId:string; selector:Selector }
 export function captureSelection(): SelectionPart[] {
   const selection=getSelection();if(!selection?.rangeCount||selection.isCollapsed)return [];
   const range=selection.getRangeAt(0),parts:SelectionPart[]=[];
-  for(const span of document.querySelectorAll<HTMLElement>('.reader-page .ink-text')){
+  for(const span of document.querySelectorAll<HTMLElement>('.reader-stage > .reader-page-wrap .reader-page .ink-text')){
     if(!range.intersectsNode(span)||!span.textContent)continue;
     const own=document.createRange();own.selectNodeContents(span);
     const local=own.cloneRange();
@@ -46,6 +46,23 @@ export function addAnnotation(d:NotebookDocument,parts:SelectionPart[],kind:Mark
   d.userState.annotations=d.userState.annotations.filter(a=>!matching.includes(a));
   d.userState.annotations.push({id:existing?.id||uid('mark'),kind,pageId,selectors,color:existing?.color||(kind==='highlight'?'#ebc741':['red','circle','wave','star','dots'].includes(kind)?'#b8564a':'#345d76'),width:existing?.width||2,seed:existing?.seed||Math.floor(Math.random()*2147483646)+1,status:'resolved'});
  }
+}
+/** Colour is a reader annotation; source text remains unchanged. Split old
+ * coloured spans at selection boundaries so recolouring one word stays local. */
+export function setTextColor(d:NotebookDocument,parts:SelectionPart[],color?:string){
+ const cuts=new Map<string,{start:number;end:number}[]>();
+ for(const {selector:s} of parts){const list=cuts.get(s.blockId)||[];list.push({start:s.start,end:s.end});cuts.set(s.blockId,list)}
+ for(const annotation of d.userState.annotations.filter(a=>a.kind==='red')){
+  annotation.selectors=annotation.selectors.flatMap(s=>{
+   const block=blocksOf(d).find(b=>b.id===s.blockId);if(!block)return [s];
+   const text=textOf(block),resolved=resolveInText(text,s);if(resolved.status!=='resolved')return [s];
+   let ranges=[{start:resolved.start,end:resolved.end}];
+   for(const cut of cuts.get(s.blockId)||[])ranges=ranges.flatMap(r=>cut.end<=r.start||cut.start>=r.end?[r]:[...(cut.start>r.start?[{start:r.start,end:cut.start}]:[]),...(cut.end<r.end?[{start:cut.end,end:r.end}]:[])]);
+   return ranges.map(({start,end})=>({blockId:s.blockId,start,end,exact:text.slice(start,end),prefix:text.slice(Math.max(0,start-24),start),suffix:text.slice(end,end+24)}));
+  });
+ }
+ d.userState.annotations=d.userState.annotations.filter(a=>a.kind!=='red'||a.selectors.length);
+ if(color)for(const pageId of new Set(parts.map(p=>p.pageId)))d.userState.annotations.push({id:uid('color'),kind:'red',color,pageId,selectors:structuredClone(parts.filter(p=>p.pageId===pageId).map(p=>p.selector)),width:2,seed:1,status:'resolved'});
 }
 export function paintAnnotations(root:HTMLElement,d:NotebookDocument){
   const blocks=new Map(blocksOf(d).map(b=>[b.id,b]));

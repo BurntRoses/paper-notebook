@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-28T18:42:33.885Z",
+  "date": "2026-10-29T11:42:55.458Z",
   "results": [
     {
       "engine": "chromium",
@@ -18,7 +18,10 @@
       "guide": true,
       "keyboard": true,
       "selectionToolbar": true,
-      "linkedAndFreeNotes": true,
+      "realMouseSelectionAndTextColor": true,
+      "contextMenu": true,
+      "immersiveSidebars": true,
+      "inlineLinkedAndFreeNotes": true,
       "pageAndTextBookmarks": true,
       "followupChoices": true,
       "offlineSaveAndReopen": true,
@@ -43,7 +46,10 @@
       "guide": true,
       "keyboard": true,
       "selectionToolbar": true,
-      "linkedAndFreeNotes": true,
+      "realMouseSelectionAndTextColor": true,
+      "contextMenu": true,
+      "immersiveSidebars": true,
+      "inlineLinkedAndFreeNotes": true,
       "pageAndTextBookmarks": true,
       "followupChoices": true,
       "offlineSaveAndReopen": true,

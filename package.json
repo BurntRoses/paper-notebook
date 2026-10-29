@@ -1,6 +1,6 @@
 {
   "name": "paper-notebook-kit",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "private": false,
   "type": "module",
   "description": "A structured tutorial reader and a self-contained Skill for your own agent.",

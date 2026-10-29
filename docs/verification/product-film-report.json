@@ -1,10 +1,10 @@
 {
-  "date": "2026-10-29T10:25:40.154Z",
+  "date": "2026-10-29T11:21:20.160Z",
   "report": [
     {
       "file": "/Users/luohonggen/Desktop/notebook/paper-notebook-kit/public/promo/paper-notebook-film.mp4",
-      "width": 1920,
-      "height": 1080,
+      "width": 1280,
+      "height": 720,
       "fps": 30,
       "duration": 64,
       "frames": 1920,
@@ -12,13 +12,13 @@
       "fullDecode": true,
       "blackFrames": false,
       "lufs": -15.7,
-      "truePeak": -1.2,
+      "truePeak": -0.7,
       "contact": "/Users/luohonggen/Desktop/notebook/paper-notebook-kit/docs/screenshots/product-film-decoded-landscape.png"
     },
     {
       "file": "/Users/luohonggen/Desktop/notebook/paper-notebook-kit/public/promo/paper-notebook-film-portrait.mp4",
-      "width": 1080,
-      "height": 1920,
+      "width": 720,
+      "height": 1280,
       "fps": 30,
       "duration": 64,
       "frames": 1920,
@@ -26,7 +26,7 @@
       "fullDecode": true,
       "blackFrames": false,
       "lufs": -15.7,
-      "truePeak": -1.2,
+      "truePeak": -0.7,
       "contact": "/Users/luohonggen/Desktop/notebook/paper-notebook-kit/docs/screenshots/product-film-decoded-portrait.png"
     }
   ]

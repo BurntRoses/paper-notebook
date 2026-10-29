@@ -10,7 +10,7 @@ await mkdir('output/workspace-check',{recursive:true});
 const results=[];
 const selectPassage=async page=>{
  await page.locator('.reader-stage [data-block="workspace-passage"] .ink-text').first().evaluate(span=>{
-  const range=document.createRange();range.setStart(span.firstChild,0);range.setEnd(span.firstChild,12);
+  const range=document.createRange();const walk=document.createTreeWalker(span,NodeFilter.SHOW_TEXT);let end,left=12;while(end=walk.nextNode()){if(left<=end.textContent.length)break;left-=end.textContent.length}range.setStart(span,0);range.setEnd(end,left);
   getSelection().removeAllRanges();getSelection().addRange(range);
  });
  await page.locator('.reader-selection-toolbar').waitFor({state:'visible'});
@@ -53,7 +53,24 @@ for(const engine of ['chromium','webkit']){
   assert.ok((await dimensions()).scale>1.45,'manual zoom remains available');
   await page.evaluate(()=>{const r=window.reader;r.zoom=1;r.render();r.setImmersive(true)});
   assert.equal((await dimensions()).font,'18px');assert.ok((await dimensions()).scale<=1.001);
-  await page.keyboard.press('Escape');await page.evaluate(()=>window.reader.goPage(0));
+  assert.ok(await page.locator('.reader-header').isVisible());
+  await page.getByRole('button',{name:'目录',exact:true}).first().click();assert.ok(await page.locator('.reader-sidebar').isVisible());
+  await page.getByRole('button',{name:'便签与记录',exact:true}).click();assert.ok(await page.locator('.reader-workspace-sidebar').isVisible());
+  await page.getByRole('button',{name:'关闭工作台',exact:true}).click();
+  await page.keyboard.press('Escape');await page.evaluate(()=>{window.reader.toggleSidebar(false);window.reader.goPage(0)});
+  assert.equal(await page.locator('.continued-label,.reader-tool-toggle').count(),0);
+  const bounds=await page.locator('.reader-stage [data-block="workspace-passage"] .ink-text').first().evaluate(span=>{const range=document.createRange();range.setStart(span.firstChild,0);range.setEnd(span.firstChild,8);return [...range.getClientRects()].map(r=>({x:r.x,y:r.y,width:r.width,height:r.height}))[0]});
+  await page.mouse.move(bounds.x+1,bounds.y+bounds.height/2);await page.mouse.down();await page.mouse.move(bounds.x+bounds.width-1,bounds.y+bounds.height/2,{steps:12});await page.mouse.up();
+  await page.locator('.reader-selection-toolbar').waitFor({state:'visible'});
+  assert.ok((await page.evaluate(()=>getSelection().toString())).length>=7);
+  await page.getByRole('button',{name:'文字颜色：蓝色',exact:true}).click();
+  assert.ok(await page.locator('.red-ink').count());assert.ok(await page.evaluate(()=>window.reader.d.userState.annotations.some(a=>a.color==='#285f9e')));
+  await page.keyboard.press('ControlOrMeta+z');assert.equal(await page.locator('.red-ink').count(),0);
+  await page.keyboard.press('ControlOrMeta+Shift+z');assert.ok(await page.locator('.red-ink').count());
+  await selectPassage(page);await page.mouse.click(1918,2);assert.equal(await page.locator('.reader-selection-toolbar').count(),0);
+  await page.evaluate(()=>getSelection().removeAllRanges());
+  await page.locator('.reader-stage .page-surface').click({button:'right',position:{x:30,y:150}});
+  await page.getByRole('menu',{name:'纸页菜单'}).waitFor();await page.mouse.click(1918,2);assert.equal(await page.getByRole('menu',{name:'纸页菜单'}).count(),0);
   for(const [key,index] of [['ArrowRight',1],['ArrowLeft',0],['Space',1],['Shift+Space',0],['Enter',1]]){
    await page.locator('.reader-stage').focus();await page.keyboard.press(key);assert.equal(await page.evaluate(()=>window.reader.pageIndex),index);
   }
@@ -63,16 +80,16 @@ for(const engine of ['chromium','webkit']){
   await page.getByRole('button',{name:'圈注',exact:true}).click();assert.ok(await page.locator('[data-origin=reader][data-kind=circle]').count());
   await selectPassage(page);
   await page.getByRole('button',{name:'添加便签',exact:true}).click();
-  await page.getByLabel('标题',{exact:true}).fill('关联批注');await page.getByLabel('批注',{exact:true}).fill('这里需要补充一个例子。');
-  const index=await page.evaluate(()=>window.reader.pageIndex);await page.getByLabel('批注',{exact:true}).press('Enter');assert.equal(await page.evaluate(()=>window.reader.pageIndex),index);
-  await page.getByRole('button',{name:'保存',exact:true}).click();
+  assert.equal(await page.locator('dialog[open]').count(),0);
+  await page.getByLabel('便签标题',{exact:true}).fill('关联批注');await page.getByLabel('便签内容',{exact:true}).fill('这里需要补充一个例子。');
+  const index=await page.evaluate(()=>window.reader.pageIndex);await page.getByLabel('便签内容',{exact:true}).press('Enter');assert.equal(await page.evaluate(()=>window.reader.pageIndex),index);
   assert.equal(await page.locator('.workspace-note').count(),1);
-  await page.getByRole('button',{name:'新建独立便签',exact:true}).click();await page.getByLabel('标题',{exact:true}).fill('独立思考');await page.getByLabel('批注',{exact:true}).fill('复习前先回顾定义。');await page.getByRole('button',{name:'保存',exact:true}).click();
+  await page.getByRole('button',{name:'新建独立便签',exact:true}).click();await page.getByLabel('便签标题',{exact:true}).last().fill('独立思考');await page.getByLabel('便签内容',{exact:true}).last().fill('复习前先回顾定义。');
   const notes=await page.evaluate(()=>JSON.parse(JSON.stringify(window.reader.d.userState.notes)));
   assert.ok(notes[0].attached&&notes[0].selector&&notes[0].anchors.length);assert.ok(!notes[1].attached&&!notes[1].selector);
   await page.getByRole('button',{name:'关闭工作台',exact:true}).click();
   await selectPassage(page);await page.getByRole('button',{name:'加入书签',exact:true}).click();assert.equal(await page.locator('.text-bookmark-ink').count(),1);
-  await page.getByRole('button',{name:'学习工作台',exact:true}).click();await page.getByRole('button',{name:'书签',exact:true}).click();await page.getByRole('button',{name:'为当前页加书签',exact:true}).click();assert.equal(await page.locator('.page-bookmark-ink').count(),1);
+  await page.getByRole('button',{name:'便签与记录',exact:true}).click();await page.getByRole('button',{name:'为当前页加书签',exact:true}).click();assert.equal(await page.locator('.page-bookmark-ink').count(),1);
   await page.getByRole('button',{name:'目录',exact:true}).first().click();assert.ok(await page.locator('.index-bookmark').count());
   await page.getByRole('button',{name:'关闭工作台',exact:true}).click();
   await selectPassage(page);await page.getByRole('button',{name:'展开讲解',exact:true}).click();await page.getByRole('button',{name:'保存到续学清单',exact:true}).click();
@@ -95,7 +112,7 @@ for(const engine of ['chromium','webkit']){
   assert.equal(await page.evaluate(()=>window.reader.d.userState.bookmarks.length),2);
   assert.equal(await page.evaluate(()=>window.reader.d.userState.doubts.length),1);
   assert.ok(await page.evaluate(()=>window.reader.d.userState.annotations.some(a=>a.id==='workspace-ink')));
-  await page.getByRole('button',{name:'学习工作台',exact:true}).click();await page.getByRole('button',{name:'书签',exact:true}).click();
+  if(!await page.locator('.reader-workspace-sidebar').count())await page.getByRole('button',{name:'便签与记录',exact:true}).click();
   await page.locator('.workspace-bookmark .workspace-quote').first().click();assert.equal(await page.locator('.text-bookmark-ink').count(),1);
   await page.locator('.passage-located rect').first().waitFor();assert.ok(await page.locator('.passage-located rect').first().evaluate(n=>n.getBBox().width<300),'source navigation highlights only the short quote');
   const remove=await page.getByRole('button',{name:'移除书签',exact:true}).first().boundingBox();assert.ok(remove.width>=44&&remove.height>=44);
@@ -106,7 +123,7 @@ for(const engine of ['chromium','webkit']){
   await selectPassage(page);const mobile=await page.locator('.reader-selection-toolbar').boundingBox();assert.ok(mobile.x>=0&&mobile.x+mobile.width<=391&&mobile.y>=0&&mobile.y+mobile.height<=845);
   await page.screenshot({path:`output/workspace-check/${engine}-phone.png`});
   assert.deepEqual(errors,[]);assert.deepEqual(external,[]);
-  results.push({engine,smallWindow:small,maximized:large,guide:true,keyboard:true,selectionToolbar:true,linkedAndFreeNotes:true,pageAndTextBookmarks:true,followupChoices:true,offlineSaveAndReopen:true,mobileToolbar:true,externalRequests:external,errors});
+  results.push({engine,smallWindow:small,maximized:large,guide:true,keyboard:true,selectionToolbar:true,realMouseSelectionAndTextColor:true,contextMenu:true,immersiveSidebars:true,inlineLinkedAndFreeNotes:true,pageAndTextBookmarks:true,followupChoices:true,offlineSaveAndReopen:true,mobileToolbar:true,externalRequests:external,errors});
   await context.close();
  }finally{await browser.close();}
 }

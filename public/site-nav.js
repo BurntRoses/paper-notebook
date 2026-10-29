@@ -41,4 +41,9 @@
   shortcuts.addEventListener('focusout', event => { if (!shortcuts.contains(event.relatedTarget)) close(); });
   shortcuts.append(button, nav);
   header.replaceChildren(brand, shortcuts);
+  // Native iframe lazy loading may fetch several screens ahead. Defer the
+  // embedded reader until it is close, keeping initial bandwidth for the film.
+  const preview=document.querySelector('.reader-preview[data-src]');
+  if(preview){const observer=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){preview.src=preview.dataset.src;delete preview.dataset.src;observer.disconnect();}},{rootMargin:'180px'});observer.observe(preview);}
+
 })();

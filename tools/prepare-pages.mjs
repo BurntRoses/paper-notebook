@@ -23,7 +23,7 @@ for(const name of ['blank-notebook','paper-notebook','paper-notebook-product','m
 await cp(dist+'downloads/paper-notebook-skill.zip',site+'downloads/paper-notebook-skill.zip');
 await cp(dist+'downloads/paper-notebook-conversation.zip',site+'downloads/paper-notebook-conversation.zip');
 await cp(dist+'downloads/paper-notebook-upload.zip',site+'downloads/paper-notebook-upload.zip');
-for(const path of ['paper-landscape-2.png','paper-portrait-2.png','paper-notebook-film.mp4','paper-notebook-film-portrait.mp4','story/film-landscape-poster-1.png','story/film-portrait-poster-1.png'])await cp(dist+'promo/'+path,site+'promo/'+path);
+for(const path of ['paper-landscape-2.webp','paper-portrait-2.webp','paper-notebook-film.mp4','paper-notebook-film-portrait.mp4','story/film-landscape-poster-1.webp','story/film-portrait-poster-1.webp'])await cp(dist+'promo/'+path,site+'promo/'+path);
 await writeFile(site + 'reader.html', reader);
 await writeFile(site + 'index.html', home);
 await writeFile(site+'chat-start.html','<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="0;url=./#create"><link rel="canonical" href="./#create"><title>制作笔记 · Paper Notebook</title><script>location.replace("./"+(["#agent","#chat"].includes(location.hash)?location.hash:"#create"))</script><a href="./#create">前往首页，复制制作指令</a></html>');

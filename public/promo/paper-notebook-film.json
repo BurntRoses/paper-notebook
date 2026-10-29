@@ -1,7 +1,7 @@
 {
   "orientation": "landscape",
-  "width": 1920,
-  "height": 1080,
+  "width": 1280,
+  "height": 720,
   "fps": 30,
   "duration": 64,
   "frames": 1920,
@@ -16,11 +16,13 @@
   "file": "paper-notebook-film.mp4",
   "encoding": {
     "video": "H.264",
-    "crf": 24,
+    "crf": 26,
     "preset": "slow",
+    "maxrate": "1100 kb/s",
+    "buffer": "2200 kb/s",
     "keyframeSeconds": 2,
-    "audio": "AAC 96 kb/s",
+    "audio": "AAC 80 kb/s",
     "fastStart": true
   },
-  "bytes": 15257117
+  "bytes": 5574426
 }

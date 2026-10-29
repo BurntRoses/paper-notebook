@@ -1,7 +1,7 @@
 {
   "orientation": "portrait",
-  "width": 1080,
-  "height": 1920,
+  "width": 720,
+  "height": 1280,
   "fps": 30,
   "duration": 64,
   "frames": 1920,
@@ -16,11 +16,13 @@
   "file": "paper-notebook-film-portrait.mp4",
   "encoding": {
     "video": "H.264",
-    "crf": 24,
+    "crf": 26,
     "preset": "slow",
+    "maxrate": "1100 kb/s",
+    "buffer": "2200 kb/s",
     "keyframeSeconds": 2,
-    "audio": "AAC 96 kb/s",
+    "audio": "AAC 80 kb/s",
     "fastStart": true
   },
-  "bytes": 15603570
+  "bytes": 5637294
 }
