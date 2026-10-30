@@ -7,5 +7,14 @@
     "portrait"
   ],
   "ink": "Unmodified native SVG geometry; only dash/clip reveal",
-  "revealSteps": 80
+  "revealSteps": 80,
+  "documentRevision": 4,
+  "readerSha256": "8c65950bb9bff5a9c6120db75d20ac8cc6efa4e2cc16b893ff1ac3f827fd851c",
+  "uiSource": "downloads/machine-learning.html; landscape/portrait spreads, right/bottom notes, figure annotation tools",
+  "uiCaptures": [
+    "ui-landscape.png",
+    "ui-portrait.png",
+    "editor-landscape.png",
+    "editor-portrait.png"
+  ]
 }

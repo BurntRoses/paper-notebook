@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "notebook-growth",
-    "revision": 2,
+    "revision": 3,
     "title": "复利的递推关系",
     "subtitle": "用一个具体数值，理解指数与复利。",
     "author": "Paper Notebook",
@@ -25,7 +25,7 @@
         "pages": [
           {
             "id": "growth-1",
-            "title": "增长如何继续累积？",
+            "title": "复利的逐期累积",
             "subtitle": "从逐期计算推导通式。",
             "layout": "grid",
             "blocks": [
@@ -38,6 +38,15 @@
                     {
                       "text": "增长的基础",
                       "kind": "circle"
+                    },
+                    {
+                      "text": "增长的基础",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "增长的基础",
+                      "kind": "red",
+                      "color": "#285f9e"
                     }
                   ]
                 }
@@ -238,6 +247,6 @@
       "theme": "paper-light",
       "motion": "full"
     },
-    "baseRevision": 1
+    "baseRevision": 2
   }
 }

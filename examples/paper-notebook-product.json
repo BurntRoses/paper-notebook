@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "paper-notebook-product-story",
-    "revision": 3,
+    "revision": 4,
     "title": "Paper Notebook · 产品笔记",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -35,7 +35,7 @@
         "pages": [
           {
             "id": "product-pain",
-            "title": "把想学的，变成一本图文笔记。",
+            "title": "使用 AI 制作图文学习笔记",
             "subtitle": "01 / 从你的材料开始",
             "subject": "general",
             "layout": "reading",
@@ -54,6 +54,15 @@
                     {
                       "text": "学习目标",
                       "kind": "circle"
+                    },
+                    {
+                      "text": "学习目标",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "学习目标",
+                      "kind": "red",
+                      "color": "#285f9e"
                     }
                   ]
                 }
@@ -62,7 +71,7 @@
                 "id": "pain-fragments",
                 "type": "code",
                 "language": "Markdown",
-                "text": "先提供：参考文件，或明确没有文件\n再选择：主题、基础和学习目标\n内容包括：概念、图解、推导和例题\n讲解要求：交代条件，说明每一步\n保存一本：可离线打开的笔记\n带上记录：圈画、疑问和练习答案",
+                "text": "先提供：参考文件，或说明没有文件\n再选择：主题、基础和学习目标\n内容包括：概念、图解、推导和例题\n讲解要求：交代条件，说明每一步\n文件格式：单文件离线 HTML\n保存记录：圈画、便条、疑问与作答",
                 "study": {
                   "label": "告诉 AI 学什么、怎么讲"
                 }
@@ -110,6 +119,15 @@
                     {
                       "text": "重点随手标",
                       "kind": "circle"
+                    },
+                    {
+                      "text": "重点随手标",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "重点随手标",
+                      "kind": "red",
+                      "color": "#285f9e"
                     }
                   ]
                 }
@@ -165,7 +183,7 @@
           },
           {
             "id": "product-structure",
-            "title": "读条件，跟推导，用例题验算。",
+            "title": "条件、推导与例题",
             "subtitle": "03 / 同一主题，集中阅读",
             "subject": "stem",
             "layout": "cornell",
@@ -209,7 +227,7 @@
                 "text": "每期金额 = 上一期金额 × (1 + r)。",
                 "study": {
                   "visual": "blackboard",
-                  "label": "02 · 敲黑板",
+                  "label": "02 · 公式",
                   "marks": [
                     {
                       "text": "上一期金额",
@@ -255,20 +273,29 @@
               {
                 "id": "marks-select",
                 "type": "prose",
-                "text": "选中结论划荧光，关键词用圈注。标记自动收进重点列表，点击即可查看原文。",
+                "text": "选中文字可加粗、变色或圈注。书签与疑问在右上角集中查看，点击可返回原文。",
                 "study": {
-                  "label": "九种圈画，按需要用",
+                  "label": "文字标记与收录",
                   "marks": [
                     {
-                      "text": "结论",
+                      "text": "选中文字",
                       "kind": "highlight"
                     },
                     {
-                      "text": "关键词",
+                      "text": "书签与疑问",
                       "kind": "circle"
                     },
                     {
-                      "text": "重点列表",
+                      "text": "书签与疑问",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "书签与疑问",
+                      "kind": "red",
+                      "color": "#285f9e"
+                    },
+                    {
+                      "text": "返回原文",
                       "kind": "star"
                     }
                   ]
@@ -315,7 +342,7 @@
                   },
                   {
                     "id": "return",
-                    "label": "重点列表定位原文"
+                    "label": "书签与疑问定位原文"
                   }
                 ],
                 "edges": [
@@ -335,19 +362,13 @@
               {
                 "id": "marks-return",
                 "type": "quote",
-                "text": "重点列表集中复习，旁注解释关键概念。",
+                "text": "双击右栏或底栏空白处添加便条，圆形色块切换底色。",
                 "study": {
                   "visual": "extract",
-                  "explanations": [
-                    {
-                      "text": "旁注",
-                      "note": "解释与对应文字一起显示。"
-                    }
-                  ],
                   "marks": [
                     {
-                      "text": "集中复习",
-                      "kind": "bracket"
+                      "text": "右栏或底栏",
+                      "kind": "underline"
                     }
                   ]
                 }
@@ -373,6 +394,15 @@
                     {
                       "text": "破",
                       "kind": "circle"
+                    },
+                    {
+                      "text": "破",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "破",
+                      "kind": "red",
+                      "color": "#285f9e"
                     },
                     {
                       "text": "深",
@@ -434,6 +464,15 @@
                     {
                       "text": "学习范围",
                       "kind": "circle"
+                    },
+                    {
+                      "text": "学习范围",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "学习范围",
+                      "kind": "red",
+                      "color": "#285f9e"
                     }
                   ]
                 }
@@ -501,7 +540,7 @@
           },
           {
             "id": "product-focus",
-            "title": "沉浸阅读，离线保存。",
+            "title": "横竖版阅读与离线保存",
             "subtitle": "07 / 界面与保存",
             "subject": "general",
             "layout": "reading",
@@ -509,13 +548,13 @@
               {
                 "id": "focus-read",
                 "type": "concept",
-                "title": "纸页随屏幕调整。",
-                "text": "横竖屏自动排版，夜间换成深色纸张。收起工具，以正文为主，给图解与推导留出空间。",
+                "title": "横竖版与双页阅读",
+                "text": "横竖纸张独立切换，双页可左右或上下排列。右栏和底栏可分别开关，夜间模式使用深色纸张。",
                 "study": {
-                  "label": "界面设计",
+                  "label": "阅读设置",
                   "marks": [
                     {
-                      "text": "以正文为主",
+                      "text": "双页",
                       "kind": "underline"
                     }
                   ]
@@ -525,25 +564,25 @@
                 "id": "focus-table",
                 "type": "comparison",
                 "columns": [
-                  "阅读习惯",
-                  "对应选择"
+                  "功能",
+                  "操作"
                 ],
                 "rows": [
                   [
-                    "读得舒服",
-                    "日夜模式与字体选择"
+                    "页边批注",
+                    "双击右栏或底栏空白处"
                   ],
                   [
-                    "留一份纸本",
-                    "导出 A4 横版或竖版 PDF"
+                    "图像批注",
+                    "添加圈注、箭头和文字说明"
                   ],
                   [
-                    "换个地方继续读",
-                    "保存含学习记录的 HTML"
+                    "保存文件",
+                    "下载含学习记录的离线 HTML"
                   ]
                 ],
                 "study": {
-                  "label": "按习惯阅读"
+                  "label": "批注与保存"
                 }
               },
               {
@@ -570,17 +609,17 @@
           {
             "id": "product-start",
             "title": "Paper Notebook",
-            "subtitle": "08 / 打开一本，开始读",
+            "subtitle": "08 / 试读与制作",
             "subject": "general",
             "layout": "reading",
             "blocks": [
               {
                 "id": "start-message",
                 "type": "concept",
-                "title": "让 AI 生成笔记，按自己的节奏学习。",
+                "title": "图文阅读、批注与复习",
                 "text": "分主题阅读，圈画重点，按需复习。",
                 "study": {
-                  "label": "AI 教程 · 纸页阅读器",
+                  "label": "图文笔记阅读器",
                   "marks": [
                     {
                       "text": "分主题阅读",
@@ -589,6 +628,15 @@
                     {
                       "text": "按需复习",
                       "kind": "circle"
+                    },
+                    {
+                      "text": "按需复习",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "按需复习",
+                      "kind": "red",
+                      "color": "#285f9e"
                     }
                   ]
                 }
@@ -599,22 +647,22 @@
                 "items": [
                   {
                     "id": "start-a1",
-                    "text": "打开示例，试读与圈画。"
+                    "text": "在线试读与批注。"
                   },
                   {
                     "id": "start-a2",
-                    "text": "下载笔记，离线继续读。"
+                    "text": "下载离线 HTML。"
                   },
                   {
                     "id": "start-a3",
-                    "text": "复制制作指令，用自己的材料做下一本。"
+                    "text": "复制指令，使用自己的材料生成笔记。"
                   }
                 ],
                 "study": {
-                  "label": "现在就能开始",
+                  "label": "试读与制作",
                   "marks": [
                     {
-                      "text": "打开示例",
+                      "text": "在线试读",
                       "kind": "check"
                     }
                   ]
@@ -672,7 +720,7 @@
   },
   "assets": [],
   "extensions": {
-    "baseRevision": 2,
+    "baseRevision": 3,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

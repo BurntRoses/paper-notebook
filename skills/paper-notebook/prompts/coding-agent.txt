@@ -1,1 +1,1 @@
-请按 https://github.com/BurntRoses/paper-notebook 仓库内的指引，为我制作教材式学习笔记，并在工作区生成单文件离线 HTML。
+请按 https://github.com/BurntRoses/paper-notebook 仓库内的指引，为我制作教材式学习笔记：关键概念加粗、重点短语变色并配合圈点；图像上添加有意义的圈画、箭头与简短文字说明，辅助理解；采用宽松行距、段落留白和图文交错的讲解，圈点勾画覆盖关键概念、条件与结果；在工作区生成单文件离线 HTML。

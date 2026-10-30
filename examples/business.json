@@ -1,0 +1,240 @@
+{
+  "schemaVersion": "1.0.0",
+  "notebook": {
+    "id": "showcase-business",
+    "revision": 1,
+    "title": "盈亏平衡 · 成本与销量",
+    "author": "Paper Notebook",
+    "language": "zh-CN",
+    "goals": [
+      "计算单位贡献与盈亏平衡销量",
+      "比较给定销量下的收入与成本"
+    ],
+    "sources": [
+      {
+        "id": "business-model",
+        "title": "盈亏平衡模型与教学核算",
+        "locator": "利润 = Q(p−v)−F；F=3000 元、p=80 元/件、v=50 元/件，盈亏平衡销量 100 件。"
+      }
+    ],
+    "chapters": [
+      {
+        "id": "business-chapter",
+        "title": "盈亏平衡 · 成本与销量",
+        "pages": [
+          {
+            "id": "subject-business",
+            "title": "单位贡献与盈亏平衡",
+            "subtitle": "商学 / 固定成本、售价与销量",
+            "subject": "business",
+            "layout": "reading",
+            "blocks": [
+              {
+                "id": "business-conditions",
+                "type": "prose",
+                "text": "单价 80 元，单位变动成本 50 元，固定成本 3000 元。假设单价与单位成本不变。",
+                "study": {
+                  "label": "给定条件",
+                  "marks": [
+                    {
+                      "text": "单价与单位成本不变",
+                      "kind": "underline"
+                    },
+                    {
+                      "text": "固定成本 3000 元",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "固定成本 3000 元",
+                      "kind": "red",
+                      "color": "#285f9e"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "business-formula",
+                "type": "formula",
+                "latex": "Q_{BE}=\\frac{F}{p-v}=\\frac{3000}{80-50}=100",
+                "text": "单位贡献 30 元；100 件贡献 3000 元，恰好覆盖固定成本。",
+                "study": {
+                  "label": "敲黑板 · 盈亏平衡销量",
+                  "visual": "blackboard",
+                  "marks": [
+                    {
+                      "text": "贡献 30 元",
+                      "kind": "box"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "business-breakeven-chart",
+                "type": "chart",
+                "title": "收入与总成本",
+                "chartType": "line",
+                "xLabel": "销量 / 件",
+                "yLabel": "金额 / 元",
+                "series": [
+                  {
+                    "id": "business-revenue",
+                    "label": "收入 80Q",
+                    "points": [
+                      {
+                        "x": 0,
+                        "y": 0
+                      },
+                      {
+                        "x": 80,
+                        "y": 6400
+                      },
+                      {
+                        "x": 100,
+                        "y": 8000
+                      },
+                      {
+                        "x": 120,
+                        "y": 9600
+                      }
+                    ]
+                  },
+                  {
+                    "id": "business-cost",
+                    "label": "总成本 3000+50Q",
+                    "points": [
+                      {
+                        "x": 0,
+                        "y": 3000
+                      },
+                      {
+                        "x": 80,
+                        "y": 7000
+                      },
+                      {
+                        "x": 100,
+                        "y": 8000
+                      },
+                      {
+                        "x": 120,
+                        "y": 9000
+                      }
+                    ]
+                  }
+                ],
+                "caption": "教学模型；两条线在销量 100 件、金额 8000 元处相交，此时利润为 0。",
+                "figure": {
+                  "size": "wide",
+                  "ratio": "auto",
+                  "style": "sketch",
+                  "annotations": [
+                    {
+                      "kind": "circle",
+                      "x": 74,
+                      "y": 21,
+                      "x2": 83,
+                      "y2": 31,
+                      "color": "#b1483d"
+                    },
+                    {
+                      "kind": "text",
+                      "x": 34,
+                      "y": 17,
+                      "text": "交点：收支相等",
+                      "color": "#b1483d"
+                    },
+                    {
+                      "kind": "arrow",
+                      "x": 63,
+                      "y": 19,
+                      "x2": 77,
+                      "y2": 25,
+                      "color": "#b1483d"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "business-table",
+                "type": "comparison",
+                "columns": [
+                  "销量",
+                  "收入 − 变动成本 − 固定成本"
+                ],
+                "rows": [
+                  [
+                    "80 件",
+                    "6400 − 4000 − 3000 = −600 元"
+                  ],
+                  [
+                    "120 件",
+                    "9600 − 6000 − 3000 = 600 元"
+                  ]
+                ],
+                "study": {
+                  "label": "盈亏平衡点两侧"
+                }
+              },
+              {
+                "id": "business-extract",
+                "type": "callout",
+                "text": "固定成本由全部销量共同覆盖。销量 × 单位贡献 − 固定成本，即为模型中的利润。",
+                "study": {
+                  "label": "量纲与解释",
+                  "visual": "extract",
+                  "marks": [
+                    {
+                      "text": "全部销量共同覆盖",
+                      "kind": "highlight"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "userState": {
+    "updatedAt": "2026-10-30T00:00:00.000Z",
+    "lastPageId": "subject-business",
+    "notes": [],
+    "annotations": [],
+    "doubts": [],
+    "answers": {},
+    "checks": {},
+    "bookmarks": [],
+    "readingPositions": {},
+    "preferences": {
+      "language": "zh",
+      "desk": "oak",
+      "showDesk": true,
+      "motion": true,
+      "texture": 0.48,
+      "reading": "pages",
+      "direction": "horizontal",
+      "spread": false,
+      "fontSize": 18,
+      "weatherCity": "",
+      "weatherEnabled": false,
+      "penColor": "#6c7355",
+      "penWidth": 2,
+      "penTexture": "pencil",
+      "timerDisplay": "digital",
+      "timerRemaining": 1500,
+      "timerRunning": false
+    }
+  },
+  "assets": [],
+  "extensions": {
+    "readerProfile": {
+      "layout": "single",
+      "direction": "horizontal",
+      "sidebar": "collapsed",
+      "pageShape": "auto",
+      "transition": "cover",
+      "theme": "paper-light",
+      "motion": "full"
+    }
+  }
+}

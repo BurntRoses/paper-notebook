@@ -9,7 +9,7 @@ import re
 import zipfile
 import unicodedata
 from verify_reader import verify
-from study_quality import check_study_marks
+from study_quality import check_study_marks, block_text
 from content_review import review_content
 
 
@@ -71,6 +71,9 @@ def check_references(doc):
             for cue in page.get('cues',[]):
                 add(cue)
                 if cue.get('blockId') and cue['blockId'] not in blockids:raise ValueError('missing cue block')
+                if cue.get('anchor'):
+                    source=next((b for b in page['blocks'] if b['id']==cue.get('blockId')),None)
+                    if not source or cue['anchor'] not in block_text(source):raise ValueError('cue anchor must match source text')
             for block in page['blocks']:
                 add(block)
                 for key in ['items','steps','options','pairs']:

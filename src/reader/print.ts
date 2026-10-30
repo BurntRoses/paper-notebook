@@ -1,8 +1,11 @@
 import { blocksOf, pagesOf, type NotebookDocument, type Page } from '../model/types';
 import { renderBlock } from '../ui/blocks';
 import { el } from '../ui/dom';
+import { fitPageFigures } from '../ui/figures';
 import { PageSurface, type SurfacePage } from './surface';
 import { authoredAnnotations, drawInk } from './ink';
+import { layoutPaperMargins } from './margins';
+import { drawSketchFrames } from './sketch';
 
 /** Print is a separate projection. It never changes the saved reader profile or source IDs. */
 export interface PrintOptions { orientation:'portrait'|'landscape'; includeRecords:boolean }
@@ -10,7 +13,7 @@ export const defaultPrintOptions:PrintOptions={orientation:'portrait',includeRec
 const mm=(n:number)=>n*96/25.4;
 
 function printDocument(source:NotebookDocument,records:boolean){
- const d=structuredClone(source);d.extensions.readerProfile={...(d.extensions.readerProfile as object),lineSpacing:1.85,theme:'paper-light'};
+ const d=structuredClone(source);d.extensions.readerProfile={...(d.extensions.readerProfile as object),lineSpacing:2.05,theme:'paper-light'};
  if(!records){d.userState.answers={};d.userState.checks={};}
  if(records){
   const blocks:Page['blocks']=[];
@@ -33,7 +36,7 @@ export function createPrintView(source:NotebookDocument,options:PrintOptions,ori
  const sourceBlocks=new Map(blocksOf(d).map(b=>[b.id,b]));
  const surface=new PageSurface(d,options.orientation,16,b=>{const n=renderBlock(b,d,{answer:()=>{},check:()=>{},edit:()=>{},image:()=>{}},sourceBlocks.get(b.id)||b);(n as HTMLElement&{__block:unknown}).__block=sourceBlocks.get(b.id)||b;return n;},dimensions,root);
  const populate=()=>{
-  root.replaceChildren();const sheets=surface.paginate();sheets.forEach((p,i)=>root.append(surface.render(p,i)));
+  root.replaceChildren();const sheets=surface.paginate();sheets.forEach((p,i)=>root.append(surface.render(p,i)));fitPageFigures(root);
   if(options.includeRecords&&original){
    const strokes=source.userState.annotations.filter(a=>a.kind==='freehand'&&(!a.status||a.status==='resolved'));
    for(const p of original.pages){if(!strokes.some(a=>a.pageId===p.id&&(a.sheet||0)===p.part))continue;
@@ -48,6 +51,8 @@ export function createPrintView(source:NotebookDocument,options:PrintOptions,ori
   // base (for example a very wide matrix), keeping ordinary long sums readable.
   for(const formula of root.querySelectorAll<HTMLElement>('.print-sheet:not(.ink-appendix) .formula')){const width=Math.max(0,...[...formula.querySelectorAll<HTMLElement>('.katex-html > .base')].map(n=>n.getBoundingClientRect().width));if(width>formula.clientWidth)formula.style.fontSize=(parseFloat(getComputedStyle(formula).fontSize)*formula.clientWidth/width)+'px';}
   for(const paper of root.querySelectorAll<HTMLElement>('.print-sheet:not(.ink-appendix)'))drawInk(paper,[...authoredAnnotations(source,paper.dataset.page!),...(options.includeRecords?source.userState.annotations.filter(a=>a.kind!=='freehand'&&a.pageId===paper.dataset.page):[])],source);
+  layoutPaperMargins(root,d);
+  drawSketchFrames(root);
  };
  populate();
  return {root,reflow:populate,dispose:()=>{root.remove();style.remove();}};

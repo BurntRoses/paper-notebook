@@ -9,6 +9,7 @@ import {buildSkill} from './build-skill.mjs';
 import {conversationUpload} from './conversation-package.mjs';
 import {slimFonts,artifactStem,bundleReadme} from '../src/io/packaging.ts';
 import {machineLearning} from '../src/machine-learning.ts';
+import {showcaseNotebooks} from '../src/showcase.ts';
 import {verifyBundledReader} from '../src/io/reader-proof.ts';
 import { blankDocument } from '../src/model/types.ts';
 import { parseDocument, scriptJSON } from '../src/model/document.ts';
@@ -22,7 +23,7 @@ await mkdir(root+'dist/downloads',{recursive:true});await mkdir(root+'examples',
 const artifacts=[];
 const build=(document)=>{let replaced=false;const html=template.replace(/(<script\b[^>]*\bid=["']notebook-data["'][^>]*>)[\s\S]*?(<\/script>)/,(_,open,close)=>{replaced=true;return open+scriptJSON(document)+close;});if(!replaced)throw new Error('Missing notebook-data slot');const result=slimFonts(html,document);verifyBundledReader(result,template,document);return result;};
 const blank=blankDocument();blank.notebook.id='notebook-blank';blank.notebook.chapters[0].id='blank-chapter';blank.notebook.chapters[0].pages[0].id='blank-page';blank.userState.lastPageId='blank-page';blank.userState.updatedAt='2026-10-29T00:00:00.000Z';
-for(const [name,doc] of [['blank-notebook',blank],['paper-notebook',introNotebook],['paper-notebook-product',productStory],['machine-learning',machineLearning],...examples.map((d,i)=>[['concept','formula','practice'][i],d])]){
+for(const [name,doc] of [['blank-notebook',blank],['paper-notebook',introNotebook],['paper-notebook-product',productStory],['machine-learning',machineLearning],...examples.map((d,i)=>[['concept','formula','practice'][i],d]),...showcaseNotebooks]){
  parseDocument(doc);const html=build(doc),json=JSON.stringify(doc,null,2);
  await writeFile(root+`dist/downloads/${name}.html`,html);await writeFile(root+`dist/downloads/${name}.json`,json);await writeFile(root+`examples/${name}.json`,json);
  const stem=artifactStem(doc.notebook.title,doc.notebook.revision);const zip=zipSync({[stem+'.html']:strToU8(html),'notebook.json':strToU8(JSON.stringify(doc)),'THIRD_PARTY_NOTICES.txt':notices,'打开我-README.txt':strToU8(bundleReadme(stem))},{level:9,mtime:new Date('2026-01-01T00:00:00Z')});
@@ -52,7 +53,7 @@ await writeFile(root+'dist/downloads/paper-notebook-conversation.zip',chatZip);
 await writeFile(root+'dist/downloads/paper-notebook-upload.zip',conversationUpload(chatZip));
 
 const promoSource={};
-for(const file of ['examples/product-notebook.json','src/product-story.ts','tools/render-product-film.py','tools/prepare-product-assets.mjs','tools/compose-product-music.py','tools/capture-product-story.mjs','tools/build-product-story.mjs','tools/verify-product-film.mjs','tools/verify-chat-package.mjs','docs/promo-production.md','docs/product-film-script.md','public/promo/product-film-script.json','public/promo/product-film-music.json','public/promo/product-film-music.wav','public/promo/product-film-music.mp3','THIRD_PARTY_NOTICES.txt','LICENSE'])promoSource[file]=new Uint8Array(await readFile(root+file));
+for(const file of ['examples/product-notebook.json','src/product-story.ts','tools/render-product-film.py','tools/encode-film-low.mjs','tools/prepare-product-assets.mjs','tools/compose-product-music.py','tools/capture-product-story.mjs','tools/build-product-story.mjs','tools/verify-product-film.mjs','tools/verify-chat-package.mjs','docs/promo-production.md','docs/product-film-script.md','public/promo/product-film-script.json','public/promo/product-film-music.json','public/promo/product-film-music.wav','public/promo/product-film-music.mp3','THIRD_PARTY_NOTICES.txt','LICENSE'])promoSource[file]=new Uint8Array(await readFile(root+file));
 for(const base of ['production/promo/story','public/promo/story'])for(const entry of await readdir(root+base,{withFileTypes:true}))if(entry.isFile()&&!excludedEntry(entry))promoSource[base+'/'+entry.name]=new Uint8Array(await readFile(root+base+'/'+entry.name));
 promoSource['README.txt']=strToU8('Paper Notebook product film source. See docs/promo-production.md. Retained native page PNG/SVG and geometry rebuild the film with prepare-product-assets.mjs, compose-product-music.py and render-product-film.py. Full reader development and content recapture require paper-notebook-toolkit.zip.\n');
 await writeFile(root+'dist/downloads/paper-notebook-promo-source.zip',zipSync(promoSource,{level:6,mtime:new Date('2026-01-01T00:00:00Z')}));

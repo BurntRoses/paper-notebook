@@ -12,7 +12,7 @@
 | formula | latex, text? | 公式及变量/单位/条件说明 |
 | code | text, language? | 保留缩进，只展示、不执行 |
 | quote | text, attribution? | 可追踪原文或明确标为教学自拟的旁注 |
-| callout | text, tone? | 注意事项、待核实点 |
+| callout | text, title?, tone? | 淡纸色底、铅笔边线与轻排线的补充条件或提醒；具体标题优先，正文空行分段 |
 | checklist | items: [{id,text}] | 状态放 userState.checks |
 | image | assetId, alt, caption? | assets 中的内嵌图片 |
 | diagram | nodes: [{id,label,shape?}], edges: [{from,to,label?}] | 可导出 SVG 的关系与流程图 |
@@ -32,9 +32,9 @@
 
 ## 学科呈现与重点
 
-页面可设 `subject: stem|literature|business|code|general`。组件可带 `study: {visual, label?, aside?, tone?, marks?}`：`visual` 为 plain、blackboard、extract、sketch；`marks` 为 `[{text,kind,color?,seed?}]`，text 必须是组件实际文本的完整子串。kind 支持 highlight、underline、circle、wave、box、bracket、check、star、dots。黑板保留可选文字与原生公式，适合关键公式或结论；摘录承载引文、定义；草图承载关系。避免同一页大量重复视觉容器。
+页面可设 `subject: stem|literature|business|code|general`。组件可带 `study: {visual, label?, aside?, tone?, marks?}`：`visual` 为 plain、blackboard、extract、sketch；`marks` 为 `[{text,kind,color?,seed?}]`，text 必须是组件实际文本的完整子串。kind 支持 highlight、underline、circle、wave、box、bracket、check、star、dots、bold、red。`bold` 加粗实际文字；`red` 配合 `color` 修改实际文字颜色（如蓝色 `#285f9e`、红色 `#b1483d`），与彩色圈画独立。黑板保留可选文字与原生公式，适合关键公式或结论；摘录承载引文、定义；草图承载关系。避免同一页大量重复视觉容器。
 
-生成教程默认应写入少量作者标记，而不是只提供圈画工具。按意义选择关键词、条件或已核验的结论；禁止整段装饰性圈画。作者标记存在正文 `study.marks`，个人操作存在 `userState.annotations`。构建报告的 `studyMarks` 提供数量、类型和未标记页；非空文字教程零标记或目标文字不存在时拒绝交付。仅用户明确要求无标记内容时使用 `--allow-unmarked`，空白阅读器不受此限制。
+生成教程默认必须在每个讲解部分写入关键概念加粗、短语变色与少量作者圈画，而不是只提供圈画工具。按意义选择关键词、条件或已核验的结论；禁止整段装饰性圈画。作者标记存在正文 `study.marks`，个人操作存在 `userState.annotations`。构建报告的 `studyMarks` 提供数量、类型和未标记页；非空文字教程零标记或目标文字不存在时拒绝交付。仅用户明确要求无标记内容时使用 `--allow-unmarked`，空白阅读器不受此限制。
 
 小型 diagram 可设 `arrangement: "row"`，最多四个节点横向排列；手机自动转为纵向，更复杂的关系使用默认分层排布。code 保留缩进，显示语言与复制按钮，语法颜色仅作用于文字，不执行程序。
 
@@ -50,7 +50,7 @@
 
 `keepTogether:true` 可用于重要完整块。默认就会将能在新页放下的块完整移到下一页；超高代码、公式、图、例题使用完整滚动框。仅超长正文、列表、表格会分页，表格保留表头。
 
-Markdown 的 `notebook-page` 围栏可在 ### 后指定 {id, layout, subject, cues:[{id,text,blockId}], summary}。默认 Cornell，宽图与长推导可选 reading。cues 引用本页实际块并可点击定位，续页只显示对应线索。summary 写有用结论，不放通用鼓励。
+Markdown 的 `notebook-page` 围栏可在 ### 后指定 {id, layout, subject, cues:[{id,text,blockId,anchor?}], summary}。默认 Cornell，宽图与长推导可选 reading。cues 引用本页实际块；可选 anchor 是正文原句短语，问题随所在片段续页、按原句位置对齐，点击可定位原文。图像问题引用对应图像块。summary 仅在该部分末张纸页显示，写有用结论，不放通用鼓励。
 
 
 ## 手绘配图与版式 / Figure layout
@@ -66,8 +66,18 @@ Markdown 的 `notebook-page` 围栏可在 ### 后指定 {id, layout, subject, cu
 
 窄屏 small 扩至 70%，medium 扩至 100%，避免标签过小。图注随图框排列。位图资产 `assets[]` 可选 `width`、`height`（实际正整数像素），SVG 应带 `viewBox`。图片未知尺寸且未指定比例时先按 4:3 稳定占位；生成时应补齐真实尺寸。照片、扫描图和插画需要 alt、来源与许可。手绘技术几何保持真实比例，生成模型的图中文字应改为独立可读标签。
 
+分页会测量标题、图注、来源与外边距，将图像等比缩到可用高度；图注保持整列宽度。当前页空间不足时整图移到下一页。极长图注会作为可选文字续到下一张纸，完整图像保留在前页。此过程仅改变显示片段，不修改源数据。图框无需内部滚动；点击图像进入自适应屏幕高度的批注编辑器，可撤销、重做个人图上标记。
+
 ```json
 {"id":"growth-plot","type":"chart","title":"同一初始值的两种增长","chartType":"line","figure":{"size":"wide","ratio":"3:2","style":"sketch"},"xLabel":"期数","yLabel":"期末值 / 元","series":[{"id":"compound","label":"复利 10%","points":[{"x":0,"y":100},{"x":1,"y":110},{"x":2,"y":121}]}],"caption":"教学数据；每期增长率恒定，期间无额外存取。"}
 ```
 
 图像生成、压缩与审阅规则见 [multimodal.md](https://github.com/BurntRoses/paper-notebook/blob/main/skills/paper-notebook/references/multimodal.md)。写作规范及上游版本见 [writing-review.md](https://github.com/BurntRoses/paper-notebook/blob/main/skills/paper-notebook/references/writing-review.md)。
+
+图上批注示例（坐标是图像视口的百分比）：
+
+```json
+{"figure":{"size":"wide","ratio":"3:2","annotations":[{"kind":"circle","x":30,"y":25,"x2":45,"y2":50},{"kind":"arrow","x":65,"y":20,"x2":46,"y2":36},{"kind":"text","x":55,"y":16,"text":"边界条件"}]}}
+```
+
+圈、箭头与文字解释具体位置，保持数据、刻度和原图标签可读。下载阅读器自带图像批注与新手教程，不需外部脚本或网络。

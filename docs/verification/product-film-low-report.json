@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-30T13:12:07.747Z",
+  "report": [
+    {
+      "file": "/Users/luohonggen/Desktop/notebook/paper-notebook-kit/public/promo/paper-notebook-film-low.mp4",
+      "width": 960,
+      "height": 540,
+      "fps": 30,
+      "duration": 64,
+      "frames": 1920,
+      "codec": "H264/AAC stereo 48kHz",
+      "fullDecode": true,
+      "blackFrames": false,
+      "lufs": -15.6,
+      "truePeak": -1.2,
+      "contact": "/Users/luohonggen/Desktop/notebook/paper-notebook-kit/docs/screenshots/product-film-decoded-low.png"
+    },
+    {
+      "file": "/Users/luohonggen/Desktop/notebook/paper-notebook-kit/public/promo/paper-notebook-film-portrait-low.mp4",
+      "width": 540,
+      "height": 960,
+      "fps": 30,
+      "duration": 64,
+      "frames": 1920,
+      "codec": "H264/AAC stereo 48kHz",
+      "fullDecode": true,
+      "blackFrames": false,
+      "lufs": -15.6,
+      "truePeak": -1.2,
+      "contact": "/Users/luohonggen/Desktop/notebook/paper-notebook-kit/docs/screenshots/product-film-decoded-portrait-low.png"
+    }
+  ]
+}

@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "notebook-observation",
-    "revision": 2,
+    "revision": 3,
     "title": "数字与证据",
     "subtitle": "从一张订单表，理解统计粒度与集合。",
     "author": "Paper Notebook",
@@ -31,7 +31,7 @@
         "pages": [
           {
             "id": "observation-1",
-            "title": "同一张表，为什么会有两个答案？",
+            "title": "订单数与顾客数",
             "subtitle": "记录的对象决定统计结果。",
             "layout": "reading",
             "blocks": [
@@ -43,13 +43,22 @@
               {
                 "id": "obs-concept",
                 "type": "concept",
-                "title": "先给数字一个对象",
+                "title": "统计粒度",
                 "text": "统计粒度，是每一条记录所代表的对象。先明确对象，再计数。三笔订单，可能来自一位顾客，也可能来自三位顾客。",
                 "study": {
                   "marks": [
                     {
                       "text": "统计粒度",
                       "kind": "circle"
+                    },
+                    {
+                      "text": "统计粒度",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "统计粒度",
+                      "kind": "red",
+                      "color": "#285f9e"
                     }
                   ]
                 }
@@ -198,25 +207,28 @@
             "cues": [
               {
                 "id": "cue-grain",
-                "text": "一行代表什么？",
-                "blockId": "obs-steps"
+                "text": "这次统计订单，还是顾客？",
+                "blockId": "obs-steps",
+                "anchor": "这次想数订单，还是数人"
               },
               {
                 "id": "cue-range",
-                "text": "范围如何限定？",
-                "blockId": "obs-path"
+                "text": "哪些订单属于本次范围？",
+                "blockId": "obs-steps",
+                "anchor": "只看本月、已付款、未退款的订单"
               },
               {
                 "id": "cue-count",
-                "text": "订单数与人数",
-                "blockId": "obs-example"
+                "text": "再增加一笔 A 的订单，顾客数变吗？",
+                "blockId": "obs-example",
+                "anchor": "顾客数仍然是 3"
               }
             ],
             "summary": "回看时先回答两个问题：每行记录代表什么？哪些记录属于统计范围？口径确定之后，计算与解释才有共同的依据。"
           },
           {
             "id": "observation-3",
-            "title": "两组人数如何合并？",
+            "title": "名单合并与去重",
             "subtitle": "名单可能重叠，计数需要去重。",
             "layout": "grid",
             "blocks": [
@@ -421,6 +433,6 @@
       "theme": "paper-light",
       "motion": "full"
     },
-    "baseRevision": 1
+    "baseRevision": 2
   }
 }

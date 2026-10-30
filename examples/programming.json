@@ -1,0 +1,185 @@
+{
+  "schemaVersion": "1.0.0",
+  "notebook": {
+    "id": "showcase-programming",
+    "revision": 1,
+    "title": "Python · 集合与去重",
+    "author": "Paper Notebook",
+    "language": "zh-CN",
+    "goals": [
+      "比较记录条数与不同编号数",
+      "理解 set 与 len 的作用"
+    ],
+    "sources": [
+      {
+        "id": "python-sets",
+        "title": "Python 文档 · 集合",
+        "url": "https://docs.python.org/zh-cn/3/tutorial/datastructures.html#sets"
+      }
+    ],
+    "chapters": [
+      {
+        "id": "programming-chapter",
+        "title": "Python · 集合与去重",
+        "pages": [
+          {
+            "id": "subject-code",
+            "title": "记录条数与不同人数",
+            "subtitle": "编程 / Python 集合与去重",
+            "subject": "code",
+            "layout": "reading",
+            "blocks": [
+              {
+                "id": "code-question",
+                "type": "prose",
+                "text": "A、A、B 是三条记录，包含两个不同的顾客编号。集合保留不同的值。",
+                "study": {
+                  "label": "问题与数据",
+                  "marks": [
+                    {
+                      "text": "不同的顾客编号",
+                      "kind": "circle"
+                    },
+                    {
+                      "text": "不同的顾客编号",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "不同的顾客编号",
+                      "kind": "red",
+                      "color": "#285f9e"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "code-example",
+                "type": "code",
+                "language": "Python",
+                "text": "def count_customers(ids):\n    unique_ids = set(ids)\n    return len(unique_ids)\nids = [\"A\", \"A\", \"B\"]\nprint(count_customers(ids))  # 2",
+                "study": {
+                  "label": "可核对的最小示例",
+                  "explanations": [
+                    {
+                      "text": "set",
+                      "note": "同值去重，得到 {A, B}。"
+                    },
+                    {
+                      "text": "len",
+                      "note": "求集合长度，结果为 2。"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "code-map",
+                "type": "diagram",
+                "nodes": [
+                  {
+                    "id": "records",
+                    "label": "列表 [A, A, B]"
+                  },
+                  {
+                    "id": "distinct",
+                    "label": "集合 {A, B}"
+                  },
+                  {
+                    "id": "count",
+                    "label": "长度 2"
+                  }
+                ],
+                "edges": [
+                  {
+                    "from": "records",
+                    "to": "distinct",
+                    "label": "set"
+                  },
+                  {
+                    "from": "distinct",
+                    "to": "count",
+                    "label": "len"
+                  }
+                ],
+                "study": {
+                  "visual": "sketch"
+                },
+                "figure": {
+                  "size": "wide",
+                  "ratio": "auto",
+                  "style": "sketch",
+                  "annotations": [
+                    {
+                      "kind": "circle",
+                      "x": 32,
+                      "y": 80,
+                      "x2": 68,
+                      "y2": 94,
+                      "color": "#285f9e"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "code-limit",
+                "type": "prose",
+                "text": "同一人有多个编号时，不同编号的数量不等于人数。",
+                "study": {
+                  "label": "统计口径",
+                  "visual": "extract",
+                  "marks": [
+                    {
+                      "text": "不同编号",
+                      "kind": "star"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "userState": {
+    "updatedAt": "2026-10-30T00:00:00.000Z",
+    "lastPageId": "subject-code",
+    "notes": [],
+    "annotations": [],
+    "doubts": [],
+    "answers": {},
+    "checks": {},
+    "bookmarks": [],
+    "readingPositions": {},
+    "preferences": {
+      "language": "zh",
+      "desk": "oak",
+      "showDesk": true,
+      "motion": true,
+      "texture": 0.48,
+      "reading": "pages",
+      "direction": "horizontal",
+      "spread": false,
+      "fontSize": 18,
+      "weatherCity": "",
+      "weatherEnabled": false,
+      "penColor": "#6c7355",
+      "penWidth": 2,
+      "penTexture": "pencil",
+      "timerDisplay": "digital",
+      "timerRemaining": 1500,
+      "timerRunning": false
+    }
+  },
+  "assets": [],
+  "extensions": {
+    "readerProfile": {
+      "layout": "single",
+      "direction": "horizontal",
+      "sidebar": "collapsed",
+      "pageShape": "auto",
+      "transition": "cover",
+      "theme": "paper-light",
+      "motion": "full"
+    }
+  }
+}

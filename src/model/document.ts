@@ -12,10 +12,11 @@ export function parseDocument(raw: unknown): { document: NotebookDocument; warni
   const add=(id:string,path:string)=>{if(ids.has(id))throw new Error(`${path}: 重复 ID / duplicate ID: ${id}`);ids.add(id);};
   add(d.notebook.id,'notebook');for(const source of d.notebook.sources)add(source.id,'source');
   for(const c of d.notebook.chapters){add(c.id,'chapter');for(const p of c.pages){add(p.id,'page');for(const cue of p.cues||[]){add(cue.id,'cue');if(cue.blockId&&!p.blocks.some(b=>b.id===cue.blockId))throw new Error(`${p.id}: cue ${cue.id} 引用了不存在的内容块。`);}for(const b of p.blocks){add(b.id,'block');for(const item of [...b.items||[],...b.steps||[],...b.options||[]])add(item.id,b.id);for(const item of b.pairs||[])add(item.id,b.id);}}}
+  for(const p of pagesOf(d))for(const cue of p.cues||[])if(cue.anchor){const source=p.blocks.find(b=>b.id===cue.blockId);if(!source||!textOf(source).includes(cue.anchor))throw new Error(`${p.id}: cue ${cue.id} 的 anchor 必须对应正文原句。`);}
   if(pagesOf(d).length>500||blocksOf(d).length>5000)throw new Error('请将超过 500 页或 5000 个内容块的笔记拆为分册。');
   for(const a of d.assets){add(a.id,'asset');if(!/^data:image\/(png|jpeg|webp|gif|avif|svg\+xml);(base64|charset=utf-8),/i.test(a.data))throw new Error(`资源 ${a.id} 必须是内嵌图片 data URL。`);}
   const profile=d.extensions.readerProfile as Record<string,unknown>|undefined;
-  if(profile){if(typeof profile!=='object'||Array.isArray(profile))throw new Error('readerProfile 必须是对象。');const allowed:Record<string,string[]>={layout:['auto','single','spread','scroll'],direction:['horizontal','vertical'],sidebar:['open','collapsed'],pageShape:['auto','portrait','landscape'],transition:['turn','cover','slide','fade','none'],theme:['paper-light','paper-night'],motion:['full','reduced'],font:['hand','serif','sans'],lineSpacing:['1.65','1.85','2.05']};for(const [key,values] of Object.entries(allowed))if(profile[key]!==undefined&&!values.includes(String(profile[key])))throw new Error(`readerProfile.${key}: 无效选项。`);}
+  if(profile){if(typeof profile!=='object'||Array.isArray(profile))throw new Error('readerProfile 必须是对象。');const allowed:Record<string,string[]>={layout:['auto','single','spread','scroll'],direction:['horizontal','vertical'],sidebar:['open','collapsed'],pageShape:['auto','portrait','landscape'],transition:['turn','cover','slide','fade','none'],theme:['paper-light','paper-night'],motion:['full','reduced'],font:['hand','serif','sans'],lineSpacing:['1.65','1.85','2.05','2.25']};for(const [key,values] of Object.entries(allowed))if(profile[key]!==undefined&&!values.includes(String(profile[key])))throw new Error(`readerProfile.${key}: 无效选项。`);}
   const assets=new Set(d.assets.map(a=>a.id)),sources=new Set(d.notebook.sources.map(s=>s.id));
   for(const b of blocksOf(d)){
     if(b.type==='image'&&!assets.has(b.assetId||''))throw new Error(`${b.id}: 图片资源不存在 ${b.assetId}`);
@@ -26,7 +27,7 @@ export function parseDocument(raw: unknown): { document: NotebookDocument; warni
     if(b.type==='diagram'){const nodeIds=new Set(b.nodes?.map(n=>n.id));if(nodeIds.size!==b.nodes?.length||b.edges?.some(e=>!nodeIds.has(e.from)||!nodeIds.has(e.to)))throw new Error(`${b.id}: 图示节点 ID 或连线无效。`);}
   }
   const pageIds=new Set(pagesOf(d).map(p=>p.id));
-  for(const list of [d.userState.notes,d.userState.annotations,d.userState.doubts])for(const entry of list)add(entry.id,'userState');
+  for(const list of [d.userState.notes,d.userState.annotations,d.userState.doubts,d.userState.figureMarks||[]])for(const entry of list)add(entry.id,'userState');
   // Page-only bookmarks were strings in 1.0. Keep them readable while newer
   // text bookmarks carry an exact selector and a stable id.
   d.userState.bookmarks = d.userState.bookmarks.map((raw,index)=>typeof raw==='string'?({id:`bookmark-${raw}-${index}`,pageId:raw,kind:'page'}):raw);

@@ -4,6 +4,15 @@ import { blankDocument, parameterText, textOf, type Block, type Selector } from 
 import { parseDocument, mergeUpdate } from '../src/model/document';
 import { indexForBookmark, indexForReadingAnchor } from '../src/reader/anchors';
 import { bookmarkFor, questionPrompt, readerCopy, setTextColor } from '../src/reader/records';
+import {authoredAnnotations} from '../src/model/study';
+
+test('resetting an authored font colour edits only the selected passage and keeps source untouched',()=>{
+ const d=blankDocument(),page=d.notebook.chapters[0].pages[0];page.blocks=[{id:'colour-source',type:'prose',text:'关键概念与实际条件',study:{marks:[{text:'关键概念与实际条件',kind:'red',color:'#285f9e'}]}}];
+ const source=JSON.stringify(d.notebook),selector={blockId:'colour-source',start:0,end:4,exact:'关键概念',prefix:'',suffix:'与实际条件'};
+ setTextColor(d,[{pageId:page.id,selector}]);assert.equal(authoredAnnotations(d,page.id).length,0);
+ assert.equal(d.userState.annotations.length,1);assert.equal(d.userState.annotations[0].selectors[0].exact,'与实际条件');assert.equal(d.userState.annotations[0].color,'#285f9e');
+ assert.equal(JSON.stringify(d.notebook),source);
+});
 
 test('passage and page bookmarks follow source offsets through repagination',()=>{
   const d=blankDocument(),p=d.notebook.chapters[0].pages[0];
@@ -59,4 +68,16 @@ test('text recolouring splits old ranges, resets locally and survives a document
  const saved=parseDocument(JSON.parse(JSON.stringify(readerCopy(d,{marks:true,questions:false,answers:false,legacy:false})))).document;
  assert.deepEqual(saved.userState.annotations,d.userState.annotations);assert.equal(saved.notebook.chapters[0].pages[0].blocks[0].text,text);
  setTextColor(d,part(0,10));assert.deepEqual(d.userState.annotations,[]);
+});
+
+test('transparent bottom notes and image annotations survive export and source updates',()=>{
+ const d=blankDocument(),p=d.notebook.chapters[0].pages[0];p.blocks=[{id:'visual',type:'diagram',nodes:[{id:'n',label:'边界'}],edges:[],figure:{annotations:[{kind:'circle',x:20,y:30,x2:50,y2:60},{kind:'text',x:52,y:20,text:'边界条件'}]}}];
+ d.userState.notes=[{id:'bottom-note',pageId:p.id,title:'',text:'自己的概括',back:'',material:'transparent',region:'bottom',marginPosition:.2,seed:1,x:0,y:0,z:1,face:'front',attached:false,collapsed:true,surface:'page',sheet:0}];
+ d.userState.figureMarks=[{id:'figure-mark',pageId:p.id,blockId:'visual',kind:'arrow',x:70,y:30,x2:50,y2:50},{id:'figure-pen',pageId:p.id,blockId:'visual',kind:'pen',x:10,y:10,points:[[10,10],[20,20]]}];
+ const saved=parseDocument(readerCopy(d,{marks:true,questions:true,answers:false,legacy:false,notes:true,ink:true})).document;
+ assert.deepEqual(saved.userState.figureMarks,d.userState.figureMarks);assert.deepEqual(saved.userState.notes,d.userState.notes);
+ const withoutInk=readerCopy(d,{marks:true,questions:false,answers:false,legacy:false,ink:false});assert.equal(withoutInk.userState.figureMarks!.length,1);
+ const withoutPersonal=readerCopy(d,{marks:false,questions:false,answers:false,legacy:false,notes:false,ink:false});assert.deepEqual(withoutPersonal.userState.figureMarks,[]);assert.equal(withoutPersonal.notebook.chapters[0].pages[0].blocks[0].figure!.annotations!.length,2);
+ const next=structuredClone(d);next.notebook.revision++;next.extensions.baseRevision=d.notebook.revision;const merged=mergeUpdate(d,next).document;assert.deepEqual(merged.userState.figureMarks,d.userState.figureMarks);
+ const bad=structuredClone(d);bad.userState.figureMarks![0].x=101;assert.throws(()=>parseDocument(bad));
 });

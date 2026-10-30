@@ -16,9 +16,8 @@
 .export-advanced{border:0}
 /* Textbook sections breathe on the paper instead of sitting in nested cards.
    Keep the board's wooden edge and the meaningful lines inside tables/diagrams. */
-.page-surface .content-block:not([data-visual=blackboard]){border:0;outline:0;box-shadow:none}
-.page-surface .content-block[data-frame=bracket]:before,.page-surface .content-block[data-frame=bracket]:after{border:0}
-.page-surface .content-block[data-frame=bracket]:before{inset:18px auto 18px 0;width:3px;height:auto;background:var(--figure-line);opacity:.35;border-radius:70% 10% 60% 20%}
+.page-surface .content-block:not([data-visual=blackboard]):not(.block-callout){border:0;outline:0;box-shadow:none}
+.page-surface .content-block[data-frame=bracket]:before,.page-surface .content-block[data-frame=bracket]:after{display:none}
 .page-surface .block-code pre{border:0}
 button:focus:not(:focus-visible),summary:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:none}
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:3px}

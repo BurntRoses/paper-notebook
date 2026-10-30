@@ -1,19 +1,19 @@
 {
-  "date": "2026-10-29T11:42:55.458Z",
+  "date": "2026-10-30T03:54:56.496Z",
   "results": [
     {
       "engine": "chromium",
       "smallWindow": {
         "font": "18px",
         "scale": 1,
-        "characters": 756,
-        "pages": 43
+        "characters": 337,
+        "pages": 57
       },
       "maximized": {
         "font": "18px",
         "scale": 1,
-        "characters": 2079,
-        "pages": 29
+        "characters": 1134,
+        "pages": 32
       },
       "guide": true,
       "keyboard": true,
@@ -34,14 +34,14 @@
       "smallWindow": {
         "font": "18px",
         "scale": 1,
-        "characters": 756,
-        "pages": 43
+        "characters": 351,
+        "pages": 57
       },
       "maximized": {
         "font": "18px",
         "scale": 1,
-        "characters": 2106,
-        "pages": 29
+        "characters": 1134,
+        "pages": 32
       },
       "guide": true,
       "keyboard": true,

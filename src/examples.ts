@@ -3,9 +3,9 @@ function make(id:string,title:string,subtitle:string,pages:Page[],goals:string[]
  return {schemaVersion:'1.0.0',notebook:{id,revision:1,title,subtitle,author:'Paper Notebook',language:'zh-CN',goals,sources:[{id:'source-editorial',title:'本项目编写的教学示例',status:'illustrative'}],chapters:[{id:`${id}-chapter`,title:'从问题到理解',pages}]},userState:userState(pages[0].id),assets:[],extensions:{}};
 }
 export const conceptExample=make('notebook-observation','数字与证据','从一张订单表，理解统计粒度与集合。',[
- {id:'observation-1',title:'同一张表，为什么会有两个答案？',subtitle:'记录的对象决定统计结果。',layout:'reading',blocks:[
+ {id:'observation-1',title:'订单数与顾客数',subtitle:'记录的对象决定统计结果。',layout:'reading',blocks:[
   {id:'obs-opening',type:'prose',text:'一个人，在书店下了三次单。订单表里有三行记录，但背后只有一位读者。问“卖出了几单”和问“有几位顾客”，答案自然不同。'},
-  {id:'obs-concept',type:'concept',title:'先给数字一个对象',text:'统计粒度，是每一条记录所代表的对象。先明确对象，再计数。三笔订单，可能来自一位顾客，也可能来自三位顾客。'},
+  {id:'obs-concept',type:'concept',title:'统计粒度',text:'统计粒度，是每一条记录所代表的对象。先明确对象，再计数。三笔订单，可能来自一位顾客，也可能来自三位顾客。'},
   {id:'obs-table',type:'comparison',title:'三笔订单',columns:['订单','顾客','金额'],rows:[['01','小林','¥ 38'],['02','小林','¥ 62'],['03','小林','¥ 45']]},
   {id:'obs-key',type:'callout',tone:'note',text:'订单数是 3，顾客数是 1。数字没有互相矛盾，它们回答了两个问题。'},
   {id:'obs-question',type:'prose',text:'下次见到“用户增长了 20%”，先问一句：用户指注册用户、活跃用户，还是付费用户？时间范围是什么？比较对象一致吗？'}]},
@@ -14,7 +14,7 @@ export const conceptExample=make('notebook-observation','数字与证据','从�
   {id:'obs-steps',type:'steps',items:[{id:'obs-step-1',text:'先写下问题：这次想数订单，还是数人？'},{id:'obs-step-2',text:'确定范围：只看本月、已付款、未退款的订单。'},{id:'obs-step-3',text:'按目标计数，再挑几行原始记录手工核对。'}]},
   {id:'obs-example',type:'example',title:'五笔订单，三位顾客',prompt:'顾客编号依次为 A、A、B、A、C。订单数和顾客数分别是多少？',steps:[{id:'obs-ex-1',text:'每行代表一笔订单，共 5 行。'},{id:'obs-ex-2',text:'按顾客去重，留下 A、B、C。'}],result:'订单数 5，顾客数 3。再增加一笔 A 的订单，订单数变成 6，顾客数仍然是 3。'},
   {id:'obs-boundary',type:'quote',text:'解释数字前，先写清统计口径。',attribution:'统计口径'}]},
- {id:'observation-3',title:'两组人数如何合并？',subtitle:'名单可能重叠，计数需要去重。',layout:'grid',blocks:[
+ {id:'observation-3',title:'名单合并与去重',subtitle:'名单可能重叠，计数需要去重。',layout:'grid',blocks:[
   {id:'obs-overlap',type:'prose',text:'同一个人，可能在上海和杭州都下过单。两座城市的顾客人数直接相加，就会数他两次。合并的是名单，去重之后才是全体人数。'},
   {id:'obs-formula',type:'formula',latex:'|A \\cup B| = |A| + |B| - |A \\cap B|',text:'A 和 B 是两组顾客。交集表示两边都出现过的人；这些人需要减去一次。'},
   {id:'obs-sql',type:'code',language:'sql',text:'SELECT COUNT(*) AS orders,\n       COUNT(DISTINCT customer_id) AS customers\nFROM orders\nWHERE status = \'paid\';'},
@@ -29,7 +29,7 @@ const opening=conceptExample.notebook.chapters[0].pages[0].blocks[0].text!;
 const exact='答案自然不同。',start=opening.indexOf(exact);
 conceptExample.userState.annotations[0].selectors[0]={blockId:'obs-opening',start,end:start+exact.length,exact,prefix:opening.slice(Math.max(0,start-12),start),suffix:''};
 export const formulaExample=make('notebook-growth','复利的递推关系','用一个具体数值，理解指数与复利。',[
- {id:'growth-1',title:'增长如何继续累积？',subtitle:'从逐期计算推导通式。',layout:'grid',blocks:[
+ {id:'growth-1',title:'复利的逐期累积',subtitle:'从逐期计算推导通式。',layout:'grid',blocks:[
   {id:'growth-intro',type:'prose',text:'一个假想账户初始有 100 元，每期增长 10%，不取出利息。第一期后是 110 元，第二期增长的基础变成了 110 元，因此增加 11 元。这里的 10% 只是教学假设，不代表实际收益。'},
   {id:'growth-eq',type:'formula',latex:'P_{n+1}=P_n(1+r), \\qquad P_n=P_0(1+r)^n',text:'P₀ 是初始值，r 是每期增长率，n 是期数。每一期的增长率相同，但增加的绝对数值不同。'},
   {id:'growth-table',type:'comparison',columns:['期数 n','期初数值','期末数值'],rows:[['1','100','110'],['2','110','121'],['3','121','133.1']]},
@@ -50,7 +50,7 @@ export const practiceExample=make('notebook-observe-plant','给窗边的植物�
   {id:'plant-reflect',type:'exercise',questionType:'subjective',question:'为你身边的一盆植物写一条记录。',explanation:'参考要点：包含日期、具体观察、已知条件；将原因判断写成待核实的假设。',points:0}]}],['用可比较的方式记录观察','区分观察与原因解释']);
 export const examples=[conceptExample,formulaExample,practiceExample];
 
-conceptExample.notebook.chapters[0].pages[1].cues=[{id:'cue-grain',text:'一行代表什么？',blockId:'obs-steps'},{id:'cue-range',text:'范围如何限定？',blockId:'obs-path'},{id:'cue-count',text:'订单数与人数',blockId:'obs-example'}];
+conceptExample.notebook.chapters[0].pages[1].cues=[{id:'cue-grain',text:'这次统计订单，还是顾客？',blockId:'obs-steps',anchor:'这次想数订单，还是数人'},{id:'cue-range',text:'哪些订单属于本次范围？',blockId:'obs-steps',anchor:'只看本月、已付款、未退款的订单'},{id:'cue-count',text:'再增加一笔 A 的订单，顾客数变吗？',blockId:'obs-example',anchor:'顾客数仍然是 3'}];
 conceptExample.notebook.chapters[0].pages[1].summary='回看时先回答两个问题：每行记录代表什么？哪些记录属于统计范围？口径确定之后，计算与解释才有共同的依据。';
 practiceExample.notebook.chapters[0].pages[0].cues=[{id:'cue-observe',text:'看见了什么？',blockId:'plant-intro'},{id:'cue-condition',text:'已知条件',blockId:'plant-steps'},{id:'cue-log',text:'日期与操作',blockId:'plant-log'}];
 practiceExample.notebook.chapters[0].pages[0].summary='一条可复查的记录包含日期、具体观察、已知条件和采取的操作。原因推测单独记录，并列出需要补充的证据。';
@@ -59,23 +59,23 @@ conceptExample.notebook.chapters[0].pages[2].blocks.find(b=>b.id==='obs-sql')!.s
 for(const d of examples)d.extensions.readerProfile={layout:'auto',direction:'horizontal',sidebar:'open',pageShape:'auto',transition:'turn',theme:'paper-light',motion:'full'};
 
 const emphasis:Record<string,StudyPresentation['marks']>={
- 'obs-concept':[{text:'统计粒度',kind:'circle'}],
+ 'obs-concept':[{text:'统计粒度',kind:'circle'},{text:'统计粒度',kind:'bold'},{text:'统计粒度',kind:'red',color:'#285f9e'}],
  'obs-key':[{text:'订单数是 3，顾客数是 1',kind:'check'}],
  'obs-steps':[{text:'只看本月、已付款、未退款的订单',kind:'underline'}],
  'obs-formula':[{text:'减去一次',kind:'dots'}],
- 'growth-intro':[{text:'增长的基础',kind:'circle'}],
+ 'growth-intro':[{text:'增长的基础',kind:'circle'},{text:'增长的基础',kind:'bold'},{text:'增长的基础',kind:'red',color:'#285f9e'}],
  'growth-eq':[{text:'每一期的增长率相同',kind:'dots'}],
  'growth-steps':[{text:'三期一共增加 33.1',kind:'check'}],
  'growth-bound':[{text:'期间没有额外存入或取出',kind:'underline'}],
  'plant-intro':[{text:'先记录看见的东西',kind:'underline'}],
  'plant-warn':[{text:'植物种类及条件',kind:'dots'}],
- 'plant-concept':[{text:'原因判断',kind:'circle'},{text:'还需要植物种类、浇水和根系状态等证据',kind:'underline'}],
+ 'plant-concept':[{text:'原因判断',kind:'circle'},{text:'原因判断',kind:'bold'},{text:'原因判断',kind:'red',color:'#285f9e'},{text:'还需要植物种类、浇水和根系状态等证据',kind:'underline'}],
 };
 for(const document of examples){
  for(const chapter of document.notebook.chapters)for(const page of chapter.pages)for(const block of page.blocks){
   if(emphasis[block.id])block.study={...block.study,marks:emphasis[block.id]};
  }
- document.notebook.revision=2;document.extensions.baseRevision=1;
+ document.notebook.revision=3;document.extensions.baseRevision=2;
 }
 
 for(const example of examples)example.userState.updatedAt='2026-10-29T00:00:00.000Z';

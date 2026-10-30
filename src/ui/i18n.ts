@@ -21,7 +21,7 @@ const english:Record<string,string>={
  '留一段专注的时间':'Make time to focus','计时在本机运行，切到其他页面后仍按实际时间计算。':'The local timer follows elapsed time, even when you switch tabs.','重置':'Reset','窗外的天气 / Weather':'Weather','城市 / City':'City',
  '使用文件版本':'Use file version','继续本机草稿':'Continue local draft','发现这本笔记的较新草稿':'A newer local draft exists','选择继续本机草稿，或使用当前文件的版本。原文件不会被修改。':'Continue the draft or use this file’s version. The original file remains intact.',
  '重新作答':'Try again','提交这一题':'Submit answer','参考要点':'Reference points','暂无解析':'No explanation provided','选择……':'Choose…','你的作答':'Your answer','复制代码':'Copy code','荧光、下划线、圈注、加粗、箭头、勾记；也能摘到便签或记下疑问。':'Highlight, underline, circle, bold, arrows and checks. You can also quote text on a note or save a question.',
- '选中文字':'Select text','动一张纸':'Move a piece of paper','翻看纸叠':'Leaf through a stack','编辑内容':'Edit content','翻页与阅读':'Navigate & read','带走与续写':'Export & continue','快捷键':'Shortcuts',
+ '选中文字':'Select text','编辑内容':'Edit content','翻页与阅读':'Navigate & read','快捷键':'Shortcuts',
  '拉便签的下角可掀起，超过距离后揭下。拖纸边移动，右键可翻面、换纸、重贴与调整层级。':'Drag a lower corner to lift or detach a note. Drag an edge to move it; its menu offers flip, material, reattach and layer actions.',
  '点击纸叠下的箭头逐张翻看。触控可长按，键盘可用 Shift+F10 打开菜单。':'Use the arrows under the stack to view each note. Long-press or press Shift+F10 for its menu.',
  '双击段落或便签；键盘聚焦后按 F2。右键可增删、排序和复制。':'Double-click a block or note, or focus it and press F2. Its menu offers insert, remove, reorder and duplicate.',
@@ -29,7 +29,7 @@ const english:Record<string,string>={
  '本机草稿只属于当前浏览器。导出 HTML 可离线继续编辑；JSON 可再次交给 AI 更新。':'Local drafts belong to this browser. Export HTML to edit offline; give JSON to your AI for updates.',
  '当前入口限制剪贴板；可选中下面内容手动复制。':'Clipboard access is unavailable here. Select and copy the text below.',
  '选中一句没懂的话，点击“?”，把问题留在这里。':'Select an unclear sentence and choose “?” to save a question.',
- '已解析，请查看导入摘要。':'Parsed. Please inspect the import preview.','便签已收走，可撤销。':'Note removed. You can undo.','已生成下载文件 / Download ready':'Download ready',
- '纸间 · Paper Notebook':'Paper Notebook','一本可以交给自己的 AI，也能放回自己手里的笔记。':'An editable notebook made with your own AI, kept in your own files.',
+ '已解析，请查看导入摘要。':'Parsed. Please inspect the import preview.','已生成下载文件 / Download ready':'Download ready',
+ '纸间 · Paper Notebook':'Paper Notebook',
 };
 export function uiText(text:string){if(locale!=='en')return text;const direct=english[text];if(direct)return direct;const parts=text.split(' / ');if(parts.length===2&&/[A-Za-z]/.test(parts[1])&&!/[\u3400-\u9fff]/.test(parts[1]))return parts[1];return text;}

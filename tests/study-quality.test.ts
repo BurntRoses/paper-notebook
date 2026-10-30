@@ -8,6 +8,20 @@ import {blankDocument} from '../src/model/types';
 import {checkStudyMarks,inspectStudyMarks} from '../src/model/study-quality';
 import {verifyBundledReader} from '../src/io/reader-proof';
 import {scriptJSON} from '../src/model/document';
+import {parseDocument} from '../src/model/document';
+import {authoredAnnotations} from '../src/model/study';
+import {exportMarkdown,importText} from '../src/io/markdown';
+
+test('authored bold and font colours remain source typography through Markdown and private exports',()=>{
+ const d=blankDocument(),page=d.notebook.chapters[0].pages[0];
+ page.blocks=[{id:'typography',type:'prose',text:'模型参数在独立检验之前固定。',study:{marks:[{text:'模型参数',kind:'bold'},{text:'模型参数',kind:'red',color:'#285f9e'},{text:'独立检验',kind:'underline'}]}}];
+ const source=JSON.stringify(d.notebook),round=importText(exportMarkdown(parseDocument(d).document)).document;
+ assert.deepEqual(round.notebook,d.notebook);
+ const annotations=authoredAnnotations(round,page.id);
+ assert.deepEqual(annotations.map(a=>a.kind),['bold','red','underline']);assert.equal(annotations[1].color,'#285f9e');
+ const report=checkStudyMarks(round);assert.deepEqual(report.typography,{bold:1,coloredText:1,missingBoldPages:[],missingColorPages:[]});
+ assert.equal(JSON.stringify(d.notebook),source);assert.equal(d.userState.annotations.length,0);
+});
 
 test('authored mark checks reject empty or invalid emphasis without changing source',()=>{
  const document=blankDocument();assert.equal(checkStudyMarks(document).required,false);

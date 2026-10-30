@@ -54,8 +54,12 @@ test('machine learning textbook validates, distinguishes examples and supplies r
  for(const p of pagesOf(document))for(const cue of p.cues||[])assert.ok(p.blocks.some(b=>b.id===cue.blockId));
  const chart=blocks.find(b=>b.id==='ml-parameter-chart')!;
  for(const [i,s]of chart.series!.entries())for(const p of s.points)assert.equal(p.y,i===1?2*p.x+1:i===2?p.x+2:p.x+1);
- assert.equal(document.notebook.revision,4);assert.equal(document.extensions.baseRevision,3);
+ assert.equal(document.notebook.revision,7);assert.equal(document.extensions.baseRevision,6);
  assert.ok(blocks.filter(b=>b.type==='formula').every(b=>b.parameters?.every(p=>p.description.length>20)));
+ const definition=blocks.find(b=>b.id==='ml-loss-definition')!,note=blocks.find(b=>b.id==='ml-loss-outliers')!;
+ assert.ok(!definition.text!.includes('异常值'));assert.equal(note.type,'callout');assert.ok(note.keepTogether&&note.text!.includes('异常值'));
+ assert.ok(pagesOf(document).every(p=>!/[怎如]何|怎样|看图理解/.test(p.title)));
+ for(const p of pagesOf(document))for(const cue of p.cues||[])if(cue.anchor)assert.ok(textOf(p.blocks.find(b=>b.id===cue.blockId)!).includes(cue.anchor));
 });
 test('downloadable authored examples carry intentional anchored emphasis',()=>{
  for(const document of [...examples,machineLearning]){
@@ -72,7 +76,7 @@ test('formula symbol rows validate and roundtrip with addressable explanations a
  assert.deepEqual(round.notebook,original.notebook);
  const b=blocksOf(round).find(b=>b.id==='ml-linear')!,text=textOf(b),row=parameterText(b.parameters![2]),start=text.indexOf(row);
  assert.ok(start>b.text!.length);assert.deepEqual(resolveSelector(round,{blockId:b.id,start,end:start+row.length,exact:row,prefix:'',suffix:''}),{status:'resolved',start,end:start+row.length});
- const old=structuredClone(original);delete blocksOf(old).find(b=>b.id==='ml-linear')!.parameters;assert.doesNotThrow(()=>parseDocument(old));
+ const old=structuredClone(original);delete blocksOf(old).find(b=>b.id==='ml-linear')!.parameters;pagesOf(old).find(p=>p.id==='ml-model')!.cues?.forEach(c=>delete c.anchor);assert.doesNotThrow(()=>parseDocument(old));
  for(const field of ['symbol','name','description']as const){const invalid=structuredClone(original);blocksOf(invalid).find(b=>b.id==='ml-linear')!.parameters![0][field]='';assert.throws(()=>parseDocument(invalid));}
  const oldText='Legacy explanation';assert.equal(textOf({id:'old',type:'formula',latex:'x+y',text:oldText}),oldText);
  b.study!.marks=[{text:b.parameters![0].description,kind:'underline'}];

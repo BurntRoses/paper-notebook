@@ -1,8 +1,9 @@
-import type { Asset, Block } from '../model/types';
+import type { Asset, Block, FigureMark } from '../model/types';
 import { el } from './dom';
+import { figureMarks } from './figure-marks';
 
 /** Reserve the same space during pagination and decoding; never crop labels. */
-export function figureLayout(b:Block, media:SVGSVGElement|HTMLImageElement, asset?:Asset){
+export function figureLayout(b:Block, media:SVGSVGElement|HTMLImageElement, asset?:Asset,personal:FigureMark[]=[]){
  const figure=el('figure','lesson-figure'),viewport=el('div','figure-media');
  figure.dataset.size=b.figure?.size||'wide';figure.dataset.align=b.figure?.align||'center';
  figure.dataset.style=b.figure?.style||'sketch';
@@ -18,14 +19,26 @@ export function figureLayout(b:Block, media:SVGSVGElement|HTMLImageElement, asse
  }
  const chosen=b.figure?.ratio||'auto',ratio=chosen==='auto'?(width>0&&height>0?width/height:4/3):chosen.split(':').map(Number).reduce((a,n)=>a/n);
  viewport.style.aspectRatio=String(ratio);figure.dataset.ratio=chosen;
- viewport.append(media);figure.append(viewport);
+ viewport.append(media);if(b.figure?.annotations?.length||personal.length)viewport.append(figureMarks([...(b.figure?.annotations||[]),...personal],ratio));figure.append(viewport);
  if(b.caption)figure.append(el('figcaption','figure-caption',b.caption));
  return figure;
 }
 
-/** Fit an illustration on a sheet by reducing width and height together. */
+/** Fit the media only. Captions keep their column width and readable line spacing. */
 export function fitFigureHeight(root:HTMLElement,height:number){
- const figure=root.querySelector<HTMLElement>('.lesson-figure'),media=figure?.querySelector<HTMLElement>('.figure-media');
+ const media=root.querySelector<HTMLElement>('.figure-media');
  const [w,h=1]=(media?.style.aspectRatio||'').split('/').map(Number),ratio=w/h;
- if(figure&&ratio>0)figure.style.maxWidth=Math.max(1,height*ratio)+'px';
+ if(media&&ratio>0){media.style.width=`min(100%, ${Math.max(1,height*ratio)}px)`;media.dataset.fitted='true';}
+}
+
+/** The complete block must fit, including title, caption, source credit and margins. */
+export function fitFigureBlock(root:HTMLElement,maxHeight:number){
+ const media=root.querySelector<HTMLElement>('.figure-media');if(!media)return;
+ const overhead=root.offsetHeight-media.offsetHeight;
+ const height=Math.max(1,maxHeight-overhead-2);fitFigureHeight(root,height);
+ return height;
+}
+
+export function fitPageFigures(root:ParentNode){
+ for(const block of root.querySelectorAll<HTMLElement>('[data-figure-height]'))fitFigureBlock(block,Number(block.dataset.figureHeight));
 }

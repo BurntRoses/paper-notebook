@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "paper-notebook-introduction",
-    "revision": 8,
+    "revision": 9,
     "title": "复利 · 从递推到通式",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -75,6 +75,15 @@
                     {
                       "text": "增长率恒定",
                       "kind": "circle"
+                    },
+                    {
+                      "text": "增长率恒定",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "增长率恒定",
+                      "kind": "red",
+                      "color": "#285f9e"
                     },
                     {
                       "text": "没有额外存取",
@@ -183,7 +192,7 @@
                 "id": "intro-flow",
                 "type": "formula",
                 "study": {
-                  "label": "02 · 敲黑板：n 次相乘",
+                  "label": "02 · n 次相乘",
                   "visual": "blackboard",
                   "tone": "blue",
                   "marks": [
@@ -247,6 +256,15 @@
                     {
                       "text": "同一个周期",
                       "kind": "circle"
+                    },
+                    {
+                      "text": "同一个周期",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "同一个周期",
+                      "kind": "red",
+                      "color": "#285f9e"
                     }
                   ]
                 },
@@ -416,6 +434,15 @@
                     {
                       "text": "增长基础",
                       "kind": "circle"
+                    },
+                    {
+                      "text": "增长基础",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "增长基础",
+                      "kind": "red",
+                      "color": "#285f9e"
                     }
                   ]
                 },
@@ -482,7 +509,7 @@
         "pages": [
           {
             "id": "subject-literature",
-            "title": "一联诗，怎样读出情境？",
+            "title": "《春望》首联的景与情",
             "subtitle": "文学 / 从原句到解释",
             "subject": "literature",
             "layout": "reading",
@@ -505,6 +532,15 @@
                     {
                       "text": "破",
                       "kind": "circle"
+                    },
+                    {
+                      "text": "破",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "破",
+                      "kind": "red",
+                      "color": "#285f9e"
                     },
                     {
                       "text": "深",
@@ -584,8 +620,8 @@
           },
           {
             "id": "subject-business",
-            "title": "销量多少，才能覆盖成本？",
-            "subtitle": "商学 / 单位贡献与盈亏平衡",
+            "title": "单位贡献与盈亏平衡",
+            "subtitle": "商学 / 固定成本、售价与销量",
             "subject": "business",
             "layout": "reading",
             "blocks": [
@@ -674,6 +710,15 @@
                     {
                       "text": "不同的顾客编号",
                       "kind": "circle"
+                    },
+                    {
+                      "text": "不同的顾客编号",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "不同的顾客编号",
+                      "kind": "red",
+                      "color": "#285f9e"
                     }
                   ]
                 }
@@ -801,7 +846,7 @@
     }
   ],
   "extensions": {
-    "baseRevision": 7,
+    "baseRevision": 8,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

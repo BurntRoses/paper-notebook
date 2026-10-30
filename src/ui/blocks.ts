@@ -38,14 +38,14 @@ export function diagramSVG(b:Block){
  });s.append(outlines);return s;
 }
 export function renderBlock(b:Block,d:NotebookDocument,actions:BlockActions,source:Block=b){
- const root=el('section',`content-block block-${b.type}`);root.dataset.block=b.id;root.tabIndex=-1;if(b.study){root.classList.add('study-block');root.dataset.tone=b.study.tone||'blue';root.dataset.visual=b.study.visual||'plain';if(b.study.label)root.append(el('div','study-label',b.study.label));}if(!b.study?.label){const names:Record<string,string>={definition:'定义 · 条件与边界',intuition:'直觉 · 先看关系',derivation:'推导 · 逐步说明',example:'例题 · 已知到结论',evidence:'证据 · 数据与出处',takeaway:'要点 · 适用范围',recall:'回忆 · 自己复述'};const role=b.study?.role||(b.type==='example'?'example':undefined);if(role)root.append(el('div','study-label role-label',names[role]));else if(b.type==='exercise')root.append(el('div','study-label role-label','练习 · 轮到你来判断'));}root.dataset.role=b.study?.role||b.type;const roles:Record<string,string[]>={definition:['double','pencil'],derivation:['bracket','margin'],example:['tape','fold'],evidence:['pencil','double'],recall:['fold','bracket'],exercise:['margin','pencil']};const variants=roles[root.dataset.role]||['pencil','tape','double','margin','fold','bracket'];let hash=0;for(const c of b.id)hash=(hash*31+c.charCodeAt(0))>>>0;root.dataset.frame=b.study?.frame&&b.study.frame!=='auto'?b.study.frame:(['diagram','image','chart','comparison','example'].includes(b.type)||!!roles[root.dataset.role])?variants[hash%variants.length]:'plain';if(b.title)root.append(el('h3','block-title',b.title));
+ const root=el('section',`content-block block-${b.type}`);root.dataset.block=b.id;root.tabIndex=-1;if(b.study){root.classList.add('study-block');root.dataset.tone=b.study.tone||'blue';root.dataset.visual=b.study.visual||'plain';if(b.study.label)root.append(el('div','study-label',b.study.label));}if(!b.study?.label){const names:Record<string,string>={definition:'定义',intuition:'图解',derivation:'推导',example:'例题',evidence:'数据',takeaway:'提示',recall:'回顾'};const role=b.study?.role||(b.type==='example'?'example':undefined);if(role&&b.type!=='callout')root.append(el('div','study-label role-label',names[role]));else if(b.type==='exercise')root.append(el('div','study-label role-label','练习'));}root.dataset.role=b.study?.role||b.type;const roles:Record<string,string[]>={definition:['double','pencil'],derivation:['bracket','margin'],example:['tape','fold'],evidence:['pencil','double'],recall:['fold','bracket'],exercise:['margin','pencil']};const variants=roles[root.dataset.role]||['pencil','tape','double','margin','fold','bracket'];let hash=0;for(const c of b.id)hash=(hash*31+c.charCodeAt(0))>>>0;root.dataset.frame=b.study?.frame&&b.study.frame!=='auto'?b.study.frame:(['diagram','image','chart','comparison','example'].includes(b.type)||!!roles[root.dataset.role])?variants[hash%variants.length]:'plain';if(b.title)root.append(el('h3','block-title',b.title));
  // The blackboard already owns its frame and chalk tray. A paper decoration
  // would replace its dark background and hide the light chalk text.
  if(b.study?.visual==='blackboard')root.dataset.frame='plain';
  const text=(value:string,tag:'p'|'div'='p',offset=0,cls='')=>{const n=el(tag,cls);projection(n,value,offset);root.append(n);return n;};
  switch(b.type){
-  case 'prose':case 'concept':text(b.text||'');break;
-  case 'callout':{const n=text(b.text||'','div',0,'callout-body');n.prepend(el('span','callout-label',b.tone==='warning'?'留意 / NOTE':'页边提醒 / MEMO'));break;}
+  case 'prose':case 'concept':paragraphs(root,b.text||'');break;
+  case 'callout':{const n=el('div','callout-body');if(!b.title&&!b.study?.label)n.append(el('span','callout-label',b.tone==='warning'?'注意':'补充'));paragraphs(n,b.text||'');root.append(n);break;}
   case 'quote':text(b.text||'');if(b.attribution)root.append(el('cite','',b.attribution));break;
   case 'steps':case 'checklist':{const list=el(b.type==='steps'?'ol':'ul');if(list instanceof HTMLOListElement)list.start=Number(b._stepStart||1);let offset=0;b.items?.forEach(item=>{const li=el('li');if(b.type==='checklist'){const check=el('input');check.type='checkbox';check.checked=!!d.userState.checks[item.id];check.setAttribute('aria-label',item.text);check.onchange=()=>actions.check(item.id,check.checked);li.append(check);}projection(li,item.text,offset);offset+=item.text.length+1;list.append(li);});root.append(list);break;}
   case 'example':{text(b.prompt||'','p',0,'example-prompt');let offset=b.prompt?(b.prompt.length+1):0;const list=el('ol');list.start=Number(b._stepStart||1);b.steps?.forEach(item=>{const li=el('li');projection(li,item.text,offset);offset+=item.text.length+1;list.append(li);});root.append(list);text(b.result||'','p',offset,'example-result');break;}
@@ -66,15 +66,21 @@ export function renderBlock(b:Block,d:NotebookDocument,actions:BlockActions,sour
    if(b.text)text(b.text,'p',0,'formula-context');break;
   }
   case 'code':{const head=el('div','code-head',b.language||'code');head.append(button('复制代码',()=>copyText(b.text||''),'text-button','⧉'));const pre=el('pre');pre.tabIndex=0;const code=el('code'),span=projection(code,b.text||'');span.replaceChildren(...codeTokens(b.text||'',b.language).map(t=>el('span','code-token token-'+t.kind,t.text)));pre.append(code);root.append(head,pre);break;}
-  case 'image':{const asset=d.assets.find(a=>a.id===b.assetId);if(asset){const image=el('img');image.src=asset.data;image.alt=b.alt||'';image.loading='lazy';image.decoding='async';image.onclick=()=>actions.image(b);const figure=figureLayout(b,image,asset);if(asset.source)figure.append(el('small','asset-source',`${asset.source} · ${asset.license||'用户提供'}`));root.append(figure);}else root.append(el('p','muted','图片尚未提供。'));break;}
-  case 'diagram':{root.append(figureLayout(b,diagramSVG(b)));break;}
-  case 'chart':{root.append(figureLayout(b,chartSVG(b)));break;}
+  case 'image':{const asset=d.assets.find(a=>a.id===b.assetId);if(asset){const image=el('img');image.src=asset.data;image.alt=b.alt||'';image.loading='lazy';image.decoding='async';const figure=figureLayout(b,image,asset,d.userState.figureMarks?.filter(a=>a.blockId===b.id));if(asset.source)figure.append(el('small','asset-source',`${asset.source} · ${asset.license||'用户提供'}`));root.append(figure);}else root.append(el('p','muted','图片尚未提供。'));break;}
+  case 'diagram':{root.append(figureLayout(b,diagramSVG(b),undefined,d.userState.figureMarks?.filter(a=>a.blockId===b.id)));break;}
+  case 'chart':{root.append(figureLayout(b,chartSVG(b),undefined,d.userState.figureMarks?.filter(a=>a.blockId===b.id)));break;}
   case 'exercise':renderExercise(root,b,d,actions);break;
   default:root.append(el('p','muted',`暂不支持 ${b.type}，原始数据已保留。`),el('pre','unknown-block',JSON.stringify(b,null,2)));break;
  }
  const explanations=b.study?.explanations?.filter(e=>(b.text||'').includes(e.text)).slice(0,3);if(explanations?.length){root.classList.add('has-study-explanations');const main=el('div','study-main');main.append(...root.childNodes);const notes=el('aside','study-explanations');for(const e of explanations){const n=el('div','study-explanation');n.dataset.explainTarget=e.text;n.append(el('strong','',e.text),el('p','',e.note));notes.append(n);}root.append(main,notes);}
  if(b.study?.aside)root.append(el('aside','study-aside',b.study.aside));
  const refs=b.sourceRefs||[];if(refs.length){const sources=el('footer','block-sources');for(const ref of refs){const source=d.notebook.sources.find(s=>s.id===ref.sourceId);const text=(source?.title||ref.sourceId)+(ref.locator?' · '+ref.locator:'');if(source?.url&&/^https?:\/\//i.test(source.url)){const link=el('a','',text+' ↗');link.href=source.url;link.target='_blank';link.rel='noopener noreferrer';sources.append(link);}else sources.append(el('span','',text));}root.append(sources);}return root;
+}
+/** Blank lines create real paragraphs while source selector offsets stay intact. */
+function paragraphs(root:HTMLElement,value:string){
+ let offset=0;for(const part of value.split(/(\n[ \t]*\n)/)){
+  if(part&&!/^\n[ \t]*\n$/.test(part)){const p=el('p');projection(p,part,offset);root.append(p);}offset+=part.length;
+ }
 }
 function renderExercise(root:HTMLElement,b:Block,d:NotebookDocument,actions:BlockActions){
  const t=(zh:string,en:string)=>d.userState.preferences.language==='en'?en:zh;

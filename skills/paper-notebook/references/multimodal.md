@@ -29,3 +29,7 @@ Use `figure` presets from the component catalog. Plan ratio and available column
 For raster assets set `width` and `height` to the actual pixel dimensions. The reader reserves the complete figure viewport before lazy decoding, so image load does not alter pagination. Use `contain`; never crop arrows, scales, legends or captions. Default to roughly 800–1600 pixels on the long edge at the intended display size. Prefer compact WebP/JPEG for photos and SVG for diagrams. Check small labels after compression. A typical teaching illustration should stay below 300 KB; larger assets need a concrete detail benefit. Do not embed unused variants, complete font libraries or hidden source images merely for possible future editing.
 
 Review the build report's `contentReview.visuals` and `assets`: actual illustrations, tables, pages without figures, unused assets and large assets. Remove low-value unused media unless required for source tracing; report material size tradeoffs rather than silently sacrificing legibility. Finish with offline HTML inspection at desktop and mobile sizes, including delayed image decoding and export/reopen.
+
+## 图上批注
+
+解释图须用圈画、箭头和短文字直接指明关注位置或变化方向，不能只依赖图下长说明。使用 `figure.annotations`，坐标 x/y/x2/y2 是图像视口的 0–100 百分比；`circle` 以两个角点确定圈注区域，`arrow` 从 x/y 指向 x2/y2，`check` 标记已确认位置，`text` 在 x/y 放置短说明。按图的内容选择有解释作用的标记，避免覆盖刻度、数据、符号和图例。视觉教程至少包含一幅有图上批注的解释图。用户自己的圈画、短说明和箭头由阅读器保存在 `userState.figureMarks`，不写入作者内容。

@@ -23,8 +23,12 @@
     "check:writing": "node tools/writing-check.mjs",
     "test:reader": "node tests/reader-browser.mjs",
     "test:hosting": "node tests/hosting-browser.mjs",
+    "test:film": "node tests/film-buffering-browser.mjs",
+    "test:showcase": "node tests/showcase-browser.mjs",
     "test:experience": "node tests/experience-browser.mjs",
     "test:workspace": "node tests/workspace-browser.mjs",
+    "test:layout": "node tests/reading-layout-browser.mjs",
+    "test:responsive": "node tests/responsive-figures-browser.mjs",
     "test:quality": "node tests/quality-browser.mjs",
     "benchmark:reader": "node tools/benchmark-reader.mjs"
   },

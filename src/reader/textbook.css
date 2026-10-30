@@ -4,16 +4,16 @@
 .page-surface[data-font=sans]{--book-font:system-ui,'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',sans-serif}
 .page-surface .reader-content,.page-surface .reader-page-heading h1,.page-surface .reader-chapter,.page-surface .reader-subtitle,.page-surface .block-title,.page-surface .content-block table,.page-surface .cornell-cues,.page-surface .cornell-summary,.page-surface .study-label,.page-surface .study-aside,.page-surface .exercise-options,.page-surface .exercise-question,.page-surface .answer-feedback,.page-surface .figure-caption{font-family:var(--book-font)}
 .page-surface .reader-page-heading h1{font-size:36px;line-height:1.4;letter-spacing:.01em}
-.page-surface .content-block{margin-bottom:26px;break-inside:avoid;overflow-wrap:anywhere}
+.page-surface .content-block{margin-bottom:32px;break-inside:avoid;overflow-wrap:anywhere}
 .page-surface .block-title{font-size:1.12em;line-height:1.55;margin:0 0 12px}
 .page-surface .content-block p{margin-top:0}.page-surface .block-prose p{margin:0}
 .page-surface .block-steps li,.page-surface .block-example li{margin-bottom:12px;line-height:var(--rule)}
 .page-surface .block-formula:not([data-visual=blackboard]){padding:22px 28px;margin-block:24px 30px;background:#e5ebe545;border-color:#7d9c985c}
 .page-surface .block-formula .formula{padding-block:10px;font-size:1.08em}
-.page-surface .block-formula p{margin-top:14px;font-size:.9em;line-height:1.85}
+.page-surface .block-formula p{margin-top:14px;font-size:.9em;line-height:2.05}
 .page-surface .example-prompt{margin-bottom:18px;line-height:var(--rule)}
 .page-surface .example-result{padding-top:14px;margin-top:18px;line-height:var(--rule)}
-.page-surface .content-block table{font-size:.88em;line-height:1.85;table-layout:auto}
+.page-surface .content-block table{font-size:.88em;line-height:2.05;table-layout:auto}
 .page-surface .content-block th,.page-surface .content-block td{padding:14px 16px;vertical-align:middle;min-width:72px}
 .page-surface .content-block tbody tr:nth-child(even){background:#a0ac8b0e}
 .page-surface .block-code pre{font-size:.72em;line-height:1.9;padding:22px}
@@ -26,7 +26,7 @@
 .page-surface .content-block[data-frame=tape]:before{content:'';display:block;position:absolute;left:32px;top:-7px;width:74px;height:14px;background:#c8bc9266;transform:rotate(-3deg);border-inline:2px dashed #fdfbf480;pointer-events:none}
 .page-surface .content-block[data-frame=double]{border-block:3px double #8c9e9366;padding:20px 8px}
 .page-surface .content-block[data-frame=margin]{border-left:3px solid #ad806265;padding:8px 18px}
-.page-surface .figure-caption,.page-surface .block-image figcaption{font: .76em/1.85 var(--book-font);text-align:left;color:var(--muted);margin:16px 0 0}
+.page-surface .figure-caption,.page-surface .block-image figcaption{font: .8em/2 var(--book-font);text-align:left;color:var(--muted);margin:16px 0 0}
 .page-surface .diagram{max-height:350px;overflow:visible;font-family:var(--book-font)}
 .page-surface .diagram text{font-family:var(--book-font)}
 .page-surface .cornell-cue{display:block;text-align:left;width:100%;padding:8px 0;margin:0 0 30px;line-height:1.8;font-size:.86em;min-height:44px;color:var(--aside-ink)}
@@ -56,3 +56,13 @@
 .page-surface .content-block[data-role=derivation] li::marker{color:var(--aside-ink);font-weight:600}.page-surface .content-block[data-frame=pencil]{outline:1px solid var(--line);outline-offset:3px;border-color:var(--line)}.page-surface .content-block[data-frame=double],.page-surface .content-block[data-frame=margin]{border-color:var(--line)}
 .page-surface .cornell-summary:after{content:'↶';position:absolute;right:14px;top:8px;color:var(--aside-ink);opacity:.4;font-size:30px}.page-surface .cornell-summary{padding-right:46px}.page-surface .cornell-cues h3:before{content:'⌁ ';color:var(--aside-ink)}
 .page-surface .diagram{max-height:400px}.page-surface .diagram[data-arrangement=row]{max-height:200px}
+
+/* Definitions carry the main explanation; supplementary conditions get a quiet panel. */
+.page-surface .block-prose p+p,.page-surface .block-concept p+p,.page-surface .callout-body p+p{margin-top:.8em}
+.page-surface .block-callout[data-frame]{padding:16px 20px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:4px;background:var(--soft);box-shadow:none;outline:0;font-size:.9em;line-height:1.95}
+.page-surface .block-callout[data-frame]:before,.page-surface .block-callout[data-frame]:after{display:none}
+.page-surface .block-callout[data-tone=gold],.page-surface .block-callout[data-tone=red]{border-left-color:var(--red);background:color-mix(in srgb,var(--red) 8%,var(--paper))}
+.page-surface .block-callout .block-title{font-size:1em;line-height:1.6;margin:0 0 8px;color:var(--heading)}
+.page-surface .block-callout .callout-body{padding:0;background:transparent;font-size:inherit;line-height:inherit}
+.page-surface .block-callout .callout-body p{margin:0;line-height:inherit}
+.page-surface .block-callout .callout-label{font-size:.75em;color:var(--muted);margin-bottom:6px}

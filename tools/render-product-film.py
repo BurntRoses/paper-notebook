@@ -68,6 +68,7 @@ def brand(page):
 BRANDS={1:brand(1),7:brand(7)}
 HEADINGS={i:brand(i) for i in range(8)}
 UIS={o:Image.open(SOURCE/f'ui-{o}.png').convert('RGBA') for o in ['landscape','portrait']}
+EDITORS={o:Image.open(SOURCE/f'editor-{o}.png').convert('RGBA') for o in ['landscape','portrait']}
 
 def paste(frame,pic,cx,cy,width,height,angle=0,alpha=1,shadow=False):
     ratio=min(width/pic.width,height/pic.height)
@@ -150,7 +151,7 @@ def render_scene(scene,t):
     elif scene==6:
         # The same source page rendered separately in landscape and portrait.
         other=UIS['landscape' if PORTRAIT else 'portrait']
-        current=UIS[ORIENTATION]
+        current=UIS[ORIENTATION] if t<3.8 else EDITORS[ORIENTATION]
         e=ease((t-.7)/1.2)
         if PORTRAIT:
             paste(frame,other,W*(.50-(1-e)*.9),H*.37,W*.86,H*.28,-1.5*e,1,True)

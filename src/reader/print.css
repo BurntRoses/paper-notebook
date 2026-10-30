@@ -1,6 +1,6 @@
 /* Fixed physical sheets, identical at every viewport. 12mm minimum printable margins. */
 #print-root{position:absolute;left:-20000px;top:0;visibility:hidden;pointer-events:none;--desk:#fff;--panel:#f5f5ef;--raised:#fff;--paper:#fff;--ink:#253b45;--heading:#244d62;--muted:#53645d;--line:#7b8c8066;--accent:#385e4e;--accent-text:#fff;--selected:#e5ece3;--hover:#eff2e9;--field:#fff;--figure-paper:#f3f5ed;--figure-ink:#31586b;--figure-line:#617f8a;--aside-ink:#805640;--soft:#879c6d0d;--code:#f4f6ef;--red:#a5453a;--corner:#ddd;--token-comment:#596c5f;--token-keyword:#804b71;--token-string:#506631;--token-number:#91532a;--token-function:#286579;--chart-0:#426e85;--chart-1:#a34f41;--chart-2:#587239;--chart-3:#85621b;color-scheme:light;color:var(--ink)}
-#print-root .print-sheet{position:relative;margin:0;padding:0;border:0!important;border-radius:0;min-height:0!important;transform:none!important;box-shadow:none!important;background:#fff!important;overflow:hidden;break-after:page;page-break-after:always;--reading-size:16px!important;--rule:29.6px!important;font-size:12pt}
+#print-root .print-sheet{position:relative;margin:0;padding:0;border:0!important;border-radius:0;min-height:0!important;transform:none!important;box-shadow:none!important;background:#fff!important;overflow:hidden;break-after:page;page-break-after:always;--reading-size:16px!important;--rule:32.8px!important;font-size:12pt}
 #print-root .print-sheet:last-child{break-after:auto;page-break-after:auto}
 #print-root .print-sheet >.paper-fibers,#print-root .print-sheet >.binding-holes{display:none}
 #print-root .print-sheet:before,#print-root .print-sheet:after{display:none}
@@ -10,12 +10,14 @@
 #print-root .print-sheet >.reader-page-heading .reader-subtitle{font-size:10pt;line-height:1.6;margin-top:3px}
 #print-root .print-sheet >.reader-page-heading .continued-label{font-size:9pt;color:var(--muted)}
 #print-root .print-sheet >.reader-page-body{top:43mm;bottom:20mm;left:12mm;right:12mm;background-image:none;--body-height:100%;}
+#print-root .print-sheet[data-continued=true] >.reader-page-heading{height:8mm}
+#print-root .print-sheet[data-continued=true] >.reader-page-body{top:24mm}
 #print-root .print-sheet.page-layout-cornell >.reader-page-body{bottom:43mm;display:grid;grid-template-columns:28mm minmax(0,1fr);gap:6mm}
-#print-root .print-sheet >.reader-page-body >.reader-content{font-size:12pt;line-height:1.85;padding:0}
+#print-root .print-sheet >.reader-page-body >.reader-content{font-size:12pt;line-height:2.05;padding:0}
 #print-root .print-sheet >.cornell-summary{left:12mm;right:12mm;bottom:20mm;height:19mm;font-size:10pt;line-height:1.65;padding:3mm 10mm 2mm 3mm;overflow:hidden}
 #print-root .print-sheet >.cornell-summary .summary-label{font-size:8pt;line-height:1.6}
 #print-root .print-sheet >.reader-page-footer{left:12mm;right:12mm;bottom:12mm;font-size:9pt;line-height:1.5}
-#print-root .print-sheet:not(.ink-appendix) .content-block{font-size:12pt;line-height:1.85;margin:0 0 5mm;max-height:none;overflow:visible;break-inside:avoid}
+#print-root .print-sheet:not(.ink-appendix) .content-block{font-size:12pt;line-height:2.05;margin:0 0 5mm;max-height:none;overflow:visible;break-inside:avoid}
 #print-root .print-sheet:not(.ink-appendix) .block-title{font-size:14pt;line-height:1.5;margin:0 0 3mm}
 #print-root .print-sheet:not(.ink-appendix) .study-label{font-size:9pt;line-height:1.6;margin-bottom:2mm}
 #print-root .print-sheet:not(.ink-appendix) .cornell-cues{font-size:10pt;line-height:1.8;padding-right:3mm}
@@ -53,7 +55,7 @@
 #print-root .print-sheet:not(.ink-appendix) .answer-option{min-height:0;padding:2mm 3mm}
 #print-root .print-sheet:not(.ink-appendix) .exercise-options textarea{min-height:18mm;font-size:12pt}
 #print-root .page-corner,#print-root .text-button,#print-root .exercise-actions,#print-root .oversize-object:after{display:none}
-#print-root .ink-overlay .ink-mark{filter:none!important}#print-root .red-ink{color:#a5453a!important}
+#print-root .ink-overlay .ink-mark{filter:none!important}#print-root .red-ink{filter:none!important}
 #print-root .print-original{margin:0;box-shadow:none!important;border:1px solid var(--line)}
 @media print{
  html,body{margin:0!important;padding:0!important;background:#fff!important;min-width:0!important}
@@ -61,3 +63,11 @@
  #print-root{display:block;position:static;left:auto;top:auto;visibility:visible;pointer-events:auto;width:100%;print-color-adjust:exact;-webkit-print-color-adjust:exact}
  #print-root .print-original{transform:var(--original-scale)!important}
 }
+/* The printed sheet keeps the same right-margin order as the reader. */
+#print-root .print-sheet >.reader-page-body{bottom:43mm;display:block}
+#print-root .print-sheet.has-margin-notes >.reader-page-body{display:grid;grid-template-columns:minmax(0,1fr) 34mm;gap:5mm}
+#print-root .print-sheet .paper-notes{padding:0 0 0 3mm;font-size:10pt;overflow:hidden}
+
+#print-root .print-sheet:not(:has(.paper-bottom)) >.reader-page-body{bottom:20mm}
+#print-root .print-sheet .paper-notes .cornell-cue{margin-bottom:0;font-size:10pt;line-height:1.95}
+#print-root .print-sheet .block-callout[data-frame]{padding:3mm 4mm;font-size:11pt;line-height:1.95}

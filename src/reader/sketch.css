@@ -1,0 +1,33 @@
+/* Compact paper rhythm; leading stays generous while containers use less padding. */
+.page-surface .content-block{margin-bottom:22px}
+.page-surface .block-title{margin-bottom:8px}
+.page-surface .study-label{margin-bottom:6px;letter-spacing:.03em}
+.page-surface .content-block[data-frame]:not([data-frame=plain]),.page-surface .block-example{padding:14px 18px}
+.page-surface .block-concept[data-frame]{padding:10px 16px}
+.page-surface .block-formula:not([data-visual=blackboard]){margin-block:16px 22px;padding:16px 20px}
+.page-surface .formula-explained{padding:0!important;background:transparent!important}
+.page-surface .formula-board{padding:12px 18px;margin-bottom:14px}
+.page-surface .formula-parameters{gap:10px}
+.page-surface .block-steps li,.page-surface .block-example li{margin-bottom:8px}
+.page-surface .content-block th,.page-surface .content-block td{padding:10px 14px}
+.page-surface .block-prose p+p,.page-surface .block-concept p+p{margin-top:.65em}
+.page-surface .block-callout[data-frame]{padding:12px 18px;background:transparent;border:0;border-radius:0;line-height:2.05}
+.page-surface .block-callout .callout-body{background:transparent}
+.page-surface .block-callout .block-title{margin-bottom:5px}
+
+/* Pencil borders live behind selectable text; they never alter layout or data. */
+.page-surface{--sketch-line:color-mix(in srgb,var(--figure-line) 68%,transparent);--sketch-fill:color-mix(in srgb,var(--paper) 90%,var(--accent));--sketch-shade:color-mix(in srgb,var(--figure-line) 10%,transparent);--sketch-accent:var(--accent)}
+.page-surface .block-callout[data-tone=gold],.page-surface .block-callout[data-tone=red]{--sketch-fill:color-mix(in srgb,var(--paper) 89%,var(--red));--sketch-accent:var(--red)}
+.page-surface .block-example{--sketch-fill:color-mix(in srgb,var(--paper) 92%,var(--accent))}
+.page-surface .block-code,.page-surface .block-comparison .table-scroll{--sketch-fill:transparent}
+.page-surface [data-sketch]{isolation:isolate}
+.page-surface .table-scroll[data-sketch]{position:relative}
+.page-surface .sketch-frame{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;overflow:visible}
+.page-surface .content-block[data-sketch],.page-surface .table-scroll[data-sketch]{border:0!important;outline:0;background:transparent;box-shadow:none;border-radius:0}
+.page-surface .content-block[data-sketch]:before,.page-surface .content-block[data-sketch]:after{display:none}
+.page-surface .table-scroll[data-sketch] th,.page-surface .table-scroll[data-sketch] td{border-bottom-color:transparent}
+.page-surface .reader-page-heading{padding-bottom:0}
+.page-surface .diagram text,.page-surface .notebook-chart text{font-family:var(--book-font);text-rendering:geometricPrecision}
+.page-surface .workspace-note{border-radius:2px 7px 3px 6px/6px 3px 7px 2px}
+
+@media print{#print-root .sketch-frame{print-color-adjust:exact;-webkit-print-color-adjust:exact}}

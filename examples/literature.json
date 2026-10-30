@@ -1,0 +1,191 @@
+{
+  "schemaVersion": "1.0.0",
+  "notebook": {
+    "id": "showcase-literature",
+    "revision": 1,
+    "title": "《春望》 · 景物与语境",
+    "author": "Paper Notebook",
+    "language": "zh-CN",
+    "goals": [
+      "结合原句解释景物与语境",
+      "区分引用与阅读判断"
+    ],
+    "sources": [
+      {
+        "id": "source-spring",
+        "title": "杜甫《春望》",
+        "locator": "首联；原诗为公共领域作品，释读为教学解释。"
+      }
+    ],
+    "chapters": [
+      {
+        "id": "literature-chapter",
+        "title": "《春望》 · 景物与语境",
+        "pages": [
+          {
+            "id": "subject-literature",
+            "title": "《春望》首联的景与情",
+            "subtitle": "文学 / 从原句到解释",
+            "subject": "literature",
+            "layout": "reading",
+            "blocks": [
+              {
+                "id": "literature-quote",
+                "type": "quote",
+                "text": "国破山河在，城春草木深。",
+                "attribution": "杜甫《春望》首联",
+                "sourceRefs": [
+                  {
+                    "sourceId": "source-spring",
+                    "locator": "首联"
+                  }
+                ],
+                "study": {
+                  "label": "原句",
+                  "visual": "extract",
+                  "marks": [
+                    {
+                      "text": "破",
+                      "kind": "circle"
+                    },
+                    {
+                      "text": "破",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "破",
+                      "kind": "red",
+                      "color": "#285f9e"
+                    },
+                    {
+                      "text": "深",
+                      "kind": "dots"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "literature-detail",
+                "type": "concept",
+                "title": "“在”与“深”，落在眼前的景物",
+                "text": "“山河在”写山河依旧；“草木深”写城中草木繁茂。两句并置，呈现“国破”“城春”之中的荒凉。",
+                "study": {
+                  "label": "字词与语境",
+                  "tone": "red",
+                  "marks": [
+                    {
+                      "text": "两句并置",
+                      "kind": "underline"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "literature-map",
+                "type": "diagram",
+                "nodes": [
+                  {
+                    "id": "scene",
+                    "label": "山河、草木：所见"
+                  },
+                  {
+                    "id": "context",
+                    "label": "国破、城春：语境"
+                  },
+                  {
+                    "id": "reading",
+                    "label": "景物中的荒凉感"
+                  }
+                ],
+                "edges": [
+                  {
+                    "from": "scene",
+                    "to": "context"
+                  },
+                  {
+                    "from": "context",
+                    "to": "reading"
+                  }
+                ],
+                "study": {
+                  "visual": "sketch"
+                },
+                "figure": {
+                  "size": "wide",
+                  "ratio": "auto",
+                  "style": "sketch",
+                  "annotations": [
+                    {
+                      "kind": "circle",
+                      "x": 17,
+                      "y": 78,
+                      "x2": 83,
+                      "y2": 96,
+                      "color": "#b1483d"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "literature-reading",
+                "type": "prose",
+                "text": "“荒凉感”是依据景物与语境作出的阅读判断。引用和解释应当分开。",
+                "study": {
+                  "label": "阅读依据",
+                  "marks": [
+                    {
+                      "text": "引用和解释应当分开",
+                      "kind": "highlight"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "userState": {
+    "updatedAt": "2026-10-30T00:00:00.000Z",
+    "lastPageId": "subject-literature",
+    "notes": [],
+    "annotations": [],
+    "doubts": [],
+    "answers": {},
+    "checks": {},
+    "bookmarks": [],
+    "readingPositions": {},
+    "preferences": {
+      "language": "zh",
+      "desk": "oak",
+      "showDesk": true,
+      "motion": true,
+      "texture": 0.48,
+      "reading": "pages",
+      "direction": "horizontal",
+      "spread": false,
+      "fontSize": 18,
+      "weatherCity": "",
+      "weatherEnabled": false,
+      "penColor": "#6c7355",
+      "penWidth": 2,
+      "penTexture": "pencil",
+      "timerDisplay": "digital",
+      "timerRemaining": 1500,
+      "timerRunning": false
+    }
+  },
+  "assets": [],
+  "extensions": {
+    "readerProfile": {
+      "layout": "single",
+      "direction": "horizontal",
+      "sidebar": "collapsed",
+      "pageShape": "auto",
+      "transition": "cover",
+      "theme": "paper-light",
+      "motion": "full"
+    }
+  }
+}

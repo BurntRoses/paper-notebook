@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "notebook-observe-plant",
-    "revision": 2,
+    "revision": 3,
     "title": "给窗边的植物做一份记录",
     "subtitle": "用具体现象与日期建立观察记录。",
     "author": "Paper Notebook",
@@ -137,6 +137,15 @@
                       "kind": "circle"
                     },
                     {
+                      "text": "原因判断",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "原因判断",
+                      "kind": "red",
+                      "color": "#285f9e"
+                    },
+                    {
                       "text": "还需要植物种类、浇水和根系状态等证据",
                       "kind": "underline"
                     }
@@ -223,6 +232,6 @@
       "theme": "paper-light",
       "motion": "full"
     },
-    "baseRevision": 1
+    "baseRevision": 2
   }
 }

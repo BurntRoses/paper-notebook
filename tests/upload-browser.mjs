@@ -15,7 +15,7 @@ for(const engine of ['chromium','webkit']){
   assert.equal(download.suggestedFilename(),'paper-notebook-upload.zip');
   const data=await readFile(await download.path());assert.deepEqual(data,expected);
   const files=unzipSync(data);assert.deepEqual(Buffer.from(files['paper-notebook-upload/paper-notebook-conversation.zip']),canonical);
-  await page.locator('#download-help summary').click();const help=await page.locator('#download-help').innerText();assert.match(help,/paper-notebook-upload[\s\S]*paper-notebook-conversation\.zip/);assert.match(help,/直接上传它也可以/);
+  await page.locator('#download-help summary').click();const help=await page.locator('#download-help').innerText();assert.match(help,/压缩/);assert.match(help,/paper-notebook-conversation\.zip/);assert.doesNotMatch(help,/此前下载|Safari/);
   await page.screenshot({path:`output/upload-check/${engine}-desktop.png`,fullPage:true});
   await page.setViewportSize({width:390,height:844});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await page.screenshot({path:`output/upload-check/${engine}-phone.png`,fullPage:true});
   for(const id of ['prompt','repository-prompt'])assert.equal((await page.locator('#'+id).inputValue()).trim().split(/\r?\n/).length,1);

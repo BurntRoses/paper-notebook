@@ -142,6 +142,11 @@
                           },
                           "blockId": {
                             "type": "string"
+                          },
+                          "anchor": {
+                            "type": "string",
+                            "minLength": 1,
+                            "description": "Exact source phrase in the referenced block; the cue follows its fragment and line."
                           }
                         }
                       }
@@ -343,7 +348,8 @@
                   "sage",
                   "lilac",
                   "kraft",
-                  "glassine"
+                  "glassine",
+                  "transparent"
                 ]
               },
               "seed": {
@@ -499,6 +505,17 @@
                     }
                   }
                 }
+              },
+              "region": {
+                "enum": [
+                  "right",
+                  "bottom"
+                ]
+              },
+              "marginPosition": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
               }
             }
           }
@@ -991,6 +1008,23 @@
           "items": {
             "type": "string"
           }
+        },
+        "figureMarks": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/figureMark"
+              },
+              {
+                "required": [
+                  "id",
+                  "pageId",
+                  "blockId"
+                ]
+              }
+            ]
+          }
         }
       }
     },
@@ -1332,7 +1366,9 @@
                       "bracket",
                       "check",
                       "star",
-                      "dots"
+                      "dots",
+                      "bold",
+                      "red"
                     ]
                   },
                   "color": {
@@ -1530,6 +1566,12 @@
                 "sketch",
                 "precise"
               ]
+            },
+            "annotations": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/figureMark"
+              }
             }
           }
         }
@@ -1806,6 +1848,77 @@
           "additionalProperties": {
             "$ref": "#/definitions/objectFrame"
           }
+        }
+      },
+      "additionalProperties": false
+    },
+    "figureMark": {
+      "type": "object",
+      "required": [
+        "kind",
+        "x",
+        "y"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "circle",
+            "arrow",
+            "check",
+            "text",
+            "pen"
+          ]
+        },
+        "x": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "y": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "x2": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "y2": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 240
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "points": {
+          "type": "array",
+          "maxItems": 5000,
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            }
+          }
+        },
+        "id": {
+          "type": "string"
+        },
+        "blockId": {
+          "type": "string"
+        },
+        "pageId": {
+          "type": "string"
         }
       },
       "additionalProperties": false
