@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "showcase-compound-interest",
-    "revision": 1,
+    "revision": 2,
     "title": "复利 · 递推与增长",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -31,7 +31,6 @@
           {
             "id": "intro-capabilities",
             "title": "复利的增长基础",
-            "subtitle": "复利笔记 01 / 定义与边界",
             "subject": "stem",
             "layout": "reading",
             "paper": {
@@ -571,6 +570,7 @@
     }
   ],
   "extensions": {
+    "baseRevision": 1,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

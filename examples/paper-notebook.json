@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "paper-notebook-introduction",
-    "revision": 9,
+    "revision": 10,
     "title": "复利 · 从递推到通式",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -36,7 +36,6 @@
           {
             "id": "intro-capabilities",
             "title": "复利的增长基础",
-            "subtitle": "复利笔记 01 / 定义与边界",
             "subject": "stem",
             "layout": "reading",
             "paper": {
@@ -510,7 +509,6 @@
           {
             "id": "subject-literature",
             "title": "《春望》首联的景与情",
-            "subtitle": "文学 / 从原句到解释",
             "subject": "literature",
             "layout": "reading",
             "blocks": [
@@ -621,7 +619,6 @@
           {
             "id": "subject-business",
             "title": "单位贡献与盈亏平衡",
-            "subtitle": "商学 / 固定成本、售价与销量",
             "subject": "business",
             "layout": "reading",
             "blocks": [
@@ -696,7 +693,6 @@
           {
             "id": "subject-code",
             "title": "记录条数与不同人数",
-            "subtitle": "编程 / Python 集合与去重",
             "subject": "code",
             "layout": "reading",
             "blocks": [
@@ -846,7 +842,7 @@
     }
   ],
   "extensions": {
-    "baseRevision": 8,
+    "baseRevision": 9,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

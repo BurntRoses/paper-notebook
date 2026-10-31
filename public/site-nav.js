@@ -12,7 +12,7 @@
   const brand = link('Paper Notebook', './', 'site-brand');
   const theme=document.createElement('button');theme.type='button';theme.className='site-theme';theme.setAttribute('aria-label','切换明暗模式');
   let savedTheme;try{savedTheme=localStorage.getItem('paper-notebook-site-theme');}catch{}
-  const applyTheme=dark=>{document.documentElement.dataset.siteTheme=dark?'dark':'light';theme.textContent=dark?'☀':'☾';theme.setAttribute('aria-pressed',String(dark));const frame=document.querySelector('.reader-preview');try{const reader=frame?.contentWindow?.reader;if(reader){reader.profile.theme=dark?'paper-night':'paper-light';reader.render(reader.anchor());}}catch{}};
+  const applyTheme=dark=>{document.documentElement.dataset.siteTheme=dark?'dark':'light';theme.textContent=dark?'☀':'☾';theme.setAttribute('aria-pressed',String(dark));const frame=document.querySelector('.reader-preview');try{const reader=frame?.contentWindow?.reader;if(reader&&reader.profile.theme!==(dark?'paper-night':'paper-light')){reader.profile.theme=dark?'paper-night':'paper-light';reader.render(reader.anchor());}}catch{}};
   applyTheme(savedTheme?savedTheme==='dark':matchMedia('(prefers-color-scheme:dark)').matches);
   theme.addEventListener('click',()=>{const dark=document.documentElement.dataset.siteTheme!=='dark';applyTheme(dark);try{localStorage.setItem('paper-notebook-site-theme',dark?'dark':'light');}catch{}});
   const star=link('☆ GitHub','https://github.com/BurntRoses/paper-notebook','site-star site-star-button');star.setAttribute('aria-label','给 GitHub 项目加星');
@@ -53,12 +53,25 @@
   const tour=document.querySelector('#start-reader-tour'),tourStatus=document.querySelector('#preview-tour-status');
   const examples=[...document.querySelectorAll('[data-example]')],openPreview=document.querySelector('#preview-open');
   let previewObserver,generation=0;
+  const previewDocuments=new Map();
+  const fetchPreview=name=>{
+    if(!previewDocuments.has(name))previewDocuments.set(name,fetch(`previews/${name}.json?v=3.2`).then(response=>{if(!response.ok)throw new Error('Preview unavailable');return response.json();}).catch(error=>{previewDocuments.delete(name);throw error;}));
+    return previewDocuments.get(name);
+  };
   const loadPreview=()=>{
     if(!preview?.dataset.src)return;
     preview.setAttribute('aria-busy','true');preview.src=preview.dataset.src;delete preview.dataset.src;previewObserver?.disconnect();
   };
   const currentReader=()=>{
     try{return preview?.contentWindow?.location.href===preview?.src?preview.contentWindow.reader:undefined;}catch{return;}
+  };
+  const waitReader=async()=>{
+    loadPreview();
+    for(let attempt=0;attempt<100;attempt++){
+      const reader=currentReader();if(reader?.openPreview){await preview.contentWindow.document.fonts.ready;return reader;}
+      await new Promise(resolve=>setTimeout(resolve,100));
+    }
+    throw new Error('Reader unavailable');
   };
   if(preview){
     preview.addEventListener('load',()=>{
@@ -68,16 +81,31 @@
     });
     previewObserver=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting))loadPreview();},{rootMargin:'180px'});previewObserver.observe(preview);
   }
-  for(const option of examples)option.addEventListener('click',()=>{
+  for(const option of examples){
+   option.addEventListener('pointerenter',()=>{if(currentReader())void fetchPreview(option.dataset.example).catch(()=>{});},{passive:true});
+   option.addEventListener('focus',()=>{if(currentReader())void fetchPreview(option.dataset.example).catch(()=>{});});
+   option.addEventListener('click',async()=>{
     if(!preview||option.getAttribute('aria-pressed')==='true')return;
-    generation++;
+    const token=++generation;
     for(const item of examples)item.setAttribute('aria-pressed',String(item===option));
     preview.title=`试读：${option.dataset.exampleTitle}`;
-    const path=`downloads/${option.dataset.example}.html?demo&v=3.0`;
+    const path=`downloads/${option.dataset.example}.html?demo&v=3.2`;
     if(openPreview)openPreview.href=path;
     if(tour)tour.disabled=true;if(tourStatus)tourStatus.textContent='';
-    preview.dataset.src=path;loadPreview();
-  });
+    preview.setAttribute('aria-busy','true');
+    try{
+      const [document,reader]=await Promise.all([fetchPreview(option.dataset.example),waitReader()]);if(token!==generation)return;
+      reader.openPreview(document);preview.dataset.selectedExample=option.dataset.example;
+      preview.removeAttribute('aria-busy');if(tour)tour.disabled=false;
+      applyTheme(window.document.documentElement.dataset.siteTheme==='dark');
+    }catch{
+      if(token!==generation)return;
+      preview.removeAttribute('aria-busy');if(tour)tour.disabled=false;
+      if(tourStatus)tourStatus.textContent='加载失败，请重试。';
+      option.setAttribute('aria-pressed','false');
+    }
+   });
+  }
   tour?.addEventListener('click',async()=>{
     const token=generation;
     tour.disabled=true;if(tourStatus)tourStatus.textContent='正在加载…';

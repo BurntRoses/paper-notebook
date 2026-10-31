@@ -141,22 +141,22 @@ try {
   film.on('request',r=>{if(/\.mp4(?:\?|$)/.test(r.url()))mediaRequests.push(r.url())});
   await film.goto(base);
   await film.waitForFunction(()=>[...document.querySelectorAll('video')].length===1&&document.querySelector('video').readyState>=2&&document.querySelector('video').preload==='auto');
-  assert.ok(mediaRequests.some(url=>url.includes('/paper-notebook-film.mp4')));
+  assert.ok(mediaRequests.some(url=>url.includes('/paper-notebook-film-1080.mp4')));
   assert.ok(mediaRequests.every(url=>!url.includes('-portrait.mp4')),'only the current orientation downloads initially');
   assert.equal(await film.locator('video:visible').count(),1);
   await film.waitForFunction(()=>[...document.querySelectorAll('video')].every(v=>v.buffered.length&&v.buffered.end(v.buffered.length-1)>8));
-  assert.deepEqual(await film.locator('#film-player').evaluate(v=>[v.duration,v.videoWidth,v.videoHeight]),[64,1280,720]);
+  assert.deepEqual(await film.locator('#film-player').evaluate(v=>[v.duration,v.videoWidth,v.videoHeight]),[64,1920,1080]);
   await film.locator('#film-player').evaluate(v=>new Promise(resolve=>{v.addEventListener('seeked',resolve,{once:true});v.currentTime=5}));
   await film.setViewportSize({width:390,height:844});
-  await film.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.videoWidth===720&&!v.seeking&&v.currentTime>=5&&!v.hasAttribute('aria-busy')});
+  await film.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.videoWidth===1080&&!v.seeking&&v.currentTime>=5&&!v.hasAttribute('aria-busy')});
   assert.equal(await film.locator('#film-player').evaluate(v=>v.paused),true);
   await film.locator('#film-player').evaluate(v=>v.play());
   await film.waitForFunction(()=>document.querySelector('#film-player').currentTime>5.2);
   await film.setViewportSize({width:1180,height:820});
-  await film.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.videoWidth===1280&&!v.paused&&!v.seeking&&v.currentTime>=5});
+  await film.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.videoWidth===1920&&!v.paused&&!v.seeking&&v.currentTime>=5});
   await film.setViewportSize({width:820,height:1180});
   await film.setViewportSize({width:1180,height:820});
-  await film.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.videoWidth===1280&&!v.paused&&!v.seeking&&v.currentTime>=5&&!v.hasAttribute('aria-busy')});
+  await film.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.videoWidth===1920&&!v.paused&&!v.seeking&&v.currentTime>=5&&!v.hasAttribute('aria-busy')});
   assert.equal(await film.locator('.film-status').textContent(),'');
   assert.ok(mediaRequests.some(url=>url.includes('-portrait.mp4')));assert.equal(await film.locator('video').count(),1);
   await film.locator('#film-player').scrollIntoViewIfNeeded();
@@ -182,7 +182,7 @@ try {
   await cold.locator('#film-player').evaluate(async v=>{v.currentTime=32;await v.play()});
   await cold.waitForFunction(()=>document.querySelector('#film-player').currentTime>32.1);
   await cold.setViewportSize({width:390,height:844});
-  await cold.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.videoWidth===720&&!v.paused&&!v.seeking&&v.currentTime>=32&&!v.hasAttribute('aria-busy')});
+  await cold.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.videoWidth===1080&&!v.paused&&!v.seeking&&v.currentTime>=32&&!v.hasAttribute('aria-busy')});
   await cold.close();
   checks.push('Cold media headers and a seek beyond the initial buffer preserve playback through rotation');
 
@@ -190,7 +190,7 @@ try {
   const network=await slowContext.newCDPSession(slow);await network.send('Network.enable');await network.send('Network.emulateNetworkConditions',{offline:false,latency:150,downloadThroughput:180*1024,uploadThroughput:60*1024});
   await slow.goto(base,{waitUntil:'domcontentloaded'});await slow.waitForFunction(()=>document.querySelector('#film-player')?.readyState>=2,{},{timeout:45000});
   const playback=await slow.locator('#film-player').evaluate(async v=>{let waits=0;v.addEventListener('waiting',()=>waits++);const began=performance.now();await v.play();await new Promise(resolve=>setTimeout(resolve,8000));return{elapsed:(performance.now()-began)/1000,played:v.currentTime,waits,width:v.videoWidth}});
-  assert.ok(playback.played>6,JSON.stringify(playback));assert.ok([960,1280].includes(playback.width));await slowContext.close();
+  assert.ok(playback.played>6,JSON.stringify(playback));assert.ok([960,1280,1920].includes(playback.width));await slowContext.close();
   checks.push(`At 180 KiB/s download and 150 ms latency, playback advances ${playback.played.toFixed(1)} seconds during ${playback.elapsed.toFixed(1)} seconds (${playback.waits} waiting events)`);
 
   const safari=await webkit.launch({headless:true});
@@ -205,11 +205,11 @@ try {
     await sp.waitForFunction(()=>[...document.querySelectorAll('video')].every(v=>v.readyState>=2&&v.preload==='auto'));
     await sp.locator('#film-player').evaluate(v=>new Promise(resolve=>{v.addEventListener('seeked',resolve,{once:true});v.currentTime=32}));
     await sp.setViewportSize({width:390,height:844});
-    await sp.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.videoWidth===720&&!v.seeking&&v.currentTime>=32&&!v.hasAttribute('aria-busy')});
+    await sp.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.videoWidth===1080&&!v.seeking&&v.currentTime>=32&&!v.hasAttribute('aria-busy')});
     assert.equal(await sp.locator('#film-player').evaluate(v=>v.paused),true);
     await sp.locator('#film-player').evaluate(v=>v.play());
     await sp.setViewportSize({width:1440,height:1000});
-    await sp.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.videoWidth===1280&&!v.paused&&!v.seeking&&v.currentTime>=32&&!v.hasAttribute('aria-busy')});
+    await sp.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.videoWidth===1920&&!v.paused&&!v.seeking&&v.currentTime>=32&&!v.hasAttribute('aria-busy')});
     await sp.setViewportSize({width:390,height:844});
     await sp.locator('#create').scrollIntoViewIfNeeded();
     assert.ok(await sp.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));

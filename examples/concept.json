@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "notebook-observation",
-    "revision": 3,
+    "revision": 4,
     "title": "数字与证据",
     "subtitle": "从一张订单表，理解统计粒度与集合。",
     "author": "Paper Notebook",
@@ -32,7 +32,6 @@
           {
             "id": "observation-1",
             "title": "订单数与顾客数",
-            "subtitle": "记录的对象决定统计结果。",
             "layout": "reading",
             "blocks": [
               {
@@ -433,6 +432,6 @@
       "theme": "paper-light",
       "motion": "full"
     },
-    "baseRevision": 2
+    "baseRevision": 3
   }
 }

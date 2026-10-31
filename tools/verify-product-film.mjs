@@ -4,7 +4,7 @@ import {mkdir,writeFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 const root=fileURLToPath(new URL('../',import.meta.url)),ffmpeg=process.env.FFMPEG||'ffmpeg',report=[];
 await mkdir(root+'docs/verification',{recursive:true});
-const variants=[['',1280,720],['-portrait',720,1280],['-low',960,540],['-portrait-low',540,960]];
+const variants=[['-1080',1920,1080],['-portrait-1080',1080,1920],['',1280,720],['-portrait',720,1280],['-low',960,540],['-portrait-low',540,960]];
 for(const [suffix,width,height]of variants.filter(([suffix])=>!process.argv.includes('--low')||suffix.endsWith('-low'))){
  const file=root+'public/promo/paper-notebook-film'+suffix+'.mp4';
  const run=args=>{const r=spawnSync(ffmpeg,['-hide_banner',...args],{encoding:'utf8',maxBuffer:10e6});assert.equal(r.status,0,r.stderr);return r.stderr;};

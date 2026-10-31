@@ -5,9 +5,9 @@ import {userState, type NotebookDocument} from './model/types';
 function lesson(name:string,title:string,pageIds:string[],goals:string[]):[string,NotebookDocument]{
  const doc=structuredClone(introNotebook);
  const pages=pageIds.map(id=>doc.notebook.chapters.flatMap(c=>c.pages).find(p=>p.id===id)!);
- doc.notebook={...doc.notebook,id:`showcase-${name}`,revision:1,title,goals,chapters:[{id:`${name}-chapter`,title,pages}]};
+ doc.notebook={...doc.notebook,id:`showcase-${name}`,revision:2,title,goals,chapters:[{id:`${name}-chapter`,title,pages}]};
  doc.userState=userState(pages[0].id);doc.userState.updatedAt='2026-10-30T00:00:00.000Z';
- doc.extensions={readerProfile:{...introNotebook.extensions.readerProfile as object}};
+ doc.extensions={baseRevision:1,readerProfile:{...introNotebook.extensions.readerProfile as object}};
  const usedAssets=new Set(pages.flatMap(p=>p.blocks).flatMap(b=>b.assetId?[b.assetId]:[]));
  doc.assets=doc.assets.filter(a=>usedAssets.has(a.id));
  return [name,doc];

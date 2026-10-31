@@ -3,7 +3,7 @@ function make(id:string,title:string,subtitle:string,pages:Page[],goals:string[]
  return {schemaVersion:'1.0.0',notebook:{id,revision:1,title,subtitle,author:'Paper Notebook',language:'zh-CN',goals,sources:[{id:'source-editorial',title:'本项目编写的教学示例',status:'illustrative'}],chapters:[{id:`${id}-chapter`,title:'从问题到理解',pages}]},userState:userState(pages[0].id),assets:[],extensions:{}};
 }
 export const conceptExample=make('notebook-observation','数字与证据','从一张订单表，理解统计粒度与集合。',[
- {id:'observation-1',title:'订单数与顾客数',subtitle:'记录的对象决定统计结果。',layout:'reading',blocks:[
+ {id:'observation-1',title:'订单数与顾客数',layout:'reading',blocks:[
   {id:'obs-opening',type:'prose',text:'一个人，在书店下了三次单。订单表里有三行记录，但背后只有一位读者。问“卖出了几单”和问“有几位顾客”，答案自然不同。'},
   {id:'obs-concept',type:'concept',title:'统计粒度',text:'统计粒度，是每一条记录所代表的对象。先明确对象，再计数。三笔订单，可能来自一位顾客，也可能来自三位顾客。'},
   {id:'obs-table',type:'comparison',title:'三笔订单',columns:['订单','顾客','金额'],rows:[['01','小林','¥ 38'],['02','小林','¥ 62'],['03','小林','¥ 45']]},
@@ -79,3 +79,5 @@ for(const document of examples){
 }
 
 for(const example of examples)example.userState.updatedAt='2026-10-29T00:00:00.000Z';
+
+conceptExample.notebook.revision=4;conceptExample.extensions.baseRevision=3;

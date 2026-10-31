@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "showcase-programming",
-    "revision": 1,
+    "revision": 2,
     "title": "Python · 集合与去重",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -25,7 +25,6 @@
           {
             "id": "subject-code",
             "title": "记录条数与不同人数",
-            "subtitle": "编程 / Python 集合与去重",
             "subject": "code",
             "layout": "reading",
             "blocks": [
@@ -172,6 +171,7 @@
   },
   "assets": [],
   "extensions": {
+    "baseRevision": 1,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

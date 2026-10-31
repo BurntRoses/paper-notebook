@@ -34,11 +34,11 @@ try{
  const pc=await browser.newContext({viewport:{width:1440,height:1000}}),promo=await pc.newPage();promo.on('pageerror',e=>errors.push(e.message));
  await promo.goto(pathToFileURL(root+'/dist/promo.html').href);
  await promo.waitForFunction(()=>document.querySelector('#film-player')?.readyState>=1);
- let spec=await promo.locator('#film-player').evaluate(v=>({duration:v.duration,w:v.videoWidth,h:v.videoHeight}));assert.deepEqual([spec.duration,spec.w,spec.h],[64,1280,720]);
+ let spec=await promo.locator('#film-player').evaluate(v=>({duration:v.duration,w:v.videoWidth,h:v.videoHeight}));assert.deepEqual([spec.duration,spec.w,spec.h],[64,1920,1080]);
  await promo.locator('#film-player').evaluate(v=>new Promise(resolve=>{v.addEventListener('seeked',resolve,{once:true});v.currentTime=35.5}));
- await promo.setViewportSize({width:1080,height:1920});await promo.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.videoWidth===720&&!v.seeking&&v.currentTime>=35.5});
+ await promo.setViewportSize({width:1080,height:1920});await promo.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.videoWidth===1080&&!v.seeking&&v.currentTime>=35.5});
  assert.equal(await promo.locator('#film-player').evaluate(v=>v.paused),true);
- await promo.setViewportSize({width:1440,height:1000});await promo.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.videoWidth===1280&&!v.seeking&&v.currentTime>=35.5});
+ await promo.setViewportSize({width:1440,height:1000});await promo.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.videoWidth===1920&&!v.seeking&&v.currentTime>=35.5});
  await promo.locator('#film-player').scrollIntoViewIfNeeded();
  // Wait for an actually presented frame, rather than capturing the native
  // loading spinner between seek completion and the compositor update.

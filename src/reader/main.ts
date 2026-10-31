@@ -412,6 +412,18 @@ class ReaderApp {
   }
   showVisualPage(){let index=this.pages.findIndex(p=>p.blocks.some(b=>b.type==='image'));if(index<0)index=this.pages.findIndex(p=>p.blocks.some(b=>b.type==='chart'));if(index<0)index=this.pages.findIndex(p=>p.blocks.some(b=>b.type==='diagram'));if(index>=0)this.goPage(index,true);}
   startTour(){startReaderTour(this,appRoot);}
+  // The website swaps only lesson data; the bundled reader and fonts stay loaded.
+  openPreview(document:NotebookDocument){
+    this.cancelTurn();clearTimeout(this.saveTick);
+    this.sessionBooks.set(this.d.notebook.id,this.d);
+    const parsed=parseDocument(document).document;
+    const next=this.sessionBooks.get(parsed.notebook.id)||parsed;
+    this.d=next;this.editor.reset();this.profile={...this.profile,...next.extensions.readerProfile as object};
+    this.rightSidebarOpen=this.profile.marginNotes??true;this.sidebarOpen=false;this.search='';this.sidebarTab='contents';
+    this.pageIndex=0;this.sheets=[];this.pageHeights.clear();this.pageCache.clear();this.invalidate();
+    delete this.d.userState.readingAnchor;this.d.userState.lastPageId=pagesOf(this.d)[0].id;
+    this.sessionBooks.set(next.notebook.id,next);setLocale(this.en?'en':'zh');this.render();window.scrollTo(0,0);
+  }
   showSettings(){
     const m=modal(this.t('阅读设置','Reading settings'));const a=this.anchor();
     m.body.append(button(this.t('功能介绍','Features'),()=>{m.close();this.showGuide()},'quiet'));

@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "showcase-literature",
-    "revision": 1,
+    "revision": 2,
     "title": "《春望》 · 景物与语境",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -25,7 +25,6 @@
           {
             "id": "subject-literature",
             "title": "《春望》首联的景与情",
-            "subtitle": "文学 / 从原句到解释",
             "subject": "literature",
             "layout": "reading",
             "blocks": [
@@ -178,6 +177,7 @@
   },
   "assets": [],
   "extensions": {
+    "baseRevision": 1,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

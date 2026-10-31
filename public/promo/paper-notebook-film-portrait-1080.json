@@ -1,0 +1,28 @@
+{
+  "orientation": "portrait",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "duration": 64,
+  "frames": 1920,
+  "notebookId": "paper-notebook-product-story",
+  "source": "examples/product-notebook.json",
+  "productionSource": "production/promo/story",
+  "renderCache": "output/promo/story",
+  "motion": "Native paper fragments, camera reframing, SVG stroke/clip reveals, beat-aligned paper wipes",
+  "screenRecording": false,
+  "music": "product-film-music.wav",
+  "script": "product-film-script.json",
+  "file": "paper-notebook-film-portrait-1080.mp4",
+  "encoding": {
+    "video": "H.264",
+    "crf": 20,
+    "preset": "fast",
+    "maxrate": "4000 kb/s",
+    "buffer": "8000 kb/s",
+    "keyframeSeconds": 2,
+    "audio": "AAC 96 kb/s",
+    "fastStart": true
+  },
+  "bytes": 22088491
+}

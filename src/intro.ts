@@ -2,7 +2,7 @@ import { growthFigure } from './growth-figure';
 import { userState, type NotebookDocument, type Page } from './model/types';
 // The showcase is an actual lesson: its marks, marginal notes and exercises use the reader contract.
 const pages:Page[]=[
- {id:'intro-capabilities',title:'复利的增长基础',subtitle:'复利笔记 01 / 定义与边界',subject:'stem',layout:'reading',paper:{ruling:'lined',lineHeight:34},blocks:[
+ {id:'intro-capabilities',title:'复利的增长基础',subject:'stem',layout:'reading',paper:{ruling:'lined',lineHeight:34},blocks:[
   {id:'intro-lead',type:'prose',study:{label:'01 · 一句话定义',tone:'blue',marks:[{text:'上一期的期末值',kind:'highlight'}]},text:'复利：每一期的增长，都以上一期的期末值为基础。新增的利息，也会参与下一期的增长。'},
   {id:'intro-read',type:'concept',title:'这份模型的条件',study:{tone:'red',explanations:[{text:'增长率恒定',note:'每一期使用相同的 r。'}],marks:[{text:'增长率恒定',kind:'circle'},{text:'增长率恒定',kind:'bold'},{text:'增长率恒定',kind:'red',color:'#285f9e'},{text:'没有额外存取',kind:'wave'}]},text:'这里假设每期增长率恒定、利息计入本金，期间没有额外存取。期数与增长率必须使用同一时间单位。'},
   {id:'intro-create',type:'comparison',study:{label:'02 · 放在一起比较',tone:'blue'},columns:['每期增长的基础','两期后的结果'],rows:[['单利：始终是初始本金','100 + 10 + 10 = 120'],['复利：上一期的期末值','100 × 1.1 × 1.1 = 121']]},
@@ -25,26 +25,26 @@ const pages:Page[]=[
   {id:'intro-close',type:'prose',study:{label:'模型的四个环节',visual:'extract',tone:'blue',marks:[{text:'条件 → 递推 → 通式 → 核算',kind:'box'}]},text:'条件 → 递推 → 通式 → 核算。每个计算结果都对应一组明确的条件。'}]}
 ];
 const subjectPages:Page[]=[
- {id:'subject-literature',title:'《春望》首联的景与情',subtitle:'文学 / 从原句到解释',subject:'literature',layout:'reading',blocks:[
+ {id:'subject-literature',title:'《春望》首联的景与情',subject:'literature',layout:'reading',blocks:[
   {id:'literature-quote',type:'quote',text:'国破山河在，城春草木深。',attribution:'杜甫《春望》首联',sourceRefs:[{sourceId:'source-spring',locator:'首联'}],study:{label:'原句',visual:'extract',marks:[{text:'破',kind:'circle'},{text:'破',kind:'bold'},{text:'破',kind:'red',color:'#285f9e'},{text:'深',kind:'dots'}]}},
   {id:'literature-detail',type:'concept',title:'“在”与“深”，落在眼前的景物',text:'“山河在”写山河依旧；“草木深”写城中草木繁茂。两句并置，呈现“国破”“城春”之中的荒凉。',study:{label:'字词与语境',tone:'red',marks:[{text:'两句并置',kind:'underline'}]}},
   {id:'literature-map',type:'diagram',arrangement:'row',nodes:[{id:'scene',label:'山河、草木：所见'},{id:'context',label:'国破、城春：语境'},{id:'reading',label:'景物中的荒凉感'}],edges:[{from:'scene',to:'context'},{from:'context',to:'reading'}],study:{visual:'sketch'}},
   {id:'literature-reading',type:'prose',text:'“荒凉感”是依据景物与语境作出的阅读判断。引用和解释应当分开。',study:{label:'阅读依据',marks:[{text:'引用和解释应当分开',kind:'highlight'}]}}
  ]},
- {id:'subject-business',title:'单位贡献与盈亏平衡',subtitle:'商学 / 固定成本、售价与销量',subject:'business',layout:'reading',blocks:[
+ {id:'subject-business',title:'单位贡献与盈亏平衡',subject:'business',layout:'reading',blocks:[
   {id:'business-conditions',type:'prose',text:'单价 80 元，单位变动成本 50 元，固定成本 3000 元。假设单价与单位成本不变。',study:{label:'给定条件',marks:[{text:'单价与单位成本不变',kind:'underline'}]}},
   {id:'business-formula',type:'formula',latex:'Q_{BE}=\\frac{F}{p-v}=\\frac{3000}{80-50}=100',text:'单位贡献 30 元；100 件贡献 3000 元，恰好覆盖固定成本。',study:{label:'敲黑板 · 盈亏平衡销量',visual:'blackboard',marks:[{text:'贡献 30 元',kind:'box'}]}},
   {id:'business-table',type:'comparison',columns:['销量','收入 − 变动成本 − 固定成本'],rows:[['80 件','6400 − 4000 − 3000 = −600 元'],['120 件','9600 − 6000 − 3000 = 600 元']],study:{label:'盈亏平衡点两侧'}},
   {id:'business-extract',type:'callout',text:'固定成本由全部销量共同覆盖。销量 × 单位贡献 − 固定成本，即为模型中的利润。',study:{label:'量纲与解释',visual:'extract',marks:[{text:'全部销量共同覆盖',kind:'highlight'}]}}
  ]},
- {id:'subject-code',title:'记录条数与不同人数',subtitle:'编程 / Python 集合与去重',subject:'code',layout:'reading',blocks:[
+ {id:'subject-code',title:'记录条数与不同人数',subject:'code',layout:'reading',blocks:[
   {id:'code-question',type:'prose',text:'A、A、B 是三条记录，包含两个不同的顾客编号。集合保留不同的值。',study:{label:'问题与数据',marks:[{text:'不同的顾客编号',kind:'circle'},{text:'不同的顾客编号',kind:'bold'},{text:'不同的顾客编号',kind:'red',color:'#285f9e'}]}},
   {id:'code-example',type:'code',language:'Python',text:'def count_customers(ids):\n    unique_ids = set(ids)\n    return len(unique_ids)\nids = ["A", "A", "B"]\nprint(count_customers(ids))  # 2',study:{label:'可核对的最小示例',explanations:[{text:'set',note:'同值去重，得到 {A, B}。'},{text:'len',note:'求集合长度，结果为 2。'}]}},
   {id:'code-map',type:'diagram',arrangement:'row',nodes:[{id:'records',label:'列表 [A, A, B]'},{id:'distinct',label:'集合 {A, B}'},{id:'count',label:'长度 2'}],edges:[{from:'records',to:'distinct',label:'set'},{from:'distinct',to:'count',label:'len'}],study:{visual:'sketch'}},
   {id:'code-limit',type:'prose',text:'同一人有多个编号时，不同编号的数量不等于人数。',study:{label:'统计口径',visual:'extract',marks:[{text:'不同编号',kind:'star'}]}}
  ]}
 ];
-export const introNotebook:NotebookDocument={schemaVersion:'1.0.0',notebook:{id:'paper-notebook-introduction',revision:9,title:'复利 · 从递推到通式',author:'Paper Notebook',language:'zh-CN',goals:['区分单利与复利的增长基础','从递推关系理解复利通式','检查周期单位并核算增长结果'],sources:[{id:'source-spring',title:'杜甫《春望》',locator:'首联；原诗为公共领域作品，释读为教学解释。'},{id:'intro-source-math',title:'公式推导与数值核验',locator:'依据等比数列递推；100 × 1.1² = 121，200 × 1.05² = 220.5。'},{id:'intro-source-scope',title:'模型范围',locator:'恒定每期增长率、期末计入增长、无额外资金流；不包含税费及浮动利率。'}],chapters:[{id:'intro-chapter',title:'数学 / 增长模型',pages},{id:'subject-chapter',title:'不同学科的笔记',pages:subjectPages}]},userState:userState(pages[0].id),assets:[{id:'growth-area',name:'复利面积.svg',mime:'image/svg+xml',data:'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(growthFigure),width:420,height:420,source:'Paper Notebook 原创教学图解',license:'MIT',verified:true}],extensions:{baseRevision:8,readerProfile:{layout:'single',direction:'horizontal',sidebar:'collapsed',pageShape:'auto',transition:'cover',theme:'paper-light',motion:'full'}}};
+export const introNotebook:NotebookDocument={schemaVersion:'1.0.0',notebook:{id:'paper-notebook-introduction',revision:10,title:'复利 · 从递推到通式',author:'Paper Notebook',language:'zh-CN',goals:['区分单利与复利的增长基础','从递推关系理解复利通式','检查周期单位并核算增长结果'],sources:[{id:'source-spring',title:'杜甫《春望》',locator:'首联；原诗为公共领域作品，释读为教学解释。'},{id:'intro-source-math',title:'公式推导与数值核验',locator:'依据等比数列递推；100 × 1.1² = 121，200 × 1.05² = 220.5。'},{id:'intro-source-scope',title:'模型范围',locator:'恒定每期增长率、期末计入增长、无额外资金流；不包含税费及浮动利率。'}],chapters:[{id:'intro-chapter',title:'数学 / 增长模型',pages},{id:'subject-chapter',title:'不同学科的笔记',pages:subjectPages}]},userState:userState(pages[0].id),assets:[{id:'growth-area',name:'复利面积.svg',mime:'image/svg+xml',data:'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(growthFigure),width:420,height:420,source:'Paper Notebook 原创教学图解',license:'MIT',verified:true}],extensions:{baseRevision:9,readerProfile:{layout:'single',direction:'horizontal',sidebar:'collapsed',pageShape:'auto',transition:'cover',theme:'paper-light',motion:'full'}}};
 introNotebook.userState.preferences.fontSize=24;
 
 introNotebook.userState.updatedAt='2026-10-29T00:00:00.000Z';
