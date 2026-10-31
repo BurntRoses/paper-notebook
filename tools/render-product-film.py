@@ -1,12 +1,14 @@
 """Deterministic motion design from actual notebook pages, not a UI recording.
 
-All visible words, code, diagrams, blackboards and marks are crops of the
-production reader. This compositor only choreographs those paper assets.
+Body text, code, diagrams, blackboards and marks come from the production
+reader. Large titles use its original font outlines to avoid screenshot blur.
 """
 from pathlib import Path
 from functools import lru_cache
 from PIL import Image, ImageDraw, ImageFilter, ImageOps
 import argparse, json, math, os, subprocess, sys
+from io import BytesIO
+import re
 
 ROOT=Path(__file__).resolve().parents[1]
 SOURCE=ROOT/'production/promo/story'
@@ -58,22 +60,35 @@ def region(page,kind,source=None,pad=8):
     box=(max(0,math.floor(b['x']-pad)),max(0,math.floor(b['y']-pad)),min(bases[page].width,math.ceil(b['x']+b['width']+pad)),min(bases[page].height,math.ceil(b['y']+b['height']+pad)))
     return (source or fulls[page]).crop(box)
 
-def brand(page):
-    pic=region(page,'heading',bases[page],0).convert('RGB')
-    mask=pic.convert('L').point(lambda x:255 if x<145 else 0)
-    box=mask.getbbox()
-    if box:pic=pic.crop((max(0,box[0]-8),max(0,box[1]-8),min(pic.width,box[2]+8),min(pic.height,box[3]+8)))
-    return pic.convert('RGBA')
+class VectorTitle:
+    def __init__(self,page):
+        self.svg=(SOURCE/'titles'/f'{meta[page]["pageId"]}.svg').read_bytes()
+        self.width,self.height=map(float,re.search(rb'viewBox="[\d.\-]+ [\d.\-]+ ([\d.]+) ([\d.]+)"',self.svg).groups())
+        # A title never exceeds the frame width. Rasterize its original curves
+        # once at twice that width, then only reduce them for animated frames.
+        script="""import {readFileSync} from 'node:fs';
+const {default:sharp}=await import(process.env.SHARP_MODULE||'sharp');
+process.stdout.write(await sharp(readFileSync(0),{density:600}).resize(3840).png().toBuffer());"""
+        data=subprocess.run([os.environ.get('NODE','node'),'--input-type=module','-e',script],input=self.svg,stdout=subprocess.PIPE,check=True).stdout
+        self.master=Image.open(BytesIO(data)).convert('RGBA')
 
-BRANDS={1:brand(1),7:brand(7)}
+    @lru_cache(maxsize=320)
+    def raster(self,width,height):
+        return self.master.resize((width,height),Image.Resampling.LANCZOS)
+
+def brand(page):
+    return VectorTitle(page)
+
 HEADINGS={i:brand(i) for i in range(8)}
+BRANDS={i:HEADINGS[i] for i in [1,7]}
 UIS={o:Image.open(SOURCE/f'ui-{o}.png').convert('RGBA') for o in ['landscape','portrait']}
 EDITORS={o:Image.open(SOURCE/f'editor-{o}.png').convert('RGBA') for o in ['landscape','portrait']}
 
 def paste(frame,pic,cx,cy,width,height,angle=0,alpha=1,shadow=False):
     ratio=min(width/pic.width,height/pic.height)
     size=(max(1,round(pic.width*ratio)),max(1,round(pic.height*ratio)))
-    if size!=pic.size:pic=pic.resize(size,Image.Resampling.BICUBIC)
+    if isinstance(pic,VectorTitle):pic=pic.raster(*size)
+    elif size!=pic.size:pic=pic.resize(size,Image.Resampling.LANCZOS)
     if alpha<1:pic=pic.copy();pic.putalpha(pic.getchannel('A').point(lambda v:round(v*clamp(alpha))))
     if abs(angle)>.02:pic=pic.rotate(angle,resample=Image.Resampling.BICUBIC,expand=True)
     x,y=round(cx-pic.width/2),round(cy-pic.height/2)
@@ -213,7 +228,7 @@ name='paper-notebook-film'+('-portrait' if PORTRAIT else '')+'-1080'
 OUT.mkdir(parents=True,exist_ok=True)
 output=OUT/(name+'.mp4')
 temporary=OUT/(name+'.rendering.mp4')
-cmd=[ffmpeg,'-y','-loglevel','error','-f','rawvideo','-pix_fmt','rgb24','-s',f'{W}x{H}','-r',str(FPS),'-i','-','-i',str(OUT/'product-film-music.wav'),'-t',str(DURATION),'-c:v','libx264','-preset','fast','-crf','20','-maxrate','4000k','-bufsize','8000k','-g',str(FPS*2),'-pix_fmt','yuv420p','-c:a','aac','-b:a','96k','-movflags','+faststart',str(temporary)]
+cmd=[ffmpeg,'-y','-loglevel','error','-f','rawvideo','-pix_fmt','rgb24','-s',f'{W}x{H}','-r',str(FPS),'-i','-','-i',str(OUT/'product-film-music.wav'),'-t',str(DURATION),'-c:v','libx264','-preset','slow','-crf','18','-maxrate','6000k','-bufsize','12000k','-g',str(FPS*2),'-pix_fmt','yuv420p','-c:a','aac','-b:a','96k','-movflags','+faststart',str(temporary)]
 process=subprocess.Popen(cmd,stdin=subprocess.PIPE)
 try:
     for n in range(DURATION*FPS):
@@ -224,6 +239,6 @@ try:
 except BaseException:
     process.kill();temporary.unlink(missing_ok=True);raise
 temporary.replace(output)
-manifest={'orientation':ORIENTATION,'width':W,'height':H,'fps':FPS,'duration':DURATION,'frames':DURATION*FPS,'notebookId':'paper-notebook-product-story','source':'examples/product-notebook.json','productionSource':'production/promo/story','renderCache':'output/promo/story','motion':'Native paper fragments, camera reframing, SVG stroke/clip reveals, beat-aligned paper wipes','screenRecording':False,'music':'product-film-music.wav','script':'product-film-script.json','file':output.name,'encoding':{'video':'H.264','crf':20,'preset':'fast','maxrate':'4000 kb/s','buffer':'8000 kb/s','keyframeSeconds':2,'audio':'AAC 96 kb/s','fastStart':True},'bytes':output.stat().st_size}
+manifest={'orientation':ORIENTATION,'width':W,'height':H,'fps':FPS,'duration':DURATION,'frames':DURATION*FPS,'notebookId':'paper-notebook-product-story','source':'examples/product-notebook.json','productionSource':'production/promo/story','renderCache':'output/promo/story','titles':'SVG glyph outlines rasterized at the displayed size','motion':'Native paper fragments, camera reframing, SVG stroke/clip reveals, beat-aligned paper wipes','screenRecording':False,'music':'product-film-music.wav','script':'product-film-script.json','file':output.name,'encoding':{'video':'H.264','crf':18,'preset':'slow','maxrate':'6000 kb/s','buffer':'12000 kb/s','keyframeSeconds':2,'audio':'AAC 96 kb/s','fastStart':True},'bytes':output.stat().st_size}
 (OUT/(name+'.json')).write_text(json.dumps(manifest,ensure_ascii=False,indent=2))
 print(output,flush=True)

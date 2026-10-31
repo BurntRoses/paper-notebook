@@ -9,6 +9,7 @@
   "source": "examples/product-notebook.json",
   "productionSource": "production/promo/story",
   "renderCache": "output/promo/story",
+  "titles": "SVG glyph outlines rasterized at the displayed size",
   "motion": "Native paper fragments, camera reframing, SVG stroke/clip reveals, beat-aligned paper wipes",
   "screenRecording": false,
   "music": "product-film-music.wav",
@@ -16,13 +17,13 @@
   "file": "paper-notebook-film-1080.mp4",
   "encoding": {
     "video": "H.264",
-    "crf": 20,
-    "preset": "fast",
-    "maxrate": "4000 kb/s",
-    "buffer": "8000 kb/s",
+    "crf": 18,
+    "preset": "slow",
+    "maxrate": "6000 kb/s",
+    "buffer": "12000 kb/s",
     "keyframeSeconds": 2,
     "audio": "AAC 96 kb/s",
     "fastStart": true
   },
-  "bytes": 22290969
+  "bytes": 32796701
 }

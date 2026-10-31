@@ -45,7 +45,7 @@
   syncControls();
   const orientation = matchMedia('(orientation: portrait)');
   const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-  const revision = '3.2';
+  const revision = '3.3';
   const hdCopies = new Map(), attempted = new Set();
   let active = '', quality = '', mode = 'auto', request = 0, switching = false;
   let wantedTime = 0, wantedPlay = false, sourceController, upgradeController, stallTimer;

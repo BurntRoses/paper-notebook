@@ -8,7 +8,7 @@
 
 ## 生成
 
-需要 Node 20.19+、Python 3（Pillow、numpy）、Playwright/Chromium、sharp 和 FFmpeg。可设置 `PLAYWRIGHT_MODULE`、`SHARP_MODULE`、`FFMPEG` 指向已有安装。HTTP 服务应提供本项目，默认 `NOTEBOOK_BASE=http://127.0.0.1:5178/paper-notebook-kit/dist`。
+需要 Node 20.19+、Python 3（Pillow、numpy、fonttools、brotli）、Playwright/Chromium、sharp 和 FFmpeg。可设置 `PLAYWRIGHT_MODULE`、`SHARP_MODULE`、`FFMPEG` 指向已有安装。HTTP 服务应提供本项目，默认 `NOTEBOOK_BASE=http://127.0.0.1:5178/paper-notebook-kit/dist`。
 
 ```sh
 npm run build
@@ -16,6 +16,7 @@ node --import tsx tools/build-product-story.mjs
 node tools/capture-product-story.mjs
 node tools/prepare-product-assets.mjs
 python tools/compose-product-music.py
+python tools/build-film-titles.py
 python tools/render-product-film.py --preview
 python tools/render-product-film.py --preview --portrait
 python tools/render-product-film.py
@@ -25,9 +26,9 @@ node tools/verify-product-film.mjs
 npm run build
 ```
 
-页面捕获需要本地 HTTP 服务。运行 `npm run preview -- --port 4173` 时，设置 `NOTEBOOK_BASE=http://127.0.0.1:4173`。`capture-product-story.mjs` 从正式 `/downloads/paper-notebook-product.html` 获取页面。已保留的 PNG/SVG 与几何源文件足以重建影片；不修改内容时可从 `prepare-product-assets.mjs` 开始。所有笔迹展开帧、无墨页面和未母带处理的音乐统一写入 `output/`，不参与网站发布。
+页面捕获需要本地 HTTP 服务。运行 `npm run preview -- --port 4173` 时，设置 `NOTEBOOK_BASE=http://127.0.0.1:4173`。`capture-product-story.mjs` 从正式 `/downloads/paper-notebook-product.html` 获取页面。已保留的 PNG/SVG 与几何源文件足以重建影片；不修改内容时可从 `prepare-product-assets.mjs` 开始。不修改标题时可直接使用保留的 `production/promo/story/titles/*.svg`；重新生成字体轮廓需要完整工具包中的 `assets/fonts/reading/`。所有笔迹展开帧、无墨页面和未母带处理的音乐统一写入 `output/`，不参与网站发布。
 
-捕获脚本从正式产品笔记加载页面并以 CSS 隐藏已有笔迹、保留笔迹数据，使用固定视口与 deviceScaleFactor=1，将纸页几何与截图在同一时刻记录。每个逻辑页的自然续页逐张检查后纵向合成素材，保留宽松排版与全部内容；几何及笔迹统一转换为合成图坐标。背景单独捕获无文字纸面，避免把正文当纹理重复。完整 UI 镜头从正式机器学习示例捕获：横版为日间左右双页，竖版为夜间上下双页，均展示右栏、底栏便条和图像批注工具。页面框线使用统一直线；便条通过阅读器实际操作添加，不写入示例源文件。捕获报告记录阅读器 SHA-256。`prepare` 将 CSS 坐标转换为实际 PNG 像素后抽出原生 SVG，渲染笔迹揭示帧。影片可从保留的 PNG、SVG、几何 JSON 重建；高亮揭示帧输出到 `output/promo/story/`，可随时清除再生成。它们不会进入网站发布包。
+捕获脚本从正式产品笔记加载页面并以 CSS 隐藏已有笔迹、保留笔迹数据，使用固定视口与 deviceScaleFactor=1，将纸页几何与截图在同一时刻记录。每个逻辑页的自然续页逐张检查后纵向合成素材，保留宽松排版与全部内容；几何及笔迹统一转换为合成图坐标。背景单独捕获无文字纸面，避免把正文当纹理重复。完整 UI 镜头从正式机器学习示例捕获：横版为日间左右双页，竖版为夜间上下双页，均展示右栏、底栏便条和图像批注工具。页面框线使用统一直线；便条通过阅读器实际操作添加，不写入示例源文件。捕获报告记录阅读器 SHA-256。`prepare` 将 CSS 坐标转换为实际 PNG 像素后抽出原生 SVG，渲染笔迹揭示帧。大标题使用 `build-film-titles.py` 从阅读器原字体提取字形轮廓，保存为不依赖字体加载的 SVG 路径。合成时由 sharp 在两倍影片宽度（3840 px）渲染，再缩至镜头所需尺寸，避免将约 34 px 高的截图文字放大至 100 px 以上。MP4 最终仍是像素帧；矢量源保证编码前的标题边缘清晰。影片可从保留的 PNG、SVG、几何 JSON 重建；高亮揭示帧输出到 `output/promo/story/`，可随时清除再生成。它们不会进入网站发布包。
 
 ## 交付文件
 
@@ -47,7 +48,7 @@ npm run build
 
 ## 网页播放优化
 
-1080p 从原始纸页场景重新渲染为横版 1920×1080、竖版 1080×1920，使用 H.264 CRF 20 / fast、峰值 4000 kb/s、AAC 96 kb/s，每版约 22 MB。720p 保留横版 1280×720、竖版 720×1280，每版约 5.3 MB。所有版本均为 30 fps、64 秒、2 秒关键帧、MP4 fast-start。`encode-film-low.mjs` 从 720p 成片生成横版 960×540、竖版 540×960 的流畅版本：CRF 24 / medium、峰值 480 kb/s，每版约 3.9 MB。
+1080p 从原始纸页场景重新渲染为横版 1920×1080、竖版 1080×1920，使用 H.264 CRF 18 / slow、峰值 6000 kb/s、AAC 96 kb/s，横竖版各约 32 MB。`encode-film-low.mjs` 直接从更新后的 1080p 母版生成其余档位：720p 为横版 1280×720、竖版 720×1280，CRF 20 / slow、峰值 2200 kb/s，每版约 12 MB。所有版本均为 30 fps、64 秒、2 秒关键帧、MP4 fast-start。540p 同样直接从 1080p 母版生成横版 960×540、竖版 540×960 的流畅版本：CRF 24 / medium、峰值 480 kb/s，每版约 4.1 MB。
 
 进入页面即预加载当前方向的视频，默认自动，菜单显示当前档位。自动模式优先 1080p；已知弱网和节省流量模式使用 540p。初次预加载超过 5 秒仍无画面，或播放持续缓冲 2.5 秒时，按 1080p → 720p → 540p 回退。手动选择清晰度后，屏幕旋转、网络变化与重试均保持选择。
 
