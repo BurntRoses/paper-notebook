@@ -3,50 +3,50 @@ import {userState, type NotebookDocument, type Page} from './model/types';
 // The product story is a normal notebook. The film only animates assets exported
 // from this reader; headings, blackboards, diagrams and ink share its renderer.
 const pages:Page[]=[
- {id:'product-pain',title:'使用 AI 制作图文学习笔记',subtitle:'01 / 从你的材料开始',subject:'general',layout:'reading',blocks:[
+ {id:'product-pain',title:'使用 AI 制作图文学习笔记',subject:'general',layout:'reading',blocks:[
   {id:'pain-context',type:'prose',text:'把制作指令发给你常用的 AI。先上传材料，或回复没有文件，再选择主题、基础和学习目标。',study:{label:'用你常用的 AI，生成自己的笔记',marks:[{text:'先上传材料',kind:'underline'},{text:'学习目标',kind:'circle'},{text:'学习目标',kind:'bold'},{text:'学习目标',kind:'red',color:'#285f9e'}]}},
   {id:'pain-fragments',type:'code',language:'Markdown',text:'先提供：参考文件，或说明没有文件\n再选择：主题、基础和学习目标\n内容包括：概念、图解、推导和例题\n讲解要求：交代条件，说明每一步\n文件格式：单文件离线 HTML\n保存记录：圈画、便条、疑问与作答',study:{label:'告诉 AI 学什么、怎么讲'}},
   {id:'pain-need',type:'quote',text:'AI 整理内容，你按自己的节奏读。',study:{visual:'extract',label:'从讲解到理解',marks:[{text:'整理内容',kind:'highlight'},{text:'自己的节奏',kind:'underline'}]}}
  ]},
- {id:'product-idea',title:'Paper Notebook',subtitle:'02 / 从长篇回答到学习笔记',subject:'general',layout:'reading',blocks:[
+ {id:'product-idea',title:'Paper Notebook',subject:'general',layout:'reading',blocks:[
   {id:'idea-statement',type:'concept',title:'长篇 AI 回答，读着枯燥，重点难找。',text:'定义、公式和例题挤在一段回答里。Paper Notebook 按主题排成纸页，讲解有层次，重点随手标。',study:{label:'解决长篇讲解的阅读问题',marks:[{text:'按主题排成纸页',kind:'highlight'},{text:'重点随手标',kind:'circle'},{text:'重点随手标',kind:'bold'},{text:'重点随手标',kind:'red',color:'#285f9e'}]}},
   {id:'idea-map',type:'diagram',arrangement:'row',nodes:[{id:'organize',label:'AI 输出讲解'},{id:'read',label:'按主题排版'},{id:'review',label:'圈画与复习'}],edges:[{from:'organize',to:'read'},{from:'read',to:'review'}],study:{visual:'sketch',label:'内容分层，方便阅读与复习'}},
   {id:'idea-value',type:'quote',text:'重点摘录，点击查看原文。',study:{visual:'extract',marks:[{text:'查看原文',kind:'star'}]}}
  ]},
- {id:'product-structure',title:'条件、推导与例题',subtitle:'03 / 同一主题，集中阅读',subject:'stem',layout:'cornell',cues:[{id:'structure-cue-1',text:'条件',blockId:'structure-condition'},{id:'structure-cue-2',text:'推导',blockId:'structure-formula'},{id:'structure-cue-3',text:'验算',blockId:'structure-example'}],summary:'条件、推导、验算依次展开；页边线索帮助回忆。',blocks:[
+ {id:'product-structure',title:'条件、推导与例题',subject:'stem',layout:'cornell',cues:[{id:'structure-cue-1',text:'条件',blockId:'structure-condition'},{id:'structure-cue-2',text:'推导',blockId:'structure-formula'},{id:'structure-cue-3',text:'验算',blockId:'structure-example'}],summary:'条件、推导、验算依次展开；页边线索帮助回忆。',blocks:[
   {id:'structure-condition',type:'prose',text:'复利例子：每期增长率固定，利息计入本金，期间没有额外存取。',study:{label:'01 · 条件写明白',marks:[{text:'没有额外存取',kind:'underline'}]}},
   {id:'structure-formula',type:'formula',latex:'P_n=P_0(1+r)^n',text:'每期金额 = 上一期金额 × (1 + r)。',study:{visual:'blackboard',label:'02 · 公式',marks:[{text:'上一期金额',kind:'box'}]}},
   {id:'structure-example',type:'example',prompt:'100 元，每期增长 10%，共两期。',steps:[{id:'structure-e1',text:'100 × 1.1 = 110'},{id:'structure-e2',text:'110 × 1.1 = 121'}],result:'期末 121 元，累计增长 21 元。',study:{label:'03 · 数值对照',marks:[{text:'期末 121 元',kind:'check'}]}}
  ]},
- {id:'product-marks',title:'圈画重点，集中复习。',subtitle:'04 / 选中文字即可标记',subject:'general',layout:'reading',blocks:[
+ {id:'product-marks',title:'圈画重点，集中复习。',subject:'general',layout:'reading',blocks:[
   {id:'marks-select',type:'prose',text:'选中文字可加粗、变色或圈注。书签与疑问在右上角集中查看，点击可返回原文。',study:{label:'文字标记与收录',marks:[{text:'选中文字',kind:'highlight'},{text:'书签与疑问',kind:'circle'},{text:'书签与疑问',kind:'bold'},{text:'书签与疑问',kind:'red',color:'#285f9e'},{text:'返回原文',kind:'star'}]}},
   {id:'marks-examples',type:'prose',text:'条件、推导和关键概念，可以分别框选、划线、加着重点。',study:{label:'按内容选择标记',marks:[{text:'条件',kind:'box'},{text:'推导',kind:'wave'},{text:'关键概念',kind:'dots'},{text:'划线',kind:'check'}]}},
   {id:'marks-map',type:'diagram',arrangement:'row',nodes:[{id:'sentence',label:'选中文字'},{id:'mark',label:'圈出重点'},{id:'return',label:'书签与疑问定位原文'}],edges:[{from:'sentence',to:'mark'},{from:'mark',to:'return'}],study:{visual:'sketch'}},
   {id:'marks-return',type:'quote',text:'双击右栏或底栏空白处添加便条，圆形色块切换底色。',study:{visual:'extract',marks:[{text:'右栏或底栏',kind:'underline'}]}}
  ]},
- {id:'product-subjects',title:'公式、原文和代码分别排版。',subtitle:'05 / 一套阅读方式，多种笔记表达',subject:'general',layout:'reading',blocks:[
+ {id:'product-subjects',title:'公式、原文和代码分别排版。',subject:'general',layout:'reading',blocks:[
   {id:'subjects-poem',type:'quote',text:'国破山河在，城春草木深。',attribution:'文学 · 杜甫《春望》首联',study:{visual:'extract',label:'读原句，理清语境',marks:[{text:'破',kind:'circle'},{text:'破',kind:'bold'},{text:'破',kind:'red',color:'#285f9e'},{text:'深',kind:'dots'}]}},
   {id:'subjects-business',type:'formula',latex:'Q_{BE}=\\frac{3000}{80-50}=100',text:'单价 80 元，单位变动成本 50 元，固定成本 3000 元。',study:{visual:'blackboard',label:'看变量，对照计算'}},
   {id:'subjects-code',type:'code',language:'Python',text:'ids = ["A", "A", "B"]\ncount = len(set(ids))  # 2',study:{label:'顺着代码，看输入与结果',explanations:[{text:'set',note:'同值去重。'},{text:'len',note:'计算集合长度。'}]}}
  ]},
- {id:'product-fit',title:'按基础、目标和材料生成。',subtitle:'06 / 用自己的材料生成笔记',subject:'general',layout:'reading',blocks:[
+ {id:'product-fit',title:'按基础、目标和材料生成。',subject:'general',layout:'reading',blocks:[
   {id:'fit-brief',type:'concept',title:'先交材料，再选学习目标。',text:'上传讲义、题库或已有笔记；没有文件也可以开始。随后选择已有基础、学习范围、难度和练习需求。',study:{label:'先材料，后需求',marks:[{text:'已有基础',kind:'underline'},{text:'学习范围',kind:'circle'},{text:'学习范围',kind:'bold'},{text:'学习范围',kind:'red',color:'#285f9e'}]}},
   {id:'fit-source',type:'quote',text:'按讲义学，照题库练。',study:{visual:'extract',label:'严格遵循材料时',marks:[{text:'按讲义学',kind:'highlight'},{text:'照题库练',kind:'box'}]}},
   {id:'fit-boundary',type:'prose',text:'有材料时保留原题和顺序；无材料时，AI 按可用能力检索资料、绘制图解。引用来源与补充解释分清楚。',study:{label:'原文保留，补充解释另列'}},
   {id:'fit-map',type:'diagram',arrangement:'row',nodes:[{id:'brief',label:'提供材料'},{id:'agent',label:'确认学习需求'},{id:'reader',label:'打开笔记阅读'}],edges:[{from:'brief',to:'agent'},{from:'agent',to:'reader'}],study:{visual:'sketch'}}
  ]},
- {id:'product-focus',title:'横竖版阅读与离线保存',subtitle:'07 / 界面与保存',subject:'general',layout:'reading',blocks:[
+ {id:'product-focus',title:'横竖版阅读与离线保存',subject:'general',layout:'reading',blocks:[
   {id:'focus-read',type:'concept',title:'横竖版与双页阅读',text:'横竖纸张独立切换，双页可左右或上下排列。右栏和底栏可分别开关，夜间模式使用深色纸张。',study:{label:'阅读设置',marks:[{text:'双页',kind:'underline'}]}},
   {id:'focus-table',type:'comparison',columns:['功能','操作'],rows:[['页边批注','双击右栏或底栏空白处'],['图像批注','添加圈注、箭头和文字说明'],['保存文件','下载含学习记录的离线 HTML']],study:{label:'批注与保存'}},
   {id:'focus-offline',type:'quote',text:'下载一份 HTML，离线阅读。圈画和作答同时保存。',study:{visual:'extract',label:'阅读无需账号',marks:[{text:'离线阅读',kind:'highlight'},{text:'同时保存',kind:'star'}]}}
  ]},
- {id:'product-start',title:'Paper Notebook',subtitle:'08 / 试读与制作',subject:'general',layout:'reading',blocks:[
+ {id:'product-start',title:'Paper Notebook',subject:'general',layout:'reading',blocks:[
   {id:'start-message',type:'concept',title:'图文阅读、批注与复习',text:'分主题阅读，圈画重点，按需复习。',study:{label:'图文笔记阅读器',marks:[{text:'分主题阅读',kind:'highlight'},{text:'按需复习',kind:'circle'},{text:'按需复习',kind:'bold'},{text:'按需复习',kind:'red',color:'#285f9e'}]}},
   {id:'start-actions',type:'steps',items:[{id:'start-a1',text:'在线试读与批注。'},{id:'start-a2',text:'下载离线 HTML。'},{id:'start-a3',text:'复制指令，使用自己的材料生成笔记。'}],study:{label:'试读与制作',marks:[{text:'在线试读',kind:'check'}]}},
   {id:'start-close',type:'quote',text:'AI 生成，纸页阅读，重点复习。',study:{visual:'extract',marks:[{text:'重点复习',kind:'star'}]}}
  ]}
 ];
-export const productStory:NotebookDocument={schemaVersion:'1.0.0',notebook:{id:'paper-notebook-product-story',revision:4,title:'Paper Notebook · 产品笔记',author:'Paper Notebook',language:'zh-CN',goals:['了解纸页阅读与圈画如何服务学习','查看公式、原文、代码的笔记表达','按自己的目标与材料生成学习内容'],sources:[{id:'product-source',title:'Paper Notebook 阅读器',locator:'本册展示图文阅读、标记与离线保存功能。'},{id:'product-spring',title:'杜甫《春望》首联',locator:'公共领域原诗；用于文学笔记展示。'},{id:'product-math',title:'数值核验',locator:'100 × 1.1² = 121；3000 ÷ (80 − 50) = 100。'}],chapters:[{id:'product-story',title:'Paper Notebook 产品介绍',pages}]},userState:userState(pages[0].id),assets:[],extensions:{baseRevision:3,readerProfile:{layout:'single',direction:'horizontal',sidebar:'collapsed',pageShape:'auto',transition:'cover',theme:'paper-light',motion:'full'}}};
+export const productStory:NotebookDocument={schemaVersion:'1.0.0',notebook:{id:'paper-notebook-product-story',revision:5,title:'Paper Notebook · 产品笔记',author:'Paper Notebook',language:'zh-CN',goals:['了解纸页阅读与圈画如何服务学习','查看公式、原文、代码的笔记表达','按自己的目标与材料生成学习内容'],sources:[{id:'product-source',title:'Paper Notebook 阅读器',locator:'本册展示图文阅读、标记与离线保存功能。'},{id:'product-spring',title:'杜甫《春望》首联',locator:'公共领域原诗；用于文学笔记展示。'},{id:'product-math',title:'数值核验',locator:'100 × 1.1² = 121；3000 ÷ (80 − 50) = 100。'}],chapters:[{id:'product-story',title:'Paper Notebook 产品介绍',pages}]},userState:userState(pages[0].id),assets:[],extensions:{baseRevision:4,readerProfile:{layout:'single',direction:'horizontal',sidebar:'collapsed',pageShape:'auto',transition:'cover',theme:'paper-light',motion:'full'}}};
 productStory.userState.preferences.fontSize=26;
 productStory.userState.updatedAt='2026-10-24T18:00:00.000Z';
 

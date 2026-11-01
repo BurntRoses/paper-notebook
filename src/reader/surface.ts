@@ -68,8 +68,11 @@ export class PageSurface {
     let b:FragmentBlock={...sourceBlock},guard=0;
     while(guard++<1000){
      const n=append(b),media=n.querySelector<HTMLElement>('.figure-media');
-     if(media&&b.caption&&!blocks.length&&media.offsetHeight<100){
-      // A long caption must not reduce the image to a sliver. Keep the complete
+     const [ratioWidth,ratioHeight=1]=(media?.style.aspectRatio||'1').split('/').map(Number);
+     const naturalMediaHeight=media?(media.parentElement!.clientWidth*ratioHeight/ratioWidth):0;
+     if(media&&b.caption&&!blocks.length&&media.offsetHeight<100&&media.offsetHeight<naturalMediaHeight*.8){
+      // Split only when fitting squeezed the media. Naturally shallow figures
+      // keep their captions and following explanation together. Keep the complete
       // image on this sheet and continue its caption as live text on the next.
       const caption=b.caption;n.remove();commit({...b,caption:undefined});flush();
       b={id:b.id,type:b.type,text:caption,_captionOnly:true,keepTogether:false};continue;

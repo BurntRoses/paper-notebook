@@ -60,13 +60,27 @@ for(const [engine,type] of Object.entries({chromium,webkit}).filter(([name])=>!p
   await offline.route(/^https?:/,route=>route.abort());
   await offline.addInitScript(()=>{try{localStorage.setItem('paper-notebook-guide-v4','1')}catch{}});
   const op=await offline.newPage();op.on('pageerror',e=>errors.push(e.message));
-  for(const name of ['compound-interest','literature','business','programming']){
+  for(const name of ['machine-learning','compound-interest','concept','literature','business','programming']){
    await op.goto(pathToFileURL(resolve(`output/site/downloads/${name}.html`)).href+'?demo');await op.waitForFunction(()=>window.reader?.fontsCalibrated);
    assert.equal(await op.evaluate(()=>window.reader.pageIndex),0);
    await op.evaluate(()=>{const r=window.reader;r.goPage(r.pages.findIndex(p=>p.blocks.some(b=>b.figure?.annotations?.length)),true)});
-   await op.locator('.figure-annotations').first().waitFor();
+   if(name!=='concept')await op.locator('.figure-annotations').first().waitFor();
    assert.ok(await op.locator('.reader-stage img').evaluateAll(images=>images.every(i=>i.complete&&i.naturalWidth>0)));
    await op.screenshot({path:`${out}/${engine}-${name}-offline.png`});
+   const targets={
+    'machine-learning':['ml-loss-outliers','ml-step-size','ml-overfit-actions'],
+    'compound-interest':['intro-first'],
+    'literature':['literature-context','literature-rhetoric-analysis','literature-rhetoric-close'],
+    'business':['business-case-facts','business-case-map'],
+    'programming':['code-trace','code-tests']
+   };
+   for(const blockId of targets[name]||[]){
+    await op.evaluate(id=>{const r=window.reader,index=r.pages.findIndex(p=>p.blocks.some(b=>b.id===id));if(index<0)throw new Error('Missing lesson block '+id);r.goPage(index,true)},blockId);
+    await op.locator(`[data-block="${blockId}"]`).first().waitFor();
+    const geometry=await op.locator(`[data-block="${blockId}"]`).first().evaluate(el=>{const b=el.getBoundingClientRect();return {width:b.width,height:b.height,viewport:innerWidth}});
+    assert.ok(geometry.width>0&&geometry.height>0&&geometry.width<=geometry.viewport,blockId);
+    await op.screenshot({path:`${out}/${engine}-${blockId}.png`});
+   }
   }
   await op.goto(pathToFileURL(resolve('output/site/downloads/compound-interest.html')).href+'?demo');await op.waitForFunction(()=>window.reader?.fontsCalibrated);
   const markId=await op.evaluate(()=>{const r=window.reader;r.editor.mark('underline',[{pageId:r.page.id,selector:{blockId:'intro-lead',start:0,end:2,exact:'复利',prefix:'',suffix:'：每一期的增长'}}]);r.showExport();return r.d.userState.annotations.at(-1).id});
@@ -74,7 +88,7 @@ for(const [engine,type] of Object.entries({chromium,webkit}).filter(([name])=>!p
   const download=await waitDownload,copy=resolve(`${out}/${engine}-compound-records.html`);await download.saveAs(copy);
   await op.goto(pathToFileURL(copy).href+'?demo');await op.waitForFunction(()=>window.reader?.fontsCalibrated);assert.ok(await op.evaluate(id=>window.reader.d.userState.annotations.some(a=>a.id===id),markId));
   assert.deepEqual(errors,[]);await offline.close();
-  reports.push({engine,allSixStartAtFirstPage:true,selectedLinkAndTitle:true,oneReaderShell:true,switches,themeAndTutorialFollowSelection:true,compoundExerciseWorks:true,phoneFits:true,fourLessonsOpenOffline:true,personalHTMLRetainsMarks:true,noPageErrors:true});
+  reports.push({engine,allSixStartAtFirstPage:true,selectedLinkAndTitle:true,oneReaderShell:true,switches,themeAndTutorialFollowSelection:true,compoundExerciseWorks:true,phoneFits:true,sixLessonsOpenOffline:true,expandedLessonsRendered:true,personalHTMLRetainsMarks:true,noPageErrors:true});
  }finally{await browser.close();}
 }
 await writeFile(`${out}/report.json`,JSON.stringify(reports,null,2)+'\n');console.log(JSON.stringify(reports,null,2));

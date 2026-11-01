@@ -2,13 +2,13 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "showcase-programming",
-    "revision": 2,
+    "revision": 3,
     "title": "Python · 集合与去重",
     "author": "Paper Notebook",
     "language": "zh-CN",
     "goals": [
-      "比较记录条数与不同编号数",
-      "理解 set 与 len 的作用"
+      "通过状态变化理解集合去重",
+      "运行函数并用不同输入核对结果"
     ],
     "sources": [
       {
@@ -24,7 +24,7 @@
         "pages": [
           {
             "id": "subject-code",
-            "title": "记录条数与不同人数",
+            "title": "列表、集合与去重计数",
             "subject": "code",
             "layout": "reading",
             "blocks": [
@@ -57,7 +57,6 @@
                 "language": "Python",
                 "text": "def count_customers(ids):\n    unique_ids = set(ids)\n    return len(unique_ids)\nids = [\"A\", \"A\", \"B\"]\nprint(count_customers(ids))  # 2",
                 "study": {
-                  "label": "可核对的最小示例",
                   "explanations": [
                     {
                       "text": "set",
@@ -121,14 +120,132 @@
               {
                 "id": "code-limit",
                 "type": "prose",
-                "text": "同一人有多个编号时，不同编号的数量不等于人数。",
+                "text": "顾客数的统计依赖稳定的顾客编号。跨门店合并记录时，先统一编号映射，再对编号去重；同一人的多条订单才会归入同一个集合元素。",
                 "study": {
                   "label": "统计口径",
                   "visual": "extract",
                   "marks": [
                     {
-                      "text": "不同编号",
+                      "text": "稳定的顾客编号",
                       "kind": "star"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "id": "subject-code-trace",
+            "title": "集合的状态与函数测试",
+            "subject": "code",
+            "layout": "cornell",
+            "cues": [
+              {
+                "id": "code-trace-cue",
+                "text": "第二个 A 到来后，集合怎样变化？",
+                "blockId": "code-trace"
+              },
+              {
+                "id": "code-empty-cue",
+                "text": "空列表为什么得到 0？",
+                "blockId": "code-tests"
+              }
+            ],
+            "summary": "集合中相等的元素只保留一份；输入列表决定待处理记录，len(set(ids)) 得到不同编号的数量。",
+            "blocks": [
+              {
+                "id": "code-trace",
+                "type": "comparison",
+                "title": "逐条加入编号",
+                "columns": [
+                  "读入的编号",
+                  "已出现的编号集合",
+                  "集合长度"
+                ],
+                "rows": [
+                  [
+                    "A",
+                    "{A}",
+                    "1"
+                  ],
+                  [
+                    "A",
+                    "{A}",
+                    "1"
+                  ],
+                  [
+                    "B",
+                    "{A, B}",
+                    "2"
+                  ]
+                ],
+                "study": {
+                  "marks": [
+                    {
+                      "text": "已出现的编号集合",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "集合长度",
+                      "kind": "red",
+                      "color": "#285f9e"
+                    },
+                    {
+                      "text": "{A, B}",
+                      "kind": "circle"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "code-state",
+                "type": "prose",
+                "text": "集合按元素是否相等决定是否保留。第二次加入 A 时，已有集合包含 A，大小保持为 1；加入 B 时出现一个新值，大小增为 2。set(ids) 一次完成这个去重过程，len 再读取结果的元素数。",
+                "study": {
+                  "marks": [
+                    {
+                      "text": "大小保持为 1",
+                      "kind": "underline"
+                    },
+                    {
+                      "text": "大小增为 2",
+                      "kind": "dots"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "code-tests",
+                "type": "code",
+                "language": "Python",
+                "text": "assert count_customers([]) == 0\nassert count_customers([\"A\"]) == 1\nassert count_customers([\"A\", \"A\"]) == 1\nassert count_customers([\"A\", \"B\"]) == 2",
+                "study": {
+                  "explanations": [
+                    {
+                      "text": "[]",
+                      "note": "空列表生成空集合，长度为 0。"
+                    },
+                    {
+                      "text": "assert",
+                      "note": "条件为真时继续运行；为假时抛出 AssertionError。"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "code-contract",
+                "type": "callout",
+                "title": "编号的数据形式",
+                "text": "本例的顾客编号使用字符串。字符串可以作为集合元素；若记录是字典，则提取其中的 customer_id 字段后再去重。列表保留记录顺序，集合用于成员判定与去重。",
+                "study": {
+                  "marks": [
+                    {
+                      "text": "字符串",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "成员判定与去重",
+                      "kind": "check"
                     }
                   ]
                 }
@@ -140,7 +257,7 @@
     ]
   },
   "userState": {
-    "updatedAt": "2026-10-30T00:00:00.000Z",
+    "updatedAt": "2026-11-01T00:00:00.000Z",
     "lastPageId": "subject-code",
     "notes": [],
     "annotations": [],
@@ -171,7 +288,7 @@
   },
   "assets": [],
   "extensions": {
-    "baseRevision": 1,
+    "baseRevision": 2,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

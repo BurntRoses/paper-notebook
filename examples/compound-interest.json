@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "showcase-compound-interest",
-    "revision": 2,
+    "revision": 3,
     "title": "复利 · 递推与增长",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -42,7 +42,6 @@
                 "id": "intro-lead",
                 "type": "prose",
                 "study": {
-                  "label": "01 · 一句话定义",
                   "tone": "blue",
                   "marks": [
                     {
@@ -91,7 +90,6 @@
                 "id": "intro-create",
                 "type": "comparison",
                 "study": {
-                  "label": "02 · 放在一起比较",
                   "tone": "blue"
                 },
                 "columns": [
@@ -148,7 +146,7 @@
                   "marks": [
                     {
                       "text": "第二期多出的 1 元",
-                      "kind": "bracket"
+                      "kind": "underline"
                     }
                   ]
                 },
@@ -158,8 +156,7 @@
           },
           {
             "id": "intro-principles",
-            "title": "每一期，都乘一次 1 + r",
-            "subtitle": "复利笔记 02 / 递推 → 通式 → 核算",
+            "title": "递推关系与复利通式",
             "subject": "stem",
             "layout": "cornell",
             "paper": {
@@ -189,7 +186,6 @@
                 "id": "intro-native",
                 "type": "prose",
                 "study": {
-                  "label": "01 · 从一期开始",
                   "tone": "blue",
                   "marks": [
                     {
@@ -213,7 +209,6 @@
                 "id": "intro-flow",
                 "type": "formula",
                 "study": {
-                  "label": "02 · n 次相乘",
                   "visual": "blackboard",
                   "tone": "blue",
                   "marks": [
@@ -230,7 +225,6 @@
                 "id": "intro-anchor",
                 "type": "example",
                 "study": {
-                  "label": "03 · 代入核算",
                   "tone": "olive",
                   "marks": [
                     {
@@ -256,8 +250,7 @@
           },
           {
             "id": "intro-features",
-            "title": "5% 对应多长的周期？",
-            "subtitle": "复利笔记 03 / 单位、增长率与期数",
+            "title": "增长率、期数与单位",
             "subject": "stem",
             "layout": "reading",
             "paper": {
@@ -268,9 +261,8 @@
               {
                 "id": "intro-paper",
                 "type": "concept",
-                "title": "增长率与期数，要配套",
+                "title": "增长率与期数的周期",
                 "study": {
-                  "label": "01 · 单位检查",
                   "tone": "red",
                   "aside": "年利率 ↔ 年数\n月利率 ↔ 月数",
                   "marks": [
@@ -295,7 +287,6 @@
                 "id": "intro-tools",
                 "type": "steps",
                 "study": {
-                  "label": "02 · 三个计算量",
                   "tone": "blue",
                   "marks": [
                     {
@@ -327,7 +318,6 @@
                 "id": "intro-templates",
                 "type": "exercise",
                 "study": {
-                  "label": "03 · 一道验算",
                   "tone": "olive"
                 },
                 "questionType": "single",
@@ -421,8 +411,7 @@
           },
           {
             "id": "intro-start",
-            "title": "会套公式，还要会判断",
-            "subtitle": "复利笔记 04 / 反例与回忆线索",
+            "title": "追加资金与分段计算",
             "subject": "stem",
             "layout": "reading",
             "paper": {
@@ -433,23 +422,31 @@
               {
                 "id": "intro-first",
                 "type": "callout",
+                "title": "各笔资金按参与期数增长",
                 "study": {
-                  "label": "01 · 一个反例",
                   "tone": "red",
                   "marks": [
                     {
-                      "text": "不能直接套用",
-                      "kind": "bracket"
+                      "text": "只参与第二期增长",
+                      "kind": "underline"
+                    },
+                    {
+                      "text": "只参与第二期增长",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "只参与第二期增长",
+                      "kind": "red",
+                      "color": "#b1483d"
                     }
                   ]
                 },
-                "text": "如果中途又存入 50 元，就不能直接套用 P₀(1 + r)ⁿ。新增资金的增长期数，可能与原本金不同。"
+                "text": "初始存入 100 元，每期增长 10%；第一期末再存入 50 元。原本金增长两期，得到 100 × 1.1² = 121 元；新增的 50 元只参与第二期增长，得到 50 × 1.1 = 55 元。两部分合计 176 元。"
               },
               {
                 "id": "intro-how",
                 "type": "steps",
                 "study": {
-                  "label": "02 · 遮住前页，试着复述",
                   "tone": "blue",
                   "marks": [
                     {
@@ -474,11 +471,11 @@
                   },
                   {
                     "id": "intro-step-2",
-                    "text": "为什么通式中是 (1 + r) 的 n 次方？"
+                    "text": "通式中 (1 + r) 的 n 次方从哪一步递推得到？"
                   },
                   {
                     "id": "intro-step-3",
-                    "text": "怎样从期末总值求出净增长？"
+                    "text": "期末总值与净增长如何换算？"
                   }
                 ]
               },
@@ -486,7 +483,6 @@
                 "id": "intro-delivery",
                 "type": "comparison",
                 "study": {
-                  "label": "03 · 快速对照",
                   "tone": "olive"
                 },
                 "columns": [
@@ -495,12 +491,16 @@
                 ],
                 "rows": [
                   [
-                    "每期增长率不变、无存取",
-                    "可以使用这份笔记的通式"
+                    "原本金 100 元，参与两期",
+                    "100 × 1.1² = 121 元"
                   ],
                   [
-                    "问累计增长多少",
-                    "期末总值减去初始本金"
+                    "第一期末追加 50 元，参与一期",
+                    "50 × 1.1 = 55 元"
+                  ],
+                  [
+                    "期末 176 元，累计存入 150 元",
+                    "净增长 26 元"
                   ]
                 ]
               },
@@ -508,17 +508,16 @@
                 "id": "intro-close",
                 "type": "prose",
                 "study": {
-                  "label": "模型的四个环节",
                   "visual": "extract",
                   "tone": "blue",
                   "marks": [
                     {
-                      "text": "条件 → 递推 → 通式 → 核算",
-                      "kind": "box"
+                      "text": "各自的参与期数",
+                      "kind": "circle"
                     }
                   ]
                 },
-                "text": "条件 → 递推 → 通式 → 核算。每个计算结果都对应一组明确的条件。"
+                "text": "复利计算以资金进入账户的时点为起点。多笔存入可按各自的参与期数计算终值，再相加；净增长等于期末总值减去累计存入。"
               }
             ]
           }
@@ -527,7 +526,7 @@
     ]
   },
   "userState": {
-    "updatedAt": "2026-10-30T00:00:00.000Z",
+    "updatedAt": "2026-11-01T00:00:00.000Z",
     "lastPageId": "intro-capabilities",
     "notes": [],
     "annotations": [],
@@ -570,7 +569,7 @@
     }
   ],
   "extensions": {
-    "baseRevision": 1,
+    "baseRevision": 2,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

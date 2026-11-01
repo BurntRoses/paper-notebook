@@ -2,9 +2,8 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "notebook-observation",
-    "revision": 4,
+    "revision": 5,
     "title": "数字与证据",
-    "subtitle": "从一张订单表，理解统计粒度与集合。",
     "author": "Paper Notebook",
     "language": "zh-CN",
     "goals": [
@@ -27,7 +26,7 @@
     "chapters": [
       {
         "id": "notebook-observation-chapter",
-        "title": "从问题到理解",
+        "title": "数字与证据",
         "pages": [
           {
             "id": "observation-1",
@@ -37,13 +36,13 @@
               {
                 "id": "obs-opening",
                 "type": "prose",
-                "text": "一个人，在书店下了三次单。订单表里有三行记录，但背后只有一位读者。问“卖出了几单”和问“有几位顾客”，答案自然不同。"
+                "text": "书店的订单表按交易逐条记录：小林下了三次单，生成三行订单。按订单编号计数得到3单，按顾客编号去重得到1位顾客。每种计数对应一个经营指标。"
               },
               {
                 "id": "obs-concept",
                 "type": "concept",
                 "title": "统计粒度",
-                "text": "统计粒度，是每一条记录所代表的对象。先明确对象，再计数。三笔订单，可能来自一位顾客，也可能来自三位顾客。",
+                "text": "统计粒度是每条记录代表的对象。订单表以一笔交易为单位，同一顾客可占多行；顾客表以一位顾客为单位，同一编号占一行。从订单数转为顾客数，需要先按顾客编号去重。",
                 "study": {
                   "marks": [
                     {
@@ -93,7 +92,7 @@
                 "id": "obs-key",
                 "type": "callout",
                 "tone": "note",
-                "text": "订单数是 3，顾客数是 1。数字没有互相矛盾，它们回答了两个问题。",
+                "text": "订单数是 3，顾客数是 1，总金额为145元。每单平均金额为145÷3≈48.33元；每位顾客累计购买145元。分母决定指标含义。",
                 "study": {
                   "marks": [
                     {
@@ -106,20 +105,19 @@
               {
                 "id": "obs-question",
                 "type": "prose",
-                "text": "下次见到“用户增长了 20%”，先问一句：用户指注册用户、活跃用户，还是付费用户？时间范围是什么？比较对象一致吗？"
+                "text": "月度活跃顾客可定义为当月至少有一笔已付款且未退款订单的顾客。本月120人、上月100人时，增长率为(120−100)÷100=20%。相同的时间跨度与筛选条件，使两个数值具有可比性。"
               }
             ]
           },
           {
             "id": "observation-2",
-            "title": "从材料到判断",
-            "subtitle": "每一步都需要明确的输入和检查。",
+            "title": "统计范围与筛选",
             "layout": "cornell",
             "blocks": [
               {
                 "id": "obs-path",
                 "type": "diagram",
-                "title": "从材料到判断",
+                "title": "统计范围与筛选",
                 "nodes": [
                   {
                     "id": "raw",
@@ -159,7 +157,7 @@
                 "items": [
                   {
                     "id": "obs-step-1",
-                    "text": "先写下问题：这次想数订单，还是数人？"
+                    "text": "确定指标：本次统计已付款订单及对应的顾客人数。"
                   },
                   {
                     "id": "obs-step-2",
@@ -198,9 +196,22 @@
               },
               {
                 "id": "obs-boundary",
-                "type": "quote",
-                "text": "解释数字前，先写清统计口径。",
-                "attribution": "统计口径"
+                "type": "callout",
+                "title": "新增订单与新增顾客",
+                "text": "原有顾客再下单，交易数增加而去重人数保持不变；新顾客首次下单，两项指标同时增加。订单增长可结合顾客增长和购买频次进一步分解。",
+                "study": {
+                  "marks": [
+                    {
+                      "text": "购买频次",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "交易数增加而去重人数保持不变",
+                      "kind": "red",
+                      "color": "#285f9e"
+                    }
+                  ]
+                }
               }
             ],
             "cues": [
@@ -208,7 +219,7 @@
                 "id": "cue-grain",
                 "text": "这次统计订单，还是顾客？",
                 "blockId": "obs-steps",
-                "anchor": "这次想数订单，还是数人"
+                "anchor": "本次统计已付款订单及对应的顾客人数"
               },
               {
                 "id": "cue-range",
@@ -223,12 +234,11 @@
                 "anchor": "顾客数仍然是 3"
               }
             ],
-            "summary": "回看时先回答两个问题：每行记录代表什么？哪些记录属于统计范围？口径确定之后，计算与解释才有共同的依据。"
+            "summary": "订单按记录计数，顾客按编号去重；月度比较使用相同时间跨度与筛选条件。原有顾客复购增加交易数，新顾客首次下单同时增加交易数与顾客数。"
           },
           {
             "id": "observation-3",
             "title": "名单合并与去重",
-            "subtitle": "名单可能重叠，计数需要去重。",
             "layout": "grid",
             "blocks": [
               {
@@ -246,6 +256,15 @@
                     {
                       "text": "减去一次",
                       "kind": "dots"
+                    },
+                    {
+                      "text": "交集",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "交集",
+                      "kind": "red",
+                      "color": "#285f9e"
                     }
                   ]
                 }
@@ -265,19 +284,19 @@
               {
                 "id": "obs-checks",
                 "type": "checklist",
-                "title": "解释结果前，问自己",
+                "title": "本次统计口径",
                 "items": [
                   {
                     "id": "obs-check-1",
-                    "text": "我能说清每一行代表什么。"
+                    "text": "每行代表一笔已付款订单。"
                   },
                   {
                     "id": "obs-check-2",
-                    "text": "不同分组之间，可能有重复的人。"
+                    "text": "跨城市顾客按统一编号合并去重。"
                   },
                   {
                     "id": "obs-check-3",
-                    "text": "我核对过时间、对象与范围。"
+                    "text": "月度范围与退款筛选条件保持一致。"
                   }
                 ]
               }
@@ -286,7 +305,6 @@
           {
             "id": "observation-4",
             "title": "检验统计口径",
-            "subtitle": "三道客观题，含解释与答案。",
             "layout": "exam",
             "blocks": [
               {
@@ -373,7 +391,7 @@
     ]
   },
   "userState": {
-    "updatedAt": "2026-10-29T00:00:00.000Z",
+    "updatedAt": "2026-11-01T00:00:00.000Z",
     "lastPageId": "observation-1",
     "notes": [],
     "annotations": [
@@ -384,10 +402,10 @@
         "selectors": [
           {
             "blockId": "obs-opening",
-            "start": 51,
-            "end": 58,
-            "exact": "答案自然不同。",
-            "prefix": "单”和问“有几位顾客”，",
+            "start": 55,
+            "end": 68,
+            "exact": "每种计数对应一个经营指标。",
+            "prefix": "客编号去重得到1位顾客。",
             "suffix": ""
           }
         ],
@@ -432,6 +450,6 @@
       "theme": "paper-light",
       "motion": "full"
     },
-    "baseRevision": 3
+    "baseRevision": 4
   }
 }

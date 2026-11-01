@@ -1,17 +1,19 @@
-# Route decisions
+# 学习路径
 
-Use the learner's goal to choose the sequence; routes are not mandatory headings.
+先按[学科与学习阶段](subject-pedagogy.md)选择解释方式，再按目标安排范围。路径用于组织内容，无需逐项变成标题。
 
-| Route | Useful sequence | Evidence of progress |
+| 目标 | 内容组织 | 学习结果 |
 | --- | --- | --- |
-| Quick introduction | A concrete question → minimum vocabulary → one example → limits → next step | Explain the idea in a new case |
-| Systematic learning | Prerequisites → concepts → relationships → worked examples → retrieval and transfer | Explain why each method applies |
-| Deep investigation | Precise question → competing explanations → evidence and assumptions → counterexample → open questions | Distinguish established facts from uncertainty |
-| Practical operation | Result and prerequisites → safe setup → steps → expected observations → troubleshooting | Reproduce the result and diagnose a failure |
-| Review | Recall prompt → compact relationships → material-based distinctions → spaced checkpoints | Retrieve without reading the explanation |
+| 简短导读 | 核心对象、必要术语、完整例子或文本细读 | 解释一个具体关系 |
+| 系统学习 | 先修联系、主要概念、机制或论证、连续例子 | 说明方法依据并用于新情境 |
+| 深入研究 | 明确问题、原始材料、竞争解释、证据与分析 | 评价具体论点并提出有依据的问题 |
+| 实际操作 | 结果与前提、步骤、预期观察、故障定位 | 重现结果并解释操作影响 |
+| 复习 | 提取问题、关键关系、综合应用、间隔回顾 | 独立复述或完成任务 |
 
-Fit depth to the time budget. Use the material's real examples and explain unfamiliar prerequisites on demand. If exercises are requested, prefer objective questions that test decisions or reasoning. Give each distractor a plausible misconception. Avoid testing incidental wording. A matching question needs unique, distinguishable pairs. Do not reveal solutions in the question itself.
+时间有限时缩小问题范围，保留理解所需的理由。长期课程按先修依赖组织单元，保持术语、示例和难度连续。
 
-For linked follow-up learning, carry the original notebook/page/block IDs, exact quotation and question into the answer book. Explain the missing step first, then give a transfer example and optional check. Link back through `notebook.parent` and `extensions.doubtLinks`.
+仅在用户需要时加入练习。题目检验本节的实际知识与推理；选择项可来自不同计算路径、模型选择或文本依据，不臆造公众误区。匹配题各项唯一且可辨，题干与答案分开。
 
-Short horizons stay within a named question, one minimal worked example and its boundaries. Long horizons use course units, prerequisite links, cumulative retrieval and follow-up scope. In strict mode use only the supplied material coverage and original exercises; label outside background explicitly and include it only when authorized.
+严格参考模式遵守用户指定的原文、范围和顺序。其他模式可以补足背景、推导、真实案例与图解，所有补充服务于当前学习目标。
+
+疑问答本携带原笔记、页、块 ID 及选中文本，直接解释缺失的知识环节，配一个相关例子。通过 `notebook.parent` 与 `extensions.doubtLinks` 回链。

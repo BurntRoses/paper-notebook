@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "paper-notebook-product-story",
-    "revision": 4,
+    "revision": 5,
     "title": "Paper Notebook · 产品笔记",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -36,7 +36,6 @@
           {
             "id": "product-pain",
             "title": "使用 AI 制作图文学习笔记",
-            "subtitle": "01 / 从你的材料开始",
             "subject": "general",
             "layout": "reading",
             "blocks": [
@@ -100,7 +99,6 @@
           {
             "id": "product-idea",
             "title": "Paper Notebook",
-            "subtitle": "02 / 从长篇回答到学习笔记",
             "subject": "general",
             "layout": "reading",
             "blocks": [
@@ -184,7 +182,6 @@
           {
             "id": "product-structure",
             "title": "条件、推导与例题",
-            "subtitle": "03 / 同一主题，集中阅读",
             "subject": "stem",
             "layout": "cornell",
             "cues": [
@@ -266,7 +263,6 @@
           {
             "id": "product-marks",
             "title": "圈画重点，集中复习。",
-            "subtitle": "04 / 选中文字即可标记",
             "subject": "general",
             "layout": "reading",
             "blocks": [
@@ -378,7 +374,6 @@
           {
             "id": "product-subjects",
             "title": "公式、原文和代码分别排版。",
-            "subtitle": "05 / 一套阅读方式，多种笔记表达",
             "subject": "general",
             "layout": "reading",
             "blocks": [
@@ -445,7 +440,6 @@
           {
             "id": "product-fit",
             "title": "按基础、目标和材料生成。",
-            "subtitle": "06 / 用自己的材料生成笔记",
             "subject": "general",
             "layout": "reading",
             "blocks": [
@@ -541,7 +535,6 @@
           {
             "id": "product-focus",
             "title": "横竖版阅读与离线保存",
-            "subtitle": "07 / 界面与保存",
             "subject": "general",
             "layout": "reading",
             "blocks": [
@@ -609,7 +602,6 @@
           {
             "id": "product-start",
             "title": "Paper Notebook",
-            "subtitle": "08 / 试读与制作",
             "subject": "general",
             "layout": "reading",
             "blocks": [
@@ -720,7 +712,7 @@
   },
   "assets": [],
   "extensions": {
-    "baseRevision": 3,
+    "baseRevision": 4,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

@@ -55,7 +55,7 @@
   let previewObserver,generation=0;
   const previewDocuments=new Map();
   const fetchPreview=name=>{
-    if(!previewDocuments.has(name))previewDocuments.set(name,fetch(`previews/${name}.json?v=3.2`).then(response=>{if(!response.ok)throw new Error('Preview unavailable');return response.json();}).catch(error=>{previewDocuments.delete(name);throw error;}));
+    if(!previewDocuments.has(name))previewDocuments.set(name,fetch(`previews/${name}.json?v=3.4`).then(response=>{if(!response.ok)throw new Error('Preview unavailable');return response.json();}).catch(error=>{previewDocuments.delete(name);throw error;}));
     return previewDocuments.get(name);
   };
   const loadPreview=()=>{
@@ -89,7 +89,7 @@
     const token=++generation;
     for(const item of examples)item.setAttribute('aria-pressed',String(item===option));
     preview.title=`试读：${option.dataset.exampleTitle}`;
-    const path=`downloads/${option.dataset.example}.html?demo&v=3.2`;
+    const path=`downloads/${option.dataset.example}.html?demo&v=3.4`;
     if(openPreview)openPreview.href=path;
     if(tour)tour.disabled=true;if(tourStatus)tourStatus.textContent='';
     preview.setAttribute('aria-busy','true');

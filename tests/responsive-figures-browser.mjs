@@ -10,6 +10,14 @@ for(const [engine,type]of [['chromium',chromium],['webkit',webkit]]){
  const page=await browser.newPage({viewport:{width:1440,height:1000}});page.on('pageerror',e=>errors.push(e.message));
  await page.goto(pathToFileURL(resolve('dist/downloads/machine-learning.html')).href+'?demo');await page.waitForFunction(()=>!!window.reader);await page.evaluate(()=>document.fonts.ready);
  await page.evaluate(()=>{const r=reader;r.profile.motion='reduced';r.d.assets.push(...[[600,3600,'tall'],[1800,380,'wide']].map(([width,height,name])=>({id:'fit-'+name,name,mime:'image/svg+xml',width,height,data:'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><rect x="2" y="2" width="${width-4}" height="${height-4}" fill="#e6eddf" stroke="#426e85" stroke-width="4"/><text x="20" y="60" font-size="36">${name} · top</text><text x="20" y="${height-25}" font-size="36">bottom · complete</text></svg>`)})));r.d.notebook.chapters.push({id:'fit-test-chapter',title:'完整显示',pages:['tall','wide'].map(name=>({id:'fit-page-'+name,title:'完整图片与图注',layout:'cornell',blocks:[{id:'fit-image-'+name,type:'image',assetId:'fit-'+name,title:'自适应'+name,caption:'保留完整图像，图注仍然按照正文宽度排版。'.repeat(7),figure:{size:'wide',ratio:'auto',annotations:[{kind:'arrow',x:40,y:50,x2:60,y2:70}]}},{id:'fit-text-'+name,type:'prose',text:'图片之后的解释保持宽松行距。'}]}))});r.invalidate();r.render();});
+ await page.evaluate(()=>{
+  const r=reader;r.d.notebook.chapters.at(-1).pages.push({id:'fit-shallow-page',title:'横向关系图',layout:'reading',blocks:[
+   {id:'fit-shallow',type:'diagram',arrangement:'row',nodes:[{id:'a',label:'输入'},{id:'b',label:'处理'},{id:'c',label:'结果'},{id:'d',label:'核对'}],edges:[{from:'a',to:'b'},{from:'b',to:'c'},{from:'c',to:'d'}],caption:'图注应随关系图显示。',figure:{size:'wide',ratio:'auto'}},
+   {id:'fit-shallow-follow',type:'prose',text:'图后的解释与关系图放在同一张纸页。'}
+  ]});r.invalidate();r.render();
+ });
+ const shallow=await page.evaluate(()=>reader.pages.filter(p=>p.id==='fit-shallow-page').map(p=>({blocks:p.blocks.map(b=>b.id),splitCaption:p.blocks.some(b=>b._captionOnly)})));
+ assert.equal(shallow.length,1,JSON.stringify(shallow));assert.ok(!shallow[0].splitCaption);assert.ok(shallow[0].blocks.includes('fit-shallow-follow'));
  const source=await page.evaluate(()=>JSON.stringify(reader.d.notebook)),layouts=[];
  for(const [name,width,height,layout,shape]of [
  ['single',1440,1000,'single','auto'],['short',1180,700,'single','auto'],['wide-spread',2048,1228,'spread','auto'],['laptop-spread',1440,1000,'spread','auto'],['small-spread',1024,768,'spread','auto'],['stacked',820,1180,'spread','auto'],['phone-spread',390,844,'spread','auto'],['explicit-portrait',2048,1228,'spread','portrait']]){

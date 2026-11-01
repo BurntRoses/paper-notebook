@@ -2,29 +2,37 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "showcase-literature",
-    "revision": 2,
-    "title": "《春望》 · 景物与语境",
+    "revision": 3,
+    "title": "《春望》 · 背景、文本与修辞",
     "author": "Paper Notebook",
     "language": "zh-CN",
     "goals": [
-      "结合原句解释景物与语境",
-      "区分引用与阅读判断"
+      "结合时代背景解释诗句",
+      "分析意象、对偶与反衬",
+      "沿“望”字梳理全诗结构"
     ],
     "sources": [
       {
         "id": "source-spring",
-        "title": "杜甫《春望》",
-        "locator": "首联；原诗为公共领域作品，释读为教学解释。"
+        "title": "香港教育局《春望》教学资料",
+        "url": "https://cd.edb.gov.hk/chi/resource/ncs/download/js_list/JS_chunwang.pdf",
+        "locator": "杜甫原诗与字词注释。"
+      },
+      {
+        "id": "source-spring-commentary",
+        "title": "中国孔子网 · 杜甫《春望》赏析",
+        "url": "https://www.chinakongzi.org/kzsf/wxxs/zuozhe/dufu/200705/t20070525_30771.htm",
+        "locator": "写作背景与全诗结构。"
       }
     ],
     "chapters": [
       {
         "id": "literature-chapter",
-        "title": "《春望》 · 景物与语境",
+        "title": "《春望》 · 背景、文本与修辞",
         "pages": [
           {
             "id": "subject-literature",
-            "title": "《春望》首联的景与情",
+            "title": "《春望》：国破与春景",
             "subject": "literature",
             "layout": "reading",
             "blocks": [
@@ -66,15 +74,19 @@
               {
                 "id": "literature-detail",
                 "type": "concept",
-                "title": "“在”与“深”，落在眼前的景物",
-                "text": "“山河在”写山河依旧；“草木深”写城中草木繁茂。两句并置，呈现“国破”“城春”之中的荒凉。",
+                "title": "“破”“在”“深”的炼字",
+                "text": "“国破”中的“国”指国都长安。“破”先写都城沦陷，紧接的“在”写山河依旧，语势陡然一转：自然仍在，人事已非。\n\n“城春”点明时令，“草木深”却写出草木蔓生、城中荒芜的景象。山河的恒常衬出人事凋零；一个“深”字，使春天的生机带上战乱的痕迹。",
                 "study": {
-                  "label": "字词与语境",
                   "tone": "red",
                   "marks": [
                     {
-                      "text": "两句并置",
+                      "text": "山河的恒常",
                       "kind": "underline"
+                    },
+                    {
+                      "text": "人事凋零",
+                      "kind": "red",
+                      "color": "#b1483d"
                     }
                   ]
                 }
@@ -93,7 +105,7 @@
                   },
                   {
                     "id": "reading",
-                    "label": "景物中的荒凉感"
+                    "label": "恒常景物衬出人事凋零"
                   }
                 ],
                 "edges": [
@@ -106,6 +118,7 @@
                     "to": "reading"
                   }
                 ],
+                "caption": "景物的存在、城市的处境和诗人的感受沿着“望”字相连。",
                 "study": {
                   "visual": "sketch"
                 },
@@ -128,13 +141,232 @@
               {
                 "id": "literature-reading",
                 "type": "prose",
-                "text": "“荒凉感”是依据景物与语境作出的阅读判断。引用和解释应当分开。",
+                "text": "首联以“国”“城”起句，视野由山河收向都城，忧国之情寄寓在所望的景物中。草木的繁盛反衬城市的荒芜，景与情由此交织；“望”既是眼前的观看，也成为全诗情感展开的起点。",
                 "study": {
-                  "label": "阅读依据",
                   "marks": [
                     {
-                      "text": "引用和解释应当分开",
+                      "text": "繁盛反衬城市的荒芜",
+                      "kind": "circle"
+                    },
+                    {
+                      "text": "忧国之情寄寓在所望的景物中",
                       "kind": "highlight"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "id": "subject-literature-context",
+            "title": "战乱中的杜甫与全诗结构",
+            "subject": "literature",
+            "layout": "cornell",
+            "cues": [
+              {
+                "id": "literature-context-cue",
+                "text": "诗作于怎样的处境？",
+                "blockId": "literature-context"
+              },
+              {
+                "id": "literature-structure-cue",
+                "text": "全诗怎样由景入情？",
+                "blockId": "literature-structure"
+              }
+            ],
+            "summary": "“望”统摄全诗：前四句写所见，后四句转入战事、家书与白发；家国之忧和离别之情在同一视线中展开。",
+            "blocks": [
+              {
+                "id": "literature-context",
+                "type": "prose",
+                "text": "安史之乱中，长安于756年六月失守。杜甫安顿家人后前往投奔肃宗，途中被叛军带回长安，《春望》写于次年三月。诗人身陷沦陷的都城，与家人音信隔绝。战乱、隔绝和人事凋残，使眼前春景处处牵动忧思。",
+                "sourceRefs": [
+                  {
+                    "sourceId": "source-spring-commentary",
+                    "locator": "写作背景与全诗赏析"
+                  }
+                ],
+                "study": {
+                  "marks": [
+                    {
+                      "text": "次年三月",
+                      "kind": "circle"
+                    },
+                    {
+                      "text": "战乱、隔绝和人事凋残",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "战乱、隔绝和人事凋残",
+                      "kind": "red",
+                      "color": "#b1483d"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "literature-structure",
+                "type": "diagram",
+                "title": "“望”字统摄的起承转合",
+                "arrangement": "row",
+                "nodes": [
+                  {
+                    "id": "literature-rise",
+                    "label": "起：山河、草木"
+                  },
+                  {
+                    "id": "literature-continue",
+                    "label": "承：花鸟与感时恨别"
+                  },
+                  {
+                    "id": "literature-turn",
+                    "label": "转：烽火与家书"
+                  },
+                  {
+                    "id": "literature-close",
+                    "label": "合：白头与忧愁"
+                  }
+                ],
+                "edges": [
+                  {
+                    "from": "literature-rise",
+                    "to": "literature-continue"
+                  },
+                  {
+                    "from": "literature-continue",
+                    "to": "literature-turn"
+                  },
+                  {
+                    "from": "literature-turn",
+                    "to": "literature-close"
+                  }
+                ],
+                "caption": "视线由城与山河转向花鸟，再落到战事、家书和自身形象。",
+                "figure": {
+                  "size": "wide",
+                  "ratio": "auto",
+                  "style": "sketch",
+                  "annotations": [
+                    {
+                      "kind": "circle",
+                      "x": 5,
+                      "y": 29,
+                      "x2": 26,
+                      "y2": 70,
+                      "color": "#b1483d"
+                    },
+                    {
+                      "kind": "arrow",
+                      "x": 73,
+                      "y": 47,
+                      "x2": 89,
+                      "y2": 47,
+                      "color": "#b1483d"
+                    },
+                    {
+                      "kind": "text",
+                      "x": 66,
+                      "y": 19,
+                      "text": "由景入情",
+                      "color": "#b1483d"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "literature-structure-note",
+                "type": "callout",
+                "title": "结构中的情感推进",
+                "text": "“感时”承接国破之景，“恨别”引向家人离散；“烽火连三月”把个人忧思置于持续战乱中，“家书抵万金”将家国之情收束到一封难得的家书。",
+                "study": {
+                  "marks": [
+                    {
+                      "text": "感时",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "恨别",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "家书抵万金",
+                      "kind": "check"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "id": "subject-literature-rhetoric",
+            "title": "花鸟、家书与白发",
+            "subject": "literature",
+            "layout": "reading",
+            "blocks": [
+              {
+                "id": "literature-rhetoric-quote",
+                "type": "quote",
+                "text": "感时花溅泪，恨别鸟惊心。\n烽火连三月，家书抵万金。\n白头搔更短，浑欲不胜簪。",
+                "attribution": "杜甫《春望》颔联、颈联、尾联",
+                "sourceRefs": [
+                  {
+                    "sourceId": "source-spring",
+                    "locator": "颔联、颈联与尾联"
+                  }
+                ],
+                "study": {
+                  "marks": [
+                    {
+                      "text": "感时花溅泪",
+                      "kind": "underline"
+                    },
+                    {
+                      "text": "家书抵万金",
+                      "kind": "circle"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "literature-rhetoric-analysis",
+                "type": "prose",
+                "text": "“感时”写忧国，“恨别”写思家；“花溅泪”与“鸟惊心”以整齐的句法相对。花与鸟本是春日常见的景物，诗人见花落泪、闻鸟惊心，乐景反衬出战乱中的忧惧。也可顺着字面读成花鸟含情：花为时局落泪，鸟因离别惊心，移情于物更添悲意。\n\n“烽火”代指战争，“连”写战事延续。“家书抵万金”以夸张的价值换算写音信珍贵：战火隔断家人，平安的消息因难得而沉重。对仗将国事与家事并列，忧国与思家相互加深。",
+                "study": {
+                  "marks": [
+                    {
+                      "text": "花与鸟本是春日常见的景物",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "反衬出战乱中的忧惧",
+                      "kind": "red",
+                      "color": "#b1483d"
+                    },
+                    {
+                      "text": "夸张的价值换算",
+                      "kind": "dots"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "literature-rhetoric-close",
+                "type": "callout",
+                "title": "尾联的动作与韵脚",
+                "text": "尾联由城中景物收回自身。“搔”写忧愁中的动作，“更短”写白发愈搔愈稀，“不胜簪”将衰老与忧思落实到发簪难以束住的细节。全诗以“深、心、金、簪”押韵，整齐的五言句式与连贯韵脚贯穿景、情、事、人，末句以一个具体形象收束家国之痛。",
+                "study": {
+                  "marks": [
+                    {
+                      "text": "搔",
+                      "kind": "circle"
+                    },
+                    {
+                      "text": "深、心、金、簪",
+                      "kind": "underline"
+                    },
+                    {
+                      "text": "具体形象收束家国之痛",
+                      "kind": "check"
                     }
                   ]
                 }
@@ -146,7 +378,7 @@
     ]
   },
   "userState": {
-    "updatedAt": "2026-10-30T00:00:00.000Z",
+    "updatedAt": "2026-11-01T00:00:00.000Z",
     "lastPageId": "subject-literature",
     "notes": [],
     "annotations": [],
@@ -177,7 +409,7 @@
   },
   "assets": [],
   "extensions": {
-    "baseRevision": 1,
+    "baseRevision": 2,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

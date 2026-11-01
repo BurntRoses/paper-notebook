@@ -2,9 +2,8 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "notebook-growth",
-    "revision": 3,
+    "revision": 4,
     "title": "复利的递推关系",
-    "subtitle": "用一个具体数值，理解指数与复利。",
     "author": "Paper Notebook",
     "language": "zh-CN",
     "goals": [
@@ -21,18 +20,17 @@
     "chapters": [
       {
         "id": "notebook-growth-chapter",
-        "title": "从问题到理解",
+        "title": "复利的递推关系",
         "pages": [
           {
             "id": "growth-1",
             "title": "复利的逐期累积",
-            "subtitle": "从逐期计算推导通式。",
             "layout": "grid",
             "blocks": [
               {
                 "id": "growth-intro",
                 "type": "prose",
-                "text": "一个假想账户初始有 100 元，每期增长 10%，不取出利息。第一期后是 110 元，第二期增长的基础变成了 110 元，因此增加 11 元。这里的 10% 只是教学假设，不代表实际收益。",
+                "text": "一个假想账户初始有 100 元，每期增长 10%，不取出利息。第一期后是 110 元，第二期增长的基础变成了 110 元，因此增加 11 元。第三期再以121元为基础，增加12.1元；增长率相同，增长金额随基数扩大。",
                 "study": {
                   "marks": [
                     {
@@ -119,19 +117,27 @@
           },
           {
             "id": "growth-2",
-            "title": "通式的适用条件",
-            "subtitle": "增长率、存取与期数都属于模型条件。",
+            "title": "不同增长率的逐期计算",
             "layout": "reading",
             "blocks": [
               {
                 "id": "growth-bound",
                 "type": "callout",
-                "text": "这个公式假设每期增长率恒定，增长继续计入本金，期间没有额外存入或取出。条件改变时，需要重新建立模型。",
+                "text": "公式按每期增长率恒定、增长继续计入本金、期间没有额外存入或取出计算。若三期增长率分别为10%、5%、8%，终值按各期因子相乘：100 × 1.10 × 1.05 × 1.08 = 124.74。",
                 "study": {
                   "marks": [
                     {
                       "text": "期间没有额外存入或取出",
                       "kind": "underline"
+                    },
+                    {
+                      "text": "各期因子相乘",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "各期因子相乘",
+                      "kind": "red",
+                      "color": "#285f9e"
                     }
                   ]
                 }
@@ -139,6 +145,7 @@
               {
                 "id": "growth-path",
                 "type": "diagram",
+                "title": "三期增长率各异",
                 "nodes": [
                   {
                     "id": "g0",
@@ -150,30 +157,52 @@
                   },
                   {
                     "id": "g2",
-                    "label": "121"
+                    "label": "115.5"
                   },
                   {
                     "id": "g3",
-                    "label": "133.1"
+                    "label": "124.74"
                   }
                 ],
                 "edges": [
                   {
                     "from": "g0",
                     "to": "g1",
-                    "label": "× 1.1"
+                    "label": "× 1.10"
                   },
                   {
                     "from": "g1",
                     "to": "g2",
-                    "label": "× 1.1"
+                    "label": "× 1.05"
                   },
                   {
                     "from": "g2",
                     "to": "g3",
-                    "label": "× 1.1"
+                    "label": "× 1.08"
                   }
-                ]
+                ],
+                "figure": {
+                  "size": "wide",
+                  "ratio": "auto",
+                  "style": "sketch",
+                  "annotations": [
+                    {
+                      "kind": "circle",
+                      "x": 43,
+                      "y": 37,
+                      "x2": 63,
+                      "y2": 61,
+                      "color": "#285f9e"
+                    },
+                    {
+                      "kind": "text",
+                      "x": 43,
+                      "y": 19,
+                      "text": "每期基数更新",
+                      "color": "#b1483d"
+                    }
+                  ]
+                }
               },
               {
                 "id": "growth-quiz",
@@ -207,7 +236,7 @@
     ]
   },
   "userState": {
-    "updatedAt": "2026-10-29T00:00:00.000Z",
+    "updatedAt": "2026-11-01T00:00:00.000Z",
     "lastPageId": "growth-1",
     "notes": [],
     "annotations": [],
@@ -247,6 +276,6 @@
       "theme": "paper-light",
       "motion": "full"
     },
-    "baseRevision": 2
+    "baseRevision": 3
   }
 }

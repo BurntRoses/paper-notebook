@@ -2,9 +2,8 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "notebook-observe-plant",
-    "revision": 3,
+    "revision": 4,
     "title": "给窗边的植物做一份记录",
-    "subtitle": "用具体现象与日期建立观察记录。",
     "author": "Paper Notebook",
     "language": "zh-CN",
     "goals": [
@@ -21,23 +20,31 @@
     "chapters": [
       {
         "id": "notebook-observe-plant-chapter",
-        "title": "从问题到理解",
+        "title": "给窗边的植物做一份记录",
         "pages": [
           {
             "id": "plant-1",
             "title": "建立一次观察记录",
-            "subtitle": "十分钟，记录现象、条件和操作。",
             "layout": "cornell",
             "blocks": [
               {
                 "id": "plant-intro",
                 "type": "prose",
-                "text": "“叶子看起来不太好”很难帮助下一次判断。换一种记录方式：叶片的位置、颜色变化、盆土干湿、最近一次浇水日期。先记录看见的东西，随后写可能的解释。",
+                "text": "一次植物观察记录包括叶片的位置、颜色变化、盆土干湿、最近一次浇水日期。用相同角度的照片和具体日期连续记录，可以对照变化的方向与速度。先记录看见的东西，再结合环境与养护信息分析原因。",
                 "study": {
                   "marks": [
                     {
                       "text": "先记录看见的东西",
                       "kind": "underline"
+                    },
+                    {
+                      "text": "盆土干湿",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "最近一次浇水日期",
+                      "kind": "red",
+                      "color": "#285f9e"
                     }
                   ]
                 }
@@ -68,7 +75,7 @@
                 "id": "plant-warn",
                 "type": "callout",
                 "tone": "warning",
-                "text": "不同植物需要不同的水分和光照。这套记录方法不提供通用浇水处方；养护操作需核对植物种类及条件。",
+                "text": "植物种类及条件影响水分需求：叶片、根系和盆土共同影响吸水与失水。记录时加入植物名称、盆器排水和最近的浇水情况，再结合该种植物的养护资料分析变化。",
                 "study": {
                   "marks": [
                     {
@@ -122,14 +129,13 @@
           {
             "id": "plant-2",
             "title": "观察与原因解释",
-            "subtitle": "证据决定解释能走到哪一步。",
             "layout": "reading",
             "blocks": [
               {
                 "id": "plant-concept",
                 "type": "concept",
-                "title": "观察 ≠ 原因",
-                "text": "“两片老叶变黄”是观察。“缺水导致变黄”是原因判断，还需要植物种类、浇水和根系状态等证据。",
+                "title": "叶片变化与原因判断",
+                "text": "“两片老叶变黄”记录可见变化。原因判断还需要植物种类、浇水和根系状态等证据：叶片位置反映变化范围，浇水记录提供时间线，根系与盆土状态帮助判断吸水条件。每项记录都应对应一项可以复查的现象。",
                 "study": {
                   "marks": [
                     {
@@ -192,7 +198,7 @@
     ]
   },
   "userState": {
-    "updatedAt": "2026-10-29T00:00:00.000Z",
+    "updatedAt": "2026-11-01T00:00:00.000Z",
     "lastPageId": "plant-1",
     "notes": [],
     "annotations": [],
@@ -232,6 +238,6 @@
       "theme": "paper-light",
       "motion": "full"
     },
-    "baseRevision": 2
+    "baseRevision": 3
   }
 }

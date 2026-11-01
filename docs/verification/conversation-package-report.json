@@ -1,8 +1,8 @@
 {
-  "date": "2026-10-30T14:11:11.926Z",
+  "date": "2026-11-01T01:38:19.949Z",
   "archive": "paper-notebook-conversation.zip",
   "uploadArchive": "paper-notebook-upload.zip",
-  "entries": 31,
+  "entries": 32,
   "uploadWrapper": {
     "innerMatches": true,
     "overheadBytes": 564
@@ -131,13 +131,13 @@
     },
     "warnings": []
   },
-  "build": "{\"id\": \"paper-notebook-product-story\", \"revision\": 4, \"schemaValidated\": true, \"coreReferencesChecked\": true, \"bundledReaderMatches\": true, \"studyMarks\": {\"valid\": true, \"required\": true, \"total\": 43, \"byKind\": {\"underline\": 6, \"circle\": 6, \"bold\": 6, \"red\": 6, \"highlight\": 6, \"star\": 4, \"box\": 3, \"check\": 3, \"wave\": 1, \"dots\": 2}, \"markedPages\": [\"product-pain\", \"product-idea\", \"product-structure\", \"product-marks\", \"product-subjects\", \"product-fit\", \"product-focus\", \"product-start\"], \"unmarkedPages\": [], \"invalidTargets\": [], \"typography\": {\"bold\": 6, \"coloredText\": 6, \"missingBoldPages\": [\"product-structure\", \"product-focus\"], \"missingColorPages\": [\"product-structure\", \"product-focus\"]}}, \"contentReview\": {\"advisory\": true, \"automaticRewrite\": false, \"writing\": {\"warnings\": []}, \"visuals\": {\"pages\": [{\"pageId\": \"product-pain\", \"characters\": 157, \"figures\": 0, \"tables\": 0}, {\"pageId\": \"product-idea\", \"characters\": 63, \"figures\": 1, \"tables\": 0}, {\"pageId\": \"product-structure\", \"characters\": 123, \"figures\": 0, \"tables\": 0}, {\"pageId\": \"product-marks\", \"characters\": 86, \"figures\": 1, \"tables\": 0}, {\"pageId\": \"product-subjects\", \"characters\": 92, \"figures\": 0, \"tables\": 0}, {\"pageId\": \"product-fit\", \"characters\": 103, \"figures\": 1, \"tables\": 0}, {\"pageId\": \"product-focus\", \"characters\": 127, \"figures\": 0, \"tables\": 1}, {\"pageId\": \"product-start\", \"characters\": 69, \"figures\": 0, \"tables\": 0}], \"figures\": 3, \"tables\": 1, \"warnings\": []}, \"assets\": []}, \"browserInspected\": false, \"htmlBytes\": 2086564, \"html\": \"Paper-Notebook-·-产品笔记-v4.html\", \"zip\": \"Paper-Notebook-·-产品笔记-v4.zip\"}",
+  "build": "{\"id\": \"paper-notebook-product-story\", \"revision\": 4, \"schemaValidated\": true, \"coreReferencesChecked\": true, \"bundledReaderMatches\": true, \"studyMarks\": {\"valid\": true, \"required\": true, \"total\": 43, \"byKind\": {\"underline\": 6, \"circle\": 6, \"bold\": 6, \"red\": 6, \"highlight\": 6, \"star\": 4, \"box\": 3, \"check\": 3, \"wave\": 1, \"dots\": 2}, \"markedPages\": [\"product-pain\", \"product-idea\", \"product-structure\", \"product-marks\", \"product-subjects\", \"product-fit\", \"product-focus\", \"product-start\"], \"unmarkedPages\": [], \"invalidTargets\": [], \"typography\": {\"bold\": 6, \"coloredText\": 6, \"missingBoldPages\": [\"product-structure\", \"product-focus\"], \"missingColorPages\": [\"product-structure\", \"product-focus\"]}}, \"contentReview\": {\"advisory\": true, \"automaticRewrite\": false, \"writing\": {\"warnings\": []}, \"visuals\": {\"pages\": [{\"pageId\": \"product-pain\", \"characters\": 157, \"figures\": 0, \"tables\": 0}, {\"pageId\": \"product-idea\", \"characters\": 63, \"figures\": 1, \"tables\": 0}, {\"pageId\": \"product-structure\", \"characters\": 123, \"figures\": 0, \"tables\": 0}, {\"pageId\": \"product-marks\", \"characters\": 86, \"figures\": 1, \"tables\": 0}, {\"pageId\": \"product-subjects\", \"characters\": 92, \"figures\": 0, \"tables\": 0}, {\"pageId\": \"product-fit\", \"characters\": 103, \"figures\": 1, \"tables\": 0}, {\"pageId\": \"product-focus\", \"characters\": 127, \"figures\": 0, \"tables\": 1}, {\"pageId\": \"product-start\", \"characters\": 69, \"figures\": 0, \"tables\": 0}], \"figures\": 3, \"tables\": 1, \"warnings\": []}, \"assets\": []}, \"browserInspected\": false, \"htmlBytes\": 2098595, \"html\": \"Paper-Notebook-·-产品笔记-v4.html\", \"zip\": \"Paper-Notebook-·-产品笔记-v4.zip\"}",
   "nodeReport": {
     "id": "paper-notebook-product-story",
     "revision": 4,
     "html": "Paper-Notebook-·-产品笔记-v4.html",
     "zip": "Paper-Notebook-·-产品笔记-v4.zip",
-    "htmlBytes": 2086564,
+    "htmlBytes": 2098595,
     "bundledReaderMatches": true,
     "sourceMatches": true,
     "studyMarks": {
