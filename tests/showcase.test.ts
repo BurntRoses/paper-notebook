@@ -11,7 +11,7 @@ test('subject lessons are independent, valid readers with complete marks and por
  for(const [name,doc] of showcaseNotebooks){
   parseDocument(doc);
   assert.equal(doc.userState.lastPageId,pagesOf(doc)[0].id);
-  assert.equal(doc.extensions.baseRevision,2);
+  assert.equal(doc.extensions.baseRevision,3);
   const report=checkStudyMarks(doc);
   assert.deepEqual(report.unmarkedPages,[],name);
   const sourceIds=new Set(doc.notebook.sources.map(s=>s.id));
@@ -30,7 +30,7 @@ test('subject lessons are independent, valid readers with complete marks and por
   const used=new Set(blocksOf(doc).flatMap(b=>b.assetId?[b.assetId]:[]));
   assert.ok(doc.assets.every(a=>used.has(a.id)));
  }
- assert.equal(introNotebook.notebook.revision,11);
+ assert.equal(introNotebook.notebook.revision,12);
  assert.equal(blocksOf(introNotebook).some(b=>b.id==='business-breakeven-chart'),false);
 });
 

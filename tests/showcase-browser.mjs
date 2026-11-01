@@ -82,13 +82,16 @@ for(const [engine,type] of Object.entries({chromium,webkit}).filter(([name])=>!p
     await op.screenshot({path:`${out}/${engine}-${blockId}.png`});
    }
   }
+  await op.goto(pathToFileURL(resolve('output/site/downloads/paper-notebook-product.html')).href+'?demo');await op.waitForFunction(()=>window.reader?.fontsCalibrated);
+  assert.equal(await op.evaluate(()=>window.reader.d.notebook.revision),6);
+  await op.screenshot({path:`${out}/${engine}-product-offline.png`});
   await op.goto(pathToFileURL(resolve('output/site/downloads/compound-interest.html')).href+'?demo');await op.waitForFunction(()=>window.reader?.fontsCalibrated);
-  const markId=await op.evaluate(()=>{const r=window.reader;r.editor.mark('underline',[{pageId:r.page.id,selector:{blockId:'intro-lead',start:0,end:2,exact:'复利',prefix:'',suffix:'：每一期的增长'}}]);r.showExport();return r.d.userState.annotations.at(-1).id});
+  const markId=await op.evaluate(()=>{const r=window.reader,text=r.page.blocks.find(b=>b.id==='intro-lead').text;r.editor.mark('underline',[{pageId:r.page.id,selector:{blockId:'intro-lead',start:0,end:2,exact:text.slice(0,2),prefix:'',suffix:text.slice(2,18)}}]);r.showExport();return r.d.userState.annotations.at(-1).id});
   const waitDownload=op.waitForEvent('download');await op.getByRole('button',{name:'下载离线 HTML',exact:true}).click();
   const download=await waitDownload,copy=resolve(`${out}/${engine}-compound-records.html`);await download.saveAs(copy);
   await op.goto(pathToFileURL(copy).href+'?demo');await op.waitForFunction(()=>window.reader?.fontsCalibrated);assert.ok(await op.evaluate(id=>window.reader.d.userState.annotations.some(a=>a.id===id),markId));
   assert.deepEqual(errors,[]);await offline.close();
-  reports.push({engine,allSixStartAtFirstPage:true,selectedLinkAndTitle:true,oneReaderShell:true,switches,themeAndTutorialFollowSelection:true,compoundExerciseWorks:true,phoneFits:true,sixLessonsOpenOffline:true,expandedLessonsRendered:true,personalHTMLRetainsMarks:true,noPageErrors:true});
+  reports.push({engine,allSixStartAtFirstPage:true,selectedLinkAndTitle:true,oneReaderShell:true,switches,themeAndTutorialFollowSelection:true,compoundExerciseWorks:true,phoneFits:true,sixLessonsOpenOffline:true,expandedLessonsRendered:true,updatedProductOpensOffline:true,personalHTMLRetainsMarks:true,noPageErrors:true});
  }finally{await browser.close();}
 }
 await writeFile(`${out}/report.json`,JSON.stringify(reports,null,2)+'\n');console.log(JSON.stringify(reports,null,2));

@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "showcase-compound-interest",
-    "revision": 3,
+    "revision": 4,
     "title": "复利 · 递推与增长",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -50,12 +50,12 @@
                     }
                   ]
                 },
-                "text": "复利：每一期的增长，都以上一期的期末值为基础。新增的利息，也会参与下一期的增长。"
+                "text": "复利以上一期的期末值为下一期的增长基础。新增利息计入本金，继续参与增长。"
               },
               {
                 "id": "intro-read",
                 "type": "concept",
-                "title": "这份模型的条件",
+                "title": "恒定利率模型的条件",
                 "study": {
                   "tone": "red",
                   "explanations": [
@@ -84,7 +84,7 @@
                     }
                   ]
                 },
-                "text": "这里假设每期增长率恒定、利息计入本金，期间没有额外存取。期数与增长率必须使用同一时间单位。"
+                "text": "模型假设每期增长率恒定、利息计入本金，期间没有额外存取。期数与增长率必须使用同一时间单位。"
               },
               {
                 "id": "intro-create",
@@ -140,7 +140,7 @@
                 "id": "intro-promise",
                 "type": "callout",
                 "study": {
-                  "label": "多出的 1 元从哪里来",
+                  "label": "第二期的利息增长",
                   "visual": "extract",
                   "tone": "red",
                   "marks": [
@@ -180,7 +180,6 @@
                 "blockId": "intro-anchor"
               }
             ],
-            "summary": "下一期 = 本期 × (1 + r)。重复 n 期，所以 Pₙ = P₀(1 + r)ⁿ。",
             "blocks": [
               {
                 "id": "intro-native",
@@ -441,43 +440,7 @@
                     }
                   ]
                 },
-                "text": "初始存入 100 元，每期增长 10%；第一期末再存入 50 元。原本金增长两期，得到 100 × 1.1² = 121 元；新增的 50 元只参与第二期增长，得到 50 × 1.1 = 55 元。两部分合计 176 元。"
-              },
-              {
-                "id": "intro-how",
-                "type": "steps",
-                "study": {
-                  "tone": "blue",
-                  "marks": [
-                    {
-                      "text": "增长基础",
-                      "kind": "circle"
-                    },
-                    {
-                      "text": "增长基础",
-                      "kind": "bold"
-                    },
-                    {
-                      "text": "增长基础",
-                      "kind": "red",
-                      "color": "#285f9e"
-                    }
-                  ]
-                },
-                "items": [
-                  {
-                    "id": "intro-step-1",
-                    "text": "复利与单利的增长基础有什么不同？"
-                  },
-                  {
-                    "id": "intro-step-2",
-                    "text": "通式中 (1 + r) 的 n 次方从哪一步递推得到？"
-                  },
-                  {
-                    "id": "intro-step-3",
-                    "text": "期末总值与净增长如何换算？"
-                  }
-                ]
+                "text": "初始存入 100 元，每期增长 10%；第一期末再存入 50 元。原本金增长两期，新增的50元只参与第二期增长。各笔资金先按参与期数计算终值，再合并金额。"
               },
               {
                 "id": "intro-delivery",
@@ -512,12 +475,12 @@
                   "tone": "blue",
                   "marks": [
                     {
-                      "text": "各自的参与期数",
+                      "text": "期末总值减去累计存入",
                       "kind": "circle"
                     }
                   ]
                 },
-                "text": "复利计算以资金进入账户的时点为起点。多笔存入可按各自的参与期数计算终值，再相加；净增长等于期末总值减去累计存入。"
+                "text": "净增长等于期末总值减去累计存入。"
               }
             ]
           }
@@ -569,7 +532,7 @@
     }
   ],
   "extensions": {
-    "baseRevision": 2,
+    "baseRevision": 3,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

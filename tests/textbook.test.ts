@@ -54,7 +54,7 @@ test('machine learning textbook validates, distinguishes examples and supplies r
  for(const p of pagesOf(document))for(const cue of p.cues||[])assert.ok(p.blocks.some(b=>b.id===cue.blockId));
  const chart=blocks.find(b=>b.id==='ml-parameter-chart')!;
  for(const [i,s]of chart.series!.entries())for(const p of s.points)assert.equal(p.y,i===1?2*p.x+1:i===2?p.x+2:p.x+1);
- assert.equal(document.notebook.revision,8);assert.equal(document.extensions.baseRevision,7);
+ assert.equal(document.notebook.revision,9);assert.equal(document.extensions.baseRevision,8);
  assert.ok(blocks.filter(b=>b.type==='formula').every(b=>b.parameters?.every(p=>p.description.length>20)));
  const definition=blocks.find(b=>b.id==='ml-loss-definition')!,note=blocks.find(b=>b.id==='ml-loss-outliers')!;
  assert.ok(!definition.text!.includes('异常值'));assert.equal(note.type,'callout');assert.ok(note.keepTogether&&note.text!.includes('异常值'));

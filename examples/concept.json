@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "notebook-observation",
-    "revision": 5,
+    "revision": 6,
     "title": "数字与证据",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -36,7 +36,7 @@
               {
                 "id": "obs-opening",
                 "type": "prose",
-                "text": "书店的订单表按交易逐条记录：小林下了三次单，生成三行订单。按订单编号计数得到3单，按顾客编号去重得到1位顾客。每种计数对应一个经营指标。"
+                "text": "书店的订单表记录每笔交易的订单号、顾客编号和金额。顾客编号连接同一人的多笔购买。统计订单数与顾客数时，需要分别选择计数对象。"
               },
               {
                 "id": "obs-concept",
@@ -233,8 +233,7 @@
                 "blockId": "obs-example",
                 "anchor": "顾客数仍然是 3"
               }
-            ],
-            "summary": "订单按记录计数，顾客按编号去重；月度比较使用相同时间跨度与筛选条件。原有顾客复购增加交易数，新顾客首次下单同时增加交易数与顾客数。"
+            ]
           },
           {
             "id": "observation-3",
@@ -402,10 +401,10 @@
         "selectors": [
           {
             "blockId": "obs-opening",
-            "start": 55,
-            "end": 68,
-            "exact": "每种计数对应一个经营指标。",
-            "prefix": "客编号去重得到1位顾客。",
+            "start": 25,
+            "end": 40,
+            "exact": "顾客编号连接同一人的多笔购买。",
+            "prefix": "订单号、顾客编号和金额。",
             "suffix": ""
           }
         ],
@@ -450,6 +449,6 @@
       "theme": "paper-light",
       "motion": "full"
     },
-    "baseRevision": 4
+    "baseRevision": 5
   }
 }

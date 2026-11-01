@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "showcase-business",
-    "revision": 3,
+    "revision": 4,
     "title": "商学 · 会员制与盈亏平衡",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -31,7 +31,7 @@
         "pages": [
           {
             "id": "subject-business",
-            "title": "盈亏平衡：成本结构与销量门槛",
+            "title": "盈亏平衡与成本结构",
             "subject": "business",
             "layout": "cornell",
             "cues": [
@@ -46,7 +46,6 @@
                 "blockId": "business-table"
               }
             ],
-            "summary": "单位贡献 = 单价 − 单位变动成本；盈亏平衡销量 = 固定成本 ÷ 单位贡献。销量超过门槛后，每增加一件，利润增加一个单位贡献。",
             "blocks": [
               {
                 "id": "business-conditions",
@@ -223,7 +222,7 @@
               {
                 "id": "business-case-facts",
                 "type": "prose",
-                "text": "Costco 以会员仓储零售经营：有限品类集中采购，低价吸引购买，高销量和快速周转配合高效配送，支持较低商品毛利下的经营。会员费为这套业务增加一项持续收入。\n\n截至2025年8月31日的财年，净销售额为 2699.12 亿美元，会员费收入为 53.23 亿美元；美国和加拿大续费率为92.3%，全球为89.8%。",
+                "text": "Costco 以会员仓储零售经营：有限品类集中采购，低价吸引购买，高销量和快速周转配合高效配送，支持较低商品毛利下的经营。会员费为这套业务增加一项持续收入。\n\n这份案例采用截至2025年8月31日的财年年报，经营指标见下表。",
                 "sourceRefs": [
                   {
                     "sourceId": "business-costco",
@@ -233,16 +232,16 @@
                 "study": {
                   "marks": [
                     {
-                      "text": "净销售额为 2699.12 亿美元",
+                      "text": "有限品类集中采购",
                       "kind": "bold"
                     },
                     {
-                      "text": "会员费收入为 53.23 亿美元",
+                      "text": "会员费",
                       "kind": "red",
                       "color": "#285f9e"
                     },
                     {
-                      "text": "续费率",
+                      "text": "快速周转",
                       "kind": "circle"
                     }
                   ]
@@ -279,6 +278,15 @@
                     {
                       "text": "经常性收入",
                       "kind": "underline"
+                    },
+                    {
+                      "text": "2699.12 亿美元",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "53.23 亿美元",
+                      "kind": "red",
+                      "color": "#285f9e"
                     }
                   ]
                 }
@@ -356,7 +364,7 @@
                 "id": "business-case-analysis",
                 "type": "callout",
                 "title": "销售增长的来源",
-                "text": "销售额可沿“交易次数 × 平均客单价”分解。年报报告，可比销售增长中购物频率增加5%，平均客单价约增加1%；新仓库也贡献了销售增长。销售额、会员费、续费率和毛利率结合起来，分别呈现购物活动、会员收入、留存和商品获利水平。",
+                "text": "销售额可分解为交易次数 × 平均客单价。年报显示，可比销售增长中购物频率增加5%，平均客单价约增加1%；新仓库也贡献了销售增长。",
                 "sourceRefs": [
                   {
                     "sourceId": "business-costco",
@@ -366,7 +374,7 @@
                 "study": {
                   "marks": [
                     {
-                      "text": "销售额、会员费、续费率和毛利率",
+                      "text": "购物频率增加5%",
                       "kind": "check"
                     },
                     {
@@ -414,7 +422,7 @@
   },
   "assets": [],
   "extensions": {
-    "baseRevision": 2,
+    "baseRevision": 3,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

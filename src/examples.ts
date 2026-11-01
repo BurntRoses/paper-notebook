@@ -4,7 +4,7 @@ function make(id:string,title:string,pages:Page[],goals:string[]):NotebookDocume
 }
 export const conceptExample=make('notebook-observation','数字与证据',[
  {id:'observation-1',title:'订单数与顾客数',layout:'reading',blocks:[
-  {id:'obs-opening',type:'prose',text:'书店的订单表按交易逐条记录：小林下了三次单，生成三行订单。按订单编号计数得到3单，按顾客编号去重得到1位顾客。每种计数对应一个经营指标。'},
+  {id:'obs-opening',type:'prose',text:'书店的订单表记录每笔交易的订单号、顾客编号和金额。顾客编号连接同一人的多笔购买。统计订单数与顾客数时，需要分别选择计数对象。'},
   {id:'obs-concept',type:'concept',title:'统计粒度',text:'统计粒度是每条记录代表的对象。订单表以一笔交易为单位，同一顾客可占多行；顾客表以一位顾客为单位，同一编号占一行。从订单数转为顾客数，需要先按顾客编号去重。'},
   {id:'obs-table',type:'comparison',title:'三笔订单',columns:['订单','顾客','金额'],rows:[['01','小林','¥ 38'],['02','小林','¥ 62'],['03','小林','¥ 45']]},
   {id:'obs-key',type:'callout',tone:'note',text:'订单数是 3，顾客数是 1，总金额为145元。每单平均金额为145÷3≈48.33元；每位顾客累计购买145元。分母决定指标含义。'},
@@ -26,7 +26,7 @@ export const conceptExample=make('notebook-observation','数字与证据',[
 conceptExample.userState.annotations=[{id:'annotation-first',pageId:'observation-1',kind:'underline',selectors:[{blockId:'obs-opening',start:0,end:2,exact:'订单',prefix:'',suffix:''}],color:'#6c7355',width:2,seed:15}];
 // Derive the sample selector from the actual text, rather than maintaining a stale offset.
 const opening=conceptExample.notebook.chapters[0].pages[0].blocks[0].text!;
-const exact='每种计数对应一个经营指标。',start=opening.indexOf(exact);
+const exact='顾客编号连接同一人的多笔购买。',start=opening.indexOf(exact);
 conceptExample.userState.annotations[0].selectors[0]={blockId:'obs-opening',start,end:start+exact.length,exact,prefix:opening.slice(Math.max(0,start-12),start),suffix:''};
 export const formulaExample=make('notebook-growth','复利的递推关系',[
  {id:'growth-1',title:'复利的逐期累积',layout:'grid',blocks:[
@@ -51,9 +51,7 @@ export const practiceExample=make('notebook-observe-plant','给窗边的植物�
 export const examples=[conceptExample,formulaExample,practiceExample];
 
 conceptExample.notebook.chapters[0].pages[1].cues=[{id:'cue-grain',text:'这次统计订单，还是顾客？',blockId:'obs-steps',anchor:'本次统计已付款订单及对应的顾客人数'},{id:'cue-range',text:'哪些订单属于本次范围？',blockId:'obs-steps',anchor:'只看本月、已付款、未退款的订单'},{id:'cue-count',text:'再增加一笔 A 的订单，顾客数变吗？',blockId:'obs-example',anchor:'顾客数仍然是 3'}];
-conceptExample.notebook.chapters[0].pages[1].summary='订单按记录计数，顾客按编号去重；月度比较使用相同时间跨度与筛选条件。原有顾客复购增加交易数，新顾客首次下单同时增加交易数与顾客数。';
 practiceExample.notebook.chapters[0].pages[0].cues=[{id:'cue-observe',text:'看见了什么？',blockId:'plant-intro'},{id:'cue-condition',text:'已知条件',blockId:'plant-steps'},{id:'cue-log',text:'日期与操作',blockId:'plant-log'}];
-practiceExample.notebook.chapters[0].pages[0].summary='一条可复查的记录包含日期、具体观察、已知条件和采取的操作。原因推测单独记录，并列出需要补充的证据。';
 conceptExample.notebook.sources.push({id:'postgres-count',title:'PostgreSQL · Aggregate Functions',url:'https://www.postgresql.org/docs/current/functions-aggregate.html'});
 conceptExample.notebook.chapters[0].pages[2].blocks.find(b=>b.id==='obs-sql')!.sourceRefs=[{sourceId:'postgres-count',locator:'count(*) 与 count(DISTINCT expression)'}];
 for(const d of examples)d.extensions.readerProfile={layout:'auto',direction:'horizontal',sidebar:'open',pageShape:'auto',transition:'turn',theme:'paper-light',motion:'full'};
@@ -75,9 +73,9 @@ for(const document of examples){
  for(const chapter of document.notebook.chapters)for(const page of chapter.pages)for(const block of page.blocks){
   if(emphasis[block.id])block.study={...block.study,marks:emphasis[block.id]};
  }
- document.notebook.revision=4;document.extensions.baseRevision=3;
+ document.notebook.revision=5;document.extensions.baseRevision=4;
 }
 
 for(const example of examples)example.userState.updatedAt='2026-11-01T00:00:00.000Z';
 
-conceptExample.notebook.revision=5;conceptExample.extensions.baseRevision=4;
+conceptExample.notebook.revision=6;conceptExample.extensions.baseRevision=5;

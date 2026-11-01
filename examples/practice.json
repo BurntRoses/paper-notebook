@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "notebook-observe-plant",
-    "revision": 4,
+    "revision": 5,
     "title": "给窗边的植物做一份记录",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -123,8 +123,7 @@
                 "text": "日期与操作",
                 "blockId": "plant-log"
               }
-            ],
-            "summary": "一条可复查的记录包含日期、具体观察、已知条件和采取的操作。原因推测单独记录，并列出需要补充的证据。"
+            ]
           },
           {
             "id": "plant-2",
@@ -238,6 +237,6 @@
       "theme": "paper-light",
       "motion": "full"
     },
-    "baseRevision": 3
+    "baseRevision": 4
   }
 }

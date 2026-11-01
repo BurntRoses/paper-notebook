@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "notebook-growth",
-    "revision": 4,
+    "revision": 5,
     "title": "复利的递推关系",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -276,6 +276,6 @@
       "theme": "paper-light",
       "motion": "full"
     },
-    "baseRevision": 3
+    "baseRevision": 4
   }
 }

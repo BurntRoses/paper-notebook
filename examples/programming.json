@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "showcase-programming",
-    "revision": 3,
+    "revision": 4,
     "title": "Python · 集合与去重",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -151,7 +151,6 @@
                 "blockId": "code-tests"
               }
             ],
-            "summary": "集合中相等的元素只保留一份；输入列表决定待处理记录，len(set(ids)) 得到不同编号的数量。",
             "blocks": [
               {
                 "id": "code-trace",
@@ -288,7 +287,7 @@
   },
   "assets": [],
   "extensions": {
-    "baseRevision": 2,
+    "baseRevision": 3,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

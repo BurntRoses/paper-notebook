@@ -18,6 +18,31 @@ test('writing review covers explanations and tables, protects quotations, litera
  assert.equal(py.status,0,py.stderr);assert.deepEqual(JSON.parse(py.stdout),review);
 });
 
+test('Chinese writing signals agree across runtimes and preserve technical conditions and source text',()=>{
+ const d=blankDocument(),p=d.notebook.chapters[0].pages[0];
+ const signals=[
+  ['rhetorical-contrast','这不是公式的记忆，而是原理的理解。'],
+  ['performative-colloquial','说白了，每期利息计入下一期本金。'],
+  ['ornamental-metaphor','这个公式是理解复利的一把钥匙。'],
+  ['defensive-framing','需要特别说明，模型采用固定利率。'],
+  ['stock-closer','一句话总结，本期利息计入下一期本金。']
+ ];
+ p.blocks=signals.map(([id,text])=>({id,type:'prose',text}));
+ const protectedText=signals.map(([,text])=>text).join('\n');
+ p.blocks.push(
+  {id:'conditions',type:'prose',text:'若利率保持不变，每期余额乘以1+r。被积函数可以为负。样本不独立时，方差公式需要包含协方差项。'},
+  {id:'quotation',type:'quote',text:protectedText},
+  {id:'code',type:'code',text:protectedText},
+  {id:'literals',type:'prose',text:signals.map(([,text])=>'`'+text+'`').join(' ')}
+ );
+ d.userState.notes=[{text:protectedText} as any];const before=JSON.stringify(d);
+ const review=reviewContent(d);
+ assert.deepEqual(review.writing.warnings.map(w=>[w.rule,w.location]),signals.map(([id])=>[id,id+'.text']));
+ assert.equal(JSON.stringify(d),before);assert.equal(review.automaticRewrite,false);
+ const py=spawnSync('python3',['-c',"import sys,json;sys.path.insert(0,'skills/paper-notebook/scripts');from content_review import review_content;print(json.dumps(review_content(json.load(sys.stdin)),ensure_ascii=False))"],{input:JSON.stringify(d),encoding:'utf8'});
+ assert.equal(py.status,0,py.stderr);assert.deepEqual(JSON.parse(py.stdout),review);
+});
+
 test('figure coverage separates tables and reports unused/large assets without deleting provenance',()=>{
  const d=blankDocument(),p=d.notebook.chapters[0].pages[0];p.blocks=[{id:'explain',type:'prose',text:'关系与条件。'.repeat(80)},{id:'table',type:'comparison',columns:['对象'],rows:[['A']]}];
  d.notebook.chapters[0].pages.push({...structuredClone(p),id:'p2'});d.assets=[{id:'original',name:'Original',mime:'image/png',data:'data:image/png;base64,'+'A'.repeat(500000)}];
