@@ -1,6 +1,6 @@
 # 纸张样式
 
-`extensions.readerProfile.paperStyle` 默认设为 `auto`，依据每页 `subject` 选择材质。手动选择后整册使用同一材质；明暗模式与 `paper.ruling` 独立保存。
+`extensions.readerProfile.paperStyle` 默认设为 `auto`，依据每页 `subject` 选择材质。阅读设置用预览卡展示各款纸色与纹理，选择后立即更新纸面，面板保持打开。手动选择后整册使用同一材质，切换在线示例也会保留；明暗模式与 `paper.ruling` 独立保存。
 
 | 样式 | 颜色与纹理 | 自动匹配 |
 | --- | --- | --- |

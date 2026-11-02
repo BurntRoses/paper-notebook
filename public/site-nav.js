@@ -12,7 +12,7 @@
   const brand = link('Paper Notebook', './', 'site-brand');
   const theme=document.createElement('button');theme.type='button';theme.className='site-theme';theme.setAttribute('aria-label','切换明暗模式');
   let savedTheme;try{savedTheme=localStorage.getItem('paper-notebook-site-theme');}catch{}
-  const applyTheme=dark=>{document.documentElement.dataset.siteTheme=dark?'dark':'light';theme.textContent=dark?'☀':'☾';theme.setAttribute('aria-pressed',String(dark));const frame=document.querySelector('.reader-preview');try{const reader=frame?.contentWindow?.reader;if(reader&&reader.profile.theme!==(dark?'paper-night':'paper-light')){reader.profile.theme=dark?'paper-night':'paper-light';reader.render(reader.anchor());}}catch{}};
+  const applyTheme=dark=>{document.documentElement.dataset.siteTheme=dark?'dark':'light';theme.textContent=dark?'☀':'☾';theme.setAttribute('aria-pressed',String(dark));const frame=document.querySelector('.reader-preview');try{const reader=frame?.contentWindow?.reader;if(reader&&reader.profile.theme!==(dark?'paper-night':'paper-light')){reader.profile.theme=dark?'paper-night':'paper-light';reader.refreshAppearance();}}catch{}};
   applyTheme(savedTheme?savedTheme==='dark':matchMedia('(prefers-color-scheme:dark)').matches);
   theme.addEventListener('click',()=>{const dark=document.documentElement.dataset.siteTheme!=='dark';applyTheme(dark);try{localStorage.setItem('paper-notebook-site-theme',dark?'dark':'light');}catch{}});
   const star=link('☆ GitHub','https://github.com/BurntRoses/paper-notebook','site-star site-star-button');star.setAttribute('aria-label','给 GitHub 项目加星');
@@ -55,7 +55,7 @@
   let previewObserver,generation=0;
   const previewDocuments=new Map();
   const fetchPreview=name=>{
-    if(!previewDocuments.has(name))previewDocuments.set(name,fetch(`previews/${name}.json?v=3.6`).then(response=>{if(!response.ok)throw new Error('Preview unavailable');return response.json();}).catch(error=>{previewDocuments.delete(name);throw error;}));
+    if(!previewDocuments.has(name))previewDocuments.set(name,fetch(`previews/${name}.json?v=3.7`).then(response=>{if(!response.ok)throw new Error('Preview unavailable');return response.json();}).catch(error=>{previewDocuments.delete(name);throw error;}));
     return previewDocuments.get(name);
   };
   const loadPreview=()=>{
@@ -89,7 +89,7 @@
     const token=++generation;
     for(const item of examples)item.setAttribute('aria-pressed',String(item===option));
     preview.title=`试读：${option.dataset.exampleTitle}`;
-    const path=`downloads/${option.dataset.example}.html?demo&v=3.6`;
+    const path=`downloads/${option.dataset.example}.html?demo&v=3.7`;
     if(openPreview)openPreview.href=path;
     if(tour)tour.disabled=true;if(tourStatus)tourStatus.textContent='';
     preview.setAttribute('aria-busy','true');
@@ -97,7 +97,6 @@
       const [document,reader]=await Promise.all([fetchPreview(option.dataset.example),waitReader()]);if(token!==generation)return;
       reader.openPreview(document);preview.dataset.selectedExample=option.dataset.example;
       preview.removeAttribute('aria-busy');if(tour)tour.disabled=false;
-      applyTheme(window.document.documentElement.dataset.siteTheme==='dark');
     }catch{
       if(token!==generation)return;
       preview.removeAttribute('aria-busy');if(tour)tour.disabled=false;

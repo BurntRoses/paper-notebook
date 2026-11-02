@@ -41,7 +41,15 @@ for(const [engine,type] of Object.entries({chromium,webkit})){
   });
   assert.equal(timings.renders,0);assert.equal(timings.paginations,0);assert.ok(timings.samePaper);
   await page.getByRole('button',{name:'阅读设置',exact:true}).click();
-  await page.getByRole('combobox',{name:'纸张样式',exact:true}).click();await page.getByRole('option',{name:'素白纸',exact:true}).click();
+  await page.getByRole('radio',{name:'素白纸',exact:true}).click();
+  assert.equal(await page.locator('.reader-settings').count(),1);
+  await page.getByRole('radio',{name:'素白纸',exact:true}).press('ArrowRight');assert.equal(await page.evaluate(()=>window.reader.profile.paperStyle),'ivory');await page.getByRole('radio',{name:'素白纸',exact:true}).click();
+  assert.equal(await page.locator('.reader-stage > .reader-page-wrap .page-surface').evaluate(p=>getComputedStyle(p).backgroundColor),'rgb(255, 254, 250)');
+  await page.getByRole('combobox',{name:'正文字体',exact:true}).click();await page.keyboard.press('Escape');assert.equal(await page.locator('.reader-settings').count(),1,'Escape first closes an open choice');
+  await page.getByRole('combobox',{name:'行距',exact:true}).click();await page.getByRole('option',{name:'2.25',exact:true}).click();assert.equal(await page.locator('.settings-entry').getAttribute('aria-expanded'),'true');
+  await page.keyboard.press('Escape');await page.locator('.reader-settings').waitFor({state:'detached'});
+  await page.getByRole('button',{name:'阅读设置',exact:true}).click();await page.locator('.reader-header').click({position:{x:2,y:2}});await page.locator('.reader-settings').waitFor({state:'detached'});
+  await page.getByRole('button',{name:'阅读设置',exact:true}).click();
   assert.equal(await page.locator('.reader-stage > .reader-page-wrap .page-surface').getAttribute('data-paper-style'),'white');
   assert.equal(await page.evaluate(()=>window.reader.profile.paperStyle),'white');await page.getByRole('button',{name:'完成',exact:true}).click();
   const geometry=await page.locator('.reader-stage > .reader-page-wrap .page-surface').evaluate(p=>({width:p.offsetWidth,height:p.offsetHeight,blocks:[...p.querySelectorAll('[data-block]')].map(b=>b.dataset.block)}));
@@ -57,10 +65,26 @@ for(const [engine,type] of Object.entries({chromium,webkit})){
   assert.equal(await page.locator('.page-transition').getAttribute('data-mode'),'cover');assert.equal(await page.locator('.turn-back,.turn-shadow').count(),0);assert.ok(await page.evaluate(()=>window.beforeHeader.isConnected));
   await page.screenshot({path:`${out}/${engine}-cover.png`});await page.evaluate(()=>window.reader.cancelTurn());
   // Saved HTML carries the selected material and reader; all paper assets work offline.
-  await page.evaluate(()=>{const r=window.reader;r.profile.paperStyle='sage';r.profile.layout='single';r.render();r.showExport()});
+  await page.evaluate(()=>{const r=window.reader;r.profile.layout='single';r.render()});
+  for(const [width,height] of [[1440,1000],[820,1180],[390,844],[320,640]]){
+   await page.setViewportSize({width,height});await page.waitForTimeout(220);await page.getByRole('button',{name:'阅读设置',exact:true}).click();
+   const fit=await page.locator('.reader-settings').evaluate(d=>{const r=d.getBoundingClientRect(),nav=document.querySelector('.reader-controls'),buttons=[...nav.querySelectorAll('.reader-control,summary')].filter(n=>n.getBoundingClientRect().width);return {left:r.left,right:r.right,bottom:r.bottom,overflow:d.scrollWidth>d.clientWidth+1,navRight:nav.getBoundingClientRect().right,actions:buttons.length,clip:[...d.querySelectorAll('.settings-row,.paper-palette,.paper-preset-name')].filter(n=>n.scrollWidth>n.clientWidth+1).map(n=>n.className)}});
+   assert.ok(fit.left>=0&&fit.right<=width&&fit.bottom<=height,JSON.stringify(fit));assert.equal(fit.overflow,false);assert.equal(fit.navRight<=width,true);assert.equal(fit.actions,6);assert.deepEqual(fit.clip,[]);
+   await page.getByRole('radio',{name:'浅青纸',exact:true}).click();assert.equal(await page.locator('.page-surface').first().evaluate(p=>getComputedStyle(p).backgroundColor),'rgb(246, 249, 242)');
+   assert.equal(await page.locator('.paper-preset[aria-checked=true] .paper-sample').evaluate(p=>getComputedStyle(p).backgroundColor),'rgb(246, 249, 242)');
+   await page.screenshot({path:`${out}/${engine}-settings-${width}.png`});
+   await page.locator('.settings-advanced>summary').click();await page.getByRole('combobox',{name:'阅读缩放',exact:true}).click();await page.getByRole('option',{name:'适应纸面',exact:true}).click();assert.equal(await page.locator('.reader-settings').count(),1);
+   if(width===320){
+    await page.getByRole('combobox',{name:'界面语言',exact:true}).click();await page.getByRole('option',{name:'English',exact:true}).click();await page.getByRole('heading',{name:'Reading settings',exact:true}).waitFor();
+    assert.ok(await page.locator('.reader-controls').evaluate(n=>n.getBoundingClientRect().right<=innerWidth));assert.ok(await page.locator('.reader-settings').evaluate(n=>n.scrollWidth<=n.clientWidth+1));await page.screenshot({path:`${out}/${engine}-settings-english-phone.png`});
+    await page.locator('.settings-advanced>summary').click();await page.getByRole('combobox',{name:'Interface language',exact:true}).click();await page.getByRole('option',{name:'中文',exact:true}).click();await page.getByRole('heading',{name:'阅读设置',exact:true}).waitFor();
+   }
+   await page.keyboard.press('Escape');await page.locator('.reader-settings').waitFor({state:'detached'});
+  }
+  await page.setViewportSize({width:1440,height:1000});await page.waitForTimeout(220);await page.evaluate(()=>window.reader.showExport());
   const pending=page.waitForEvent('download');await page.getByRole('button',{name:'下载离线 HTML',exact:true}).click();const download=await pending,file=resolve(`${out}/${engine}-saved.html`);await download.saveAs(file);
   const offline=await browser.newContext();await offline.route(/^https?:/,r=>r.abort());const op=await offline.newPage();op.on('pageerror',e=>errors.push(e.message));
-  await op.goto(pathToFileURL(file).href+'?demo');await op.waitForFunction(()=>window.reader?.fontsCalibrated);assert.equal(await op.locator('.page-surface').first().getAttribute('data-paper-style'),'sage');assert.equal(await op.evaluate(()=>window.reader.profile.transition),'cover');
+  await op.goto(pathToFileURL(file).href+'?demo');await op.waitForFunction(()=>window.reader?.fontsCalibrated);assert.equal(await op.locator('.page-surface').first().getAttribute('data-paper-style'),'sage');assert.equal(await op.evaluate(()=>window.reader.profile.transition),'cover');await op.getByRole('button',{name:'阅读设置',exact:true}).click();assert.equal(await op.getByRole('radio',{name:'浅青纸',exact:true}).getAttribute('aria-checked'),'true');await op.getByRole('radio',{name:'素白纸',exact:true}).click();assert.equal(await op.locator('.page-surface').first().evaluate(p=>getComputedStyle(p).backgroundColor),'rgb(255, 254, 250)');await op.getByRole('button',{name:'完成',exact:true}).click();
   await op.goto(pathToFileURL(resolve('output/site/downloads/blank-notebook.html')).href+'?demo');await op.waitForFunction(()=>window.reader?.fontsCalibrated);assert.equal(await op.evaluate(()=>window.reader.profile.transition),'cover');await offline.close();
   assert.deepEqual(errors,[]);reports.push({engine,drawerStableAcrossModesAndViewports:true,localUpdates:timings,sixMaterialsPreserveLayout:true,manualChoiceAndOfflineSave:true,coverHasNoFoldLayers:true,noPageErrors:true});await context.close();
  }finally{await browser.close()}

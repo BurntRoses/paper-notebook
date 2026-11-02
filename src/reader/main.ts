@@ -12,9 +12,11 @@ import './workspace.css';
 import './figures.css';
 import './sketch.css';
 import './sidebar.css';
+import './settings.css';
 import './print.css';
 import { PageTurn, captureSheets } from './turn';
-import { applyPaperStyle, paperStyles } from './paper-styles';
+import { applyPaperStyle } from './paper-styles';
+import { showReaderSettings } from './settings';
 import { icon } from '../ui/icons';
 import { preparePrint, createPrintView, type PrintOptions } from './print';
 import workspaceInstructions from '../../skills/paper-notebook/prompts/coding-agent.txt?raw';
@@ -39,7 +41,7 @@ import { importText, exportMarkdown } from '../io/markdown';
 import { mergeUpdate, parseDocument, resolveSelector } from '../model/document';
 import { conceptExample } from '../examples';
 import { introNotebook } from '../intro';
-import { blocksOf, pagesOf, textOf, uid, type Block, type Note, type Doubt, type Selector, type NotebookDocument, type Page, type ReaderPresentation, type ReaderLayout, type ReaderDirection, type PaperStyle, type PaperShape, type ReadingAnchor } from '../model/types';
+import { blocksOf, pagesOf, textOf, uid, type Block, type Note, type Doubt, type Selector, type NotebookDocument, type Page, type ReaderPresentation, type ReaderLayout, type PaperShape, type ReadingAnchor } from '../model/types';
 import { renderBlock } from '../ui/blocks';
 import { button, el, modal, textarea, input, label, select, checkbox, download, safeName, copyText, toast, enhanceSelects } from '../ui/dom';
 import { setLocale } from '../ui/i18n';
@@ -129,11 +131,18 @@ class ReaderApp {
     appRoot.classList.toggle('sidebar-collapsed',!this.sidebarOpen);appRoot.classList.toggle('workspace-open',this.rightSidebarOpen);appRoot.style.setProperty('--reading-size',this.readingSize+'px');
     const header=el('header','reader-header');const brand=button(this.t('关于 Paper Notebook 与项目导航','About Paper Notebook and project links'),()=>this.showAbout(),'reader-brand','');brand.append(el('span','reader-seal','纸'),el('div','book-identity'));brand.lastElementChild!.append(el('small','book-eyebrow','PAPER NOTEBOOK · 学习笔记'),el('strong','',this.d.notebook.title));
     const controls=el('nav','reader-controls');controls.setAttribute('aria-label',this.t('阅读操作','Reader controls'));
-    const contents=button(this.t('目录','Contents'),()=>this.toggleSidebar(),'reader-control','');contents.append(icon('contents'));contents.setAttribute('aria-expanded',String(this.sidebarOpen));contents.setAttribute('aria-controls','reader-sidebar');
-    const files=el('details','reader-files'),fileTrigger=el('summary');fileTrigger.title=this.t('文件：导入、下载与 PDF','Files: import, download and PDF');fileTrigger.setAttribute('aria-label',fileTrigger.title);fileTrigger.setAttribute('aria-expanded','false');fileTrigger.append(icon('folder'));files.append(fileTrigger);files.ontoggle=()=>fileTrigger.setAttribute('aria-expanded',String(files.open));const menu=el('div','reader-file-menu');menu.append(button(this.t('导入','Import'),()=>{files.open=false;this.showImport()}),button(this.t('下载','Download'),()=>{files.open=false;this.showExport()}),button(this.t('导出 PDF','Export PDF'),()=>{files.open=false;this.showPDF()}));files.append(menu);
-    const theme=button(this.t('切换日夜模式','Toggle day and night'),()=>{this.profile.theme=this.profile.theme==='paper-night'?'paper-light':'paper-night';this.refreshAppearance()},'reader-control theme-toggle','');theme.append(icon(this.profile.theme==='paper-night'?'sun':'moon'));theme.setAttribute('aria-pressed',String(this.profile.theme==='paper-night'));
-    const settings=button(this.t('阅读设置','Reading settings'),()=>this.showSettings(),'reader-control','');settings.append(icon('type'));const workspace=el('details','reader-files margin-controls');const marginTrigger=el('summary','reader-control workspace-entry');marginTrigger.setAttribute('aria-label','显示批注栏');marginTrigger.title='显示批注栏';marginTrigger.append(icon('workspace'));const marginMenu=el('div','reader-file-menu');marginMenu.append(label('右侧栏',checkbox(this.rightSidebarOpen,v=>{this.rightSidebarOpen=v;this.render(this.anchor())})),label('底栏',checkbox(this.profile.bottomNotes!==false,v=>{this.profile.bottomNotes=v;this.render(this.anchor())})));workspace.append(marginTrigger,marginMenu);const collection=button('书签与疑问',()=>this.showCollections(),'reader-control collection-entry','');collection.append(icon('bookmark'));const immersive=button(this.t(this.immersive?'退出沉浸阅读':'沉浸阅读',this.immersive?'Exit immersive reading':'Immersive reading'),()=>this.setImmersive(),'reader-control immersion-entry','');immersive.append(icon('expand'));
-    const shape=button(this.t('切换横竖版','Switch paper orientation'),()=>{const a=this.anchor();this.profile.pageShape=this.shape==='landscape'?'portrait':'landscape';this.render(a)},'reader-control paper-shape-toggle','');shape.append(icon(this.shape==='landscape'?'portrait':'landscape'));shape.title=this.t('切换横竖版','Switch paper orientation');const spread=button(this.t('双页阅读','Two-page reading'),()=>{const a=this.anchor();this.profile.layout=this.actualLayout()==='spread'?'single':'spread';this.render(a)},'reader-control spread-toggle','');spread.append(icon('spread'));spread.setAttribute('aria-pressed',String(this.actualLayout()==='spread'));const star=el('a','reader-control reader-star');star.href='https://github.com/BurntRoses/paper-notebook';star.target='_blank';star.rel='noopener noreferrer';star.title=this.t('给 GitHub 项目加星','Star on GitHub');star.setAttribute('aria-label',star.title);star.append(icon('star'));controls.append(contents,shape,spread,theme,settings,workspace,collection,star,immersive,files);
+    const named=(name:string,text:string,glyph:Parameters<typeof icon>[0],action:()=>void,cls='')=>{const b=button(name,action,'reader-control reader-label-control '+cls,'');b.append(icon(glyph),el('span','control-label',text));return b;};
+    const browse=el('div','reader-control-group');browse.setAttribute('aria-label',this.t('目录与收录','Contents and saved passages'));
+    const contents=named(this.t('目录','Contents'),this.t('目录','Contents'),'contents',()=>this.toggleSidebar());contents.setAttribute('aria-expanded',String(this.sidebarOpen));contents.setAttribute('aria-controls','reader-sidebar');
+    const collection=named(this.t('书签与疑问','Bookmarks and questions'),this.t('收录','Saved'),'bookmark',()=>this.showCollections(),'collection-entry');browse.append(contents,collection);
+    const appearance=el('div','reader-control-group');
+    const settings=named(this.t('阅读设置','Reading settings'),this.t('设置','Settings'),'settings',()=>this.showSettings(),'settings-entry');settings.setAttribute('aria-haspopup','dialog');settings.setAttribute('aria-expanded',String(!!document.querySelector('.reader-settings[open]')));
+    const theme=button(this.t('切换日夜模式','Toggle day and night'),()=>{this.profile.theme=this.profile.theme==='paper-night'?'paper-light':'paper-night';this.refreshAppearance()},'reader-control theme-toggle','');theme.append(icon(this.profile.theme==='paper-night'?'sun':'moon'));theme.setAttribute('aria-pressed',String(this.profile.theme==='paper-night'));appearance.append(settings,theme);
+    const files=el('details','reader-files'),fileTrigger=el('summary','reader-label-control');fileTrigger.title=this.t('文件与工具','Files and tools');fileTrigger.setAttribute('aria-label',fileTrigger.title);fileTrigger.setAttribute('aria-expanded','false');fileTrigger.append(icon('folder'),el('span','control-label',this.t('文件','Files')));files.append(fileTrigger);files.ontoggle=()=>fileTrigger.setAttribute('aria-expanded',String(files.open));
+    const menu=el('div','reader-file-menu');for(const [name,action] of [[this.t('导入','Import'),()=>this.showImport()],[this.t('下载','Download'),()=>this.showExport()],[this.t('导出 PDF','Export PDF'),()=>this.showPDF()]] as [string,()=>void][])menu.append(button(name,()=>{files.open=false;action()}));
+    menu.append(el('hr','reader-menu-divider'),button(this.t(this.immersive?'退出沉浸阅读':'沉浸阅读',this.immersive?'Exit immersive reading':'Immersive reading'),()=>{files.open=false;this.setImmersive()},'immersion-entry'),button(this.t('功能介绍','Features'),()=>{files.open=false;this.showGuide()}));files.append(menu);
+    const star=el('a','reader-control reader-star');star.href='https://github.com/BurntRoses/paper-notebook';star.target='_blank';star.rel='noopener noreferrer';star.title=this.t('给 GitHub 项目加星','Star on GitHub');star.setAttribute('aria-label',star.title);star.append(icon('star'));
+    const tools=el('div','reader-control-group reader-tools');tools.append(star,files);controls.append(browse,appearance,tools);
     header.append(brand,controls);appRoot.append(header);
     const shell=el('div','reader-shell');
     const stage=el('main','reader-stage');stage.id='reader-stage';stage.tabIndex=-1;
@@ -414,7 +423,7 @@ class ReaderApp {
     const m=modal(this.t('功能介绍','Features'));m.dialog.classList.add('reader-guide');
     for(const [title,text] of [
       [this.t('选中文字','Select a passage'),this.t('选区旁的快捷栏支持点圈勾画、便签、书签，以及“疑问 / 展开讲解 / 举例说明”。','Use the nearby toolbar for marks, notes, bookmarks and follow-up questions.')],
-      [this.t('页边便条','Margin notes'),this.t('双击右栏或底栏空白处添加便条。圆形色块切换底色，第一个是透明色；长便条可展开。顶部可分别开关两栏。','Double-click either margin to add a note. Color dots change its background; the first is transparent. Expand long notes or hide either margin from the header.')],
+      [this.t('页边便条','Margin notes'),this.t('双击右栏或底栏空白处添加便条。圆形色块切换底色，第一个是透明色；长便条可展开。阅读设置中可分别开关两栏。','Double-click either margin to add a note. Color dots change its background; the first is transparent. Expand long notes or hide either margin in Reading settings.')],
       [this.t('图像与收录','Figures and collections'),this.t('点击图像可放大、圈画、添加箭头和文字。选中的文字可存为书签或疑问，在右上角统一查看。','Enlarge figures to draw, add arrows and labels. Save selected passages as bookmarks or questions and find them at the top right.')],
       [this.t('键盘翻页','Keyboard reading'),this.t('← / →、空格、回车翻页；Shift + 空格返回上一页。输入批注时快捷键暂停。','Use arrows, Space or Enter to turn pages; Shift + Space goes back. Typing keeps these keys local.')],
       [this.t('保存与继续学习','Save and continue'),this.t('文件菜单可下载含记录的离线 HTML。续学导出可选择便签、书签、标记与笔迹，供下一轮 AI 参考。','Download an offline HTML with your records. Export selected notes, bookmarks and ink for your next AI session.')]
@@ -425,32 +434,19 @@ class ReaderApp {
   startTour(){startReaderTour(this,appRoot);}
   // The website swaps only lesson data; the bundled reader and fonts stay loaded.
   openPreview(document:NotebookDocument){
+    window.document.querySelector<HTMLDialogElement>('.reader-settings')?.close();
     this.cancelTurn();clearTimeout(this.saveTick);
     this.sessionBooks.set(this.d.notebook.id,this.d);
     const parsed=parseDocument(document).document;
     const next=this.sessionBooks.get(parsed.notebook.id)||parsed;
-    this.d=next;this.editor.reset();this.profile={...this.profile,...next.extensions.readerProfile as object};
+    const {fontSize,language,motion}=this.d.userState.preferences;Object.assign(next.userState.preferences,{fontSize,language,motion});
+    this.d=next;this.editor.reset();
     this.rightSidebarOpen=this.profile.marginNotes??true;this.sidebarOpen=false;this.search='';this.sidebarTab='contents';
     this.pageIndex=0;this.sheets=[];this.pageHeights.clear();this.pageCache.clear();this.invalidate();
     delete this.d.userState.readingAnchor;this.d.userState.lastPageId=pagesOf(this.d)[0].id;
     this.sessionBooks.set(next.notebook.id,next);setLocale(this.en?'en':'zh');this.render();window.scrollTo(0,0);
   }
-  showSettings(){
-    const m=modal(this.t('阅读设置','Reading settings'));const a=this.anchor();
-    m.body.append(button(this.t('功能介绍','Features'),()=>{m.close();this.showGuide()},'quiet'));
-    m.body.append(label(this.t('阅读缩放','Reading zoom'),select([['1','适应纸面'],['1.25','125%'],['1.5','150%'],['2','200%']],String(this.zoom),v=>{this.zoom=Number(v);this.fitPages();this.editor.paint();})));
-    const change=<K extends keyof ReaderPresentation>(key:K,value:ReaderPresentation[K])=>{this.profile[key]=value;if(key==='theme'||key==='paperStyle'||key==='transition'||key==='motion')this.refreshAppearance();else this.render(a)};
-    m.body.append(label(this.t('右侧批注栏','Right margin'),checkbox(this.rightSidebarOpen,v=>{this.rightSidebarOpen=v;this.render(a)})),label(this.t('底部批注栏','Bottom margin'),checkbox(this.profile.bottomNotes!==false,v=>{this.profile.bottomNotes=v;this.render(a)})));
-    m.body.append(label(this.t('版式','Layout'),select([['auto',this.t('随屏幕调整','Automatic')],['single',this.t('单页','Single page')],['spread',this.t('双页','Spread')],['scroll',this.t('连续阅读','Continuous')]],this.profile.layout,v=>change('layout',v as ReaderLayout))),
-      label(this.t('纸张方向','Paper orientation'),select([['auto',this.t('适应窗口','Fit window')],['portrait',this.t('竖版','Portrait')],['landscape',this.t('横版','Landscape')]],this.profile.pageShape||'auto',v=>change('pageShape',v as ReaderPresentation['pageShape']))),
-      label(this.t('翻页方向','Page direction'),select([['horizontal',this.t('左右','Horizontal')],['vertical',this.t('上下','Vertical')]],this.profile.direction,v=>change('direction',v as ReaderDirection))),
-      label(this.t('翻页效果','Transition'),select([['turn',this.t('仿真','Simulated page')],['cover',this.t('覆盖','Cover')],['slide',this.t('滑动','Slide')],['none',this.t('无动画','None')]],this.profile.transition||'cover',v=>change('transition',v as ReaderPresentation['transition']))));
-    m.body.append(label(this.t('正文字体','Reading font'),select([['hand','文楷 · 随书嵌入'],['serif','宋体 / 衬线 · 系统字体'],['sans','黑体 / 无衬线 · 系统字体']],this.profile.font||'hand',v=>change('font',v as ReaderPresentation['font']))),label(this.t('行距','Line spacing'),select([['1.85','舒适 · 1.85'],['2.05','宽松 · 2.05'],['2.25','留白 · 2.25']],String(this.profile.lineSpacing||2.05),v=>change('lineSpacing',Number(v) as ReaderPresentation['lineSpacing']))));
-    const size=input(String(this.d.userState.preferences.fontSize));size.type='range';size.min='14';size.max='36';size.onchange=()=>{this.d.userState.preferences.fontSize=Number(size.value);this.render(a)};m.body.append(label(this.t('字号','Text size'),size));
-    m.body.append(label(this.t('纸张样式','Paper style'),select(paperStyles.map(p=>[p.id,this.en?p.en:p.zh]),this.profile.paperStyle||'auto',v=>change('paperStyle',v as PaperStyle))));
-    m.body.append(label(this.t('明暗模式','Appearance'),select([['paper-light',this.t('日间','Day')],['paper-night',this.t('夜间','Night')]],this.profile.theme,v=>change('theme',v as ReaderPresentation['theme']))),label(this.t('减少动态','Reduce motion'),checkbox(this.profile.motion==='reduced',v=>change('motion',v?'reduced':'full'))),label(this.t('界面语言','Interface language'),select([['zh','中文'],['en','English']],this.en?'en':'zh',v=>{this.d.userState.preferences.language=v as 'zh'|'en';setLocale(v as 'zh'|'en');this.render(a)})));
-    m.foot.append(button(this.t('完成','Done'),()=>{m.close();this.remember()},'primary'));
-  }
+  showSettings(){showReaderSettings(this);}
   refreshAppearance(){
     this.cancelTurn();
     document.documentElement.dataset.paperTheme=this.profile.theme;appRoot.dataset.theme=this.profile.theme;appRoot.dataset.motion=this.motion()?'full':'reduced';

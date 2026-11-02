@@ -5,6 +5,7 @@ const paths = {
   sun:'M12 3V1m0 22v-2M3 12H1m22 0h-2M5.6 5.6 4.2 4.2m15.6 15.6-1.4-1.4M5.6 18.4l-1.4 1.4M19.8 4.2l-1.4 1.4 M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z',
   moon:'M20.5 14.3A9 9 0 0 1 9.7 3.5 9 9 0 1 0 20.5 14.3Z',
   type:'m3 18 5-12 5 12M5 14h6M16 11h5m-5 0v7m5-7v7m-5-4h5',
+  settings:'M3 6h7m4 0h7M3 12h2m4 0h12M3 18h11m4 0h3M10 3v6M5 9v6m9 0v6',
   expand:'M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5',
   workspace:'M3 4h18v16H3Z M15 4v16M7 9h4m-4 4h4m6-4h2m-2 4h2',
   portrait:'M6 2h12v20H6V2Z M9 6h6m-6 4h6m-6 4h6',
