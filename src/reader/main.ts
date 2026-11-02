@@ -11,8 +11,10 @@ import './turn.css';
 import './workspace.css';
 import './figures.css';
 import './sketch.css';
+import './sidebar.css';
 import './print.css';
 import { PageTurn, captureSheets } from './turn';
+import { applyPaperStyle, paperStyles } from './paper-styles';
 import { icon } from '../ui/icons';
 import { preparePrint, createPrintView, type PrintOptions } from './print';
 import workspaceInstructions from '../../skills/paper-notebook/prompts/coding-agent.txt?raw';
@@ -37,7 +39,7 @@ import { importText, exportMarkdown } from '../io/markdown';
 import { mergeUpdate, parseDocument, resolveSelector } from '../model/document';
 import { conceptExample } from '../examples';
 import { introNotebook } from '../intro';
-import { blocksOf, pagesOf, textOf, uid, type Block, type Note, type Doubt, type Selector, type NotebookDocument, type Page, type ReaderPresentation, type ReaderLayout, type ReaderDirection, type PaperShape, type ReadingAnchor } from '../model/types';
+import { blocksOf, pagesOf, textOf, uid, type Block, type Note, type Doubt, type Selector, type NotebookDocument, type Page, type ReaderPresentation, type ReaderLayout, type ReaderDirection, type PaperStyle, type PaperShape, type ReadingAnchor } from '../model/types';
 import { renderBlock } from '../ui/blocks';
 import { button, el, modal, textarea, input, label, select, checkbox, download, safeName, copyText, toast, enhanceSelects } from '../ui/dom';
 import { setLocale } from '../ui/i18n';
@@ -71,7 +73,7 @@ class ReaderApp {
   private turnView:PageTurn|undefined;private warmTick=0;private pageCache=new Map<number,HTMLElement[]>();
   constructor(d:NotebookDocument){
     this.d=d;this.sessionBooks.set(d.notebook.id,d);
-    this.profile={font:'hand',lineSpacing:2.05,layout:'single',direction:'horizontal',sidebar:'collapsed',theme:'paper-light',motion:'full',pageShape:'auto',marginNotes:true,bottomNotes:true,transition:'turn',...(d.extensions.readerProfile as Partial<ReaderPresentation>||{})};
+    this.profile={font:'hand',lineSpacing:2.05,layout:'single',direction:'horizontal',sidebar:'collapsed',theme:'paper-light',motion:'full',pageShape:'auto',marginNotes:true,bottomNotes:true,transition:'cover',paperStyle:'auto',...(d.extensions.readerProfile as Partial<ReaderPresentation>||{})};
     this.rightSidebarOpen=this.profile.marginNotes??true;this.editor=new PaperEditor(this,appRoot);
     this.sidebarOpen=false;setLocale(this.en?'en':'zh');
     this.paginate();this.pageIndex=this.indexForAnchor(d.userState.readingAnchor||{pageId:d.userState.lastPageId});
@@ -129,16 +131,15 @@ class ReaderApp {
     const controls=el('nav','reader-controls');controls.setAttribute('aria-label',this.t('阅读操作','Reader controls'));
     const contents=button(this.t('目录','Contents'),()=>this.toggleSidebar(),'reader-control','');contents.append(icon('contents'));contents.setAttribute('aria-expanded',String(this.sidebarOpen));contents.setAttribute('aria-controls','reader-sidebar');
     const files=el('details','reader-files'),fileTrigger=el('summary');fileTrigger.title=this.t('文件：导入、下载与 PDF','Files: import, download and PDF');fileTrigger.setAttribute('aria-label',fileTrigger.title);fileTrigger.setAttribute('aria-expanded','false');fileTrigger.append(icon('folder'));files.append(fileTrigger);files.ontoggle=()=>fileTrigger.setAttribute('aria-expanded',String(files.open));const menu=el('div','reader-file-menu');menu.append(button(this.t('导入','Import'),()=>{files.open=false;this.showImport()}),button(this.t('下载','Download'),()=>{files.open=false;this.showExport()}),button(this.t('导出 PDF','Export PDF'),()=>{files.open=false;this.showPDF()}));files.append(menu);
-    const theme=button(this.t('切换日夜模式','Toggle day and night'),()=>{const a=this.anchor();this.profile.theme=this.profile.theme==='paper-night'?'paper-light':'paper-night';this.render(a)},'reader-control theme-toggle','');theme.append(icon(this.profile.theme==='paper-night'?'sun':'moon'));theme.setAttribute('aria-pressed',String(this.profile.theme==='paper-night'));
+    const theme=button(this.t('切换日夜模式','Toggle day and night'),()=>{this.profile.theme=this.profile.theme==='paper-night'?'paper-light':'paper-night';this.refreshAppearance()},'reader-control theme-toggle','');theme.append(icon(this.profile.theme==='paper-night'?'sun':'moon'));theme.setAttribute('aria-pressed',String(this.profile.theme==='paper-night'));
     const settings=button(this.t('阅读设置','Reading settings'),()=>this.showSettings(),'reader-control','');settings.append(icon('type'));const workspace=el('details','reader-files margin-controls');const marginTrigger=el('summary','reader-control workspace-entry');marginTrigger.setAttribute('aria-label','显示批注栏');marginTrigger.title='显示批注栏';marginTrigger.append(icon('workspace'));const marginMenu=el('div','reader-file-menu');marginMenu.append(label('右侧栏',checkbox(this.rightSidebarOpen,v=>{this.rightSidebarOpen=v;this.render(this.anchor())})),label('底栏',checkbox(this.profile.bottomNotes!==false,v=>{this.profile.bottomNotes=v;this.render(this.anchor())})));workspace.append(marginTrigger,marginMenu);const collection=button('书签与疑问',()=>this.showCollections(),'reader-control collection-entry','');collection.append(icon('bookmark'));const immersive=button(this.t(this.immersive?'退出沉浸阅读':'沉浸阅读',this.immersive?'Exit immersive reading':'Immersive reading'),()=>this.setImmersive(),'reader-control immersion-entry','');immersive.append(icon('expand'));
     const shape=button(this.t('切换横竖版','Switch paper orientation'),()=>{const a=this.anchor();this.profile.pageShape=this.shape==='landscape'?'portrait':'landscape';this.render(a)},'reader-control paper-shape-toggle','');shape.append(icon(this.shape==='landscape'?'portrait':'landscape'));shape.title=this.t('切换横竖版','Switch paper orientation');const spread=button(this.t('双页阅读','Two-page reading'),()=>{const a=this.anchor();this.profile.layout=this.actualLayout()==='spread'?'single':'spread';this.render(a)},'reader-control spread-toggle','');spread.append(icon('spread'));spread.setAttribute('aria-pressed',String(this.actualLayout()==='spread'));const star=el('a','reader-control reader-star');star.href='https://github.com/BurntRoses/paper-notebook';star.target='_blank';star.rel='noopener noreferrer';star.title=this.t('给 GitHub 项目加星','Star on GitHub');star.setAttribute('aria-label',star.title);star.append(icon('star'));controls.append(contents,shape,spread,theme,settings,workspace,collection,star,immersive,files);
     header.append(brand,controls);appRoot.append(header);
-    const shell=el('div','reader-shell');shell.append(this.renderSidebar());
-    if(this.sidebarOpen&&innerWidth<1280){const backdrop=button(this.t('收起目录','Close contents'),()=>this.toggleSidebar(false),'sidebar-backdrop');backdrop.tabIndex=-1;shell.append(backdrop)}
+    const shell=el('div','reader-shell');
     const stage=el('main','reader-stage');stage.id='reader-stage';stage.tabIndex=-1;
     const wrap=el('div','reader-page-wrap');
     if(this.actualLayout()==='scroll')this.renderScroll(wrap);else this.visiblePages().forEach(p=>wrap.append(this.renderPage(p)));
-    stage.append(wrap,this.renderNavigation());shell.append(stage);appRoot.append(shell);
+    stage.append(wrap,this.renderNavigation());shell.append(stage);appRoot.append(shell);this.mountSidebar();
     this.fitPages();this.editor.paint();this.remember();this.restore(a);this.wakeChrome();this.warmPages();
   }
   fitPages(){
@@ -244,8 +245,19 @@ class ReaderApp {
     m.body.append(area);m.foot.append(button('复制提示',()=>copyText(area.value),'quiet'),button('下载续学提示',()=>download(safeName(this.d.notebook.title)+'-续学提示.txt',area.value),'quiet'),button('下载所选记录 HTML',async()=>{try{await exportHTML(selected())}catch(error){toast(String(error),true)}},'primary'));update();
   }
   refreshAnnotations(){this.pageCache.clear();this.editor.paint();this.refreshSidebar();this.refreshWorkspace();}
-  refreshSidebar(){const old=appRoot.querySelector('.reader-sidebar');old?.replaceWith(this.renderSidebar())}
-  toggleSidebar(open=!this.sidebarOpen){const a=this.anchor();this.sidebarOpen=open;this.render(a)}
+  refreshSidebar(){if(!this.sidebarOpen)return;const old=appRoot.querySelector('.reader-sidebar'),scroll=old?.scrollTop||0;old?.replaceWith(this.renderSidebar());const next=appRoot.querySelector('.reader-sidebar');if(next)next.scrollTop=scroll;}
+  private mountSidebar(){
+    appRoot.querySelector('.reader-sidebar')?.remove();appRoot.querySelector('.sidebar-backdrop')?.remove();
+    if(!this.sidebarOpen)return;
+    const backdrop=button(this.t('收起目录','Close contents'),()=>this.toggleSidebar(false),'sidebar-backdrop','');backdrop.tabIndex=-1;
+    appRoot.append(backdrop,this.renderSidebar());
+  }
+  toggleSidebar(open=!this.sidebarOpen){
+    const restoreFocus=!open&&!!document.activeElement?.closest('.reader-sidebar');
+    this.sidebarOpen=open;appRoot.classList.toggle('sidebar-collapsed',!open);this.mountSidebar();
+    const control=appRoot.querySelector<HTMLElement>('[aria-controls=reader-sidebar]');control?.setAttribute('aria-expanded',String(open));if(restoreFocus)control?.focus({preventScroll:true});
+    this.wakeChrome();this.remember();
+  }
   blockLabel(b:Block){const icon:Record<string,string>={formula:'∑',diagram:'◇',chart:'⌁',exercise:'?',comparison:'▦'};const names:Record<string,string>={formula:this.t('公式','Formula'),diagram:this.t('图示','Diagram'),chart:this.t('数据图','Data chart'),exercise:this.t('练习','Exercise'),comparison:this.t('对照表','Comparison')};return `${icon[b.type]} ${b.title||b.question||names[b.type]}`}
   renderPage(page:SurfacePage){
     const slot=el('div','paper-slot');
@@ -289,7 +301,7 @@ class ReaderApp {
     this.editor.cancel(false);this.clearToolbar();
     wrap.replaceChildren(...incoming);this.fitPages();this.editor.paint(wrap);
     if(!animate)return undefined;
-    const turn=new PageTurn(wrap,outgoing,sign,this.verticalTurn,this.profile.transition||'turn');this.turnView=turn;return turn;
+    const turn=new PageTurn(wrap,outgoing,sign,this.verticalTurn,this.profile.transition||'cover');this.turnView=turn;return turn;
   }
   private playTurn(turn:PageTurn,target=1){
     turn.restoreOnCancel=target===0;
@@ -303,9 +315,8 @@ class ReaderApp {
   goPage(index:number,fromSidebar=false){
     if(index<0||index>=this.pages.length)return;
     const oldIndex=this.pageIndex;this.cancelTurn();this.pageIndex=index;
-    const close=fromSidebar&&innerWidth<1280;if(close)this.sidebarOpen=false;
-    if(this.actualLayout()==='scroll'&&!close){const slot=appRoot.querySelector<HTMLElement>(`.reader-page-slot[data-index="${this.pageIndex}"]`);if(slot){if(!slot.firstChild){slot.append(this.renderPage(this.page));this.fitPages();this.editor.paint()}slot.scrollIntoView({block:'start',behavior:this.motion()?'smooth':'instant'});this.remember();this.updateProgress();return}}
-    if(close||this.actualLayout()==='scroll'){this.render();return;}
+    if(fromSidebar&&this.sidebarOpen)this.toggleSidebar(false);
+    if(this.actualLayout()==='scroll'){const slot=appRoot.querySelector<HTMLElement>(`.reader-page-slot[data-index="${this.pageIndex}"]`);if(slot){if(!slot.firstChild){slot.append(this.renderPage(this.page));this.fitPages();this.editor.paint()}slot.scrollIntoView({block:'start',behavior:this.motion()?'smooth':'instant'});this.remember();this.updateProgress();return}this.render();return;}
     if(index===oldIndex){this.updateProgress();return;}
     const turn=this.replacePaper(index,index>oldIndex?1:-1,this.motion()&&this.profile.transition!=='none');
     this.updateProgress();this.remember();this.wakeChrome();if(turn)this.readyTurn(turn);else this.warmPages();
@@ -336,7 +347,7 @@ class ReaderApp {
     document.addEventListener('contextmenu',e=>{const target=e.target as HTMLElement;if(!target.closest('.reader-stage .page-surface')||target.closest('input,textarea,a,button,[contenteditable=true]'))return;e.preventDefault();this.showToolbar({x:e.clientX,y:e.clientY});});
     document.addEventListener('click',e=>{const cue=(e.target as HTMLElement).closest<HTMLElement>('[data-cue-block]');if(!cue)return;const pageId=cue.closest<HTMLElement>('[data-page]')!.dataset.page!,selector=cueSelector(this.d,pageId,{id:cue.dataset.cueId||'',text:cue.textContent||'',blockId:cue.dataset.cueBlock,anchor:cue.dataset.cueAnchor});if(selector)this.goSelector(pageId,selector);else this.goBlock(pageId,cue.dataset.cueBlock!);});
     document.addEventListener('keydown',e=>{
-      if(e.key==='Escape'){if(this.toolbar){this.clearToolbar();getSelection()?.removeAllRanges();return;}if(this.immersive&&!document.querySelector('dialog[open]')){this.setImmersive(false);return;}this.cancelGesture(true);this.clearToolbar();if(this.sidebarOpen&&innerWidth<1280&&!document.querySelector('dialog[open]'))this.toggleSidebar(false);return}
+      if(e.key==='Escape'){if(this.toolbar){this.clearToolbar();getSelection()?.removeAllRanges();return;}if(this.sidebarOpen&&!document.querySelector('dialog[open]')){this.toggleSidebar(false);return;}if(this.immersive&&!document.querySelector('dialog[open]')){this.setImmersive(false);return;}this.cancelGesture(true);this.clearToolbar();return}
       if(document.querySelector('dialog[open]')||(e.target as HTMLElement).closest('input,textarea,select,[contenteditable=true]'))return;
       if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='p'){e.preventDefault();this.showPDF();return;}
       if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='f'){e.preventDefault();this.sidebarTab='contents';this.toggleSidebar(true);appRoot.querySelector<HTMLInputElement>('.sidebar-search')?.focus();return}
@@ -428,16 +439,25 @@ class ReaderApp {
     const m=modal(this.t('阅读设置','Reading settings'));const a=this.anchor();
     m.body.append(button(this.t('功能介绍','Features'),()=>{m.close();this.showGuide()},'quiet'));
     m.body.append(label(this.t('阅读缩放','Reading zoom'),select([['1','适应纸面'],['1.25','125%'],['1.5','150%'],['2','200%']],String(this.zoom),v=>{this.zoom=Number(v);this.fitPages();this.editor.paint();})));
-    const change=<K extends keyof ReaderPresentation>(key:K,value:ReaderPresentation[K])=>{this.profile[key]=value;this.render(a)};
+    const change=<K extends keyof ReaderPresentation>(key:K,value:ReaderPresentation[K])=>{this.profile[key]=value;if(key==='theme'||key==='paperStyle'||key==='transition'||key==='motion')this.refreshAppearance();else this.render(a)};
     m.body.append(label(this.t('右侧批注栏','Right margin'),checkbox(this.rightSidebarOpen,v=>{this.rightSidebarOpen=v;this.render(a)})),label(this.t('底部批注栏','Bottom margin'),checkbox(this.profile.bottomNotes!==false,v=>{this.profile.bottomNotes=v;this.render(a)})));
     m.body.append(label(this.t('版式','Layout'),select([['auto',this.t('随屏幕调整','Automatic')],['single',this.t('单页','Single page')],['spread',this.t('双页','Spread')],['scroll',this.t('连续阅读','Continuous')]],this.profile.layout,v=>change('layout',v as ReaderLayout))),
       label(this.t('纸张方向','Paper orientation'),select([['auto',this.t('适应窗口','Fit window')],['portrait',this.t('竖版','Portrait')],['landscape',this.t('横版','Landscape')]],this.profile.pageShape||'auto',v=>change('pageShape',v as ReaderPresentation['pageShape']))),
       label(this.t('翻页方向','Page direction'),select([['horizontal',this.t('左右','Horizontal')],['vertical',this.t('上下','Vertical')]],this.profile.direction,v=>change('direction',v as ReaderDirection))),
-      label(this.t('翻页效果','Transition'),select([['turn',this.t('仿真','Simulated page')],['cover',this.t('覆盖','Cover')],['slide',this.t('滑动','Slide')],['none',this.t('无动画','None')]],this.profile.transition||'turn',v=>change('transition',v as ReaderPresentation['transition']))));
+      label(this.t('翻页效果','Transition'),select([['turn',this.t('仿真','Simulated page')],['cover',this.t('覆盖','Cover')],['slide',this.t('滑动','Slide')],['none',this.t('无动画','None')]],this.profile.transition||'cover',v=>change('transition',v as ReaderPresentation['transition']))));
     m.body.append(label(this.t('正文字体','Reading font'),select([['hand','文楷 · 随书嵌入'],['serif','宋体 / 衬线 · 系统字体'],['sans','黑体 / 无衬线 · 系统字体']],this.profile.font||'hand',v=>change('font',v as ReaderPresentation['font']))),label(this.t('行距','Line spacing'),select([['1.85','舒适 · 1.85'],['2.05','宽松 · 2.05'],['2.25','留白 · 2.25']],String(this.profile.lineSpacing||2.05),v=>change('lineSpacing',Number(v) as ReaderPresentation['lineSpacing']))));
     const size=input(String(this.d.userState.preferences.fontSize));size.type='range';size.min='14';size.max='36';size.onchange=()=>{this.d.userState.preferences.fontSize=Number(size.value);this.render(a)};m.body.append(label(this.t('字号','Text size'),size));
-    m.body.append(label(this.t('纸色','Paper color'),select([['paper-light',this.t('日间','Day')],['paper-night',this.t('夜间','Night')]],this.profile.theme,v=>change('theme',v as ReaderPresentation['theme']))),label(this.t('减少动态','Reduce motion'),checkbox(this.profile.motion==='reduced',v=>change('motion',v?'reduced':'full'))),label(this.t('界面语言','Interface language'),select([['zh','中文'],['en','English']],this.en?'en':'zh',v=>{this.d.userState.preferences.language=v as 'zh'|'en';setLocale(v as 'zh'|'en');this.render(a)})));
-    m.foot.append(button(this.t('完成','Done'),()=>{m.close();this.render(a)},'primary'));
+    m.body.append(label(this.t('纸张样式','Paper style'),select(paperStyles.map(p=>[p.id,this.en?p.en:p.zh]),this.profile.paperStyle||'auto',v=>change('paperStyle',v as PaperStyle))));
+    m.body.append(label(this.t('明暗模式','Appearance'),select([['paper-light',this.t('日间','Day')],['paper-night',this.t('夜间','Night')]],this.profile.theme,v=>change('theme',v as ReaderPresentation['theme']))),label(this.t('减少动态','Reduce motion'),checkbox(this.profile.motion==='reduced',v=>change('motion',v?'reduced':'full'))),label(this.t('界面语言','Interface language'),select([['zh','中文'],['en','English']],this.en?'en':'zh',v=>{this.d.userState.preferences.language=v as 'zh'|'en';setLocale(v as 'zh'|'en');this.render(a)})));
+    m.foot.append(button(this.t('完成','Done'),()=>{m.close();this.remember()},'primary'));
+  }
+  refreshAppearance(){
+    this.cancelTurn();
+    document.documentElement.dataset.paperTheme=this.profile.theme;appRoot.dataset.theme=this.profile.theme;appRoot.dataset.motion=this.motion()?'full':'reduced';
+    const theme=appRoot.querySelector<HTMLElement>('.theme-toggle');theme?.replaceChildren(icon(this.profile.theme==='paper-night'?'sun':'moon'));theme?.setAttribute('aria-pressed',String(this.profile.theme==='paper-night'));
+    for(const paper of appRoot.querySelectorAll<HTMLElement>('.page-surface'))applyPaperStyle(paper,this.profile.paperStyle);
+    for(const slots of this.pageCache.values())for(const slot of slots)for(const paper of slot.querySelectorAll<HTMLElement>('.page-surface'))applyPaperStyle(paper,this.profile.paperStyle);
+    this.remember();
   }
   async showImport(){
     const m=modal(this.t('导入教程','Import a tutorial'));const area=textarea('',9);area.placeholder=this.t('粘贴 Markdown、TXT 或 JSON','Paste Markdown, TXT or JSON');area.setAttribute('aria-label',this.t('教程源文本','Tutorial source text'));

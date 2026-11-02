@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "notebook-observation",
-    "revision": 6,
+    "revision": 7,
     "title": "数字与证据",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -443,12 +443,12 @@
     "readerProfile": {
       "layout": "auto",
       "direction": "horizontal",
-      "sidebar": "open",
+      "sidebar": "collapsed",
       "pageShape": "auto",
-      "transition": "turn",
+      "transition": "cover",
       "theme": "paper-light",
       "motion": "full"
     },
-    "baseRevision": 5
+    "baseRevision": 6
   }
 }

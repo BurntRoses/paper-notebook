@@ -15,3 +15,7 @@
 .turn-still{z-index:-1}
 .page-transition[data-mode=slide] .turn-front,.page-transition[data-mode=cover] .turn-front{box-shadow:12px 0 30px var(--turn-shadow)}
 @media(prefers-reduced-motion:reduce){.page-transition{display:none}}
+
+/* Translation modes composite only the moving front; folding alone needs clip-path. */
+.page-transition:not([data-mode=turn]) .turn-front{will-change:transform;backface-visibility:hidden}
+.page-transition:not([data-mode=turn]) .turn-back,.page-transition:not([data-mode=turn]) .turn-shadow{display:none}

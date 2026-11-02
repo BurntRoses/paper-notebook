@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "notebook-observe-plant",
-    "revision": 5,
+    "revision": 6,
     "title": "给窗边的植物做一份记录",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -231,12 +231,12 @@
     "readerProfile": {
       "layout": "auto",
       "direction": "horizontal",
-      "sidebar": "open",
+      "sidebar": "collapsed",
       "pageShape": "auto",
-      "transition": "turn",
+      "transition": "cover",
       "theme": "paper-light",
       "motion": "full"
     },
-    "baseRevision": 4
+    "baseRevision": 5
   }
 }

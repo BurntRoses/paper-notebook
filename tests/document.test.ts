@@ -20,15 +20,16 @@ test('user assets and derived figures roundtrip without external requests',()=>{
 test('unknown components are retained and unsafe UTF-16 anchor boundaries remain unresolved',()=>{const d=blankDocument();pagesOf(d)[0].blocks=[{id:'future',type:'future-component',custom:{value:42}}];assert.deepEqual(parseDocument(d).document.notebook.chapters[0].pages[0].blocks[0].custom,{value:42});const selector={blockId:'b',start:1,end:2,exact:'\uDE00',prefix:'',suffix:''};assert.equal(resolveInText('😀abc',selector).status,'orphaned');});
 test('new ink controls migrate older preferences and keep red text annotations valid',()=>{const d=blankDocument();const preferences=d.userState.preferences as Record<string,unknown>;delete preferences.penColor;delete preferences.penWidth;delete preferences.penTexture;delete preferences.timerDisplay;d.userState.annotations=[{id:'red-mark',pageId:d.userState.lastPageId,kind:'red',selectors:[],color:'#b44d47',width:2,seed:1}];const parsed=parseDocument(d).document;assert.equal(parsed.userState.preferences.penColor,'#6c7355');assert.equal(parsed.userState.preferences.timerDisplay,'digital');assert.equal(parsed.userState.annotations[0].kind,'red');});
 import { generationPrompt } from '../src/study';
-test('learning prompts preserve preferences and require an HTML artifact for each environment',()=>{
+test('repository entry prompts stay on one line and retain completed learning preferences',()=>{
   const prompts={conversation:readFileSync(new URL('../skills/paper-notebook/prompts/conversation-model.txt',import.meta.url),'utf8'),workspace:readFileSync(new URL('../skills/paper-notebook/prompts/coding-agent.txt',import.meta.url),'utf8')};
   for(const language of ['en','zh-CN'])for(const environment of ['conversation','workspace'] as const){
     const brief={goal:'Understand sets',level:'Beginner',minutes:30,materials:[],exercises:false,language,route:'deep',imagePolicy:'original'};
     const prompt=generationPrompt(brief,prompts,environment);
     assert.ok(prompt.startsWith(prompts[environment].trim()));
     assert.deepEqual(JSON.parse(prompt.slice(prompt.indexOf('{'))),brief);
-    assert.match(prompt,/单文件离线 HTML/);
+    assert.match(prompt,/按仓库指引/);
+    assert.equal(prompts[environment].trim().split(/\r?\n/).length,1);
     assert.doesNotMatch(prompt,/Output complete Markdown|交付 Markdown|只返回.*文本/);
-    assert.match(prompt,environment==='conversation'?/可下载|附上实际文件/:/工作区/);
+    assert.match(prompts[environment],/https:\/\/github\.com\/BurntRoses\/paper-notebook/);
   }
 });

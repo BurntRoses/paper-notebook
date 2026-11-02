@@ -1,6 +1,6 @@
 # Paper Notebook agent entry
 
-Use `skills/paper-notebook/SKILL.md` to generate or update a notebook. Read only the supporting references needed for the task. The schema and component catalog are the single source of truth; do not invent a separate HTML application for each notebook.
+Start by reading `skills/paper-notebook/SKILL.md` to generate or update a notebook. Follow its writing, subject pedagogy and environment workflow instructions; read only the supporting references needed for the task. The short repository-link prompt delegates the complete generation workflow to this entry. The schema and component catalog are the single source of truth; do not invent a separate HTML application for each notebook.
 
 Deliver one complete, title-and-version named single-file reader HTML by default, with source and selected records embedded. Keep JSON and ZIP available as advanced build/export formats; attach them only when requested. Run the validator and builder. Do not claim that a document, source, image or browser path has been verified unless it was actually checked.
 

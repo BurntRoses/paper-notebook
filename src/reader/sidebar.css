@@ -1,0 +1,17 @@
+/* The contents drawer is outside the paper shell in every layout and reading mode. */
+.reader-app-root .reader-sidebar{
+ position:fixed;inset:68px 12px 12px auto;z-index:55;
+ width:min(340px,calc(100vw - 24px));max-width:calc(100vw - 24px);
+ height:calc(100dvh - 80px);max-height:calc(100dvh - 80px);align-self:auto;
+ margin:0;padding:12px 14px 20px;
+ overflow:auto;overscroll-behavior:contain;contain:layout paint;
+ background:var(--panel);border:1px solid var(--line);border-radius:8px;
+ box-shadow:0 8px 28px var(--turn-shadow);
+}
+.reader-app-root .sidebar-backdrop{
+ display:block;position:fixed;inset:60px 0 0;z-index:54;
+ background:#18232230;touch-action:none;
+}
+.reader-app-root .reader-shell{grid-template-columns:minmax(0,1fr)}
+.reader-sidebar .sidebar-tabs{background:var(--panel)}
+@media print{.reader-app-root .reader-sidebar,.reader-app-root .sidebar-backdrop{display:none}}

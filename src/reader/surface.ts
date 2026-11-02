@@ -1,6 +1,7 @@
 import { pagesOf, parameterText, type Block, type NotebookDocument, type Page, type PaperShape } from '../model/types';
 import { frameFor, paperSize, safeBoundary } from '../model/paper';
 import { el } from '../ui/dom';
+import { applyPaperStyle } from './paper-styles';
 import { fitFigureBlock } from '../ui/figures';
 import { cueNode, cuesForSheet, summaryForSheet } from './margins';
 export interface SurfacePage extends Page {part:number;totalParts:number}
@@ -10,8 +11,8 @@ export class PageSurface {
  constructor(public d:NotebookDocument,public shape:PaperShape,public fontSize:number,private renderBlock:(b:Block)=>HTMLElement,private dimensions?:{width:number;height:number},private printRoot?:HTMLElement){}
  size=()=>this.dimensions||paperSize(this.shape);
  make(page:Page,part=0){
-  const layout=page.layout||'cornell',profile=this.d.extensions.readerProfile as {font?:string;lineSpacing?:number;marginNotes?:boolean;bottomNotes?:boolean}|undefined;
-  const article=el('article',`reader-page paper page-surface page-layout-${layout}${this.printRoot?' print-sheet':''}`);article.dataset.page=page.id;article.dataset.part=String(part);article.dataset.shape=this.shape;article.dataset.font=profile?.font||'hand';article.dataset.subject=page.subject||'general';article.dataset.ruling=page.paper?.ruling||'lined';article.setAttribute('aria-label',page.title);
+  const layout=page.layout||'cornell',profile=this.d.extensions.readerProfile as {font?:string;lineSpacing?:number;marginNotes?:boolean;bottomNotes?:boolean;paperStyle?:import('../model/types').PaperStyle}|undefined;
+  const article=el('article',`reader-page paper page-surface page-layout-${layout}${this.printRoot?' print-sheet':''}`);article.dataset.page=page.id;article.dataset.part=String(part);article.dataset.shape=this.shape;article.dataset.font=profile?.font||'hand';article.dataset.subject=page.subject||'general';applyPaperStyle(article,profile?.paperStyle);article.dataset.ruling=page.paper?.ruling||'lined';article.setAttribute('aria-label',page.title);
   const {width,height}=this.size(),foot=Math.round(Math.min(52,Math.max(36,height*.055))),notesHeight=Math.round(Math.min(88,Math.max(64,height*.09))),bottom=foot+(profile?.bottomNotes!==false?notesHeight+12:0),top=part?Math.min(50,Math.round(height*.09)):Math.round(Math.min(140,Math.max(124,height*.15)))+(page.subtitle?28:0);
   article.style.setProperty('--page-left',Math.round(Math.min(90,Math.max(46,width*.065)))+'px');article.style.setProperty('--page-right',Math.round(Math.min(65,Math.max(30,width*.043)))+'px');article.style.setProperty('--notes-height',notesHeight+'px');article.style.setProperty('--heading-size',Math.min(36,Math.max(28,width*.037))+'px');article.style.width=width+'px';article.style.height=height+'px';article.style.setProperty('--rule',Math.max(page.paper?.lineHeight||0,Math.ceil(this.fontSize*(profile?.lineSpacing||2.05)/2)*2)+'px');article.style.setProperty('--reading-size',this.fontSize+'px');article.style.setProperty('--body-top',top+'px');article.style.setProperty('--body-bottom',bottom+'px');article.style.setProperty('--summary-bottom',foot+'px');article.style.setProperty('--body-height',(height-top-4-bottom)+'px');article.dataset.continued=String(part>0);
   article.append(el('div','paper-fibers'),el('div','binding-holes'));

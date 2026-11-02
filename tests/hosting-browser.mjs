@@ -87,7 +87,8 @@ try {
   }
   checks.push('Short provider-neutral prompts route by available tools and require HTML file delivery');
   assert.ok(repositoryPrompt.includes('工作区'));
-  assert.ok(prompt.includes('可下载的单文件离线 HTML'));
+  assert.ok(prompt.includes('按仓库指引'));
+  assert.equal(prompt.trim().split(/\r?\n/).length,1);
   await page.getByRole('button', { name: '复制给编程智能体', exact: true }).click();
   await page.waitForFunction(() => /已复制|已选中/.test(document.querySelector('#repository-status').textContent));
   assert.equal(await page.evaluate(() => navigator.clipboard.readText()), repositoryPrompt);

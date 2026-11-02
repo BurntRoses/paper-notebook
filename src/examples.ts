@@ -54,7 +54,7 @@ conceptExample.notebook.chapters[0].pages[1].cues=[{id:'cue-grain',text:'这次�
 practiceExample.notebook.chapters[0].pages[0].cues=[{id:'cue-observe',text:'看见了什么？',blockId:'plant-intro'},{id:'cue-condition',text:'已知条件',blockId:'plant-steps'},{id:'cue-log',text:'日期与操作',blockId:'plant-log'}];
 conceptExample.notebook.sources.push({id:'postgres-count',title:'PostgreSQL · Aggregate Functions',url:'https://www.postgresql.org/docs/current/functions-aggregate.html'});
 conceptExample.notebook.chapters[0].pages[2].blocks.find(b=>b.id==='obs-sql')!.sourceRefs=[{sourceId:'postgres-count',locator:'count(*) 与 count(DISTINCT expression)'}];
-for(const d of examples)d.extensions.readerProfile={layout:'auto',direction:'horizontal',sidebar:'open',pageShape:'auto',transition:'turn',theme:'paper-light',motion:'full'};
+for(const d of examples)d.extensions.readerProfile={layout:'auto',direction:'horizontal',sidebar:'collapsed',pageShape:'auto',transition:'cover',theme:'paper-light',motion:'full'};
 
 const emphasis:Record<string,StudyPresentation['marks']>={
  'obs-concept':[{text:'统计粒度',kind:'circle'},{text:'统计粒度',kind:'bold'},{text:'统计粒度',kind:'red',color:'#285f9e'}],
@@ -73,9 +73,9 @@ for(const document of examples){
  for(const chapter of document.notebook.chapters)for(const page of chapter.pages)for(const block of page.blocks){
   if(emphasis[block.id])block.study={...block.study,marks:emphasis[block.id]};
  }
- document.notebook.revision=5;document.extensions.baseRevision=4;
+ document.notebook.revision=6;document.extensions.baseRevision=5;
 }
 
 for(const example of examples)example.userState.updatedAt='2026-11-01T00:00:00.000Z';
 
-conceptExample.notebook.revision=6;conceptExample.extensions.baseRevision=5;
+conceptExample.notebook.revision=7;conceptExample.extensions.baseRevision=6;

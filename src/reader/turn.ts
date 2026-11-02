@@ -39,6 +39,7 @@ export class PageTurn {
    if(spread&&index!==active){slot.classList.add('turn-still');continue;}
    if(!spread)slot.classList.add('turn-contained');
    const back=el('div','turn-back'),shadow=el('div','turn-shadow');
+   if(mode!=='turn'){this.leaves.push({front,back,shadow,width:rect.width,height:rect.height});continue;}
    if(spread){
     const source=copySheet(incoming[sign>0?0:1].node);
     const content=el('div','turn-back-content');content.append(source);back.append(content);back.classList.add('turn-printed-back');
@@ -52,7 +53,6 @@ export class PageTurn {
   const p=this.progress,axis=this.vertical?'Y':'X';this.scene.dataset.progress=p.toFixed(3);
   for(const leaf of this.leaves){
    if(this.mode!=='turn'){
-    leaf.back.hidden=leaf.shadow.hidden=true;
     leaf.front.style.transform=this.mode==='fade'?'none':`translate${axis}(${-this.sign*p*102}%)`;
     leaf.front.style.opacity=this.mode==='fade'?String(1-p):'1';continue;
    }
