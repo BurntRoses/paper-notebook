@@ -23,3 +23,38 @@
 button:focus:not(:focus-visible),summary:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:none}
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .sheet-dialog[tabindex]:focus-visible,.content-block:focus{outline:none}
+/* System panels use the same type scale and compact, visible choice controls. */
+.sheet-dialog{font:14px/1.7 system-ui}
+.sheet-dialog .dialog-head h2{font:600 20px/1.4 system-ui}
+.sheet-dialog .dialog-body{line-height:1.7}
+.sheet-dialog .dialog-foot{gap:10px}
+.sheet-dialog .dialog-foot button{font:14px/1.4 system-ui;min-height:40px;padding:9px 16px}
+.sheet-dialog .field-toggle{display:flex;flex-direction:row;justify-content:flex-start;align-items:center;gap:9px;min-height:36px;cursor:pointer}
+.sheet-dialog .field-toggle input{order:-1;flex:0 0 17px;width:17px;height:17px;min-height:0;margin:0;accent-color:var(--accent);cursor:pointer}
+.sheet-dialog .field-toggle .field-label{color:var(--ink)}
+.choice-segments{display:flex;align-items:stretch;gap:3px;padding:3px;min-width:0;border-radius:7px;background:var(--field)}
+.choice-segment{flex:1 1 0;min-width:0;min-height:32px;padding:5px 6px;border:1px solid transparent;border-radius:5px;color:var(--muted);font:12px/1.4 system-ui;overflow-wrap:normal}
+.choice-segment:hover{color:var(--ink);background:var(--hover)}
+.choice-segment[aria-checked=true]{color:var(--accent);background:var(--raised);border-color:var(--line);box-shadow:0 1px 2px var(--turn-shadow);font-weight:600}
+.choice-segment:focus-visible{outline-offset:0}
+.reader-guide,.reader-about{width:620px;max-height:calc(100dvh - 32px)}
+:is(.reader-guide,.reader-about)[open]{display:flex;flex-direction:column;overflow:hidden}
+:is(.reader-guide,.reader-about) .dialog-head,:is(.reader-guide,.reader-about) .dialog-foot{position:static;flex-shrink:0}
+:is(.reader-guide,.reader-about) .dialog-body{overflow-y:auto;min-height:0;padding-top:8px}
+.guide-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 24px;margin:8px 0 20px}
+.reader-guide .guide-step{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;align-items:start;min-width:0;padding:0}
+.guide-step>svg{color:var(--accent);margin-top:2px;width:20px;height:20px}
+.reader-guide .guide-step h3{margin:0 0 5px;font:600 14px/1.5 system-ui;color:var(--heading)}
+.reader-guide .guide-step p{margin:0;font:13px/1.7 system-ui;color:var(--muted)}
+.guide-shortcuts{display:flex;gap:8px 16px;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+.guide-shortcuts span{display:inline-flex;gap:7px;align-items:center}
+.sheet-dialog kbd{font:11px/1.5 system-ui;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+.reader-guide .dialog-foot{justify-content:space-between}
+.reader-about .project-links{margin-block:18px}
+.reader-about .about-description{margin:0;color:var(--muted)}
+.reader-about summary{font-size:13px;cursor:pointer}
+@media(max-width:599px){
+ .guide-grid{grid-template-columns:1fr;gap:17px}
+ .choice-segment{padding-inline:4px}
+ .sheet-dialog .dialog-foot{padding:10px 16px}
+}

@@ -22,7 +22,7 @@ for(const [engine,type] of Object.entries({chromium,webkit}).filter(([name])=>!p
   await frame.getByRole('button',{name:'阅读设置',exact:true}).click();await frame.getByRole('radio',{name:'素白纸',exact:true}).click();
   assert.equal(await frame.locator('.page-surface').first().evaluate(p=>getComputedStyle(p).backgroundColor),'rgb(255, 254, 250)');
   await frame.getByRole('slider',{name:'字号',exact:true}).focus();await page.keyboard.press('ArrowRight');assert.equal(await page.locator('.reader-preview').evaluate(f=>f.contentWindow.reader.d.userState.preferences.fontSize),19);
-  await frame.getByRole('checkbox',{name:'底部批注栏',exact:true}).uncheck();await frame.getByRole('combobox',{name:'版式',exact:true}).click();await frame.getByRole('option',{name:'双页',exact:true}).click();
+  await frame.getByRole('checkbox',{name:'底部批注栏',exact:true}).uncheck();await frame.getByRole('radiogroup',{name:'版式',exact:true}).getByRole('radio',{name:'双页',exact:true}).click();
   await frame.getByRole('button',{name:'完成',exact:true}).click();
   const switches=[];
   for(const [name,id,first] of examples){

@@ -45,20 +45,24 @@ for(const [engine,type] of Object.entries({chromium,webkit})){
   assert.equal(await page.locator('.reader-settings').count(),1);
   await page.getByRole('radio',{name:'素白纸',exact:true}).press('ArrowRight');assert.equal(await page.evaluate(()=>window.reader.profile.paperStyle),'ivory');await page.getByRole('radio',{name:'素白纸',exact:true}).click();
   assert.equal(await page.locator('.reader-stage > .reader-page-wrap .page-surface').evaluate(p=>getComputedStyle(p).backgroundColor),'rgb(255, 254, 250)');
-  await page.getByRole('combobox',{name:'正文字体',exact:true}).click();await page.keyboard.press('Escape');assert.equal(await page.locator('.reader-settings').count(),1,'Escape first closes an open choice');
-  await page.getByRole('combobox',{name:'行距',exact:true}).click();await page.getByRole('option',{name:'2.25',exact:true}).click();assert.equal(await page.locator('.settings-entry').getAttribute('aria-expanded'),'true');
+  assert.equal(await page.locator('.reader-settings select').count(),0,'reading settings expose short choices directly');
+  const fonts=page.getByRole('radiogroup',{name:'正文字体',exact:true});await fonts.getByRole('radio',{name:'文楷',exact:true}).press('ArrowRight');assert.equal(await page.evaluate(()=>window.reader.profile.font),'serif');await fonts.getByRole('radio',{name:'文楷',exact:true}).click();
+  await page.getByRole('radiogroup',{name:'行距',exact:true}).getByRole('radio',{name:'2.25',exact:true}).click();assert.equal(await page.locator('.settings-entry').getAttribute('aria-expanded'),'true');
   await page.keyboard.press('Escape');await page.locator('.reader-settings').waitFor({state:'detached'});
   await page.getByRole('button',{name:'阅读设置',exact:true}).click();await page.locator('.reader-header').click({position:{x:2,y:2}});await page.locator('.reader-settings').waitFor({state:'detached'});
+  await page.evaluate(()=>reader.setImmersive(true));await page.getByRole('button',{name:'阅读设置',exact:true}).click();await page.keyboard.press('Escape');await page.locator('.reader-settings').waitFor({state:'detached'});assert.equal(await page.evaluate(()=>reader.immersive),true);await page.evaluate(()=>reader.setImmersive(false));
   await page.getByRole('button',{name:'阅读设置',exact:true}).click();
   assert.equal(await page.locator('.reader-stage > .reader-page-wrap .page-surface').getAttribute('data-paper-style'),'white');
   assert.equal(await page.evaluate(()=>window.reader.profile.paperStyle),'white');await page.getByRole('button',{name:'完成',exact:true}).click();
   const geometry=await page.locator('.reader-stage > .reader-page-wrap .page-surface').evaluate(p=>({width:p.offsetWidth,height:p.offsetHeight,blocks:[...p.querySelectorAll('[data-block]')].map(b=>b.dataset.block)}));
-  for(const style of ['white','ivory','cotton','mist','sage','inkwash']){
+  const lightColors=[];for(const style of ['white','ivory','cotton','mist','sage','inkwash']){
    await page.evaluate(style=>{const r=window.reader;r.profile.paperStyle=style;r.profile.theme='paper-light';r.refreshAppearance()},style);
    assert.deepEqual(await page.locator('.reader-stage > .reader-page-wrap .page-surface').evaluate(p=>({width:p.offsetWidth,height:p.offsetHeight,blocks:[...p.querySelectorAll('[data-block]')].map(b=>b.dataset.block)})),geometry);
+   lightColors.push(await page.locator('.page-surface').first().evaluate(p=>getComputedStyle(p).backgroundColor));
    await page.screenshot({path:`${out}/${engine}-${style}.png`});
   }
-  await page.evaluate(()=>{const r=window.reader;r.profile.theme='paper-night';r.refreshAppearance()});await page.screenshot({path:`${out}/${engine}-night.png`});
+  assert.equal(new Set(lightColors).size,6);assert.equal(lightColors[3],'rgb(237, 244, 248)');
+  await page.getByRole('button',{name:'阅读设置',exact:true}).click();await page.getByRole('radiogroup',{name:'明暗模式',exact:true}).getByRole('radio',{name:'深色',exact:true}).click();assert.equal(await page.evaluate(()=>reader.profile.theme),'paper-night');await page.getByRole('button',{name:'完成',exact:true}).click();await page.screenshot({path:`${out}/${engine}-night.png`});
   const night=await page.locator('.page-surface').first().evaluate(p=>({background:getComputedStyle(p).backgroundColor,ink:getComputedStyle(p).color}));assert.notEqual(night.background,night.ink);
   // Coverage mode creates no folding/back-page layers; page navigation keeps chrome mounted.
   await page.evaluate(()=>{const r=window.reader;r.profile.theme='paper-light';r.profile.transition='cover';r.profile.layout='spread';r.render();r.goPage(0);window.beforeHeader=document.querySelector('.reader-header');r.turn(1);r.turnView.play=()=>{};r.turnView.seek(.4)});
@@ -70,16 +74,20 @@ for(const [engine,type] of Object.entries({chromium,webkit})){
    await page.setViewportSize({width,height});await page.waitForTimeout(220);await page.getByRole('button',{name:'阅读设置',exact:true}).click();
    const fit=await page.locator('.reader-settings').evaluate(d=>{const r=d.getBoundingClientRect(),nav=document.querySelector('.reader-controls'),buttons=[...nav.querySelectorAll('.reader-control,summary')].filter(n=>n.getBoundingClientRect().width);return {left:r.left,right:r.right,bottom:r.bottom,overflow:d.scrollWidth>d.clientWidth+1,navRight:nav.getBoundingClientRect().right,actions:buttons.length,clip:[...d.querySelectorAll('.settings-row,.paper-palette,.paper-preset-name')].filter(n=>n.scrollWidth>n.clientWidth+1).map(n=>n.className)}});
    assert.ok(fit.left>=0&&fit.right<=width&&fit.bottom<=height,JSON.stringify(fit));assert.equal(fit.overflow,false);assert.equal(fit.navRight<=width,true);assert.equal(fit.actions,6);assert.deepEqual(fit.clip,[]);
-   await page.getByRole('radio',{name:'浅青纸',exact:true}).click();assert.equal(await page.locator('.page-surface').first().evaluate(p=>getComputedStyle(p).backgroundColor),'rgb(246, 249, 242)');
-   assert.equal(await page.locator('.paper-preset[aria-checked=true] .paper-sample').evaluate(p=>getComputedStyle(p).backgroundColor),'rgb(246, 249, 242)');
+   await page.getByRole('radio',{name:'浅青纸',exact:true}).click();assert.equal(await page.locator('.page-surface').first().evaluate(p=>getComputedStyle(p).backgroundColor),'rgb(239, 244, 232)');
+   assert.equal(await page.locator('.paper-preset[aria-checked=true] .paper-sample').evaluate(p=>getComputedStyle(p).backgroundColor),'rgb(239, 244, 232)');
+   const gaps=await page.locator('.settings-toggles .field-toggle').evaluateAll(labels=>labels.map(l=>{const input=l.querySelector('input').getBoundingClientRect(),text=l.querySelector('.field-label').getBoundingClientRect();return text.left-input.right;}));assert.ok(gaps.every(g=>g>=0&&g<=12),JSON.stringify(gaps));
+   assert.equal(await page.locator('.reader-settings').getByRole('radiogroup',{name:'版式',exact:true}).getByRole('radio',{checked:true}).count(),1);
    await page.screenshot({path:`${out}/${engine}-settings-${width}.png`});
-   await page.locator('.settings-advanced>summary').click();await page.getByRole('combobox',{name:'阅读缩放',exact:true}).click();await page.getByRole('option',{name:'适应纸面',exact:true}).click();assert.equal(await page.locator('.reader-settings').count(),1);
+   await page.locator('.settings-advanced>summary').click();await page.getByRole('radiogroup',{name:'阅读缩放',exact:true}).getByRole('radio',{name:'适应',exact:true}).click();assert.equal(await page.locator('.reader-settings').count(),1);
    if(width===320){
-    await page.getByRole('combobox',{name:'界面语言',exact:true}).click();await page.getByRole('option',{name:'English',exact:true}).click();await page.getByRole('heading',{name:'Reading settings',exact:true}).waitFor();
-    assert.ok(await page.locator('.reader-controls').evaluate(n=>n.getBoundingClientRect().right<=innerWidth));assert.ok(await page.locator('.reader-settings').evaluate(n=>n.scrollWidth<=n.clientWidth+1));await page.screenshot({path:`${out}/${engine}-settings-english-phone.png`});
-    await page.locator('.settings-advanced>summary').click();await page.getByRole('combobox',{name:'Interface language',exact:true}).click();await page.getByRole('option',{name:'中文',exact:true}).click();await page.getByRole('heading',{name:'阅读设置',exact:true}).waitFor();
+    await page.getByRole('radiogroup',{name:'界面语言',exact:true}).getByRole('radio',{name:'English',exact:true}).click();await page.getByRole('heading',{name:'Reading settings',exact:true}).waitFor();
+    assert.ok(await page.locator('.reader-controls').evaluate(n=>n.getBoundingClientRect().right<=innerWidth));assert.ok(await page.locator('.reader-settings').evaluate(n=>n.scrollWidth<=n.clientWidth+1));assert.deepEqual(await page.locator('.reader-settings .choice-segment').evaluateAll(ns=>ns.filter(n=>n.getClientRects().length&&n.scrollWidth>n.clientWidth+1).map(n=>n.textContent)),[]);await page.screenshot({path:`${out}/${engine}-settings-english-phone.png`});
+    await page.locator('.settings-advanced>summary').click();await page.getByRole('radiogroup',{name:'Language',exact:true}).getByRole('radio',{name:'中文',exact:true}).click();await page.getByRole('heading',{name:'阅读设置',exact:true}).waitFor();
    }
-   await page.keyboard.press('Escape');await page.locator('.reader-settings').waitFor({state:'detached'});
+   await page.locator('.settings-help').click();await page.locator('.reader-guide').waitFor();assert.equal(await page.locator('.guide-step').count(),6);
+   const guide=await page.locator('.reader-guide').evaluate(d=>{const r=d.getBoundingClientRect();return {fits:r.left>=0&&r.right<=innerWidth&&r.top>=0&&r.bottom<=innerHeight+1,overflow:d.scrollWidth>d.clientWidth+1};});assert.ok(guide.fits&&!guide.overflow,JSON.stringify(guide));
+   await page.screenshot({path:`${out}/${engine}-guide-${width}.png`});await page.getByRole('button',{name:'开始阅读',exact:true}).click();await page.locator('.reader-guide').waitFor({state:'detached'});
   }
   await page.setViewportSize({width:1440,height:1000});await page.waitForTimeout(220);await page.evaluate(()=>window.reader.showExport());
   const pending=page.waitForEvent('download');await page.getByRole('button',{name:'下载离线 HTML',exact:true}).click();const download=await pending,file=resolve(`${out}/${engine}-saved.html`);await download.saveAs(file);

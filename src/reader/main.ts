@@ -421,13 +421,18 @@ class ReaderApp {
   showGuide(){
     if(document.querySelector('dialog[open]'))return;
     const m=modal(this.t('功能介绍','Features'));m.dialog.classList.add('reader-guide');
-    for(const [title,text] of [
-      [this.t('选中文字','Select a passage'),this.t('选区旁的快捷栏支持点圈勾画、便签、书签，以及“疑问 / 展开讲解 / 举例说明”。','Use the nearby toolbar for marks, notes, bookmarks and follow-up questions.')],
-      [this.t('页边便条','Margin notes'),this.t('双击右栏或底栏空白处添加便条。圆形色块切换底色，第一个是透明色；长便条可展开。阅读设置中可分别开关两栏。','Double-click either margin to add a note. Color dots change its background; the first is transparent. Expand long notes or hide either margin in Reading settings.')],
-      [this.t('图像与收录','Figures and collections'),this.t('点击图像可放大、圈画、添加箭头和文字。选中的文字可存为书签或疑问，在右上角统一查看。','Enlarge figures to draw, add arrows and labels. Save selected passages as bookmarks or questions and find them at the top right.')],
-      [this.t('键盘翻页','Keyboard reading'),this.t('← / →、空格、回车翻页；Shift + 空格返回上一页。输入批注时快捷键暂停。','Use arrows, Space or Enter to turn pages; Shift + Space goes back. Typing keeps these keys local.')],
-      [this.t('保存与继续学习','Save and continue'),this.t('文件菜单可下载含记录的离线 HTML。续学导出可选择便签、书签、标记与笔迹，供下一轮 AI 参考。','Download an offline HTML with your records. Export selected notes, bookmarks and ink for your next AI session.')]
-    ]){const row=el('section','guide-step');row.append(el('h3','',title),el('p','',text));m.body.append(row);}
+    const grid=el('div','guide-grid');
+    for(const [glyph,title,text] of [
+      ['type',this.t('文字标记','Text marks'),this.t('选中文字，用浮动工具栏加粗、改色或点圈勾画。点击已有标记可修改或删除。','Select text to apply bold, color or reading marks. Click an existing mark to edit or remove it.')],
+      ['workspace',this.t('页边便条','Margin notes'),this.t('双击右栏或底栏空白处添加便条。点击色块更换底色，长便条可展开。','Double-click a blank margin to add a note. Choose its background with the color dots and expand long notes.')],
+      ['expand',this.t('图像批注','Figure annotations'),this.t('点击图像放大，可添加圈注、箭头和文字说明。','Click a figure to enlarge it and add circles, arrows or text labels.')],
+      ['bookmark',this.t('书签与疑问','Bookmarks and questions'),this.t('选中文字后添加书签或疑问，在顶部“收录”中查看并返回原文。','Save selected text as a bookmark or question. Open Saved in the top bar to review it or return to the passage.')],
+      ['settings',this.t('阅读设置','Reading settings'),this.t('调整版式、字体、行距和纸张，分别开关右栏与底栏。修改立即生效。','Choose layout, font, line spacing and paper, or hide either margin. Changes apply immediately.')],
+      ['folder',this.t('保存副本','Save a copy'),this.t('在“文件”中下载含批注的离线 HTML，或导出 PDF。','Open Files to download an offline HTML with your annotations or export a PDF.')]
+    ] as const){const item=el('section','guide-step'),body=el('div');body.append(el('h3','',title),el('p','',text));item.append(icon(glyph),body);grid.append(item);}
+    const shortcuts=el('div','guide-shortcuts');shortcuts.setAttribute('aria-label',this.t('键盘快捷键','Keyboard shortcuts'));
+    for(const [keys,description] of [['← / →',this.t('翻页','Turn page')],['Shift + Space',this.t('上一页','Previous page')],['Esc',this.t('关闭面板','Close panel')]]){const item=el('span');item.append(el('kbd','',keys),document.createTextNode(description));shortcuts.append(item);}
+    m.body.append(grid,shortcuts);
     m.dialog.addEventListener('close',()=>{try{localStorage.setItem('paper-notebook-guide-v4','seen')}catch{}});m.foot.append(button(this.t('操作教程','Tutorial'),()=>{m.close();this.startTour()},'quiet'),button(this.t('开始阅读','Start reading'),m.close,'primary'));
   }
   showVisualPage(){let index=this.pages.findIndex(p=>p.blocks.some(b=>b.type==='image'));if(index<0)index=this.pages.findIndex(p=>p.blocks.some(b=>b.type==='chart'));if(index<0)index=this.pages.findIndex(p=>p.blocks.some(b=>b.type==='diagram'));if(index>=0)this.goPage(index,true);}
@@ -555,9 +560,9 @@ class ReaderApp {
     m.foot.append(button('返回阅读',m.close,'quiet'),print);
   }
   showImage(b:Block){const asset=this.d.assets.find(a=>a.id===b.assetId);if(!asset)return;const m=modal(b.title||this.t('图片','Image'));const img=el('img','reader-image');img.src=asset.data;img.alt=b.alt||'';m.body.append(img);if(b.caption)m.body.append(el('p','',b.caption));if(asset.source)m.body.append(el('p','',asset.source+(asset.license?' · '+asset.license:'')));m.foot.append(button(this.t('关闭','Close'),m.close,'primary'))}
-  showAbout(){const m=modal('Paper Notebook');m.body.append(el('p','','使用 AI 生成图文教程，支持离线阅读、批注和复习。'));
+  showAbout(){const m=modal('Paper Notebook');m.dialog.classList.add('reader-about');m.body.append(el('p','about-description',this.t('使用 AI 生成图文教程，支持离线阅读、批注和复习。','Create illustrated lessons with AI, then read, annotate and review offline.')));
     const links=el('nav','project-links');links.setAttribute('aria-label','项目导航');
-    for(const [name,url] of [['项目首页 ↗','https://burntroses.github.io/paper-notebook/'],['制作笔记 ↗','https://burntroses.github.io/paper-notebook/#create'],['☆ GitHub 加星 ↗','https://github.com/BurntRoses/paper-notebook'],['使用许可 ↗','https://github.com/BurntRoses/paper-notebook/blob/main/LICENSE']]){const a=el('a','',name);a.href=url;a.target='_blank';a.rel='noopener noreferrer';links.append(a);}m.body.append(links);
+    for(const [name,url] of [['项目首页','https://burntroses.github.io/paper-notebook/'],['制作笔记','https://burntroses.github.io/paper-notebook/#create'],['GitHub','https://github.com/BurntRoses/paper-notebook'],['使用许可','https://github.com/BurntRoses/paper-notebook/blob/main/LICENSE']]){const a=el('a','',name);a.href=url;a.target='_blank';a.rel='noopener noreferrer';links.append(a);}m.body.append(links);
     const details=el('details');details.append(el('summary','','第三方许可'),el('pre','license-text',notices));m.body.append(details);m.foot.append(button('继续阅读',m.close,'primary'))}
 }
 new ReaderApp(embedded||structuredClone(introNotebook));

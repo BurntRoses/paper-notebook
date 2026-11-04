@@ -2,11 +2,22 @@ import { uiText } from './i18n';
 import { icon } from './icons';
 export function el<K extends keyof HTMLElementTagNameMap>(tag:K,cls='',text?:string):HTMLElementTagNameMap[K]{const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n;}
 export function button(label:string,fn:()=>void,cls='',glyph?:string){label=uiText(label);const b=el('button',cls);b.type='button';b.title=label;b.setAttribute('aria-label',label);if(glyph!==undefined){if(glyph){const i=el('span','button-icon',glyph);i.setAttribute('aria-hidden','true');b.append(i);}}else b.textContent=label;b.addEventListener('click',fn);return b;}
-export function label(text:string,field:HTMLElement){if(!field.hasAttribute('aria-label'))field.setAttribute('aria-label',uiText(text));const n=el('label','field');n.append(el('span','field-label',uiText(text)),field);return n;}
+export function label(text:string,field:HTMLElement){if(!field.hasAttribute('aria-label'))field.setAttribute('aria-label',uiText(text));const n=el('label','field');if(field instanceof HTMLInputElement&&field.type==='checkbox')n.classList.add('field-toggle');n.append(el('span','field-label',uiText(text)),field);return n;}
 export function input(value='',placeholder=''){const n=el('input');n.value=value;n.placeholder=placeholder;return n;}
 export function textarea(value='',rows=5){const n=el('textarea');n.value=value;n.rows=rows;return n;}
 export function select(options:[string,string][],value:string,change?:(v:string)=>void){const n=el('select');for(const [v,name]of options){const o=el('option','',uiText(name));o.value=v;n.append(o);}n.value=value;if(change)n.addEventListener('change',()=>change(n.value));return n;}
 export function checkbox(checked:boolean,onChange:(v:boolean)=>void){const n=el('input');n.type='checkbox';n.checked=checked;n.addEventListener('change',()=>onChange(n.checked));return n;}
+/** Short, visible choices with a single tab stop and radio-keyboard navigation. */
+export function choiceGroup(name:string,options:[string,string][],value:string,change:(v:string)=>void){
+ const field=el('div','field choice-field'),caption=el('span','field-label',uiText(name)),group=el('div','choice-segments');
+ group.setAttribute('role','radiogroup');group.setAttribute('aria-label',uiText(name));
+ const buttons=options.map(([key,text],i)=>{
+  const b=button(text,()=>{value=key;sync();change(key);},'choice-segment');b.setAttribute('role','radio');b.dataset.value=key;
+  b.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(e.key))return;e.preventDefault();e.stopPropagation();const next=e.key==='Home'?0:e.key==='End'?buttons.length-1:(i+(['ArrowLeft','ArrowUp'].includes(e.key)?-1:1)+buttons.length)%buttons.length;buttons[next].click();buttons[next].focus();});return b;
+ });
+ const sync=()=>{buttons.forEach(b=>{const checked=b.dataset.value===value;b.setAttribute('aria-checked',String(checked));b.tabIndex=checked?0:-1;});};
+ sync();group.append(...buttons);field.append(caption,group);return field;
+}
 export function download(name:string,data:Blob|string,mime='text/plain;charset=utf-8'){const blob=typeof data==='string'?new Blob([data],{type:mime}):data;const url=URL.createObjectURL(blob),a=el('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);}
 export function safeName(s:string){return s.replace(/[\\/:*?"<>|\x00-\x1f]/g,'_').slice(0,80)||'notebook';}
 export function modal(title:string,subtitle='',options:{modal?:boolean}={}){

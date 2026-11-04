@@ -1,23 +1,23 @@
 /* One small embedded texture; material colour and page ruling remain independent.
    Patterns stay in the lower paper margin. No noise filters or blend layers. */
-:is(.page-surface,.paper-sample){--sheet-color:#fcfbf7;--paper-detail:none;--fiber-opacity:.065}
+:is(.page-surface,.paper-sample){--sheet-color:#fcfbf7;--paper-detail:none;--fiber-opacity:.10;--paper-detail-opacity:.66}
 :is(.page-surface,.paper-sample)[data-paper-style=white]{--sheet-color:#fffefa;--fiber-opacity:.025}
-:is(.page-surface,.paper-sample)[data-paper-style=ivory]{--sheet-color:#fcf8ef;--fiber-opacity:.055}
-:is(.page-surface,.paper-sample)[data-paper-style=cotton]{--sheet-color:#faf8f2;--fiber-opacity:.10}
-:is(.page-surface,.paper-sample)[data-paper-style=mist]{--sheet-color:#f5f9fa;--fiber-opacity:.035;--paper-detail:repeating-linear-gradient(0deg,transparent 0 23px,#73939f16 23px 24px),repeating-linear-gradient(90deg,transparent 0 23px,#73939f16 23px 24px)}
-:is(.page-surface,.paper-sample)[data-paper-style=sage]{--sheet-color:#f6f9f2;--fiber-opacity:.045;--paper-detail:radial-gradient(ellipse at 80% 100%,#95aa7d27,transparent 70%)}
-:is(.page-surface,.paper-sample)[data-paper-style=inkwash]{--sheet-color:#faf9f4;--fiber-opacity:.055;--paper-detail:url('../../assets/paper-inkwash.svg')}
+:is(.page-surface,.paper-sample)[data-paper-style=ivory]{--sheet-color:#faf2df;--fiber-opacity:.09}
+:is(.page-surface,.paper-sample)[data-paper-style=cotton]{--sheet-color:#f3efe5;--fiber-opacity:.17}
+:is(.page-surface,.paper-sample)[data-paper-style=mist]{--sheet-color:#edf4f8;--fiber-opacity:.06;--paper-detail:repeating-linear-gradient(0deg,transparent 0 23px,#73939f16 23px 24px),repeating-linear-gradient(90deg,transparent 0 23px,#73939f16 23px 24px)}
+:is(.page-surface,.paper-sample)[data-paper-style=sage]{--sheet-color:#eff4e8;--fiber-opacity:.07;--paper-detail:radial-gradient(ellipse at 80% 100%,#95aa7d27,transparent 70%)}
+:is(.page-surface,.paper-sample)[data-paper-style=inkwash]{--sheet-color:#f6f3eb;--fiber-opacity:.08;--paper-detail:url('../../assets/paper-inkwash.svg')}
 .reader-app-root .page-surface,.surface-measure .page-surface,#print-root .page-surface{
- background-color:var(--sheet-color);background-image:linear-gradient(110deg,#ffffff40,transparent 60%);
+ background-color:var(--sheet-color);background-image:linear-gradient(110deg,#ffffff12,transparent 60%);
  background-size:100% 100%;background-blend-mode:normal;
 }
 .page-surface .paper-fibers{background:url('../../assets/paper-cotton.webp') 0 0/420px 420px;mix-blend-mode:normal;opacity:var(--fiber-opacity)}
 .reader-app-root .page-surface:before,.surface-measure .page-surface:before,#print-root .page-surface:before{
  content:'';inset:auto 12px 9px auto!important;width:42%;height:105px;
  background:var(--paper-detail) right bottom/100% 100% no-repeat!important;
- opacity:.42!important;pointer-events:none;
+ opacity:var(--paper-detail-opacity)!important;pointer-events:none;
 }
-html[data-paper-theme=paper-night] :is(.page-surface,.paper-sample){--sheet-color:#263139;--fiber-opacity:.035}
+html[data-paper-theme=paper-night] :is(.page-surface,.paper-sample){--sheet-color:#263139;--fiber-opacity:.035;--paper-detail-opacity:.4}
 html[data-paper-theme=paper-night] :is(.page-surface,.paper-sample)[data-paper-style=white]{--sheet-color:#29343b}
 html[data-paper-theme=paper-night] :is(.page-surface,.paper-sample)[data-paper-style=ivory]{--sheet-color:#303331}
 html[data-paper-theme=paper-night] :is(.page-surface,.paper-sample)[data-paper-style=mist]{--sheet-color:#25343d}

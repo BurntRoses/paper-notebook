@@ -16,17 +16,15 @@
 .settings-help{color:var(--muted);font-size:13px}
 .settings-section{margin:0;padding:14px 0;border-top:1px solid var(--line)}
 .settings-section h3{font:600 13px/1.5 system-ui;color:var(--heading);margin:0 0 10px}
-.settings-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin-bottom:10px}
-.reader-settings .settings-row .field{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:5px;margin:0;padding:0;min-height:0;min-width:0}
+.settings-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin:10px 0}
+.reader-settings .choice-field{display:flex;flex-direction:column;align-items:stretch;gap:5px;margin:0;padding:0;min-height:0;min-width:0}
 .reader-settings .field-label{font:12px/1.5 system-ui;color:var(--muted)}
-.reader-settings .paper-choice{min-width:0;width:100%;font:13px/1.5 system-ui}
-.reader-settings .paper-choice-trigger{min-height:38px;padding:8px 30px 8px 10px;border-radius:6px;font:13px/1.5 system-ui}
-.reader-settings .paper-choice-trigger:after{right:10px}
-.reader-settings .settings-size{display:grid;grid-template-columns:auto minmax(0,1fr) 28px;align-items:center;gap:12px;margin:0 0 8px;padding:0;min-height:32px}
+.reader-settings .settings-inline{display:grid;grid-template-columns:62px minmax(0,1fr);gap:12px;align-items:center;margin:0 0 10px}
+.reader-settings .settings-size{display:grid;grid-template-columns:62px minmax(0,1fr) 28px;align-items:center;gap:12px;margin:6px 0;min-height:34px}
 .reader-settings .settings-size input{max-width:none;min-height:28px;width:100%;border:0;background:transparent}
 .settings-size-value{font:12px ui-monospace,monospace;color:var(--ink);text-align:right}
-.reader-settings .settings-toggles{margin:0;gap:12px}
-.reader-settings .settings-toggles .field{display:flex;flex-direction:row;align-items:center;justify-content:space-between;min-height:32px}
+.reader-settings .settings-toggles{display:flex;flex-wrap:wrap;gap:4px 20px}
+.reader-settings .settings-toggles .field-toggle{margin:0;min-height:34px}
 .settings-section-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:10px}
 .settings-section-head h3{margin:0}
 .settings-paper-status{font:11px/1.5 system-ui;color:var(--muted)}
@@ -35,19 +33,18 @@
 .paper-preset:hover{border-color:var(--accent);background:var(--hover)}
 .paper-preset[aria-checked=true]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 .paper-preset-name{font:11px/1.5 system-ui;color:var(--ink);white-space:nowrap}
-.paper-sample{display:block;position:relative;width:100%;height:33px;border-radius:3px;overflow:hidden;background-color:var(--sheet-color);background-image:var(--paper-detail);background-size:100% 100%;background-position:right bottom}
+.paper-sample{display:block;position:relative;width:100%;height:33px;border-radius:3px;overflow:hidden;background-color:var(--sheet-color);}
+.paper-sample:before{content:'';position:absolute;inset:0;background:var(--paper-detail) right bottom/100% 100% no-repeat;opacity:var(--paper-detail-opacity)}
 .paper-sample:after{content:'';position:absolute;inset:0;background:url('../../assets/paper-cotton.webp') center/150px;opacity:var(--fiber-opacity)}
 .sample-lines{position:absolute;inset:8px 12px;background:repeating-linear-gradient(transparent 0 5px,#60716b28 5px 6px);width:55%}
-.reader-settings .settings-theme{display:block;margin:10px 0 0}
-.reader-settings .settings-theme .field{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:12px}
-.settings-theme .paper-choice{max-width:132px}
+.paper-palette+.settings-inline{margin:12px 0 0}
 .settings-advanced{border-top:1px solid var(--line);padding:0}
 .settings-advanced>summary{display:flex;align-items:center;justify-content:space-between;min-height:43px;font:13px/1.5 system-ui;color:var(--heading);cursor:pointer;list-style:none}
 .settings-advanced>summary::-webkit-details-marker{display:none}
 .settings-advanced>summary:after{content:'＋';font-size:16px;color:var(--muted)}
 .settings-advanced[open]>summary:after{content:'−'}
 .settings-advanced-body{padding:2px 0 8px}
-.reader-settings .settings-advanced-body>.field{display:flex;flex-direction:row;justify-content:space-between;margin:0;padding:0;min-height:32px}
+.reader-settings .settings-advanced-body>.field-toggle{margin:0;min-height:34px}
 @media(max-width:799px){
  .reader-app-root .reader-controls{width:100%;justify-content:space-between;gap:6px}
  .reader-control-group+.reader-control-group{padding-left:6px}
@@ -58,6 +55,10 @@
  .reader-settings{inset:68px 8px auto;max-width:calc(100vw - 16px);width:auto;max-height:calc(100dvh - 80px)}
  .reader-settings .dialog-body{padding-inline:14px}
  .reader-settings .dialog-head,.reader-settings .dialog-foot{padding-inline:14px}
+ .reader-settings .settings-inline,.reader-settings .settings-size{grid-template-columns:54px minmax(0,1fr);gap:8px}
+ .reader-settings .settings-size{grid-template-columns:54px minmax(0,1fr) 24px}
+ .reader-settings .settings-toggles{column-gap:16px}
+ .settings-row{gap:10px}
 }
 @media(max-width:360px){
  .reader-controls .reader-label-control{padding:0 4px;gap:3px}
@@ -67,3 +68,8 @@
  .reader-controls .reader-label-control svg{display:none}
 }
 @media(max-width:599px){html[lang=en] .reader-controls .reader-label-control svg{display:none}html[lang=en] .paper-preset-name{white-space:normal}}
+@media(max-width:399px){
+ html[lang=en] .reader-settings .settings-inline{display:flex;flex-direction:column;align-items:stretch;gap:5px}
+ html[lang=en] .reader-settings .settings-row{grid-template-columns:minmax(0,1fr)}
+ html[lang=en] .reader-settings .settings-size{grid-template-columns:62px minmax(0,1fr) 24px}
+}
