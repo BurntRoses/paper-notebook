@@ -18,8 +18,24 @@ export class NotebookStore {
   get canUndo(){return !!this.past.length;}get canRedo(){return !!this.future.length;}
 }
 let database:Promise<IDBDatabase>|undefined;
-function db(){return database ||= new Promise<IDBDatabase>((resolve,reject)=>{if(!globalThis.indexedDB){reject(new Error('当前浏览器无法保存本机草稿，请导出文件。'));return;}const request=indexedDB.open('paper-notebook-v1',1);request.onupgradeneeded=()=>request.result.createObjectStore('documents',{keyPath:'notebook.id'});request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error);});}
-export async function saveDraft(d:NotebookDocument){const database=await db();return new Promise<void>((resolve,reject)=>{const t=database.transaction('documents','readwrite');t.objectStore('documents').put(structuredClone(d));t.oncomplete=()=>resolve();t.onerror=()=>reject(t.error);t.onabort=()=>reject(t.error||new Error('保存事务已中断'));});}
-export async function loadDraft(id:string){const database=await db();return new Promise<NotebookDocument|undefined>((resolve,reject)=>{const r=database.transaction('documents').objectStore('documents').get(id);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});}
+function db(){
+ return database ||= new Promise<IDBDatabase>((resolve,reject)=>{
+  if(!globalThis.indexedDB){reject(new Error('当前浏览器无法保存本机草稿，请导出文件。'));return;}
+  const request=indexedDB.open('paper-notebook-v1',1);
+  request.onupgradeneeded=()=>request.result.createObjectStore('documents',{keyPath:'notebook.id'});
+  request.onsuccess=()=>{
+   const connection=request.result;
+   const release=()=>{connection.close();database=undefined;};
+   connection.onversionchange=release;connection.onclose=()=>{database=undefined;};
+   resolve(connection);
+  };
+  request.onerror=()=>reject(request.error);
+ }).catch(error=>{database=undefined;throw error;});
+}
+export async function saveDraft(d:NotebookDocument){const database=await db();return new Promise<void>((resolve,reject)=>{const t=database.transaction('documents','readwrite');
+ // IndexedDB already snapshots values synchronously during put(). A second
+ // structuredClone duplicates every embedded image on the main thread.
+ t.objectStore('documents').put(d);t.oncomplete=()=>resolve();t.onerror=()=>reject(t.error);t.onabort=()=>reject(t.error||new Error('保存事务已中断'));});}
+export async function loadDraft(id:string){const database=await db();return new Promise<NotebookDocument|undefined>((resolve,reject)=>{const t=database.transaction('documents'),r=t.objectStore('documents').get(id);t.oncomplete=()=>resolve(r.result);t.onerror=()=>reject(t.error);t.onabort=()=>reject(t.error||new Error('读取事务已中断'));});}
 export async function listDrafts(){const database=await db();return new Promise<NotebookDocument[]>((resolve,reject)=>{const r=database.transaction('documents').objectStore('documents').getAll();r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});}
 export async function deleteDraft(id:string){const database=await db();return new Promise<void>((resolve,reject)=>{const t=database.transaction('documents','readwrite');t.objectStore('documents').delete(id);t.oncomplete=()=>resolve();t.onerror=()=>reject(t.error);});}

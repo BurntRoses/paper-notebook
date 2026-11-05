@@ -5,27 +5,29 @@ import { fileURLToPath } from 'node:url';
 // Build interfaces and production sources remain in the repository/dist only.
 const root = fileURLToPath(new URL('../', import.meta.url));
 const dist = root + 'dist/';
+const publicDir = root + 'public/';
 const site = root + 'output/site/';
-for (const path of ['index.html', 'promo.html', 'chat-start.html', 'downloads/blank-notebook.html', 'downloads/paper-notebook-skill.zip', 'downloads/paper-notebook-conversation.zip', 'downloads/paper-notebook-upload.zip']) {
+for (const path of ['index.html', 'downloads/blank-notebook.html', 'downloads/paper-notebook-skill.zip', 'downloads/paper-notebook-conversation.zip', 'downloads/paper-notebook-upload.zip']) {
   if (!(await stat(dist + path)).isFile()) throw new Error(`Missing release file: ${path}. Run the build first.`);
 }
 const [reader, home] = await Promise.all([
   readFile(dist + 'index.html','utf8'),
-  readFile(dist + 'promo.html','utf8'),
+  readFile(publicDir + 'promo.html','utf8'),
 ]);
 await mkdir(root + 'output/', { recursive: true });
 await rm(site, { recursive: true, force: true });
 await mkdir(site+'downloads', {recursive:true});
 await mkdir(site+'promo/story', {recursive:true});
 await mkdir(site+'previews', {recursive:true});
-for(const path of ['start.html','promo-motion.html','site.css','site-nav.js','create-notebook.js','responsive-film.js','paper-grain.svg','paper-notebook-prompt.txt','THIRD_PARTY_NOTICES.txt','LICENSE'])await cp(dist+path,site+path);
+for(const path of ['start.html','promo-motion.html','site.css','site-nav.js','create-notebook.js','responsive-film.js','paper-grain.svg','paper-notebook-prompt.txt'])await cp(publicDir+path,site+path);
+for(const path of ['THIRD_PARTY_NOTICES.txt','LICENSE'])await cp(root+path,site+path);
 for(const name of ['blank-notebook','paper-notebook','paper-notebook-product','machine-learning','concept','formula','practice','compound-interest','literature','business','programming'])await cp(dist+'downloads/'+name+'.html',site+'downloads/'+name+'.html');
 for(const name of ['machine-learning','compound-interest','concept','literature','business','programming'])await cp(dist+'downloads/'+name+'.json',site+'previews/'+name+'.json');
 // This is the runtime fetched by the AI creation instructions, not a promotional download.
 await cp(dist+'downloads/paper-notebook-skill.zip',site+'downloads/paper-notebook-skill.zip');
 await cp(dist+'downloads/paper-notebook-conversation.zip',site+'downloads/paper-notebook-conversation.zip');
 await cp(dist+'downloads/paper-notebook-upload.zip',site+'downloads/paper-notebook-upload.zip');
-for(const path of ['paper-landscape-3.jpg','paper-portrait-3.jpg','paper-notebook-film.mp4','paper-notebook-film-portrait.mp4','paper-notebook-film-1080.mp4','paper-notebook-film-portrait-1080.mp4','paper-notebook-film-low.mp4','paper-notebook-film-portrait-low.mp4','story/film-landscape-poster-1.webp','story/film-portrait-poster-1.webp'])await cp(dist+'promo/'+path,site+'promo/'+path);
+for(const path of ['paper-landscape-3.jpg','paper-portrait-3.jpg','paper-notebook-film.mp4','paper-notebook-film-portrait.mp4','paper-notebook-film-1080.mp4','paper-notebook-film-portrait-1080.mp4','paper-notebook-film-low.mp4','paper-notebook-film-portrait-low.mp4','story/film-landscape-poster-1.webp','story/film-portrait-poster-1.webp'])await cp(publicDir+'promo/'+path,site+'promo/'+path);
 await writeFile(site + 'reader.html', reader);
 const previewDocument=JSON.parse(await readFile(dist+'downloads/machine-learning.json','utf8'));
 await writeFile(site+'preview-reader.html',reader.replace(/(<script\b[^>]*\bid=["']notebook-data["'][^>]*>)[\s\S]*?(<\/script>)/,(_,open,close)=>open+JSON.stringify(previewDocument).replaceAll('<','\\u003c')+close));

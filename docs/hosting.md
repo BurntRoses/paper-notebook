@@ -28,7 +28,9 @@ pnpm build:pages
 pnpm exec vite preview --outDir output/site --host 127.0.0.1 --port 4173
 ```
 
-浏览器打开 `http://localhost:4173/`。视频进度定位测试需支持 Range 的静态服务器。Vite 使用 SPA 回退，内部文件的正式 404 验收应在实际 Pages 或无回退的静态服务执行。部署目录为 `output/site/`，首页使用产品介绍；原始空白阅读器另存为 `reader.html`。`dist/` 中原有离线文件及 ZIP 构建接口不受影响。`prepare-pages.mjs` 使用明确白名单构建网站，禁止整体复制 dist：不发布 docs、分镜脚本、源 JSON、制作素材包、单独配乐、开发工具包或验证截图。公开导航不提供 MP4 下载、方向开关或制作资料入口；只有许可和 AI 运行所需的便携 Skill 保留对应资源。
+浏览器打开 `http://localhost:4173/`。视频进度定位测试需支持 Range 的静态服务器。Vite 使用 SPA 回退，内部文件的正式 404 验收应在实际 Pages 或无回退的静态服务执行。部署目录为 `output/site/`，首页使用产品介绍；原始空白阅读器另存为 `reader.html`。`prepare-pages.mjs` 使用明确白名单构建网站，不整体复制 dist：不发布 docs、分镜脚本、源 JSON、制作素材包、单独配乐、开发工具包或验证截图。公开导航不提供 MP4 下载、方向开关或制作资料入口；只有许可和 AI 运行所需的便携 Skill 保留对应资源。
+
+`pnpm build:pages` 只构建网站需要的阅读器、示例 HTML/JSON 和便携 Skill，不复制完整 public，也不生成制作素材、开发工具、示例 ZIP 和离线合集。静态资源从 public 按白名单复制到网站。`pnpm build` 仍生成完整 dist 和全部归档；CLI、浏览器中的 HTML/ZIP 导出和离线能力保持相同。两种构建都会从 schema 生成校验器；`pnpm test` 检查生成文件是否同步，避免 schema 更新后沿用旧校验规则。
 
 部署后可运行 `NOTEBOOK_BASE=https://burntroses.github.io/paper-notebook pnpm test:hosting`，检查主要页面链接、复制指令、导入下载、影片自动适配和旧入口跳转，以及内部材料不可访问。浏览器测试需要可用的 Playwright；非标准安装位置可通过 `PLAYWRIGHT_MODULE` 指定。
 
@@ -40,6 +42,6 @@ pnpm exec vite preview --outDir output/site --host 127.0.0.1 --port 4173
 
 AI 内容由用户选择的编程智能体或对话模型生成；需要文件工具的路径直接构建 HTML，需要对话附件能力的路径使用便携构建包。成品 HTML 下载后直接用浏览器打开，无需回到网站。个人记录保存在当前浏览器，跨设备使用需下载并转移个人副本。
 
-影片在首页打开后即用 `preload=auto` 加载当前屏幕方向的一版，避免隐藏播放器争抢带宽。单播放器在横竖切换时恢复进度与暂停/播放状态。两版均为 720p / 30 fps、64 秒，使用 H.264 CRF 26、AAC 80 kb/s、2 秒关键帧和 MP4 fast-start；每版约 5.6 MB，合计约 11.2 MB。原生播放器可在首段数据到达后开始播放，不等待完整下载。加载失败时可原位重试。
+影片在首页打开后即用 `preload=auto` 加载当前屏幕方向的一版。播放器保留自动、1080p、720p、540p 清晰度选项；自动模式在通常网络下预载 1080p，弱网和省流量模式使用 540p，卡顿时逐级回退。后台升级在完整高清视频到达后切换，保留进度与暂停/播放状态。隐藏页面会中止后台升级，返回后按需恢复。横竖版本均为 30 fps、64 秒的 H.264/AAC MP4，保留 fast-start。清晰度、旋转、弱网和失败恢复由 `pnpm test:film` 验证；计时器、连接恢复、快速切换和离线 ZIP 压缩由 `pnpm test:runtime` 验证。
 
 首页展示图与影片封面采用 WebP（每张约 75–81 KB），原始 PNG 留作制作源，不进入网站部署。嵌入试读器在距离视口 180px 内才开始加载，首页其余资源优先提供给视频。预览图可通过 `python3 tools/optimize-promo-images.py` 从原始 PNG 重新生成。

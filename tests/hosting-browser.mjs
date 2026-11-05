@@ -83,10 +83,10 @@ try {
     assert.ok(text.includes('https://github.com/BurntRoses/paper-notebook'));
     assert.doesNotMatch(text,/Codex|ChatGPT|DeepSeek|WorkBuddy/i);
     assert.doesNotMatch(text,/只输出.*Markdown|交付 Markdown|输出完整.*Markdown/);
-    assert.match(text,/HTML/);
+    assert.match(text,/按仓库指引/);
   }
-  checks.push('Short provider-neutral prompts route by available tools and require HTML file delivery');
-  assert.ok(repositoryPrompt.includes('工作区'));
+  checks.push('Single-line provider-neutral prompts delegate generation to the repository instructions');
+  assert.ok(repositoryPrompt.includes('按仓库指引'));
   assert.ok(prompt.includes('按仓库指引'));
   assert.equal(prompt.trim().split(/\r?\n/).length,1);
   await page.getByRole('button', { name: '复制给编程智能体', exact: true }).click();
@@ -143,7 +143,7 @@ try {
   await film.goto(base);
   await film.waitForFunction(()=>[...document.querySelectorAll('video')].length===1&&document.querySelector('video').readyState>=2&&document.querySelector('video').preload==='auto');
   assert.ok(mediaRequests.some(url=>url.includes('/paper-notebook-film-1080.mp4')));
-  assert.ok(mediaRequests.every(url=>!url.includes('-portrait.mp4')),'only the current orientation downloads initially');
+  assert.ok(mediaRequests.every(url=>!/-portrait(?:-1080|-low)?\.mp4/.test(url)),'only the current orientation downloads initially');
   assert.equal(await film.locator('video:visible').count(),1);
   await film.waitForFunction(()=>[...document.querySelectorAll('video')].every(v=>v.buffered.length&&v.buffered.end(v.buffered.length-1)>8));
   assert.deepEqual(await film.locator('#film-player').evaluate(v=>[v.duration,v.videoWidth,v.videoHeight]),[64,1920,1080]);
@@ -159,7 +159,7 @@ try {
   await film.setViewportSize({width:1180,height:820});
   await film.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.videoWidth===1920&&!v.paused&&!v.seeking&&v.currentTime>=5&&!v.hasAttribute('aria-busy')});
   assert.equal(await film.locator('.film-status').textContent(),'');
-  assert.ok(mediaRequests.some(url=>url.includes('-portrait.mp4')));assert.equal(await film.locator('video').count(),1);
+  assert.ok(mediaRequests.some(url=>/-portrait(?:-1080|-low)?\.mp4/.test(url)));assert.equal(await film.locator('video').count(),1);
   await film.locator('#film-player').scrollIntoViewIfNeeded();
   await film.screenshot({path:out+'/film-player.png'});
   await filmContext.close();
@@ -179,7 +179,7 @@ try {
   await cold.goto(base,{waitUntil:'domcontentloaded'});
   await cold.setViewportSize({width:390,height:844});
   await cold.setViewportSize({width:1440,height:1000});
-  await cold.waitForFunction(()=>{const v=document.querySelector('#film-player');return v?.videoWidth===1280&&v.readyState>=2&&!v.hasAttribute('aria-busy')});
+  await cold.waitForFunction(()=>{const v=document.querySelector('#film-player');return v?.videoWidth===1920&&v.readyState>=2&&!v.hasAttribute('aria-busy')});
   await cold.locator('#film-player').evaluate(async v=>{v.currentTime=32;await v.play()});
   await cold.waitForFunction(()=>document.querySelector('#film-player').currentTime>32.1);
   await cold.setViewportSize({width:390,height:844});

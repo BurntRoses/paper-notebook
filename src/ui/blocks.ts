@@ -2,7 +2,7 @@ import { uiText } from './i18n';
 import { chartSVG } from './charts';
 import { figureLayout } from './figures';
 import { tableAlignments } from './tables';
-import katex from 'katex';
+import { formulaHTML } from './math';
 import { el, button, copyText, select } from './dom';
 import { projection } from './projection';
 import { codeTokens } from './code';
@@ -51,7 +51,7 @@ export function renderBlock(b:Block,d:NotebookDocument,actions:BlockActions,sour
   case 'example':{text(b.prompt||'','p',0,'example-prompt');let offset=b.prompt?(b.prompt.length+1):0;const list=el('ol');list.start=Number(b._stepStart||1);b.steps?.forEach(item=>{const li=el('li');projection(li,item.text,offset);offset+=item.text.length+1;list.append(li);});root.append(list);text(b.result||'','p',offset,'example-result');break;}
   case 'comparison':{const alignments=tableAlignments(source);const wrap=el('div','table-scroll');wrap.tabIndex=0;wrap.setAttribute('aria-label',b.title||'对照表，可横向滚动');const table=el('table'),head=el('thead'),tr=el('tr');let offset=0;const cell=(tag:'td'|'th',c:string,col:number)=>{const n=el(tag);if(tag==='th')n.setAttribute('scope','col');n.style.textAlign=alignments[col]||'left';projection(n,c,offset);offset+=c.length+1;return n;};b.columns?.forEach((c,i)=>tr.append(cell('th',c,i)));offset+=Number(b._rowOffset||0);head.append(tr);const body=el('tbody');b.rows?.forEach(row=>{const r=el('tr');row.forEach((c,i)=>r.append(cell('td',c,i)));body.append(r);});table.append(head,body);wrap.append(table);root.append(wrap);break;}
   case 'formula':{
-   const math=(latex:string,displayMode:boolean)=>{const n=el('div',displayMode?'formula':'parameter-symbol');try{n.innerHTML=katex.renderToString(latex,{displayMode,throwOnError:false,trust:false,strict:'warn',output:'htmlAndMathml'});}catch{n.textContent=latex;}return n;};
+   const math=(latex:string,displayMode:boolean)=>{const n=el('div',displayMode?'formula':'parameter-symbol');try{n.innerHTML=formulaHTML(latex,displayMode);}catch{n.textContent=latex;}return n;};
    const formula=math(b.latex||'',true);
    if(b.parameters?.length){
     root.classList.add('formula-explained');

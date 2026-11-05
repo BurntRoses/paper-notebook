@@ -4,7 +4,12 @@ import type { NotebookDocument } from '../model/types';
  * used slices and the UI core. No network or font tooling is needed at runtime. */
 export function slimFonts(html:string,d:NotebookDocument){
  if(!d.notebook.chapters.some(c=>c.pages.some(p=>p.blocks.length)))return html;
- const points=[...new Set([...JSON.stringify(d)].map(c=>c.codePointAt(0)!))];
+ const usedPoints=new Set<number>();
+ // Embedded bitmap bytes never appear as reader text. Avoid expanding large
+ // base64 payloads into two temporary character arrays during offline export.
+ const text=JSON.stringify(d,(key,value)=>key==='data'&&typeof value==='string'&&/^data:image\//i.test(value)?undefined:value);
+ for(const character of text)usedPoints.add(character.codePointAt(0)!);
+ const points=[...usedPoints];
  return html.replace(/@font-face\s*\{[^{}]*\}/g,face=>{
   if(!/font-family:\s*["']?StudyHand\b/.test(face))return face;
   const ranges=face.match(/unicode-range:\s*([^;}]+)/i)?.[1];if(!ranges)return face;

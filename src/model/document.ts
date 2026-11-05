@@ -1,8 +1,6 @@
-import Ajv from 'ajv';
+import validate from './notebook-validator.cjs';
 import { migrateInk } from './paper';
-import schema from '../../schemas/notebook.schema.json';
 import { blocksOf, pagesOf, textOf, defaultPreferences, type NotebookDocument, type Selector, type Block, type Answer } from './types';
-const validate = new Ajv({allErrors:true,strict:false}).compile(schema);
 export function parseDocument(raw: unknown): { document: NotebookDocument; warnings: string[] } {
   if(!validate(raw)) throw new Error((validate.errors||[]).slice(0,8).map(e=>`${e.instancePath || '/'} ${e.message}`).join('\n'));
   const d=structuredClone(raw) as unknown as NotebookDocument,warnings:string[]=[],ids=new Set<string>();

@@ -1,4 +1,4 @@
-import { zipSync, strToU8 } from 'fflate';
+import { zip, strToU8 } from 'fflate';
 import { toPng } from 'html-to-image';
 import { userState, type NotebookDocument } from '../model/types';
 import { scriptJSON } from '../model/document';
@@ -15,6 +15,10 @@ export async function htmlFor(d:NotebookDocument){let shell=initialShell;if(/<sc
  return slimFonts(shell.replace(/(<script\b[^>]*\bid=["']notebook-data["'][^>]*>)[\s\S]*?(<\/script>)/,(_,open,close)=>open+scriptJSON(d)+close).replace(/<title>[^<]*<\/title>/,()=>`<title>${d.notebook.title.replace(/[<>&]/g,'')} · Paper Notebook</title>`),d);
 }
 export async function exportHTML(d:NotebookDocument){download(artifactStem(d.notebook.title,d.notebook.revision)+'.html',await htmlFor(d),'text/html;charset=utf-8');}
-export async function exportBundle(d:NotebookDocument){const stem=artifactStem(d.notebook.title,d.notebook.revision);const files:Record<string,Uint8Array>={[stem+'.html']:strToU8(await htmlFor(d)),'notebook.json':strToU8(JSON.stringify(d)),'THIRD_PARTY_NOTICES.txt':strToU8(notices),'打开我-README.txt':strToU8(bundleReadme(stem))};download(stem+'.zip',new Blob([zipSync(files,{level:9}) as Uint8Array<ArrayBuffer>],{type:'application/zip'}));}
+export async function exportBundle(d:NotebookDocument){const stem=artifactStem(d.notebook.title,d.notebook.revision);const files:Record<string,Uint8Array>={[stem+'.html']:strToU8(await htmlFor(d)),'notebook.json':strToU8(JSON.stringify(d)),'THIRD_PARTY_NOTICES.txt':strToU8(notices),'打开我-README.txt':strToU8(bundleReadme(stem))};
+ // fflate compresses large entries in workers; the reader stays responsive
+ // while a notebook with embedded pictures is packaged, including offline.
+ const archive=await new Promise<Uint8Array>((resolve,reject)=>zip(files,{level:9},(error,data)=>error?reject(error):resolve(data)));
+ download(stem+'.zip',new Blob([archive as Uint8Array<ArrayBuffer>],{type:'application/zip'}));}
 export async function pagePNG(paper:HTMLElement){paper.classList.add('export-capture');try{return await toPng(paper,{width:paper.offsetWidth,height:paper.offsetHeight,pixelRatio:2,style:{transform:'none'},filter:n=>!(n instanceof HTMLElement&&(n.classList.contains('object-handles')||n.classList.contains('page-corner')||n.hasAttribute('data-export-exclude')))});}finally{paper.classList.remove('export-capture');}}
 export async function exportPreview(paper:HTMLElement,title:string){const url=await pagePNG(paper);const a=document.createElement('a');a.href=url;a.download=safeName(title)+'.png';a.click();}

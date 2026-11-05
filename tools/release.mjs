@@ -14,6 +14,7 @@ import {verifyBundledReader} from '../src/io/reader-proof.ts';
 import { blankDocument } from '../src/model/types.ts';
 import { parseDocument, scriptJSON } from '../src/model/document.ts';
 const root=fileURLToPath(new URL('../',import.meta.url));
+const pagesOnly=process.argv.includes('--pages');
 for(const name of ['content-contract','components'])await cp(root+'docs/'+name+'.md',root+'skills/paper-notebook/references/'+name+'.md');
 await cp(root+'schemas/notebook.schema.json',root+'skills/paper-notebook/references/notebook.schema.json');
 await buildSkill();
@@ -26,10 +27,10 @@ const blank=blankDocument();blank.notebook.id='notebook-blank';blank.notebook.ch
 for(const [name,doc] of [['blank-notebook',blank],['paper-notebook',introNotebook],['paper-notebook-product',productStory],['machine-learning',machineLearning],...examples.map((d,i)=>[['concept','formula','practice'][i],d]),...showcaseNotebooks]){
  parseDocument(doc);const html=build(doc),json=JSON.stringify(doc,null,2);
  await writeFile(root+`dist/downloads/${name}.html`,html);await writeFile(root+`dist/downloads/${name}.json`,json);await writeFile(root+`examples/${name}.json`,json);
- const stem=artifactStem(doc.notebook.title,doc.notebook.revision);const zip=zipSync({[stem+'.html']:strToU8(html),'notebook.json':strToU8(JSON.stringify(doc)),'THIRD_PARTY_NOTICES.txt':notices,'打开我-README.txt':strToU8(bundleReadme(stem))},{level:9,mtime:new Date('2026-01-01T00:00:00Z')});
- await writeFile(root+`dist/downloads/${name}.zip`,zip);artifacts.push({name,htmlBytes:Buffer.byteLength(html),zipBytes:zip.byteLength,sha256:createHash('sha256').update(html).digest('hex')});
+ const stem=artifactStem(doc.notebook.title,doc.notebook.revision);const zip=pagesOnly?undefined:zipSync({[stem+'.html']:strToU8(html),'notebook.json':strToU8(JSON.stringify(doc)),'THIRD_PARTY_NOTICES.txt':notices,'打开我-README.txt':strToU8(bundleReadme(stem))},{level:9,mtime:new Date('2026-01-01T00:00:00Z')});
+ if(zip)await writeFile(root+`dist/downloads/${name}.zip`,zip);artifacts.push({name,htmlBytes:Buffer.byteLength(html),...(zip?{zipBytes:zip.byteLength}:{}),sha256:createHash('sha256').update(html).digest('hex')});
 }
-for(const dir of ['licenses','skills','docs','schemas'])await cp(root+dir,root+'dist/'+dir,{recursive:true});
+for(const dir of (pagesOnly?['skills']:['licenses','skills','docs','schemas']))await cp(root+dir,root+'dist/'+dir,{recursive:true});
 const skillRoot=root+'dist/skills/paper-notebook/';
 await mkdir(skillRoot+'assets',{recursive:true});await mkdir(skillRoot+'scripts',{recursive:true});
 for(const name of ['content-contract','components'])await cp(root+'docs/'+name+'.md',skillRoot+'references/'+name+'.md');
@@ -52,6 +53,7 @@ const chatZip=zipSync(chatFiles,{level:6,mtime:new Date('2026-01-01T00:00:00Z')}
 await writeFile(root+'dist/downloads/paper-notebook-conversation.zip',chatZip);
 await writeFile(root+'dist/downloads/paper-notebook-upload.zip',conversationUpload(chatZip));
 
+if(!pagesOnly){
 const promoSource={};
 for(const file of ['examples/product-notebook.json','src/product-story.ts','tools/build-film-titles.py','tools/render-product-film.py','tools/encode-film-low.mjs','tools/prepare-product-assets.mjs','tools/compose-product-music.py','tools/capture-product-story.mjs','tools/build-product-story.mjs','tools/verify-product-film.mjs','tools/verify-chat-package.mjs','docs/promo-production.md','docs/product-film-script.md','public/promo/product-film-script.json','public/promo/product-film-music.json','public/promo/product-film-music.wav','public/promo/product-film-music.mp3','THIRD_PARTY_NOTICES.txt','LICENSE'])promoSource[file]=new Uint8Array(await readFile(root+file));
 for(const base of ['production/promo/story','public/promo/story'])Object.assign(promoSource,await walk(root+base,base+'/'));
@@ -65,5 +67,6 @@ toolkit['dist/index.html']=strToU8(template);toolkit['dist/downloads/blank-noteb
 await writeFile(root+'dist/downloads/paper-notebook-toolkit.zip',zipSync(toolkit,{level:6,mtime:new Date('2026-01-01T00:00:00Z')}));
 const offline={};for(const a of artifacts)for(const ext of ['html'])offline[a.name+'.'+ext]=new Uint8Array(await readFile(root+'dist/downloads/'+a.name+'.'+ext));offline['README.md']=strToU8('Open any .html file. blank-notebook.html accepts Markdown, TXT, JSON or notebook ZIP.\n打开任一 HTML；空白容器支持导入。工具包源码见 paper-notebook-toolkit.zip。');offline['THIRD_PARTY_NOTICES.txt']=notices;
 await writeFile(root+'dist/downloads/paper-notebook-offline.zip',zipSync(offline,{level:6,mtime:new Date('2026-01-01T00:00:00Z')}));
+}
 await writeFile(root+'dist/downloads/manifest.json',JSON.stringify({version:JSON.parse(await readFile(root+'package.json','utf8')).version,artifacts},null,2));
 console.log(JSON.stringify({release:'dist/downloads',artifacts},null,2));

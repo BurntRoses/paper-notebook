@@ -52,11 +52,19 @@
   const preview=document.querySelector('.reader-preview[data-src]');
   const tour=document.querySelector('#start-reader-tour'),tourStatus=document.querySelector('#preview-tour-status');
   const examples=[...document.querySelectorAll('[data-example]')],openPreview=document.querySelector('#preview-open');
-  let previewObserver,generation=0;
+  let previewObserver,generation=0,readerReady;
   const previewDocuments=new Map();
   const fetchPreview=name=>{
-    if(!previewDocuments.has(name))previewDocuments.set(name,fetch(`previews/${name}.json?v=3.8`).then(response=>{if(!response.ok)throw new Error('Preview unavailable');return response.json();}).catch(error=>{previewDocuments.delete(name);throw error;}));
-    return previewDocuments.get(name);
+    let entry=previewDocuments.get(name);
+    if(!entry){
+      const controller=new AbortController();entry={controller,settled:false};
+      entry.promise=fetch(`previews/${name}.json?v=3.9`,{signal:controller.signal}).then(response=>{if(!response.ok)throw new Error('Preview unavailable');return response.json();}).then(document=>{entry.settled=true;return document;}).catch(error=>{if(previewDocuments.get(name)===entry)previewDocuments.delete(name);throw error;});
+      previewDocuments.set(name,entry);
+    }
+    return entry.promise;
+  };
+  const cancelOtherPreviews=name=>{
+    for(const [key,entry] of previewDocuments)if(key!==name&&!entry.settled){previewDocuments.delete(key);entry.controller.abort();}
   };
   const loadPreview=()=>{
     if(!preview?.dataset.src)return;
@@ -65,18 +73,29 @@
   const currentReader=()=>{
     try{return preview?.contentWindow?.location.href===preview?.src?preview.contentWindow.reader:undefined;}catch{return;}
   };
-  const waitReader=async()=>{
-    loadPreview();
-    for(let attempt=0;attempt<100;attempt++){
-      const reader=currentReader();if(reader?.openPreview){await preview.contentWindow.document.fonts.ready;return reader;}
-      await new Promise(resolve=>setTimeout(resolve,100));
-    }
-    throw new Error('Reader unavailable');
+  const waitReader=()=>{
+    const current=currentReader();if(current?.openPreview)return preview.contentWindow.document.fonts.ready.then(()=>current);
+    if(readerReady)return readerReady;
+    readerReady=new Promise((resolve,reject)=>{
+      let settled=false,timer;
+      const clean=()=>{clearTimeout(timer);preview?.removeEventListener('load',loaded);preview?.removeEventListener('error',failed);};
+      const fail=()=>{if(settled)return;settled=true;clean();reject(new Error('Reader unavailable'));};
+      const loaded=()=>{
+        const reader=currentReader();if(!reader?.openPreview){fail();return;}
+        clearTimeout(timer);
+        preview.contentWindow.document.fonts.ready.then(()=>{if(settled)return;settled=true;clean();resolve(reader);},fail);
+      };
+      const failed=()=>fail();
+      preview?.addEventListener('load',loaded);preview?.addEventListener('error',failed);
+      timer=setTimeout(fail,10000);loadPreview();
+      if(currentReader()?.openPreview)loaded();
+    }).then(reader=>{readerReady=undefined;return reader;},error=>{readerReady=undefined;if(preview&&!currentReader())preview.dataset.src=preview.src;throw error;});
+    return readerReady;
   };
   if(preview){
     preview.addEventListener('load',()=>{
       if(!currentReader())return;
-      preview.removeAttribute('aria-busy');if(tour)tour.disabled=false;
+      if(!generation){preview.removeAttribute('aria-busy');if(tour)tour.disabled=false;}
       applyTheme(document.documentElement.dataset.siteTheme==='dark');
     });
     previewObserver=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting))loadPreview();},{rootMargin:'180px'});previewObserver.observe(preview);
@@ -86,10 +105,10 @@
    option.addEventListener('focus',()=>{if(currentReader())void fetchPreview(option.dataset.example).catch(()=>{});});
    option.addEventListener('click',async()=>{
     if(!preview||option.getAttribute('aria-pressed')==='true')return;
-    const token=++generation;
+    const token=++generation;cancelOtherPreviews(option.dataset.example);
     for(const item of examples)item.setAttribute('aria-pressed',String(item===option));
     preview.title=`试读：${option.dataset.exampleTitle}`;
-    const path=`downloads/${option.dataset.example}.html?demo&v=3.8`;
+    const path=`downloads/${option.dataset.example}.html?demo&v=3.9`;
     if(openPreview)openPreview.href=path;
     if(tour)tour.disabled=true;if(tourStatus)tourStatus.textContent='';
     preview.setAttribute('aria-busy','true');
@@ -108,13 +127,12 @@
   tour?.addEventListener('click',async()=>{
     const token=generation;
     tour.disabled=true;if(tourStatus)tourStatus.textContent='正在加载…';
-    loadPreview();
-    for(let attempt=0;attempt<70;attempt++){
+    try{
+      const reader=await waitReader();if(token!==generation)return;
+      reader.startTour();if(tourStatus)tourStatus.textContent='';tour.disabled=false;
+    }catch{
       if(token!==generation)return;
-      const reader=currentReader();
-      if(reader){await preview.contentWindow.document.fonts.ready;if(token!==generation)return;reader.startTour();if(tourStatus)tourStatus.textContent='';tour.disabled=false;return;}
-      await new Promise(resolve=>setTimeout(resolve,200));
+      tour.disabled=false;if(tourStatus)tourStatus.textContent='加载失败，请重试或单独打开。';
     }
-    tour.disabled=false;if(tourStatus)tourStatus.textContent='加载失败，请重试或单独打开。';
   });
 })();

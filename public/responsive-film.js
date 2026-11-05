@@ -93,6 +93,7 @@
 
   async function changeSource(direction, level, reason = 'orientation', retryPlay = false) {
     remember();
+    cancelUpgrade();
     const initial = !active, token = ++request, time = wantedTime, play = wantedPlay || retryPlay;
     const frame = reason === 'quality' ? stillFrame() : undefined;
     sourceController?.abort(); sourceController = new AbortController(); const { signal } = sourceController;
@@ -135,7 +136,7 @@
   }
 
   async function maybeUpgrade() {
-    if (mode !== 'auto' || switching || quality !== '540' || upgradeController || attempted.has(active) || slowNetwork() || location.protocol === 'file:' || video.ended || bufferAhead() < 10 || video.duration - video.currentTime < 12) return;
+    if (document.hidden || mode !== 'auto' || switching || quality !== '540' || upgradeController || attempted.has(active) || slowNetwork() || location.protocol === 'file:' || video.ended || bufferAhead() < 10 || video.duration - video.currentTime < 12) return;
     const direction = active, controller = new AbortController(); upgradeController = controller; attempted.add(direction);
     const started = performance.now(); let received = 0, requiredRate = 200 * 1024;
     // Stop the background transfer if it cannot sustain HD or competes with playback.
@@ -150,7 +151,8 @@
       if (length && video.duration) requiredRate = Math.max(160 * 1024, length / video.duration * 2.5);
       const stream = response.body.getReader(), chunks = [];
       while (true) { const { value, done } = await stream.read(); if (done) break; chunks.push(value); received += value.byteLength; }
-      if (controller.signal.aborted) return;
+      if (controller.signal.aborted || upgradeController !== controller) return;
+      if (hdCopies.has(direction)) URL.revokeObjectURL(hdCopies.get(direction));
       hdCopies.set(direction, URL.createObjectURL(new Blob(chunks, { type: 'video/mp4' })));
       if (mode === 'auto' && active === direction && quality === '540' && !switching) await changeSource(direction, '1080', 'quality');
     } catch { /* The low stream remains available throughout a failed upgrade. */ }
@@ -200,6 +202,21 @@
   document.querySelector('.film-retry')?.addEventListener('click', () => adapt(true));
   orientation.addEventListener('change', () => adapt());
   connection?.addEventListener('change', () => { if (mode !== 'auto') return; if (slowNetwork()) { cancelUpgrade(); if (!hdCopies.has(active)) void fallback('540'); } else { attempted.delete(active); maybeUpgrade(); } });
-  window.addEventListener('pagehide', cancelUpgrade);
+  const suspendUpgrade = () => {
+    if (upgradeController) attempted.delete(active);
+    cancelUpgrade(); clearTimeout(stallTimer);
+  };
+  const resume = () => {
+    if (mode === 'auto' && quality === '1080' && !switching && video.readyState < 2) {
+      clearTimeout(stallTimer); stallTimer = setTimeout(() => void fallback(), 5000);
+    }
+    maybeUpgrade();
+  };
+  document.addEventListener('visibilitychange', () => { if (document.hidden) suspendUpgrade(); else resume(); });
+  window.addEventListener('pagehide', event => {
+    suspendUpgrade();
+    if (!event.persisted) { sourceController?.abort(); for (const copy of hdCopies.values()) URL.revokeObjectURL(copy); hdCopies.clear(); }
+  });
+  window.addEventListener('pageshow', event => { if (event.persisted) resume(); });
   adapt();
 })();
