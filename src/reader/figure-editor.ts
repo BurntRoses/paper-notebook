@@ -32,10 +32,21 @@ export function showFigureEditor(b:Block,d:NotebookDocument,original:HTMLElement
  const redo=button('重做图像批注',()=>{const last=undone.pop();if(last){(d.userState.figureMarks??=[]).push(last);onChange();paint();sync();}},'figure-tool','↷');
  const sync=()=>{undo.disabled=!personal().length;redo.disabled=!undone.length;};tools.append(undo,redo);
  const point=(e:PointerEvent)=>{const r=canvas.getBoundingClientRect();return [Math.max(0,Math.min(100,(e.clientX-r.left)/r.width*100)),Math.max(0,Math.min(100,(e.clientY-r.top)/r.height*100))];};
- canvas.onpointerdown=e=>{if(e.button!==0||tool==='text'&&!text.value.trim())return;e.preventDefault();const [x,y]=point(e);draft={kind:tool,x,y,x2:x,y2:y,color,...(tool==='pen'?{points:[[x,y]]}:{}),...(tool==='text'?{text:text.value.trim()}: {})};pointer=e.pointerId;canvas.setPointerCapture(e.pointerId);paint();};
- canvas.onpointermove=e=>{if(!draft||pointer!==e.pointerId)return;const [x,y]=point(e);draft.x2=x;draft.y2=y;if(draft.kind==='pen'&&(draft.points?.length||0)<5000)draft.points?.push([x,y]);paint();};
- canvas.onpointerup=e=>{if(!draft||pointer!==e.pointerId)return;const valid=['text','check'].includes(draft.kind)||Math.hypot((draft.x2||0)-draft.x,(draft.y2||0)-draft.y)>.3;if(valid){const pageId=d.notebook.chapters.flatMap(c=>c.pages).find(p=>p.blocks.some(block=>block.id===b.id))!.id;(d.userState.figureMarks??=[]).push({...draft,id:uid('figure-mark'),blockId:b.id,pageId});undone.length=0;onChange();}draft=undefined;pointer=undefined;if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId);paint();sync();};
- canvas.onpointercancel=()=>{draft=undefined;pointer=undefined;paint();};
+ const sample=(e:PointerEvent)=>{if(!draft)return;const [x,y]=point(e);draft.x2=x;draft.y2=y;if(draft.kind==='pen'&&(draft.points?.length||0)<5000){const last=draft.points?.at(-1);if(!last||last[0]!==x||last[1]!==y)draft.points?.push([x,y]);}};
+ const cancel=(e:PointerEvent)=>{if(pointer!==e.pointerId)return;draft=undefined;pointer=undefined;if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId);paint();};
+ canvas.onpointerdown=e=>{if(pointer!==undefined||e.button!==0||tool==='text'&&!text.value.trim())return;e.preventDefault();const [x,y]=point(e);draft={kind:tool,x,y,x2:x,y2:y,color,...(tool==='pen'?{points:[[x,y]]}:{}),...(tool==='text'?{text:text.value.trim()}: {})};pointer=e.pointerId;canvas.setPointerCapture(e.pointerId);paint();};
+ canvas.onpointermove=e=>{if(!draft||pointer!==e.pointerId)return;sample(e);paint();};
+ canvas.onpointerup=e=>{if(!draft||pointer!==e.pointerId)return;sample(e);
+  // A closed pen stroke can end exactly where it began. Judge its recorded
+  // path; endpoint distance only describes arrows and ellipse bounds.
+  const valid=['text','check'].includes(draft.kind)||(draft.kind==='pen'?draft.points?.some(([x,y])=>Math.hypot(x-draft!.x,y-draft!.y)>.3):Math.hypot((draft.x2??draft.x)-draft.x,(draft.y2??draft.y)-draft.y)>.3);
+  if(valid){const pageId=d.notebook.chapters.flatMap(c=>c.pages).find(p=>p.blocks.some(block=>block.id===b.id))!.id;(d.userState.figureMarks??=[]).push({...draft,id:uid('figure-mark'),blockId:b.id,pageId});undone.length=0;onChange();}draft=undefined;pointer=undefined;if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId);paint();sync();};
+ canvas.onpointercancel=cancel;canvas.onlostpointercapture=cancel;
+ m.dialog.addEventListener('keydown',e=>{
+  if(e.isComposing||!(e.ctrlKey||e.metaKey)||e.altKey||(e.target as HTMLElement).closest('input,textarea,[contenteditable=true]'))return;
+  if(e.key.toLowerCase()!=='z')return;
+  e.preventDefault();e.stopPropagation();if(pointer===undefined)(e.shiftKey?redo:undo).click();
+ });
  m.body.append(tools,text,canvas);m.foot.append(button('完成',m.close,'primary'));paint();sync();resize();
  const observer=new ResizeObserver(resize);observer.observe(tools);window.addEventListener('resize',resize);
  m.dialog.addEventListener('close',()=>{observer.disconnect();window.removeEventListener('resize',resize);});

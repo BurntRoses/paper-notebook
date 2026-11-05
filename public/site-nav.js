@@ -53,12 +53,19 @@
   const tour=document.querySelector('#start-reader-tour'),tourStatus=document.querySelector('#preview-tour-status');
   const examples=[...document.querySelectorAll('[data-example]')],openPreview=document.querySelector('#preview-open');
   let previewObserver,generation=0,readerReady;
+  let selectedExample=examples.find(option=>option.getAttribute('aria-pressed')==='true');
+  const selectExample=option=>{
+    for(const item of examples)item.setAttribute('aria-pressed',String(item===option));
+    if(!option||!preview)return;
+    preview.title=`试读：${option.dataset.exampleTitle}`;
+    if(openPreview)openPreview.href=`downloads/${option.dataset.example}.html?demo&v=3.10`;
+  };
   const previewDocuments=new Map();
   const fetchPreview=name=>{
     let entry=previewDocuments.get(name);
     if(!entry){
       const controller=new AbortController();entry={controller,settled:false};
-      entry.promise=fetch(`previews/${name}.json?v=3.9`,{signal:controller.signal}).then(response=>{if(!response.ok)throw new Error('Preview unavailable');return response.json();}).then(document=>{entry.settled=true;return document;}).catch(error=>{if(previewDocuments.get(name)===entry)previewDocuments.delete(name);throw error;});
+      entry.promise=fetch(`previews/${name}.json?v=3.10`,{signal:controller.signal}).then(response=>{if(!response.ok)throw new Error('Preview unavailable');return response.json();}).then(document=>{entry.settled=true;return document;}).catch(error=>{if(previewDocuments.get(name)===entry)previewDocuments.delete(name);throw error;});
       previewDocuments.set(name,entry);
     }
     return entry.promise;
@@ -95,7 +102,7 @@
   if(preview){
     preview.addEventListener('load',()=>{
       if(!currentReader())return;
-      if(!generation){preview.removeAttribute('aria-busy');if(tour)tour.disabled=false;}
+      if(!generation){preview.removeAttribute('aria-busy');if(selectedExample)preview.dataset.selectedExample=selectedExample.dataset.example;if(tour)tour.disabled=false;}
       applyTheme(document.documentElement.dataset.siteTheme==='dark');
     });
     previewObserver=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting))loadPreview();},{rootMargin:'180px'});previewObserver.observe(preview);
@@ -106,21 +113,23 @@
    option.addEventListener('click',async()=>{
     if(!preview||option.getAttribute('aria-pressed')==='true')return;
     const token=++generation;cancelOtherPreviews(option.dataset.example);
-    for(const item of examples)item.setAttribute('aria-pressed',String(item===option));
-    preview.title=`试读：${option.dataset.exampleTitle}`;
-    const path=`downloads/${option.dataset.example}.html?demo&v=3.9`;
-    if(openPreview)openPreview.href=path;
+    selectExample(option);
     if(tour)tour.disabled=true;if(tourStatus)tourStatus.textContent='';
+    // Selecting the displayed book cancels an unfinished switch without
+    // resetting its page, selection or in-progress annotation.
+    if(option===selectedExample&&currentReader()){
+      preview.removeAttribute('aria-busy');if(tour)tour.disabled=false;return;
+    }
     preview.setAttribute('aria-busy','true');
     try{
       const [document,reader]=await Promise.all([fetchPreview(option.dataset.example),waitReader()]);if(token!==generation)return;
-      reader.openPreview(document);preview.dataset.selectedExample=option.dataset.example;
+      reader.openPreview(document);selectedExample=option;preview.dataset.selectedExample=option.dataset.example;
       preview.removeAttribute('aria-busy');if(tour)tour.disabled=false;
     }catch{
       if(token!==generation)return;
       preview.removeAttribute('aria-busy');if(tour)tour.disabled=false;
       if(tourStatus)tourStatus.textContent='加载失败，请重试。';
-      option.setAttribute('aria-pressed','false');
+      selectExample(selectedExample);
     }
    });
   }

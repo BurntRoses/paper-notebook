@@ -83,7 +83,7 @@ for(const [engine,type] of Object.entries({chromium,webkit})){
    if(width===320){
     await page.getByRole('radiogroup',{name:'界面语言',exact:true}).getByRole('radio',{name:'English',exact:true}).click();await page.getByRole('heading',{name:'Reading settings',exact:true}).waitFor();
     assert.ok(await page.locator('.reader-controls').evaluate(n=>n.getBoundingClientRect().right<=innerWidth));assert.ok(await page.locator('.reader-settings').evaluate(n=>n.scrollWidth<=n.clientWidth+1));assert.deepEqual(await page.locator('.reader-settings .choice-segment').evaluateAll(ns=>ns.filter(n=>n.getClientRects().length&&n.scrollWidth>n.clientWidth+1).map(n=>n.textContent)),[]);await page.screenshot({path:`${out}/${engine}-settings-english-phone.png`});
-    await page.locator('.settings-advanced>summary').click();await page.getByRole('radiogroup',{name:'Language',exact:true}).getByRole('radio',{name:'中文',exact:true}).click();await page.getByRole('heading',{name:'阅读设置',exact:true}).waitFor();
+    if(!await page.locator('.settings-advanced').evaluate(d=>d.open))await page.locator('.settings-advanced>summary').click();await page.getByRole('radiogroup',{name:'Language',exact:true}).getByRole('radio',{name:'中文',exact:true}).click();await page.getByRole('heading',{name:'阅读设置',exact:true}).waitFor();
    }
    await page.locator('.settings-help').click();await page.locator('.reader-guide').waitFor();assert.equal(await page.locator('.guide-step').count(),6);
    const guide=await page.locator('.reader-guide').evaluate(d=>{const r=d.getBoundingClientRect();return {fits:r.left>=0&&r.right<=innerWidth&&r.top>=0&&r.bottom<=innerHeight+1,overflow:d.scrollWidth>d.clientWidth+1};});assert.ok(guide.fits&&!guide.overflow,JSON.stringify(guide));

@@ -2,6 +2,7 @@ import { button, el } from '../ui/dom';
 import type { NotebookDocument } from '../model/types';
 interface TourHost {d:NotebookDocument;rightSidebarOpen:boolean;profile:{bottomNotes?:boolean};showVisualPage:()=>void;render:()=>void;showExport:()=>void}
 let endTour:(()=>void)|undefined;
+export function stopReaderTour(){endTour?.();}
 export function startReaderTour(host:TourHost,root:HTMLElement){
  endTour?.();host.rightSidebarOpen=true;host.profile.bottomNotes=true;host.render();host.showVisualPage();
  const card=el('aside','reader-tour');card.setAttribute('aria-label','操作教程');card.setAttribute('role','region');

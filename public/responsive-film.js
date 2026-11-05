@@ -66,7 +66,12 @@
     const autoQuality = menu?.querySelector('[data-auto-quality]');
     if (autoQuality) autoQuality.textContent = `${quality || '1080'}p`;
   };
-  const closeMenu = () => { if (menu) menu.hidden = true; updateQuality(); };
+  const closeMenu = (restoreFocus = false) => { if (menu) menu.hidden = true; updateQuality(); if (restoreFocus) selector?.focus({ preventScroll: true }); };
+  const openMenu = () => {
+    if (!menu) return;
+    menu.hidden = false; updateQuality();
+    (choices.find(choice => choice.dataset.qualityChoice === mode) || choices[0])?.focus({ preventScroll: true });
+  };
   const remember = () => { if (!switching && !video.error) { wantedTime = video.currentTime; wantedPlay = !video.paused; } };
   const bufferAhead = () => {
     for (let i = 0; i < video.buffered.length; i++) {
@@ -163,10 +168,17 @@
     if (mode !== 'auto' || !active || quality === '540' || switching) return;
     cancelUpgrade(); await changeSource(active, level, 'quality');
   }
-  selector?.addEventListener('click', () => { if (menu) menu.hidden = !menu.hidden; updateQuality(); });
+  selector?.addEventListener('click', () => { if (menu?.hidden) openMenu(); else closeMenu(); });
+  selector?.addEventListener('keydown', event => {
+    if (!['ArrowDown', 'ArrowUp'].includes(event.key)) return;
+    event.preventDefault(); openMenu();
+  });
+  selector?.parentElement.addEventListener('focusout', event => {
+    if (!event.currentTarget.contains(event.relatedTarget)) closeMenu();
+  });
   choices.forEach(choice => choice.addEventListener('click', () => {
     if (!['auto', '1080', '720', '540'].includes(choice.dataset.qualityChoice)) return;
-    mode = choice.dataset.qualityChoice; closeMenu(); cancelUpgrade(); clearTimeout(stallTimer);
+    mode = choice.dataset.qualityChoice; closeMenu(true); cancelUpgrade(); clearTimeout(stallTimer);
     if (mode === 'auto') {
       attempted.delete(active);
       if (quality === '540' && !slowNetwork() && !hdCopies.has(active) && !video.error) { maybeUpgrade(); return; }
@@ -175,13 +187,19 @@
     if (level !== quality || video.error) void changeSource(active, level, 'quality');
   }));
   document.addEventListener('click', event => { if (menu && !menu.parentElement.contains(event.target)) closeMenu(); });
-  document.addEventListener('keydown', event => {
+  menu?.addEventListener('keydown', event => {
     if (!menu || menu.hidden) return;
-    if (event.key === 'Escape') { closeMenu(); selector?.focus(); return; }
-    if (!['ArrowDown', 'ArrowUp'].includes(event.key)) return;
+    if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); closeMenu(true); return; }
+    if (event.key === 'Tab') {
+      // Hiding the focused option makes browsers disagree about the next
+      // tab stop. Continue explicitly to the adjacent player control.
+      event.preventDefault(); closeMenu();
+      controls.querySelector(event.shiftKey ? '[data-film-mute]' : '[data-film-fullscreen]')?.focus({ preventScroll: true }); return;
+    }
+    if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
     const options = choices, current = options.indexOf(document.activeElement);
-    const next = (current + (event.key === 'ArrowDown' ? 1 : -1) + options.length) % options.length;
-    event.preventDefault(); options[next].focus();
+    const next = event.key === 'Home' ? 0 : event.key === 'End' ? options.length - 1 : (current + (event.key === 'ArrowDown' ? 1 : -1) + options.length) % options.length;
+    event.preventDefault(); options[next]?.focus({ preventScroll: true });
   });
   function adapt(retryPlay = false) {
     const next = orientation.matches ? 'portrait' : 'landscape';

@@ -12,10 +12,10 @@ export function choiceGroup(name:string,options:[string,string][],value:string,c
  const field=el('div','field choice-field'),caption=el('span','field-label',uiText(name)),group=el('div','choice-segments');
  group.setAttribute('role','radiogroup');group.setAttribute('aria-label',uiText(name));
  const buttons=options.map(([key,text],i)=>{
-  const b=button(text,()=>{value=key;sync();change(key);},'choice-segment');b.setAttribute('role','radio');b.dataset.value=key;
+  const b=button(text,()=>{if(value===key)return;value=key;sync();change(key);},'choice-segment');b.setAttribute('role','radio');b.dataset.value=key;
   b.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(e.key))return;e.preventDefault();e.stopPropagation();const next=e.key==='Home'?0:e.key==='End'?buttons.length-1:(i+(['ArrowLeft','ArrowUp'].includes(e.key)?-1:1)+buttons.length)%buttons.length;buttons[next].click();buttons[next].focus();});return b;
  });
- const sync=()=>{buttons.forEach(b=>{const checked=b.dataset.value===value;b.setAttribute('aria-checked',String(checked));b.tabIndex=checked?0:-1;});};
+ const sync=()=>{const selected=buttons.some(b=>b.dataset.value===value);buttons.forEach((b,i)=>{const checked=b.dataset.value===value;b.setAttribute('aria-checked',String(checked));b.tabIndex=checked||!selected&&i===0?0:-1;});};
  sync();group.append(...buttons);field.append(caption,group);return field;
 }
 export function download(name:string,data:Blob|string,mime='text/plain;charset=utf-8'){const blob=typeof data==='string'?new Blob([data],{type:mime}):data;const url=URL.createObjectURL(blob),a=el('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);}
@@ -37,7 +37,12 @@ let activeChoice:{wrap:HTMLElement;close:()=>void}|null=null;
 let choiceOutsideBound=false;
 /** Keep a real select for values/forms, and present an accessible paper-styled listbox. */
 export function enhanceSelects(root:ParentNode=document){
- if(!choiceOutsideBound){document.addEventListener('pointerdown',e=>{if(activeChoice&&!activeChoice.wrap.contains(e.target as Node))activeChoice.close();});choiceOutsideBound=true;}
+ if(!choiceOutsideBound){
+  document.addEventListener('pointerdown',e=>{if(activeChoice&&!activeChoice.wrap.contains(e.target as Node))activeChoice.close();});
+  window.addEventListener('resize',()=>activeChoice?.close());
+  document.addEventListener('scroll',e=>{if(activeChoice&&!activeChoice.wrap.contains(e.target as Node))activeChoice.close();},{capture:true,passive:true});
+  choiceOutsideBound=true;
+ }
  const selects=[...(root instanceof HTMLSelectElement&&!root.dataset.choice?[root]:[]),...root.querySelectorAll<HTMLSelectElement>('select:not([data-choice])')];
  for(const n of selects){
   n.dataset.choice='true';n.tabIndex=-1;n.setAttribute('aria-hidden','true');const wrap=el('span','paper-choice'),trigger=button('',()=>toggle()),list=el('div','paper-choice-list');
@@ -46,13 +51,22 @@ export function enhanceSelects(root:ParentNode=document){
   let index=0,opened=false;
   const sync=()=>{trigger.textContent=n.selectedOptions[0]?.textContent||'选择';trigger.disabled=n.disabled;trigger.setAttribute('aria-label',n.getAttribute('aria-label')||n.closest('label')?.querySelector('.field-label')?.textContent||n.closest('label')?.firstElementChild?.textContent||'选择');};
   const close=()=>{if(activeChoice?.wrap===wrap)activeChoice=null;opened=false;trigger.setAttribute('aria-expanded','false');if(list.matches(':popover-open'))list.hidePopover();else list.hidden=true;};
-  const focus=(i:number)=>{const options=[...list.querySelectorAll<HTMLButtonElement>('[role=option]')];index=Math.max(0,Math.min(options.length-1,i));options[index]?.focus();};
+  const focus=(i:number,direction=1)=>{const options=[...list.querySelectorAll<HTMLButtonElement>('[role=option]')];i=Math.max(0,Math.min(options.length-1,i));while(options[i]?.disabled)i+=direction;if(!options[i])return;index=i;options[index].focus({preventScroll:true});options[index].scrollIntoView({block:'nearest'});};
   const toggle=()=>{
-   if(opened){close();return;}activeChoice?.close();activeChoice={wrap,close};sync();list.replaceChildren();[...n.options].forEach((o,i)=>{const b=button(o.textContent||'',()=>{n.value=o.value;n.dispatchEvent(new Event('change',{bubbles:true}));sync();close();if(trigger.isConnected)trigger.focus();});b.setAttribute('role','option');b.setAttribute('aria-selected',String(o.selected));b.disabled=o.disabled;list.append(b);});
-   const r=trigger.getBoundingClientRect(),width=Math.min(innerWidth-24,Math.max(190,r.width));list.style.width=width+'px';list.style.left=Math.min(Math.max(12,r.left),Math.max(12,innerWidth-width-12))+'px';list.style.top=Math.min(innerHeight-220,r.bottom+5)+'px';list.style.maxHeight=Math.min(300,innerHeight-40)+'px';list.hidden=false;list.showPopover?.();opened=true;trigger.setAttribute('aria-expanded','true');focus(Math.max(0,n.selectedIndex));
+   if(opened){close();return;}activeChoice?.close();activeChoice={wrap,close};sync();list.replaceChildren();[...n.options].forEach(o=>{const b=button(o.textContent||'',()=>{n.value=o.value;n.dispatchEvent(new Event('change',{bubbles:true}));sync();close();if(trigger.isConnected)trigger.focus();});b.setAttribute('role','option');b.setAttribute('aria-selected',String(o.selected));b.disabled=o.disabled;b.tabIndex=-1;list.append(b);});
+   const r=trigger.getBoundingClientRect(),width=Math.max(1,Math.min(innerWidth-24,Math.max(190,r.width)));
+   list.style.width=width+'px';list.style.left=Math.min(Math.max(12,r.left),Math.max(12,innerWidth-width-12))+'px';list.style.maxHeight=Math.min(300,innerHeight-24)+'px';list.hidden=false;list.showPopover?.();
+   const height=list.getBoundingClientRect().height,below=Math.max(0,innerHeight-r.bottom-17),above=Math.max(0,r.top-17),down=below>=height||below>=above;
+   list.style.maxHeight=Math.min(300,down?below:above)+'px';const visibleHeight=list.getBoundingClientRect().height;
+   list.style.top=Math.max(12,Math.min(innerHeight-visibleHeight-12,down?r.bottom+5:r.top-visibleHeight-5))+'px';
+   opened=true;trigger.setAttribute('aria-expanded','true');focus(n.selectedIndex>=0&&!n.options[n.selectedIndex].disabled?n.selectedIndex:[...n.options].findIndex(o=>!o.disabled));
   };
-  n.addEventListener('change',sync);trigger.addEventListener('keydown',e=>{if(['ArrowDown','ArrowUp','Enter',' '].includes(e.key)){e.preventDefault();toggle();}});
-  list.addEventListener('keydown',e=>{if(e.key==='Escape'||e.key==='Tab'){close();trigger.focus();if(e.key==='Escape')e.preventDefault();}else if(['ArrowDown','ArrowUp','Home','End'].includes(e.key)){e.preventDefault();focus(e.key==='Home'?0:e.key==='End'?n.options.length-1:index+(e.key==='ArrowDown'?1:-1));}});
+  n.addEventListener('change',sync);trigger.addEventListener('keydown',e=>{if(['ArrowDown','ArrowUp','Enter',' '].includes(e.key)){e.preventDefault();e.stopPropagation();toggle();}});
+  list.addEventListener('keydown',e=>{
+   if(e.key==='Escape'||e.key==='Tab'){e.stopPropagation();close();trigger.focus();if(e.key==='Escape')e.preventDefault();}
+   else if(['ArrowDown','ArrowUp','Home','End'].includes(e.key)){e.preventDefault();e.stopPropagation();const direction=e.key==='ArrowUp'||e.key==='End'?-1:1;focus(e.key==='Home'?0:e.key==='End'?n.options.length-1:index+direction,direction);}
+   else if(['ArrowLeft','ArrowRight','PageUp','PageDown'].includes(e.key))e.stopPropagation();
+  });
   sync();list.hidden=true;
  }
 }

@@ -43,6 +43,6 @@ export function renderMargin(host:MarginHost,page:SurfacePage,region:'right'|'bo
  entries.sort((a,b)=>a.position-b.position);for(const entry of entries)stream.append(entry.node);
  const add=(position:number)=>host.addMarginNote(page,region,position);
  zone.addEventListener('dblclick',e=>{if((e.target as HTMLElement).closest('.workspace-note,.margin-preset'))return;e.preventDefault();getSelection()?.removeAllRanges();const r=zone.getBoundingClientRect();add(Math.max(0,Math.min(1,(e.clientY-r.top)/r.height)));});
- zone.addEventListener('keydown',e=>{if(e.target===zone&&e.key==='Enter'){e.preventDefault();add(.1);}});
+ zone.addEventListener('keydown',e=>{if(e.target===zone&&e.key==='Enter'){e.preventDefault();e.stopPropagation();add(.1);}});
  requestAnimationFrame(arrange);return zone;
 }

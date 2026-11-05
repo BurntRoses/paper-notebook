@@ -3,7 +3,7 @@
   "version": "2.4.0",
   "private": false,
   "type": "module",
-  "description": "A structured tutorial reader and a self-contained Skill for your own agent.",
+  "description": "Create illustrated study notes with AI, annotate text and figures, practise and review.",
   "license": "MIT",
   "bin": {
     "paper-notebook": "tools/notebook.mjs",
@@ -32,7 +32,8 @@
     "test:layout": "node tests/reading-layout-browser.mjs",
     "test:responsive": "node tests/responsive-figures-browser.mjs",
     "test:quality": "node tests/quality-browser.mjs",
-    "benchmark:reader": "node tools/benchmark-reader.mjs"
+    "benchmark:reader": "node tools/benchmark-reader.mjs",
+    "test:iteration": "node tests/site-iteration-browser.mjs && node tests/controls-iteration-browser.mjs && node tests/figure-iteration-browser.mjs && node tests/state-iteration-browser.mjs"
   },
   "dependencies": {
     "ajv": "^8.17.1",

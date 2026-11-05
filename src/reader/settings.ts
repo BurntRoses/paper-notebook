@@ -68,7 +68,15 @@ export function showReaderSettings(host:SettingsHost){
   inline(choiceGroup(t('翻页效果','Transition'),[['cover',t('覆盖','Cover')],['slide',t('滑动','Slide')],['turn',t('仿真','Fold')],['none',t('关闭','Off')]],host.profile.transition||'cover',v=>change('transition',v as ReaderPresentation['transition']))),
   row(
    choiceGroup(t('翻页方向','Page direction'),[['horizontal',t('左右','Left/right')],['vertical',t('上下','Up/down')]],host.profile.direction,v=>change('direction',v as ReaderPresentation['direction'])),
-   choiceGroup(t('界面语言','Language'),[['zh','中文'],['en','English']],host.en?'en':'zh',v=>{const a=host.anchor();host.d.userState.preferences.language=v as 'zh'|'en';setLocale(v as 'zh'|'en');m.dialog.addEventListener('close',()=>{host.render(a);showReaderSettings(host);},{once:true});m.close();})
+   choiceGroup(t('界面语言','Language'),[['zh','中文'],['en','English']],host.en?'en':'zh',v=>{
+    const a=host.anchor(),scroll=m.body.scrollTop;host.d.userState.preferences.language=v as 'zh'|'en';setLocale(v as 'zh'|'en');
+    m.dialog.addEventListener('close',()=>{
+     host.render(a);showReaderSettings(host);
+     const next=document.querySelector<HTMLDialogElement>('.reader-settings'),more=next?.querySelector<HTMLDetailsElement>('.settings-advanced');if(more)more.open=true;
+     const body=next?.querySelector('.dialog-body');if(body)body.scrollTop=scroll;
+     next?.querySelector<HTMLElement>(`[role=radiogroup][aria-label="${v==='en'?'Language':'界面语言'}"] [data-value="${v}"]`)?.focus({preventScroll:true});
+    },{once:true});m.close();
+   })
   ),
   inline(choiceGroup(t('阅读缩放','Zoom'),[['1',t('适应','Fit')],['1.25','125%'],['1.5','150%'],['2','200%']],String(host.zoom),v=>{host.zoom=Number(v);host.fitPages();host.editor.paint();})),
   label(t('减少动态','Reduce motion'),checkbox(host.profile.motion==='reduced',v=>{host.d.userState.preferences.motion=!v;change('motion',v?'reduced':'full');}))
