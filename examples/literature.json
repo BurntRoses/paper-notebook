@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "showcase-literature",
-    "revision": 4,
+    "revision": 5,
     "title": "《春望》 · 背景、文本与修辞",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -35,6 +35,15 @@
             "title": "《春望》：国破与春景",
             "subject": "literature",
             "layout": "reading",
+            "cues": [
+              {
+                "id": "literature-word-note",
+                "title": "“深”的作用",
+                "text": "草木蔓生写出城中荒芜，与“城春”的时令相接，使春景带上战乱后的凋残。",
+                "blockId": "literature-detail",
+                "anchor": "草木蔓生"
+              }
+            ],
             "blocks": [
               {
                 "id": "literature-quote",
@@ -165,12 +174,15 @@
             "cues": [
               {
                 "id": "literature-context-cue",
-                "text": "诗作于怎样的处境？",
-                "blockId": "literature-context"
+                "title": "“望”的处境",
+                "text": "诗人身在沦陷的长安，家人远隔。“感时”与“恨别”由这两重处境展开。",
+                "blockId": "literature-context",
+                "anchor": "与家人音信隔绝"
               },
               {
                 "id": "literature-structure-cue",
-                "text": "全诗怎样由景入情？",
+                "title": "视线的收束",
+                "text": "由都城、花鸟转向家书与白发，观察范围逐渐缩小，家国之忧最终落到诗人自身。",
                 "blockId": "literature-structure"
               }
             ],
@@ -301,6 +313,15 @@
             "title": "花鸟、家书与白发",
             "subject": "literature",
             "layout": "reading",
+            "cues": [
+              {
+                "id": "literature-rhetoric-note",
+                "title": "对仗中的家国",
+                "text": "“烽火”与“家书”相对，战事的延续与音信的珍贵相互映衬，连结忧国和思家。",
+                "blockId": "literature-rhetoric-analysis",
+                "anchor": "对仗将国事与家事并列"
+              }
+            ],
             "blocks": [
               {
                 "id": "literature-rhetoric-quote",
@@ -333,8 +354,13 @@
                 "study": {
                   "marks": [
                     {
-                      "text": "花与鸟本是春日常见的景物",
+                      "text": "乐景反衬",
                       "kind": "bold"
+                    },
+                    {
+                      "text": "乐景反衬",
+                      "kind": "red",
+                      "color": "#285f9e"
                     },
                     {
                       "text": "反衬出战乱中的忧惧",
@@ -408,7 +434,7 @@
   },
   "assets": [],
   "extensions": {
-    "baseRevision": 3,
+    "baseRevision": 4,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

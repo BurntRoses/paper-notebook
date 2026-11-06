@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "showcase-business",
-    "revision": 4,
+    "revision": 5,
     "title": "商学 · 会员制与盈亏平衡",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -37,13 +37,17 @@
             "cues": [
               {
                 "id": "business-cue-model",
-                "text": "单位贡献怎样覆盖固定成本？",
-                "blockId": "business-formula"
+                "title": "单位贡献",
+                "text": "单价扣除单位变动成本后，每件留下 30 元覆盖固定成本；达到平衡后，每增售一件，利润增加 30 元。",
+                "blockId": "business-formula",
+                "anchor": "单位贡献为 30 元"
               },
               {
                 "id": "business-cue-sides",
-                "text": "盈亏平衡点两侧的利润如何变化？",
-                "blockId": "business-table"
+                "title": "安全边际",
+                "text": "销售 120 件时，比平衡销量多 20 件；这 20 件的单位贡献合计为 600 元利润。",
+                "blockId": "business-table",
+                "anchor": "120 件"
               }
             ],
             "blocks": [
@@ -59,8 +63,13 @@
                       "kind": "underline"
                     },
                     {
-                      "text": "固定成本 3000 元",
+                      "text": "单件销售先贡献 30 元覆盖固定成本",
                       "kind": "bold"
+                    },
+                    {
+                      "text": "单件销售先贡献 30 元覆盖固定成本",
+                      "kind": "red",
+                      "color": "#285f9e"
                     },
                     {
                       "text": "超过 100 件后才形成正利润",
@@ -218,6 +227,15 @@
             "title": "Costco：会员制与商品销售",
             "subject": "business",
             "layout": "reading",
+            "cues": [
+              {
+                "id": "business-retention-note",
+                "title": "续费率的口径",
+                "text": "美国与加拿大、全球两个口径覆盖的市场范围不同。比较续费率时，应沿用同一地域口径。",
+                "blockId": "business-case-table",
+                "anchor": "美国/加拿大 92.3%"
+              }
+            ],
             "blocks": [
               {
                 "id": "business-case-facts",
@@ -280,13 +298,17 @@
                       "kind": "underline"
                     },
                     {
-                      "text": "2699.12 亿美元",
+                      "text": "经常性收入",
                       "kind": "bold"
                     },
                     {
-                      "text": "53.23 亿美元",
+                      "text": "经常性收入",
                       "kind": "red",
                       "color": "#285f9e"
+                    },
+                    {
+                      "text": "会员留存",
+                      "kind": "bold"
                     }
                   ]
                 }
@@ -422,7 +444,7 @@
   },
   "assets": [],
   "extensions": {
-    "baseRevision": 3,
+    "baseRevision": 4,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

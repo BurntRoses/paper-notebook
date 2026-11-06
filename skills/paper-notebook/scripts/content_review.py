@@ -31,7 +31,8 @@ def review_content(doc):
         inspect(chapter['title'], chapter['id']+'.title')
         for page in chapter['pages']:
             for key in ['title', 'subtitle', 'summary']:inspect(page.get(key), page['id']+'.'+key)
-            for cue in page.get('cues', []):inspect(cue['text'], cue['id'])
+            for cue in page.get('cues', []):
+                inspect(cue.get('title'), cue['id']+'.title');inspect(cue['text'], cue['id'])
             characters = figures = tables = 0
             for b in page['blocks']:
                 characters += units(block_text(b));figures += b['type'] in ['image','diagram','chart'];tables += b['type']=='comparison'
@@ -57,4 +58,35 @@ def review_content(doc):
     for a in assets:
         if not a['used']:visual_warnings.append(a['assetId']+': 未引用素材，检查是否仍供原图追溯。')
         if a['bytes']>300000:visual_warnings.append(a['assetId']+': 素材超过 300 KB，核对显示尺寸与文字清晰度后压缩。')
-    return dict(advisory=True, automaticRewrite=False, writing=dict(warnings=warnings), visuals=dict(pages=pages,figures=sum(p['figures'] for p in pages),tables=sum(p['tables'] for p in pages),warnings=visual_warnings), assets=assets)
+    return dict(advisory=True, automaticRewrite=False, writing=dict(warnings=warnings), teaching=review_teaching(doc), visuals=dict(pages=pages,figures=sum(p['figures'] for p in pages),tables=sum(p['tables'] for p in pages),warnings=visual_warnings), assets=assets)
+
+
+def review_teaching(doc):
+    warnings, seen, notes, titled = [], set(), 0, 0
+    def compact(text):return re.sub(r'\s', '', text)
+    def warn(rule, location, guidance):warnings.append(dict(rule=rule, location=location, guidance=guidance))
+    for chapter in doc['notebook']['chapters']:
+        for page in chapter['pages']:
+            for cue in page.get('cues', []):
+                notes += 1;titled += bool(cue.get('title'))
+                source = next((b for b in page['blocks'] if b['id']==cue.get('blockId')), None)
+                body = compact(cue['text'])
+                if source is None:warn('margin-source', cue['id'], '将页边讲解关联到本页实际内容块。')
+                elif source['type'] not in ['image','diagram','chart']:
+                    if not cue.get('anchor'):warn('margin-anchor', cue['id'], '为文字注释补充所解释的原句 anchor，使说明随原句对齐和续页。')
+                    if units(body)>=14 and body in compact(block_text(source)):warn('margin-copy', cue['id'], '右栏与正文逐字重复；补充定义含义、短例子、推理依据或省略此条。')
+                if body in seen and body:warn('margin-repeat', cue['id'], '重复的页边说明应就近保留一次。')
+                if not body:warn('margin-empty', cue['id'], '页边注释需要完整的说明内容。')
+                seen.add(body)
+            marks = [m for b in page['blocks'] for m in b.get('study', {}).get('marks', [])]
+            if any(b['type'] in ['prose','concept'] and units(block_text(b))>=40 for b in page['blocks']):
+                if not any(m['kind']=='bold' for m in marks):warn('emphasis-bold', page['id'], '检查本节核心概念及定义的关键关系是否已加粗。')
+                if not any(m['kind']=='red' for m in marks):warn('emphasis-color', page['id'], '为本节最重要的概念、关系或条件选择语义一致的文字颜色。')
+            for block in page['blocks']:
+                used = set()
+                for mark in block.get('study', {}).get('marks', []):
+                    key = (mark['text'], mark['kind'], mark.get('color', ''))
+                    if key in used:warn('emphasis-repeat', block['id'], '同一原句的同类作者标记重复，只需保留一次。')
+                    used.add(key)
+                    if units(mark['text'])>48:warn('emphasis-length', block['id'], '强调范围较长，检查能否收窄到核心概念、关系或决定性条件。')
+    return dict(marginNotes=notes, titledNotes=titled, warnings=warnings)

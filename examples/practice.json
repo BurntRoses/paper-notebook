@@ -110,18 +110,17 @@
             "cues": [
               {
                 "id": "cue-observe",
-                "text": "看见了什么？",
-                "blockId": "plant-intro"
+                "title": "连续记录",
+                "text": "同一角度保留可比较的位置与尺度，具体日期提供时间间隔，便于判断叶片变化的速度。",
+                "blockId": "plant-intro",
+                "anchor": "相同角度的照片和具体日期"
               },
               {
                 "id": "cue-condition",
-                "text": "已知条件",
-                "blockId": "plant-steps"
-              },
-              {
-                "id": "cue-log",
-                "text": "日期与操作",
-                "blockId": "plant-log"
+                "title": "吸水与失水",
+                "text": "叶片蒸腾、根系吸收与盆土含水共同影响植株水分状态。结合这些记录，才能解释同样的叶片下垂。",
+                "blockId": "plant-warn",
+                "anchor": "吸水与失水"
               }
             ]
           },

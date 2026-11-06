@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "showcase-programming",
-    "revision": 4,
+    "revision": 5,
     "title": "Python · 集合与去重",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -27,6 +27,15 @@
             "title": "列表、集合与去重计数",
             "subject": "code",
             "layout": "reading",
+            "cues": [
+              {
+                "id": "code-id-note",
+                "title": "编号与人数",
+                "text": "只有编号与顾客一一对应，编号去重数才等于人数。跨门店编号不一致时，需要先统一映射。",
+                "blockId": "code-limit",
+                "anchor": "统一编号映射"
+              }
+            ],
             "blocks": [
               {
                 "id": "code-question",
@@ -36,15 +45,11 @@
                   "label": "问题与数据",
                   "marks": [
                     {
-                      "text": "不同的顾客编号",
-                      "kind": "circle"
-                    },
-                    {
-                      "text": "不同的顾客编号",
+                      "text": "集合保留不同的值",
                       "kind": "bold"
                     },
                     {
-                      "text": "不同的顾客编号",
+                      "text": "集合保留不同的值",
                       "kind": "red",
                       "color": "#285f9e"
                     }
@@ -127,7 +132,12 @@
                   "marks": [
                     {
                       "text": "稳定的顾客编号",
-                      "kind": "star"
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "稳定的顾客编号",
+                      "kind": "red",
+                      "color": "#b1483d"
                     }
                   ]
                 }
@@ -142,13 +152,17 @@
             "cues": [
               {
                 "id": "code-trace-cue",
-                "text": "第二个 A 到来后，集合怎样变化？",
-                "blockId": "code-trace"
+                "title": "重复元素",
+                "text": "集合依据相等性保留不同元素。已有 A 时再次加入 A，集合仍为 {A}，后续订单不会重复增加人数。",
+                "blockId": "code-state",
+                "anchor": "元素是否相等"
               },
               {
                 "id": "code-empty-cue",
-                "text": "空列表为什么得到 0？",
-                "blockId": "code-tests"
+                "title": "断言测试",
+                "text": "assert 检查实际结果是否符合约定。空输入、重复编号和不同编号分别验证函数的不同输入情形。",
+                "blockId": "code-tests",
+                "anchor": "assert count_customers([]) == 0"
               }
             ],
             "blocks": [
@@ -287,7 +301,7 @@
   },
   "assets": [],
   "extensions": {
-    "baseRevision": 3,
+    "baseRevision": 4,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

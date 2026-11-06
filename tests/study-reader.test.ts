@@ -22,7 +22,7 @@ test('same-range marks toggle, overlapping marks merge, authored dismissals rema
  const part=(a:number,b:number)=>[{pageId:page.id,selector:selection(block.id,text,a,b)}];
  addAnnotation(d,part(0,7),'underline');addAnnotation(d,part(4,12),'underline');assert.equal(d.userState.annotations.length,1);assert.equal(d.userState.annotations[0].selectors[0].exact,text.slice(0,12));
  addAnnotation(d,part(0,12),'underline');assert.equal(d.userState.annotations.length,0);
- const author=authoredAnnotations(d,page.id)[0];addAnnotation(d,author.selectors.map(selector=>({pageId:page.id,selector})),'highlight');assert.ok(d.userState.dismissedStudyMarks?.includes(author.id));assert.equal(d.userState.annotations.length,0);assert.equal(JSON.stringify(d.notebook),source);
+ const author=authoredAnnotations(d,page.id)[0];addAnnotation(d,author.selectors.map(selector=>({pageId:page.id,selector})),author.kind);assert.ok(d.userState.dismissedStudyMarks?.includes(author.id));assert.equal(d.userState.annotations.length,0);assert.equal(JSON.stringify(d.notebook),source);
  const full=readerCopy(d,{marks:true,questions:true,answers:true,legacy:true});assert.deepEqual(parseDocument(full).document.userState.dismissedStudyMarks,d.userState.dismissedStudyMarks);
  const publicCopy=readerCopy(d,{marks:false,questions:false,answers:false,legacy:false});assert.equal(publicCopy.userState.dismissedStudyMarks,undefined);assert.deepEqual(publicCopy.notebook,d.notebook);
 });

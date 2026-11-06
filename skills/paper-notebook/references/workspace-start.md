@@ -9,3 +9,5 @@ Use this route for an agent with local files and command execution. Node is suff
 5. Inspect the generated HTML offline when browser tools are available and provide the actual workspace file path. Keep content/source IDs, user records and selected references intact. File attachment support is not required for this route.
 
 If dependencies or runtime files cannot be acquired, use the preset `responses/download-unavailable.zh-CN.txt` to request the portable ZIP, then continue with the bundled Node CLI. Never build a substitute HTML/CSS/JS reader or call a matching JSON slot proof of visual compatibility. Runtime/schema errors should be fixed at their cause; they are not permission to change the interface.
+
+Before authoring, read [emphasis and margin explanations](emphasis-and-margins.md). Choose core concepts and defining relationships for bold/color text. Write source-anchored margin explanations, examples and reasoning; use questions for context-rich retrieval practice. Review the actual passages, not mark counts alone.

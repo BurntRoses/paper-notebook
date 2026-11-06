@@ -30,7 +30,7 @@ import { figureMarks } from '../ui/figure-marks';
 import { fitPageFigures } from '../ui/figures';
 import { startReaderTour, stopReaderTour } from './tour';
 import { indexForReadingAnchor, indexForBookmark } from './anchors';
-import { authoredAnnotations } from '../model/study';
+import { authoredAnnotations, distinctPassages } from '../model/study';
 import { PaperEditor, readingMarks } from './editor';
 import { flashPassage } from './ink';
 import { readerGeometry } from './geometry';
@@ -206,7 +206,7 @@ class ReaderApp {
       search.oninput=()=>{this.search=search.value;fill()};aside.append(search,list);fill();
     }else if(this.sidebarTab==='highlights'){
       for(const page of pagesOf(this.d)){
-        const marks=[...authoredAnnotations(this.d,page.id),...this.marks.filter(a=>a.pageId===page.id&&a.kind!=='freehand'&&(!a.status||a.status==='resolved'))];if(!marks.length)continue;
+        const marks=distinctPassages([...authoredAnnotations(this.d,page.id),...this.marks.filter(a=>a.pageId===page.id&&a.kind!=='freehand'&&(!a.status||a.status==='resolved'))]);if(!marks.length)continue;
         const section=el('section','key-passages');section.append(el('h2','key-page-title',page.title));
         for(const mark of marks){const text=mark.selectors.map(s=>s.exact).join(' … ');if(!text)continue;const block=page.blocks.find(b=>b.id===mark.selectors[0]?.blockId),card=button(text,()=>mark.selectors[0]?this.goSelector(page.id,mark.selectors[0]):this.goBlock(page.id,block?.id||''),'key-passage');card.dataset.kind=mark.kind;if(block?.study?.aside)card.append(el('small','key-explanation',block.study.aside));section.append(card)}aside.append(section);
       }

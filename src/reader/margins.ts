@@ -24,7 +24,9 @@ export function cuesForSheet(page:SurfacePage,d?:NotebookDocument){
  });
 }
 export function cueNode(cue:Cue){
- const node=document.createElement(cue.blockId?'button':'p');node.className='cornell-cue margin-preset';node.textContent=cue.text;node.dataset.cueId=cue.id;
+ const node=document.createElement(cue.blockId?'button':'p');node.className='cornell-cue margin-preset';node.dataset.cueId=cue.id;
+ if(cue.title){const title=document.createElement('strong');title.className='cue-title';title.textContent=cue.title;node.append(title);}
+ const body=document.createElement('span');body.className='cue-body';body.textContent=cue.text;node.append(body);
  if(node instanceof HTMLButtonElement)node.type='button';
  if(cue.blockId)node.dataset.cueBlock=cue.blockId;if(cue.anchor)node.dataset.cueAnchor=cue.anchor;
  node.title=cue.anchor?'对应原文：'+cue.anchor:'查看对应正文';return node;

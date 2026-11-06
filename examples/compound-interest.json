@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "showcase-compound-interest",
-    "revision": 4,
+    "revision": 5,
     "title": "复利 · 递推与增长",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -37,6 +37,14 @@
               "ruling": "lined",
               "lineHeight": 34
             },
+            "cues": [
+              {
+                "id": "growth-base-note",
+                "title": "利息参与增长",
+                "text": "第一期的 10 元利息在第二期再增长 10%，产生多出的 1 元；图中右下角的小方块对应这笔金额。",
+                "blockId": "intro-area"
+              }
+            ],
             "blocks": [
               {
                 "id": "intro-lead",
@@ -46,7 +54,16 @@
                   "marks": [
                     {
                       "text": "上一期的期末值",
-                      "kind": "highlight"
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "上一期的期末值",
+                      "kind": "red",
+                      "color": "#285f9e"
+                    },
+                    {
+                      "text": "新增利息计入本金",
+                      "kind": "underline"
                     }
                   ]
                 },
@@ -166,18 +183,17 @@
             "cues": [
               {
                 "id": "intro-cue-condition",
-                "text": "为什么乘 1 + r？",
-                "blockId": "intro-native"
+                "title": "增长因子",
+                "text": "1 保留本期金额，r 对应新增部分；1+r 因而表示下一期金额与本期金额的比值。",
+                "blockId": "intro-native",
+                "anchor": "本期的值 × (1 + r)"
               },
               {
                 "id": "intro-cue-formula",
-                "text": "n 次相乘",
-                "blockId": "intro-flow"
-              },
-              {
-                "id": "intro-cue-check",
-                "text": "用小数值核算",
-                "blockId": "intro-anchor"
+                "title": "幂次与期数",
+                "text": "每经过一期，余额乘一次相同的增长因子；连续 n 期就有 n 个因子相乘。",
+                "blockId": "intro-flow",
+                "anchor": "n：期数"
               }
             ],
             "blocks": [
@@ -256,6 +272,15 @@
               "ruling": "lined",
               "lineHeight": 34
             },
+            "cues": [
+              {
+                "id": "growth-period-note",
+                "title": "名义年利率",
+                "text": "若合同约定名义年利率 12%、按月计息，每月使用 1%；一年的有效增长率为 1.01¹²−1，约 12.68%。",
+                "blockId": "intro-paper",
+                "anchor": "同一个周期"
+              }
+            ],
             "blocks": [
               {
                 "id": "intro-paper",
@@ -417,6 +442,15 @@
               "ruling": "lined",
               "lineHeight": 34
             },
+            "cues": [
+              {
+                "id": "growth-deposit-note",
+                "title": "存入时点",
+                "text": "第一期末存入的 50 元少参加一期增长；若在第二期末存入，这笔钱的终值就是 50 元。",
+                "blockId": "intro-first",
+                "anchor": "只参与第二期增长"
+              }
+            ],
             "blocks": [
               {
                 "id": "intro-first",
@@ -532,7 +566,7 @@
     }
   ],
   "extensions": {
-    "baseRevision": 3,
+    "baseRevision": 4,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

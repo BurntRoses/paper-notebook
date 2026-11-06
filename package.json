@@ -33,7 +33,8 @@
     "test:responsive": "node tests/responsive-figures-browser.mjs",
     "test:quality": "node tests/quality-browser.mjs",
     "benchmark:reader": "node tools/benchmark-reader.mjs",
-    "test:iteration": "node tests/site-iteration-browser.mjs && node tests/controls-iteration-browser.mjs && node tests/figure-iteration-browser.mjs && node tests/state-iteration-browser.mjs"
+    "test:iteration": "node tests/site-iteration-browser.mjs && node tests/controls-iteration-browser.mjs && node tests/figure-iteration-browser.mjs && node tests/state-iteration-browser.mjs",
+    "test:content": "node tests/content-quality-browser.mjs"
   },
   "dependencies": {
     "ajv": "^8.17.1",

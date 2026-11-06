@@ -50,7 +50,7 @@
 
 `keepTogether:true` 可用于重要完整块。默认就会将能在新页放下的块完整移到下一页；超高代码、公式、图、例题使用完整滚动框。仅超长正文、列表、表格会分页，表格保留表头。
 
-Markdown 的 `notebook-page` 围栏可在 ### 后指定 {id, layout, subject, cues:[{id,text,blockId,anchor?}], summary}。默认 Cornell，宽图与长推导可选 reading。cues 引用本页实际块；可选 anchor 是正文原句短语，问题随所在片段续页、按原句位置对齐，点击可定位原文。图像问题引用对应图像块。summary 仅在该部分末张纸页显示，写有用结论，不放通用鼓励。
+Markdown 的 `notebook-page` 围栏可在 ### 后指定 {id, layout, subject, cues:[{id,title?,text,blockId,anchor?}], summary}。默认 Cornell，宽图与长推导可选 reading。cues 优先补充定义、短例子、推导理由和图表读法；title 为可选的具体知识标题，text 为完整说明。复习问题应有明确对象、条件与作答依据。cues 引用本页实际块；可选 anchor 是正文原句短语，注释随所在片段续页、按原句位置对齐，点击可定位原文。图像注释引用对应图像块。summary 仅在该部分末张纸页显示，写有用结论，不放通用鼓励。
 
 
 ## 手绘配图与版式 / Figure layout
@@ -81,3 +81,5 @@ Markdown 的 `notebook-page` 围栏可在 ### 后指定 {id, layout, subject, cu
 ```
 
 圈、箭头与文字解释具体位置，保持数据、刻度和原图标签可读。下载阅读器自带图像批注与新手教程，不需外部脚本或网络。
+
+重点选择与右栏讲解规范见 [emphasis-and-margins.md](https://github.com/BurntRoses/paper-notebook/blob/main/skills/paper-notebook/references/emphasis-and-margins.md)。

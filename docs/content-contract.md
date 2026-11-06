@@ -8,7 +8,7 @@
 
 ## 纸页与呈现
 
-Page 常用 `layout: reading | cornell | grid | exam`，`free` 仅用于兼容已生成的固定构图。阅读器正文只读，右栏、底栏便条和图像批注可编辑。Cornell 可带 `cues: [{id,text,blockId?,anchor?}]` 与 `summary`；cue 的 blockId 必须引用同页正文，anchor 是该块正文的原句短语。逻辑纸幅横版 1120×792、竖版 792×1120，等比显示。普通内容自动续页，复用原页面、块 ID 与 UTF-16 文字偏移；图片完整等比显示，其他不可分技术对象放在可滚动视口内。
+Page 常用 `layout: reading | cornell | grid | exam`，`free` 仅用于兼容已生成的固定构图。阅读器正文只读，右栏、底栏便条和图像批注可编辑。Cornell 可带 `cues: [{id,title?,text,blockId?,anchor?}]` 与 `summary`；cue 的 blockId 必须引用同页正文，anchor 是该块正文的原句短语。逻辑纸幅横版 1120×792、竖版 792×1120，等比显示。普通内容自动续页，复用原页面、块 ID 与 UTF-16 文字偏移；图片完整等比显示，其他不可分技术对象放在可滚动视口内。
 
 `paper: {ruling: lined|grid|dots|blank, lineHeight}` 控制底纹与行距；默认横线。`Page.subject` 可为 `general|stem|literature|business|code`，只影响合适的视觉细节，不改变内容语义。Block 默认应通过 `study.marks` 同时提供关键概念加粗（`kind: bold`）、短语变色（`kind: red, color: "#285f9e"`）与恰当的圈点；原生文字样式与彩色笔画分别记录。Block 可带 `study: {visual: plain|blackboard|extract|sketch, label?, aside?, tone?, marks[]}`；黑板适合公式或关键结论，摘录适合定义和引文，手绘草图适合小型关系图，文字仍可选择和导出。`placements[landscape|portrait][blockId]` 保存作者排版；`userState.layouts[pageId][shape][blockId]` 保存个人调整并优先显示。对象 frame 为 `{x,y,width,height?,z,sheet?}`，坐标使用逻辑纸幅像素。正文布局和纸张底纹分别设置。
 
@@ -51,7 +51,7 @@ Node validate/build 和 Python build 均输出 `contentReview`（advisory、auto
 
 阅读版式 `readerProfile.marginNotes` 与 `readerProfile.bottomNotes` 分别控制纸页内部右栏和底栏；横竖纸张与屏幕方向独立，双页在横屏并排、竖屏上下排列。自动纸幅按每页实际可用空间计算比例，双页共用 12px 页缝；显式 portrait/landscape 保持固定纸张比例。每个原始 Page 的首张纸页显示大标题，续页仅保留紧凑页眉。
 
-Cornell 不再有左侧纸栏；cues 支持可选 `anchor`，须是所引用 block 正文的原句短语。带 anchor 的问题随对应原文片段进入右栏，并对齐该行；不带 anchor 时随块的首个片段出现。点击问题定位并短暂标出对应原文。summary 仅在原始 Page 的末张纸页显示一次，相同 summary 不重复。个人便条可含 `region: right | bottom`、`marginPosition: 0..1`，默认右栏；material 新增 transparent，表示无底色。旧便条仍可读取。便条与预置线索共用流式布局，按原文位置排列，个人便条可将后续内容向下推开，长便条支持折叠。
+右栏 `cues` 以定义、示例、推理依据等完整讲解为主；可选 `title` 显示短标题，`text` 保持纯文本，旧的仅 text 格式继续兼容。Cornell 不再有左侧纸栏；cues 支持可选 `anchor`，须是所引用 block 正文的原句短语。带 anchor 的注释随对应原文片段进入右栏，并对齐该行；不带 anchor 时随块的首个片段出现。点击注释定位并短暂标出对应原文。summary 仅在原始 Page 的末张纸页显示一次，相同 summary 不重复。个人便条可含 `region: right | bottom`、`marginPosition: 0..1`，默认右栏；material 新增 transparent，表示无底色。旧便条仍可读取。便条与预置线索共用流式布局，按原文位置排列，个人便条可将后续内容向下推开，长便条支持折叠。
 
 正文 prose/concept 与 callout 的空行分隔会渲染为独立段落，保留 UTF-16 原文偏移。callout 使用淡纸色底、手绘铅笔边线与轻排线，标题说明具体条件或提醒；普通解释维持连续段落。装饰在独立 SVG 中绘制，不改变文字坐标和技术图数据。页面缩减无用留白，长公式可按完整符号说明利用当前页剩余空间；行距保持 2.05。
 

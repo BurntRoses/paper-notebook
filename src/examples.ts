@@ -50,16 +50,19 @@ export const practiceExample=make('notebook-observe-plant','给窗边的植物�
   {id:'plant-reflect',type:'exercise',questionType:'subjective',question:'为你身边的一盆植物写一条记录。',explanation:'参考要点：包含日期、具体观察、已知条件；将原因判断写成待核实的假设。',points:0}]}],['用可比较的方式记录观察','区分观察与原因解释']);
 export const examples=[conceptExample,formulaExample,practiceExample];
 
-conceptExample.notebook.chapters[0].pages[1].cues=[{id:'cue-grain',text:'这次统计订单，还是顾客？',blockId:'obs-steps',anchor:'本次统计已付款订单及对应的顾客人数'},{id:'cue-range',text:'哪些订单属于本次范围？',blockId:'obs-steps',anchor:'只看本月、已付款、未退款的订单'},{id:'cue-count',text:'再增加一笔 A 的订单，顾客数变吗？',blockId:'obs-example',anchor:'顾客数仍然是 3'}];
-practiceExample.notebook.chapters[0].pages[0].cues=[{id:'cue-observe',text:'看见了什么？',blockId:'plant-intro'},{id:'cue-condition',text:'已知条件',blockId:'plant-steps'},{id:'cue-log',text:'日期与操作',blockId:'plant-log'}];
+conceptExample.notebook.chapters[0].pages[0].cues=[{"id": "obs-denominator-note", "title": "分母与指标", "text": "同一笔 145 元销售额，除以订单数得到每单金额，除以人数得到每位顾客的购买额。分母改变，指标回答的问题也随之改变。", "blockId": "obs-key", "anchor": "分母决定指标含义"}];
+conceptExample.notebook.chapters[0].pages[1].cues=[{"id": "cue-grain", "title": "购买频次", "text": "订单数除以去重人数，得到每位顾客的平均订单数。五笔订单、三位顾客，对应约 1.67 笔/人。", "blockId": "obs-example", "anchor": "订单数 5，顾客数 3"}, {"id": "cue-range", "title": "筛选顺序", "text": "先筛选本月已付款、未退款的记录，再对其中的顾客编号去重，才能得到这组条件下的人数。", "blockId": "obs-steps", "anchor": "只看本月、已付款、未退款的订单"}];
+conceptExample.notebook.chapters[0].pages[2].cues=[{"id": "obs-union-note", "title": "重复计数", "text": "同时在两座城市购买的顾客，在两份名单中各出现一次；相加后减去交集人数，就能使每人只计一次。", "blockId": "obs-formula", "anchor": "交集"}];
+practiceExample.notebook.chapters[0].pages[0].cues=[{"id": "cue-observe", "title": "连续记录", "text": "同一角度保留可比较的位置与尺度，具体日期提供时间间隔，便于判断叶片变化的速度。", "blockId": "plant-intro", "anchor": "相同角度的照片和具体日期"}, {"id": "cue-condition", "title": "吸水与失水", "text": "叶片蒸腾、根系吸收与盆土含水共同影响植株水分状态。结合这些记录，才能解释同样的叶片下垂。", "blockId": "plant-warn", "anchor": "吸水与失水"}];
 conceptExample.notebook.sources.push({id:'postgres-count',title:'PostgreSQL · Aggregate Functions',url:'https://www.postgresql.org/docs/current/functions-aggregate.html'});
 conceptExample.notebook.chapters[0].pages[2].blocks.find(b=>b.id==='obs-sql')!.sourceRefs=[{sourceId:'postgres-count',locator:'count(*) 与 count(DISTINCT expression)'}];
 for(const d of examples)d.extensions.readerProfile={layout:'auto',direction:'horizontal',sidebar:'collapsed',pageShape:'auto',transition:'cover',theme:'paper-light',motion:'full'};
 
 const emphasis:Record<string,StudyPresentation['marks']>={
- 'obs-concept':[{text:'统计粒度',kind:'circle'},{text:'统计粒度',kind:'bold'},{text:'统计粒度',kind:'red',color:'#285f9e'}],
- 'obs-key':[{text:'订单数是 3，顾客数是 1',kind:'check'}],
- 'obs-steps':[{text:'只看本月、已付款、未退款的订单',kind:'underline'}],
+ 'obs-concept':[{text:'统计粒度',kind:'circle'},{text:'统计粒度',kind:'bold'},{text:'统计粒度',kind:'red',color:'#285f9e'},{text:'每条记录代表的对象',kind:'underline'}],
+ 'obs-key':[{text:'分母决定指标含义',kind:'bold'},{text:'分母决定指标含义',kind:'red',color:'#285f9e'}],
+ 'obs-steps':[{text:'本月、已付款、未退款',kind:'bold'},{text:'本月、已付款、未退款',kind:'red',color:'#b1483d'}],
+ 'obs-overlap':[{text:'合并的是名单，去重之后才是全体人数',kind:'bold'},{text:'合并的是名单，去重之后才是全体人数',kind:'red',color:'#285f9e'}],
  'obs-formula':[{text:'减去一次',kind:'dots'},{text:'交集',kind:'bold'},{text:'交集',kind:'red',color:'#285f9e'}],
  'growth-intro':[{text:'增长的基础',kind:'circle'},{text:'增长的基础',kind:'bold'},{text:'增长的基础',kind:'red',color:'#285f9e'}],
  'growth-eq':[{text:'每一期的增长率相同',kind:'dots'}],
@@ -78,4 +81,4 @@ for(const document of examples){
 
 for(const example of examples)example.userState.updatedAt='2026-11-01T00:00:00.000Z';
 
-conceptExample.notebook.revision=7;conceptExample.extensions.baseRevision=6;
+conceptExample.notebook.revision=8;conceptExample.extensions.baseRevision=7;

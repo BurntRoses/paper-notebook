@@ -1,5 +1,6 @@
 import rules from '../../skills/paper-notebook/references/writing-rules.json';
 import { textOf, type NotebookDocument } from './types';
+import { reviewTeaching } from './teaching-review';
 export interface WritingWarning {rule:string;location:string;at:number;phrase:string;context:string;guidance:string}
 /** Advisory only. Never edit source, quotations, technical literals or personal records. */
 export function reviewContent(d:NotebookDocument){
@@ -13,7 +14,7 @@ export function reviewContent(d:NotebookDocument){
  const pages:{pageId:string;characters:number;figures:number;tables:number}[]=[];
  for(const chapter of d.notebook.chapters){inspect(chapter.title,chapter.id+'.title');for(const page of chapter.pages){
   for(const key of ['title','subtitle','summary'] as const)inspect(page[key],page.id+'.'+key);
-  page.cues?.forEach(c=>inspect(c.text,c.id));
+  page.cues?.forEach(c=>{inspect(c.title,c.id+'.title');inspect(c.text,c.id);});
   let characters=0,figures=0,tables=0;
   for(const b of page.blocks){
    characters+=textOf(b).length;if(['image','diagram','chart'].includes(b.type))figures++;if(b.type==='comparison')tables++;
@@ -33,5 +34,5 @@ export function reviewContent(d:NotebookDocument){
  const visualWarnings:string[]=[];
  if(pages.some((p,i)=>i>0&&p.characters>=300&&pages[i-1].characters>=300&&!p.figures&&!pages[i-1].figures))visualWarnings.push('连续讲解缺少实际配图；按关系、空间、数值等教学需要增加图解。表格单独计数。');
  for(const a of assets){if(!a.used)visualWarnings.push(`${a.assetId}: 未引用素材，检查是否仍供原图追溯。`);if(a.bytes>300000)visualWarnings.push(`${a.assetId}: 素材超过 300 KB，核对显示尺寸与文字清晰度后压缩。`);}
- return {advisory:true,automaticRewrite:false,writing:{warnings},visuals:{pages,figures:pages.reduce((s,p)=>s+p.figures,0),tables:pages.reduce((s,p)=>s+p.tables,0),warnings:visualWarnings},assets};
+ return {advisory:true,automaticRewrite:false,writing:{warnings},teaching:reviewTeaching(d),visuals:{pages,figures:pages.reduce((s,p)=>s+p.figures,0),tables:pages.reduce((s,p)=>s+p.tables,0),warnings:visualWarnings},assets};
 }

@@ -147,6 +147,11 @@
                             "type": "string",
                             "minLength": 1,
                             "description": "Exact source phrase in the referenced block; the cue follows its fragment and line."
+                          },
+                          "title": {
+                            "type": "string",
+                            "minLength": 1,
+                            "description": "Optional concrete title for an explanatory margin note; text contains its complete explanation."
                           }
                         }
                       }

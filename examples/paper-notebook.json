@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "paper-notebook-introduction",
-    "revision": 12,
+    "revision": 13,
     "title": "复利 · 从递推到通式",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -55,6 +55,14 @@
               "ruling": "lined",
               "lineHeight": 34
             },
+            "cues": [
+              {
+                "id": "growth-base-note",
+                "title": "利息参与增长",
+                "text": "第一期的 10 元利息在第二期再增长 10%，产生多出的 1 元；图中右下角的小方块对应这笔金额。",
+                "blockId": "intro-area"
+              }
+            ],
             "blocks": [
               {
                 "id": "intro-lead",
@@ -64,7 +72,16 @@
                   "marks": [
                     {
                       "text": "上一期的期末值",
-                      "kind": "highlight"
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "上一期的期末值",
+                      "kind": "red",
+                      "color": "#285f9e"
+                    },
+                    {
+                      "text": "新增利息计入本金",
+                      "kind": "underline"
                     }
                   ]
                 },
@@ -166,18 +183,17 @@
             "cues": [
               {
                 "id": "intro-cue-condition",
-                "text": "为什么乘 1 + r？",
-                "blockId": "intro-native"
+                "title": "增长因子",
+                "text": "1 保留本期金额，r 对应新增部分；1+r 因而表示下一期金额与本期金额的比值。",
+                "blockId": "intro-native",
+                "anchor": "本期的值 × (1 + r)"
               },
               {
                 "id": "intro-cue-formula",
-                "text": "n 次相乘",
-                "blockId": "intro-flow"
-              },
-              {
-                "id": "intro-cue-check",
-                "text": "用小数值核算",
-                "blockId": "intro-anchor"
+                "title": "幂次与期数",
+                "text": "每经过一期，余额乘一次相同的增长因子；连续 n 期就有 n 个因子相乘。",
+                "blockId": "intro-flow",
+                "anchor": "n：期数"
               }
             ],
             "blocks": [
@@ -256,6 +272,15 @@
               "ruling": "lined",
               "lineHeight": 34
             },
+            "cues": [
+              {
+                "id": "growth-period-note",
+                "title": "名义年利率",
+                "text": "若合同约定名义年利率 12%、按月计息，每月使用 1%；一年的有效增长率为 1.01¹²−1，约 12.68%。",
+                "blockId": "intro-paper",
+                "anchor": "同一个周期"
+              }
+            ],
             "blocks": [
               {
                 "id": "intro-paper",
@@ -417,6 +442,15 @@
               "ruling": "lined",
               "lineHeight": 34
             },
+            "cues": [
+              {
+                "id": "growth-deposit-note",
+                "title": "存入时点",
+                "text": "第一期末存入的 50 元少参加一期增长；若在第二期末存入，这笔钱的终值就是 50 元。",
+                "blockId": "intro-first",
+                "anchor": "只参与第二期增长"
+              }
+            ],
             "blocks": [
               {
                 "id": "intro-first",
@@ -495,6 +529,15 @@
             "title": "《春望》：国破与春景",
             "subject": "literature",
             "layout": "reading",
+            "cues": [
+              {
+                "id": "literature-word-note",
+                "title": "“深”的作用",
+                "text": "草木蔓生写出城中荒芜，与“城春”的时令相接，使春景带上战乱后的凋残。",
+                "blockId": "literature-detail",
+                "anchor": "草木蔓生"
+              }
+            ],
             "blocks": [
               {
                 "id": "literature-quote",
@@ -616,12 +659,15 @@
             "cues": [
               {
                 "id": "literature-context-cue",
-                "text": "诗作于怎样的处境？",
-                "blockId": "literature-context"
+                "title": "“望”的处境",
+                "text": "诗人身在沦陷的长安，家人远隔。“感时”与“恨别”由这两重处境展开。",
+                "blockId": "literature-context",
+                "anchor": "与家人音信隔绝"
               },
               {
                 "id": "literature-structure-cue",
-                "text": "全诗怎样由景入情？",
+                "title": "视线的收束",
+                "text": "由都城、花鸟转向家书与白发，观察范围逐渐缩小，家国之忧最终落到诗人自身。",
                 "blockId": "literature-structure"
               }
             ],
@@ -752,6 +798,15 @@
             "title": "花鸟、家书与白发",
             "subject": "literature",
             "layout": "reading",
+            "cues": [
+              {
+                "id": "literature-rhetoric-note",
+                "title": "对仗中的家国",
+                "text": "“烽火”与“家书”相对，战事的延续与音信的珍贵相互映衬，连结忧国和思家。",
+                "blockId": "literature-rhetoric-analysis",
+                "anchor": "对仗将国事与家事并列"
+              }
+            ],
             "blocks": [
               {
                 "id": "literature-rhetoric-quote",
@@ -784,8 +839,13 @@
                 "study": {
                   "marks": [
                     {
-                      "text": "花与鸟本是春日常见的景物",
+                      "text": "乐景反衬",
                       "kind": "bold"
+                    },
+                    {
+                      "text": "乐景反衬",
+                      "kind": "red",
+                      "color": "#285f9e"
                     },
                     {
                       "text": "反衬出战乱中的忧惧",
@@ -831,13 +891,17 @@
             "cues": [
               {
                 "id": "business-cue-model",
-                "text": "单位贡献怎样覆盖固定成本？",
-                "blockId": "business-formula"
+                "title": "单位贡献",
+                "text": "单价扣除单位变动成本后，每件留下 30 元覆盖固定成本；达到平衡后，每增售一件，利润增加 30 元。",
+                "blockId": "business-formula",
+                "anchor": "单位贡献为 30 元"
               },
               {
                 "id": "business-cue-sides",
-                "text": "盈亏平衡点两侧的利润如何变化？",
-                "blockId": "business-table"
+                "title": "安全边际",
+                "text": "销售 120 件时，比平衡销量多 20 件；这 20 件的单位贡献合计为 600 元利润。",
+                "blockId": "business-table",
+                "anchor": "120 件"
               }
             ],
             "blocks": [
@@ -853,8 +917,13 @@
                       "kind": "underline"
                     },
                     {
-                      "text": "固定成本 3000 元",
+                      "text": "单件销售先贡献 30 元覆盖固定成本",
                       "kind": "bold"
+                    },
+                    {
+                      "text": "单件销售先贡献 30 元覆盖固定成本",
+                      "kind": "red",
+                      "color": "#285f9e"
                     },
                     {
                       "text": "超过 100 件后才形成正利润",
@@ -922,6 +991,15 @@
             "title": "Costco：会员制与商品销售",
             "subject": "business",
             "layout": "reading",
+            "cues": [
+              {
+                "id": "business-retention-note",
+                "title": "续费率的口径",
+                "text": "美国与加拿大、全球两个口径覆盖的市场范围不同。比较续费率时，应沿用同一地域口径。",
+                "blockId": "business-case-table",
+                "anchor": "美国/加拿大 92.3%"
+              }
+            ],
             "blocks": [
               {
                 "id": "business-case-facts",
@@ -984,13 +1062,17 @@
                       "kind": "underline"
                     },
                     {
-                      "text": "2699.12 亿美元",
+                      "text": "经常性收入",
                       "kind": "bold"
                     },
                     {
-                      "text": "53.23 亿美元",
+                      "text": "经常性收入",
                       "kind": "red",
                       "color": "#285f9e"
+                    },
+                    {
+                      "text": "会员留存",
+                      "kind": "bold"
                     }
                   ]
                 }
@@ -1095,6 +1177,15 @@
             "title": "列表、集合与去重计数",
             "subject": "code",
             "layout": "reading",
+            "cues": [
+              {
+                "id": "code-id-note",
+                "title": "编号与人数",
+                "text": "只有编号与顾客一一对应，编号去重数才等于人数。跨门店编号不一致时，需要先统一映射。",
+                "blockId": "code-limit",
+                "anchor": "统一编号映射"
+              }
+            ],
             "blocks": [
               {
                 "id": "code-question",
@@ -1104,15 +1195,11 @@
                   "label": "问题与数据",
                   "marks": [
                     {
-                      "text": "不同的顾客编号",
-                      "kind": "circle"
-                    },
-                    {
-                      "text": "不同的顾客编号",
+                      "text": "集合保留不同的值",
                       "kind": "bold"
                     },
                     {
-                      "text": "不同的顾客编号",
+                      "text": "集合保留不同的值",
                       "kind": "red",
                       "color": "#285f9e"
                     }
@@ -1186,7 +1273,12 @@
                   "marks": [
                     {
                       "text": "稳定的顾客编号",
-                      "kind": "star"
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "稳定的顾客编号",
+                      "kind": "red",
+                      "color": "#b1483d"
                     }
                   ]
                 }
@@ -1201,13 +1293,17 @@
             "cues": [
               {
                 "id": "code-trace-cue",
-                "text": "第二个 A 到来后，集合怎样变化？",
-                "blockId": "code-trace"
+                "title": "重复元素",
+                "text": "集合依据相等性保留不同元素。已有 A 时再次加入 A，集合仍为 {A}，后续订单不会重复增加人数。",
+                "blockId": "code-state",
+                "anchor": "元素是否相等"
               },
               {
                 "id": "code-empty-cue",
-                "text": "空列表为什么得到 0？",
-                "blockId": "code-tests"
+                "title": "断言测试",
+                "text": "assert 检查实际结果是否符合约定。空输入、重复编号和不同编号分别验证函数的不同输入情形。",
+                "blockId": "code-tests",
+                "anchor": "assert count_customers([]) == 0"
               }
             ],
             "blocks": [
@@ -1358,7 +1454,7 @@
     }
   ],
   "extensions": {
-    "baseRevision": 11,
+    "baseRevision": 12,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

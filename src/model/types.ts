@@ -25,7 +25,7 @@ export type PaperShape='landscape'|'portrait';
 export interface ObjectFrame {x:number;y:number;width:number;height?:number;z:number;sheet?:number}
 export interface PaperSettings {ruling?:'lined'|'grid'|'dots'|'blank';lineHeight?:number}
 export type PagePlacements=Partial<Record<PaperShape,Record<string,ObjectFrame>>>;
-export interface Page { id: string; title: string; subtitle?: string; subject?:'general'|'stem'|'literature'|'business'|'code'; layout?: 'reading'|'cornell'|'grid'|'exam'|'free'; paper?:PaperSettings; placements?:PagePlacements; blocks: Block[]; cues?: {id:string;text:string;blockId?:string;anchor?:string}[]; summary?:string }
+export interface Page { id: string; title: string; subtitle?: string; subject?:'general'|'stem'|'literature'|'business'|'code'; layout?: 'reading'|'cornell'|'grid'|'exam'|'free'; paper?:PaperSettings; placements?:PagePlacements; blocks: Block[]; cues?: {id:string;title?:string;text:string;blockId?:string;anchor?:string}[]; summary?:string }
 export interface Chapter { id: string; title: string; pages: Page[] }
 export interface Source { id: string; title: string; url?: string; locator?: string; status?: string }
 export interface Asset { id: string; name: string; data: string; mime: string; source?: string; license?: string; originalAssetId?: string; verified?: boolean; width?:number; height?:number }

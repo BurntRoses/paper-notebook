@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "notebook-ml-foundations",
-    "revision": 9,
+    "revision": 10,
     "title": "机器学习入门：从样本到泛化",
     "language": "zh-CN",
     "goals": [
@@ -54,16 +54,7 @@
                       "color": "#285f9e"
                     },
                     {
-                      "text": "建立损失函数",
-                      "kind": "red",
-                      "color": "#b1483d"
-                    },
-                    {
-                      "text": "手算一次更新",
-                      "kind": "check"
-                    },
-                    {
-                      "text": "教学数据",
+                      "text": "选择斜率与截距",
                       "kind": "underline"
                     }
                   ]
@@ -120,10 +111,6 @@
                   "marks": [
                     {
                       "text": "模型参数",
-                      "kind": "circle"
-                    },
-                    {
-                      "text": "模型参数",
                       "kind": "bold"
                     },
                     {
@@ -134,6 +121,10 @@
                     {
                       "text": "独立检验",
                       "kind": "underline"
+                    },
+                    {
+                      "text": "模型参数",
+                      "kind": "circle"
                     }
                   ]
                 }
@@ -142,7 +133,8 @@
             "cues": [
               {
                 "id": "ml-task-cue-0",
-                "text": "训练时选择的是哪些量？",
+                "title": "参数与特征",
+                "text": "房价模型中的面积随房屋改变；斜率与截距由样本共同确定，再用于新房屋的预测。",
                 "blockId": "ml-learning",
                 "anchor": "选择模型参数"
               }
@@ -163,34 +155,35 @@
                   "role": "definition",
                   "marks": [
                     {
-                      "text": "预测时可获得",
-                      "kind": "dots"
-                    },
-                    {
-                      "text": "预测时可获得",
+                      "text": "特征 x",
                       "kind": "bold"
                     },
                     {
-                      "text": "预测时可获得",
+                      "text": "特征 x",
                       "kind": "red",
                       "color": "#285f9e"
                     },
                     {
-                      "text": "样本",
-                      "kind": "circle"
-                    },
-                    {
-                      "text": "特征 x",
+                      "text": "标签 y",
                       "kind": "bold"
                     },
                     {
                       "text": "标签 y",
                       "kind": "red",
-                      "color": "#b1483d"
+                      "color": "#285f9e"
                     },
                     {
                       "text": "定义、单位和采集时点必须稳定",
-                      "kind": "underline"
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "定义、单位和采集时点必须稳定",
+                      "kind": "red",
+                      "color": "#b1483d"
+                    },
+                    {
+                      "text": "特征 x",
+                      "kind": "circle"
                     }
                   ]
                 }
@@ -238,12 +231,22 @@
                 "study": {
                   "marks": [
                     {
-                      "text": "信息泄漏",
-                      "kind": "circle"
+                      "text": "预测时点",
+                      "kind": "bold"
                     },
                     {
-                      "text": "预测时点决定",
-                      "kind": "underline"
+                      "text": "预测时点",
+                      "kind": "red",
+                      "color": "#b1483d"
+                    },
+                    {
+                      "text": "信息泄漏",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "信息泄漏",
+                      "kind": "red",
+                      "color": "#285f9e"
                     }
                   ]
                 }
@@ -261,15 +264,17 @@
             "cues": [
               {
                 "id": "ml-vocabulary-cue-0",
-                "text": "x 与 y 分别记录什么？",
+                "title": "特征向量",
+                "text": "面积、楼龄同时作为输入时，x 由一个数扩展为一组数；每个分量对应一种已定义的特征。",
                 "blockId": "ml-observation",
-                "anchor": "特征 x 是预测时可获得的输入"
+                "anchor": "多个特征组成向量"
               },
               {
                 "id": "ml-vocabulary-cue-1",
-                "text": "哪些信息在预测时还拿不到？",
+                "title": "信息泄漏",
+                "text": "评估应模拟真实预测时点。把未来才产生的信息作为输入，会使评估分数高估实际预测能力。",
                 "blockId": "ml-feature-boundary",
-                "anchor": "预测时点决定"
+                "anchor": "信息泄漏"
               }
             ]
           },
@@ -322,7 +327,12 @@
                   "marks": [
                     {
                       "text": "监督学习",
-                      "kind": "circle"
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "监督学习",
+                      "kind": "red",
+                      "color": "#285f9e"
                     },
                     {
                       "text": "距离的定义与特征尺度",
@@ -340,17 +350,13 @@
                   "role": "definition",
                   "marks": [
                     {
-                      "text": "评价方式和误判代价",
-                      "kind": "underline"
-                    },
-                    {
-                      "text": "评价方式和误判代价",
+                      "text": "误判代价",
                       "kind": "bold"
                     },
                     {
-                      "text": "评价方式和误判代价",
+                      "text": "误判代价",
                       "kind": "red",
-                      "color": "#b1483d"
+                      "color": "#285f9e"
                     }
                   ]
                 }
@@ -359,15 +365,17 @@
             "cues": [
               {
                 "id": "ml-map-cue-0",
-                "text": "回归与分类的输出有何区别？",
+                "title": "输出与目标",
+                "text": "耗电量有连续的数值尺度；故障类别是离散结果。任务目标决定模型输出需要表达的量。",
                 "blockId": "ml-task-types",
                 "anchor": "连续值，如下一小时耗电量"
               },
               {
                 "id": "ml-map-cue-1",
-                "text": "选择模型前要明确哪些条件？",
+                "title": "误判代价",
+                "text": "漏报故障会延误检修，误报会增加检查成本。分类阈值的选择要结合这两类后果。",
                 "blockId": "ml-model-choice",
-                "anchor": "预测对象、可用特征、评价方式和误判代价"
+                "anchor": "漏报故障的代价"
               }
             ]
           }
@@ -416,15 +424,29 @@
                   "visual": "blackboard",
                   "marks": [
                     {
-                      "text": "固定 w、b",
-                      "kind": "underline"
-                    },
-                    {
-                      "text": "固定 w、b",
+                      "text": "预测随 x 等速变化",
                       "kind": "bold"
                     },
                     {
-                      "text": "固定 w、b",
+                      "text": "预测随 x 等速变化",
+                      "kind": "red",
+                      "color": "#285f9e"
+                    },
+                    {
+                      "text": "斜率参数",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "斜率参数",
+                      "kind": "red",
+                      "color": "#285f9e"
+                    },
+                    {
+                      "text": "截距参数",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "截距参数",
                       "kind": "red",
                       "color": "#285f9e"
                     }
@@ -456,15 +478,17 @@
             "cues": [
               {
                 "id": "ml-model-cue-0",
-                "text": "w 增大 1，直线的斜率有何变化？",
+                "title": "斜率的含义",
+                "text": "若面积以平方米计、房价以万元计，w 表示每增加一平方米时预测价格增加的万元数。",
                 "blockId": "ml-linear",
                 "anchor": "输入每增加 1，预测增加 w"
               },
               {
                 "id": "ml-model-cue-1",
-                "text": "只增大 b，直线移向哪里？",
+                "title": "截距与取值范围",
+                "text": "b 是 x=0 时的预测；若零点远离已有样本，其数值主要用于确定直线位置。",
                 "blockId": "ml-linear",
-                "anchor": "只增大 b 会使整条直线向上平移"
+                "anchor": "输入为 0 时的预测"
               }
             ]
           },
@@ -629,20 +653,16 @@
                   "marks": [
                     {
                       "text": "固定另一个参数",
-                      "kind": "check"
+                      "kind": "underline"
                     },
                     {
-                      "text": "固定另一个参数",
+                      "text": "平均平方误差最小",
                       "kind": "bold"
                     },
                     {
-                      "text": "固定另一个参数",
+                      "text": "平均平方误差最小",
                       "kind": "red",
-                      "color": "#b1483d"
-                    },
-                    {
-                      "text": "固定另一个参数",
-                      "kind": "underline"
+                      "color": "#285f9e"
                     }
                   ]
                 }
@@ -661,12 +681,14 @@
             "cues": [
               {
                 "id": "ml-parameters-cue-0",
-                "text": "哪条线与基准线平行？",
+                "title": "控制变量",
+                "text": "只改一个参数，可以把预测变化归因于该参数。图中改斜率与改截距分别形成转动和平移。",
                 "blockId": "ml-parameter-chart"
               },
               {
                 "id": "ml-parameters-cue-1",
-                "text": "输入 2 后依次做哪两步运算？",
+                "title": "输入与输出",
+                "text": "x=2 对应坐标图的横坐标；计算得到的 3 对应基准线在该处的纵坐标。",
                 "blockId": "ml-function-path"
               }
             ]
@@ -803,22 +825,26 @@
                 "study": {
                   "marks": [
                     {
-                      "text": "预测减标签",
-                      "kind": "circle"
-                    },
-                    {
-                      "text": "预测减标签",
+                      "text": "e=ŷ−y",
                       "kind": "bold"
                     },
                     {
-                      "text": "预测减标签",
+                      "text": "e=ŷ−y",
                       "kind": "red",
                       "color": "#285f9e"
                     },
                     {
-                      "text": "预测减标签",
+                      "text": "负号表示低估",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "负号表示低估",
                       "kind": "red",
-                      "color": "#285f9e"
+                      "color": "#b1483d"
+                    },
+                    {
+                      "text": "平方误差不受这一符号选择影响",
+                      "kind": "underline"
                     }
                   ]
                 }
@@ -827,13 +853,15 @@
             "cues": [
               {
                 "id": "ml-visual-cue-0",
-                "text": "交换相减顺序后，哪些量会变？",
+                "title": "误差方向",
+                "text": "采用 e=ŷ−y 时，负误差表示低估；换成 y−ŷ 后符号反转，偏离幅度和平方损失保持相同。",
                 "blockId": "ml-residual-explain",
-                "anchor": "平方误差不受这一符号选择影响"
+                "anchor": "误差保留方向"
               },
               {
                 "id": "ml-visual-cue-1",
-                "text": "B 点的预测比标签低多少？",
+                "title": "纵向距离",
+                "text": "固定同一个 x，比较模型输出与标签的纵坐标。图中向下的箭头表示预测比真实值低 1。",
                 "blockId": "ml-residual-detail"
               }
             ]
@@ -853,17 +881,30 @@
                   "role": "definition",
                   "marks": [
                     {
-                      "text": "先对每个误差平方，再取平均",
-                      "kind": "dots"
-                    },
-                    {
-                      "text": "先对每个误差平方，再取平均",
+                      "text": "均方误差",
                       "kind": "bold"
                     },
                     {
-                      "text": "先对每个误差平方，再取平均",
+                      "text": "均方误差",
                       "kind": "red",
                       "color": "#285f9e"
+                    },
+                    {
+                      "text": "先对每个误差平方，再取平均",
+                      "kind": "underline"
+                    },
+                    {
+                      "text": "选择参数的目标函数",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "选择参数的目标函数",
+                      "kind": "red",
+                      "color": "#285f9e"
+                    },
+                    {
+                      "text": "均方误差",
+                      "kind": "circle"
                     }
                   ]
                 }
@@ -880,11 +921,11 @@
                   "tone": "gold",
                   "marks": [
                     {
-                      "text": "较大误差",
+                      "text": "较大误差对目标函数贡献更大",
                       "kind": "bold"
                     },
                     {
-                      "text": "异常值",
+                      "text": "较大误差对目标函数贡献更大",
                       "kind": "red",
                       "color": "#b1483d"
                     }
@@ -962,21 +1003,24 @@
             "cues": [
               {
                 "id": "ml-loss-cue-0",
-                "text": "MSE 对每个误差做哪些运算？",
+                "title": "平方惩罚",
+                "text": "误差幅度扩大到 3 倍，平方项扩大到 9 倍，因此少量大误差会显著影响拟合目标。",
                 "blockId": "ml-loss-definition",
-                "anchor": "先对每个误差平方，再取平均"
+                "anchor": "平方使正负误差都贡献非负数"
               },
               {
                 "id": "ml-loss-cue-1",
-                "text": "0.667 对应哪批数据？",
+                "title": "损失的尺度",
+                "text": "将所有标签与预测同时放大 k 倍，MSE 放大 k² 倍；跨数据比较损失时要核对量纲与尺度。",
                 "blockId": "ml-loss-example",
                 "anchor": "J=2/3≈0.667"
               },
               {
                 "id": "ml-loss-cue-2",
-                "text": "误差从1增至3，平方误差增至多少？",
+                "title": "异常值的影响",
+                "text": "录入错误造成的大偏差也会被平方放大。核查这些记录，有助于判断它们应如何参与拟合。",
                 "blockId": "ml-loss-outliers",
-                "anchor": "平方误差从1增至9"
+                "anchor": "标签录入错误"
               }
             ]
           }
@@ -1000,10 +1044,6 @@
                   "marks": [
                     {
                       "text": "将截距固定为 0",
-                      "kind": "underline"
-                    },
-                    {
-                      "text": "将截距固定为 0",
                       "kind": "bold"
                     },
                     {
@@ -1013,11 +1053,12 @@
                     },
                     {
                       "text": "只学习斜率 w",
-                      "kind": "circle"
+                      "kind": "bold"
                     },
                     {
-                      "text": "w=2 能恰好穿过两点",
-                      "kind": "check"
+                      "text": "只学习斜率 w",
+                      "kind": "red",
+                      "color": "#285f9e"
                     }
                   ]
                 }
@@ -1042,7 +1083,27 @@
                 "keepTogether": true,
                 "study": {
                   "role": "derivation",
-                  "visual": "blackboard"
+                  "visual": "blackboard",
+                  "marks": [
+                    {
+                      "text": "唯一待学参数",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "唯一待学参数",
+                      "kind": "red",
+                      "color": "#285f9e"
+                    },
+                    {
+                      "text": "损失函数",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "损失函数",
+                      "kind": "red",
+                      "color": "#285f9e"
+                    }
+                  ]
                 }
               },
               {
@@ -1135,13 +1196,15 @@
             "cues": [
               {
                 "id": "ml-gradient-cue-0",
-                "text": "这次计算只调整哪个参数？",
+                "title": "一维优化",
+                "text": "固定 b=0 后，只需在横轴上搜索 w；同时学习 w、b 时，损失定义在二维参数空间。",
                 "blockId": "ml-gradient-intuition",
                 "anchor": "只学习斜率 w"
               },
               {
                 "id": "ml-gradient-cue-1",
-                "text": "w=1 位于最低点的哪一侧？",
+                "title": "曲线的横轴",
+                "text": "这里每个横坐标代表一组候选参数，纵坐标汇总两条样本的误差；它与前面的输入—预测图含义不同。",
                 "blockId": "ml-loss-curve"
               }
             ]
@@ -1185,8 +1248,31 @@
                   "visual": "blackboard",
                   "marks": [
                     {
+                      "text": "局部趋势",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "局部趋势",
+                      "kind": "red",
+                      "color": "#285f9e"
+                    },
+                    {
+                      "text": "学习率",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "学习率",
+                      "kind": "red",
+                      "color": "#285f9e"
+                    },
+                    {
                       "text": "学习率过大",
-                      "kind": "box"
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "学习率过大",
+                      "kind": "red",
+                      "color": "#b1483d"
                     }
                   ]
                 }
@@ -1214,17 +1300,12 @@
                 "study": {
                   "marks": [
                     {
+                      "text": "负号表示增大 w 可在局部降低损失",
+                      "kind": "underline"
+                    },
+                    {
                       "text": "w_new=1−0.1×(−5)=1.5",
                       "kind": "check"
-                    },
-                    {
-                      "text": "w_new=1−0.1×(−5)=1.5",
-                      "kind": "bold"
-                    },
-                    {
-                      "text": "w_new=1−0.1×(−5)=1.5",
-                      "kind": "red",
-                      "color": "#357344"
                     }
                   ]
                 }
@@ -1237,13 +1318,17 @@
                 "study": {
                   "marks": [
                     {
-                      "text": "距离每次减半",
-                      "kind": "underline"
+                      "text": "0<η<0.4",
+                      "kind": "bold"
                     },
                     {
                       "text": "0<η<0.4",
                       "kind": "red",
                       "color": "#b1483d"
+                    },
+                    {
+                      "text": "距离每次减半",
+                      "kind": "underline"
                     }
                   ]
                 }
@@ -1252,15 +1337,17 @@
             "cues": [
               {
                 "id": "ml-update-cue-0",
-                "text": "减去一个负数后，w 增大还是减小？",
+                "title": "下降方向",
+                "text": "w=1 处导数为 −5，负梯度指向 w 增大的方向。更新到 1.5 后，损失从 2.5 降到 0.625。",
                 "blockId": "ml-gradient-example",
-                "anchor": "w_new=1−0.1×(−5)=1.5"
+                "anchor": "负号表示增大 w 可在局部降低损失"
               },
               {
                 "id": "ml-update-cue-1",
-                "text": "η=0.1 时，参数变化多少？",
+                "title": "步长与收敛",
+                "text": "本例满足 w_new−2=(1−5η)(w−2)。η=0.1 使到最优值的距离每次减半；步长增大会改变这一收缩率。",
                 "blockId": "ml-update-rule",
-                "anchor": "本次参数变化为 −0.1×(−5)=+0.5"
+                "anchor": "学习率过大"
               }
             ]
           }
@@ -1311,7 +1398,16 @@
                   "frame": "tape",
                   "marks": [
                     {
-                      "text": "最终方案固定后才使用",
+                      "text": "拟合参数 w、b",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "拟合参数 w、b",
+                      "kind": "red",
+                      "color": "#285f9e"
+                    },
+                    {
+                      "text": "选择模型、特征和超参数",
                       "kind": "underline"
                     },
                     {
@@ -1329,7 +1425,29 @@
               {
                 "id": "ml-split-reason",
                 "type": "prose",
-                "text": "比较许多候选方案时，验证分数同时受模型能力和该批样本的随机波动影响。选择验证分数最好的方案，也可能选中了对这批样本特别有利的组合。保留测试集，在方案固定后评估，可估计这一最终方案的新样本误差。\n\n反复按测试分数调整模型会使测试集参与选择，原先的独立评估作用会减弱。样本较少时，可在训练数据内用交叉验证轮流拟合与验证，比较候选方案。"
+                "text": "比较许多候选方案时，验证分数同时受模型能力和该批样本的随机波动影响。选择验证分数最好的方案，也可能选中了对这批样本特别有利的组合。保留测试集，在方案固定后评估，可估计这一最终方案的新样本误差。\n\n反复按测试分数调整模型会使测试集参与选择，原先的独立评估作用会减弱。样本较少时，可在训练数据内用交叉验证轮流拟合与验证，比较候选方案。",
+                "study": {
+                  "marks": [
+                    {
+                      "text": "随机波动",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "随机波动",
+                      "kind": "red",
+                      "color": "#285f9e"
+                    },
+                    {
+                      "text": "反复按测试分数调整模型",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "反复按测试分数调整模型",
+                      "kind": "red",
+                      "color": "#b1483d"
+                    }
+                  ]
+                }
               },
               {
                 "id": "ml-split-boundary",
@@ -1345,15 +1463,17 @@
             "cues": [
               {
                 "id": "ml-validation-cue-0",
-                "text": "验证集参与哪些选择？",
+                "title": "模型选择",
+                "text": "超参数控制模型结构或训练过程，例如正则化强度。它们可借助验证结果选择，再固定方案作最终评估。",
                 "blockId": "ml-split-table",
                 "anchor": "选择模型、特征和超参数"
               },
               {
                 "id": "ml-validation-cue-1",
-                "text": "反复依据测试分数调参，会失去什么？",
+                "title": "评估中的选择偏差",
+                "text": "在许多方案中挑最高分，也可能挑中了恰好适应该批样本波动的方案。独立测试用于评估选定方案。",
                 "blockId": "ml-split-reason",
-                "anchor": "原先的独立评估作用会减弱"
+                "anchor": "验证分数同时受模型能力和该批样本的随机波动影响"
               }
             ]
           },
@@ -1373,10 +1493,6 @@
                   "marks": [
                     {
                       "text": "过拟合",
-                      "kind": "circle"
-                    },
-                    {
-                      "text": "过拟合",
                       "kind": "bold"
                     },
                     {
@@ -1386,12 +1502,16 @@
                     },
                     {
                       "text": "新样本表现",
-                      "kind": "dots"
+                      "kind": "bold"
                     },
                     {
                       "text": "新样本表现",
                       "kind": "red",
-                      "color": "#b1483d"
+                      "color": "#285f9e"
+                    },
+                    {
+                      "text": "过拟合",
+                      "kind": "circle"
                     }
                   ]
                 }
@@ -1499,12 +1619,17 @@
                 "study": {
                   "marks": [
                     {
-                      "text": "独立验证和任务成本",
-                      "kind": "underline"
+                      "text": "正则化",
+                      "kind": "bold"
                     },
                     {
                       "text": "正则化",
-                      "kind": "circle"
+                      "kind": "red",
+                      "color": "#285f9e"
+                    },
+                    {
+                      "text": "惩罚过大的参数",
+                      "kind": "underline"
                     }
                   ]
                 }
@@ -1513,7 +1638,8 @@
             "cues": [
               {
                 "id": "ml-overfit-cue-0",
-                "text": "验证误差最低的是哪个等级？",
+                "title": "复杂度与泛化",
+                "text": "等级 3 之后，训练误差继续下降，验证误差却上升；新增复杂度对训练样本的改善未能延续到新样本。",
                 "blockId": "ml-complexity-chart"
               }
             ]
@@ -1582,17 +1708,17 @@
                 "study": {
                   "marks": [
                     {
-                      "text": "任务定义与数据字典",
-                      "kind": "check"
-                    },
-                    {
-                      "text": "任务定义与数据字典",
+                      "text": "向量与矩阵",
                       "kind": "bold"
                     },
                     {
-                      "text": "任务定义与数据字典",
+                      "text": "向量与矩阵",
                       "kind": "red",
                       "color": "#285f9e"
+                    },
+                    {
+                      "text": "任务定义与数据字典",
+                      "kind": "underline"
                     }
                   ]
                 }
@@ -1618,13 +1744,15 @@
             "cues": [
               {
                 "id": "ml-recap-cue-0",
-                "text": "本册覆盖哪些计算与概念？",
+                "title": "参数学习的联系",
+                "text": "预测规则把参数映射为输出，损失将输出误差汇总；优化沿损失的变化方向调整参数。",
                 "blockId": "ml-recap-scope",
                 "anchor": "一次梯度下降"
               },
               {
                 "id": "ml-recap-cue-1",
-                "text": "多特征模型需要哪些数学基础？",
+                "title": "多特征扩展",
+                "text": "每个特征对应一个权重。向量内积将各项贡献相加，梯度分别给出各权重的局部调整方向。",
                 "blockId": "ml-next-step",
                 "anchor": "向量与矩阵"
               }
@@ -1678,7 +1806,7 @@
     }
   ],
   "extensions": {
-    "baseRevision": 8,
+    "baseRevision": 9,
     "readerProfile": {
       "font": "hand",
       "lineSpacing": 2.05,

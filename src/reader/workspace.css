@@ -54,3 +54,5 @@
 .page-surface .paper-notes .cornell-cue{position:relative;color:var(--aside-ink);font-size:14px;line-height:1.95}
 .page-surface .paper-notes .cornell-cue:before{content:'';position:absolute;left:-13px;top:.65em;width:5px;border-top:1px solid currentColor;opacity:.6}
 .page-surface .paper-notes .cornell-cue:focus-visible{outline:1px dashed var(--accent);outline-offset:4px}
+.page-surface .cornell-cue .cue-title{display:block;font-weight:700;color:var(--heading);margin-bottom:3px}
+.page-surface .cornell-cue .cue-body{display:block;white-space:pre-line}
