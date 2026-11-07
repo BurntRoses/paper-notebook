@@ -49,7 +49,7 @@ export function showReaderSettings(host:SettingsHost){
  const palette=el('div','paper-palette');palette.setAttribute('role','radiogroup');palette.setAttribute('aria-label',t('纸张样式','Paper style'));
  const choices:HTMLButtonElement[]=[];
  const sync=()=>{
-  const selected=host.profile.paperStyle||'auto',actual=resolvePaperStyle(selected,host.page.subject);
+  const selected=host.profile.paperStyle||'ivory',actual=resolvePaperStyle(selected,host.page.subject);
   paperStatus.textContent=(selected==='auto'?t('自动 · ','Auto · '):'')+(paperStyles.find(p=>p.id===actual)?.[host.en?'en':'zh']||'');
   for(const b of choices){const checked=b.dataset.style===selected;b.setAttribute('aria-checked',String(checked));b.tabIndex=checked?0:-1;}
  };

@@ -4,7 +4,9 @@
 .page-surface[data-continued=true] .reader-chapter{font-size:12px;color:var(--muted)}
 .page-surface .reader-page-body,.page-surface.page-layout-cornell .reader-page-body{display:block}
 .page-surface.has-margin-notes .reader-page-body,.page-surface.has-margin-notes.page-layout-cornell .reader-page-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(165px,24%);gap:22px}
-.page-surface .paper-notes{min-width:0;height:100%;overflow:auto;overscroll-behavior:contain;border-left:1px solid var(--line);padding:0 0 10px 14px;color:var(--ink);font:14px/1.95 StudyHand,serif;scrollbar-width:thin;user-select:text;cursor:text}
+.page-surface .reader-page-body{min-width:0;min-height:0;overflow:hidden}
+.page-surface .reader-content{min-width:0;min-height:0;height:100%;max-width:100%;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.page-surface .paper-notes{min-width:0;min-height:0;height:100%;overflow:auto;overscroll-behavior:contain;border-left:1px solid var(--line);padding:0 0 10px 14px;color:var(--ink);font:14px/1.95 StudyHand,serif;scrollbar-width:thin;user-select:text;cursor:text}
 .page-surface .paper-bottom:after{display:none}.page-surface .paper-bottom{background:transparent;border-radius:0;position:absolute;left:56px;right:46px;bottom:var(--summary-bottom,68px);height:114px;min-height:0;max-height:114px;overflow:auto;display:block;padding:8px 0 0;border-top:1px solid var(--line);color:var(--ink);font:14px/1.95 StudyHand,serif;scrollbar-width:thin;cursor:text}
 .margin-stream{min-height:100%;display:flex;flex-direction:column;gap:10px;padding-bottom:12px;box-sizing:border-box}.margin-stream:empty:before{content:'双击留白 · 写下想法';color:var(--muted);opacity:.55;font:12px/1.8 StudyHand,serif;pointer-events:none}
 .page-surface .margin-preset,.page-surface .cornell-cue{display:block;margin:0;padding:0;min-height:0;text-align:left;font:inherit;line-height:1.8;color:var(--muted);flex-shrink:0;overflow-wrap:anywhere}
@@ -56,3 +58,14 @@
 .page-surface .paper-notes .cornell-cue:focus-visible{outline:1px dashed var(--accent);outline-offset:4px}
 .page-surface .cornell-cue .cue-title{display:block;font-weight:700;color:var(--heading);margin-bottom:3px}
 .page-surface .cornell-cue .cue-body{display:block;white-space:pre-line}
+
+/* Technical blocks and margin streams own their overflow. The paper edge stays
+   stable while long code, wide tables and dense notes remain reachable. */
+.page-surface .oversize-object{min-width:0;max-width:100%;max-height:100%;overflow:auto!important;overscroll-behavior:contain;scrollbar-width:thin}
+.page-surface .table-scroll{min-width:0;max-width:100%;max-height:100%;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.page-surface .margin-stream{min-width:0;max-width:100%}
+
+/* Scrollable reading surfaces stay quiet when reached with the keyboard;
+   controls and text fields keep their normal focus treatment. */
+.page-surface :is(.oversize-object,.table-scroll,.block-code pre,.paper-notes,.paper-bottom,.cornell-cue):focus-visible{outline:0!important;outline-offset:0;box-shadow:none}
+.page-surface .workspace-note:focus-within{outline:0}

@@ -58,14 +58,14 @@
     for(const item of examples)item.setAttribute('aria-pressed',String(item===option));
     if(!option||!preview)return;
     preview.title=`试读：${option.dataset.exampleTitle}`;
-    if(openPreview)openPreview.href=`downloads/${option.dataset.example}.html?demo&v=3.11`;
+    if(openPreview)openPreview.href=`downloads/${option.dataset.example}.html?demo&v=3.12`;
   };
   const previewDocuments=new Map();
   const fetchPreview=name=>{
     let entry=previewDocuments.get(name);
     if(!entry){
       const controller=new AbortController();entry={controller,settled:false};
-      entry.promise=fetch(`previews/${name}.json?v=3.11`,{signal:controller.signal}).then(response=>{if(!response.ok)throw new Error('Preview unavailable');return response.json();}).then(document=>{entry.settled=true;return document;}).catch(error=>{if(previewDocuments.get(name)===entry)previewDocuments.delete(name);throw error;});
+      entry.promise=fetch(`previews/${name}.json?v=3.12`,{signal:controller.signal}).then(response=>{if(!response.ok)throw new Error('Preview unavailable');return response.json();}).then(document=>{entry.settled=true;return document;}).catch(error=>{if(previewDocuments.get(name)===entry)previewDocuments.delete(name);throw error;});
       previewDocuments.set(name,entry);
     }
     return entry.promise;

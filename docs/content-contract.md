@@ -12,7 +12,7 @@ Page 常用 `layout: reading | cornell | grid | exam`，`free` 仅用于兼容�
 
 `paper: {ruling: lined|grid|dots|blank, lineHeight}` 控制底纹与行距；默认横线。`Page.subject` 可为 `general|stem|literature|business|code`，只影响合适的视觉细节，不改变内容语义。Block 默认应通过 `study.marks` 同时提供关键概念加粗（`kind: bold`）、短语变色（`kind: red, color: "#285f9e"`）与恰当的圈点；原生文字样式与彩色笔画分别记录。Block 可带 `study: {visual: plain|blackboard|extract|sketch, label?, aside?, tone?, marks[]}`；黑板适合公式或关键结论，摘录适合定义和引文，手绘草图适合小型关系图，文字仍可选择和导出。`placements[landscape|portrait][blockId]` 保存作者排版；`userState.layouts[pageId][shape][blockId]` 保存个人调整并优先显示。对象 frame 为 `{x,y,width,height?,z,sheet?}`，坐标使用逻辑纸幅像素。正文布局和纸张底纹分别设置。
 
-`extensions.readerProfile`：layout 为 auto/single/spread/scroll；direction 为 horizontal/vertical；sidebar 为 open/collapsed；pageShape 为 auto/portrait/landscape；transition 为 turn（仿真）/cover（覆盖，默认）/slide（滑动）/none（无动画），兼容旧 fade；theme 为 paper-light/paper-night；motion 为 full/reduced。paperStyle 为 auto（默认，按每页 subject 匹配）/white/ivory/cotton/mist/sage/inkwash，独立于纸面横线与明暗模式。双页在横屏并排、竖屏上下排列，系统减少动态优先。
+`extensions.readerProfile`：layout 为 auto/single/spread/scroll；direction 为 horizontal/vertical；sidebar 为 open/collapsed；pageShape 为 auto/portrait/landscape；transition 为 turn（仿真）/cover（覆盖，默认）/slide（滑动）/none（无动画），兼容旧 fade；theme 为 paper-light/paper-night；motion 为 full/reduced。paperStyle 为 ivory（默认）/auto（按每页 subject 匹配）/white/cotton/mist/sage/inkwash，独立于纸面横线与明暗模式。双页在横屏并排、竖屏上下排列，系统减少动态优先。
 
 `userState.readingAnchor` 保存 `{pageId,blockId?,offset,sheet?,textOffset?}`。`sheet` 区分物理续页，`textOffset` 记录该片段在原块中的 UTF-16 起点；窗口旋转与重新分页优先按原文字偏移定位，再回退至续页或源页。旧文件只带 pageId/offset 时仍可恢复。
 

@@ -13,6 +13,7 @@ export const paperStyles:{id:PaperStyle;zh:string;en:string}[]=[
 /** Material and page ruling are independent; an explicit choice wins over subject defaults. */
 export function resolvePaperStyle(style:PaperStyle|undefined,subject:Page['subject']):Exclude<PaperStyle,'auto'>{
  if(style&&style!=='auto')return style;
+ if(style===undefined)return 'ivory';
  return subject==='literature'?'inkwash':subject==='stem'?'mist':subject==='code'?'white':subject==='business'?'ivory':'cotton';
 }
 

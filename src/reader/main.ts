@@ -76,7 +76,7 @@ class ReaderApp {
   private turnView:PageTurn|undefined;private warmTick=0;private pageCache=new Map<number,HTMLElement[]>();
   constructor(d:NotebookDocument){
     this.d=d;this.sessionBooks.set(d.notebook.id,d);
-    this.profile={font:'hand',lineSpacing:2.05,layout:'single',direction:'horizontal',sidebar:'collapsed',theme:'paper-light',motion:'full',pageShape:'auto',marginNotes:true,bottomNotes:true,transition:'cover',paperStyle:'auto',...(d.extensions.readerProfile as Partial<ReaderPresentation>||{})};
+    this.profile={font:'hand',lineSpacing:2.05,layout:'single',direction:'horizontal',sidebar:'collapsed',theme:'paper-light',motion:'full',pageShape:'auto',marginNotes:true,bottomNotes:true,transition:'cover',paperStyle:'ivory',...(d.extensions.readerProfile as Partial<ReaderPresentation>||{})};
     this.rightSidebarOpen=this.profile.marginNotes??true;this.editor=new PaperEditor(this,appRoot);
     this.sidebarOpen=false;setLocale(this.en?'en':'zh');
     this.paginate();this.pageIndex=this.indexForAnchor(d.userState.readingAnchor||{pageId:d.userState.lastPageId});
@@ -373,6 +373,21 @@ class ReaderApp {
     document.addEventListener('keydown',e=>{
       if(e.key==='Escape'){if(this.toolbar){this.clearToolbar();getSelection()?.removeAllRanges();return;}if(this.sidebarOpen&&!document.querySelector('dialog[open]')){this.toggleSidebar(false);return;}if(this.immersive&&!document.querySelector('dialog[open]')){this.setImmersive(false);return;}this.cancelGesture(true);this.clearToolbar();return}
       if(document.querySelector('dialog[open]')||(e.target as HTMLElement).closest('input,textarea,select,[contenteditable=true]'))return;
+      // Scroll the focused viewport instead of turning pages. WebKit does not
+      // consistently forward a pre/table's native key scroll to its parent.
+      const target=e.target as HTMLElement;
+      if(!e.ctrlKey&&!e.metaKey&&!e.altKey&&target.matches('.reader-content,.oversize-object,.table-scroll,.block-code pre,.paper-notes,.paper-bottom')&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','PageUp','PageDown','Home','End',' '].includes(e.key)){
+        const horizontal=['ArrowLeft','ArrowRight'].includes(e.key);
+        for(let node:HTMLElement|null=target;node&&!node.matches('.page-surface');node=node.parentElement){
+          const style=getComputedStyle(node),max=horizontal?node.scrollWidth-node.clientWidth:node.scrollHeight-node.clientHeight;
+          if(max<=1||!['auto','scroll'].includes(horizontal?style.overflowX:style.overflowY))continue;
+          e.preventDefault();
+          const direction=['ArrowLeft','ArrowUp','PageUp'].includes(e.key)||e.key===' '&&e.shiftKey?-1:1;
+          const amount=e.key.startsWith('Arrow')?40:(horizontal?node.clientWidth:node.clientHeight)*.85;
+          const position=e.key==='Home'?0:e.key==='End'?max:(horizontal?node.scrollLeft:node.scrollTop)+direction*amount;
+          node.scrollTo({[horizontal?'left':'top']:position,behavior:'instant'});return;
+        }
+      }
       if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='p'){e.preventDefault();this.showPDF();return;}
       if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='f'){e.preventDefault();this.sidebarTab='contents';this.toggleSidebar(true);appRoot.querySelector<HTMLInputElement>('.sidebar-search')?.focus();return}
       if(e.ctrlKey||e.metaKey||e.altKey)return;if(e.key.toLowerCase()==='i'){e.preventDefault();this.setImmersive();return;}
