@@ -30,6 +30,14 @@ for(const [engine,type] of Object.entries({chromium,webkit})){
   // An aborted lesson fetch shows a recoverable failure without replacing the reader.
   await page.route('**/previews/business.json*',r=>r.abort());await page.locator('[data-example=business]').click();await page.locator('.preview-retry').waitFor();assert.match(await page.locator('#preview-tour-status').innerText(),/失败/);
   await page.unroute('**/previews/business.json*');await page.locator('.preview-retry').click();await page.waitForFunction(()=>document.querySelector('iframe').contentWindow.reader?.d.notebook.id==='showcase-business'&&!document.querySelector('iframe').hasAttribute('aria-busy'));
+  // A connection that stays open without delivering a response must also recover.
+  await page.clock.install();let releaseRequest;const heldRequest=new Promise(resolve=>releaseRequest=resolve);
+  const stalledRequest=page.waitForRequest('**/previews/literature.json*');
+  await page.route('**/previews/literature.json*',async route=>{await heldRequest;await route.abort().catch(()=>{});});
+  await page.locator('[data-example=literature]').click();await stalledRequest;await page.clock.fastForward(20001);
+  await page.locator('.preview-retry').waitFor();assert.equal(await page.locator('iframe').getAttribute('aria-busy'),null);assert.equal(await page.locator('[data-example=business]').getAttribute('aria-pressed'),'true');
+  releaseRequest();await page.unroute('**/previews/literature.json*');await page.clock.resume();await page.locator('.preview-retry').click();
+  await page.waitForFunction(()=>document.querySelector('iframe').contentWindow.reader?.d.notebook.id==='showcase-literature'&&!document.querySelector('iframe').hasAttribute('aria-busy'));
   await page.locator('[data-example=machine-learning]').focus();await page.keyboard.press('ArrowRight');await page.waitForFunction(()=>document.querySelector('iframe').contentWindow.reader?.d.notebook.id==='showcase-compound-interest');assert.equal(await page.locator('[data-example=compound-interest]').getAttribute('tabindex'),'0');assert.equal(await page.locator('[data-example=machine-learning]').getAttribute('tabindex'),'-1');
   const frame=page.frameLocator('iframe');const defaults=await page.locator('iframe').evaluate(f=>{const r=f.contentWindow.reader;return {font:r.profile.font,paper:r.profile.paperStyle}});assert.deepEqual(defaults,{font:'hand',paper:'ivory'});
   await frame.getByRole('button',{name:'阅读设置',exact:true}).click();await frame.getByRole('radio',{name:'象牙纸',exact:true}).focus();const pageIndex=await page.locator('iframe').evaluate(f=>f.contentWindow.reader.pageIndex);await page.keyboard.press('ArrowRight');assert.equal(await frame.getByRole('radio',{name:'棉纹纸',exact:true}).getAttribute('aria-checked'),'true');assert.equal(await page.locator('iframe').evaluate(f=>f.contentWindow.reader.pageIndex),pageIndex);
@@ -46,7 +54,7 @@ for(const [engine,type] of Object.entries({chromium,webkit})){
   // Initial shell failures also provide a retry, independent of lesson fetches.
   const recovery=await context.newPage();await recovery.route('**/preview-reader.html*',r=>r.fulfill({contentType:'text/html',body:'<p>unavailable</p>'}));await recovery.goto(base);await recovery.locator('#read').scrollIntoViewIfNeeded();await recovery.locator('.preview-retry').waitFor();await recovery.unroute('**/preview-reader.html*');await recovery.locator('.preview-retry').click();await recovery.waitForFunction(()=>document.querySelector('iframe').contentWindow.reader?.fontsCalibrated&&!document.querySelector('iframe').hasAttribute('aria-busy'));await recovery.close();
   const animation=await page.locator('.star-glyph').evaluate(n=>getComputedStyle(n).animationName);assert.equal(animation,'none');assert.deepEqual(errors,[]);
-  reports.push({engine,menus:true,copySuccessAndDenied:true,noActionLayoutShift:true,retry:true,rovingExamples:true,defaultIvoryAndWenKai:true,paperSingleBoundary:true,responsiveSettings:true,reducedMotion:true,initialShellRetry:true,lightContrast,darkContrast,errors});await context.close();
+  reports.push({engine,menus:true,copySuccessAndDenied:true,noActionLayoutShift:true,retry:true,stalledResponseRetry:true,rovingExamples:true,defaultIvoryAndWenKai:true,paperSingleBoundary:true,responsiveSettings:true,reducedMotion:true,initialShellRetry:true,lightContrast,darkContrast,errors});await context.close();
  }finally{await browser.close()}
 }
 await writeFile('output/prescription-ui/report.json',JSON.stringify(reports,null,2));console.log(JSON.stringify(reports));

@@ -75,7 +75,8 @@
           "ratio": 6.330356156148561
         }
       ],
-      "errors": []
+      "errors": [],
+      "stalledResponseRetry": true
     },
     {
       "engine": "webkit",
@@ -149,7 +150,8 @@
           "ratio": 6.330356156148561
         }
       ],
-      "errors": []
+      "errors": [],
+      "stalledResponseRetry": true
     }
   ],
   "modelTests": 85,
