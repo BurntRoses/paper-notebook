@@ -14,7 +14,7 @@ test('margin titles roundtrip and observable teaching defects agree across Node 
   {id:'useful',title:'尺度变化',text:'所有误差放大 k 倍，平方损失放大 k² 倍。',blockId:'loss',anchor:'误差平方'}];
  assert.equal(parseDocument(d).document.notebook.chapters[0].pages[0].cues![0].title,'平方惩罚');
  const before=JSON.stringify(d),report=reviewContent(d);
- assert.deepEqual(report.teaching.warnings.map(w=>w.rule),['margin-anchor','margin-copy','margin-copy','margin-repeat','emphasis-color','emphasis-repeat']);
+ assert.deepEqual(report.teaching.warnings.map(w=>w.rule),['margin-anchor','margin-copy','margin-copy','margin-repeat','emphasis-repeat']);
  assert.equal(report.teaching.marginNotes,3);assert.equal(report.teaching.titledNotes,2);
  const py=spawnSync('python3',['-c',"import sys,json;sys.path.insert(0,'skills/paper-notebook/scripts');from content_review import review_content;print(json.dumps(review_content(json.load(sys.stdin)),ensure_ascii=False))"],{input:JSON.stringify(d),encoding:'utf8'});
  assert.equal(py.status,0,py.stderr);assert.deepEqual(JSON.parse(py.stdout),report);

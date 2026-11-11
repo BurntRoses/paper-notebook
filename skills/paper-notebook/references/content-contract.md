@@ -58,3 +58,11 @@ Node validate/build 和 Python build 均输出 `contentReview`（advisory、auto
 `figure.annotations` 保存作者图上批注，`userState.figureMarks` 保存用户图上批注；用户记录还必须有 id/pageId/blockId。kind 为 circle/arrow/check/text/pen，x/y/x2/y2 采用图像视口的百分比（0–100），text 为短说明，points 为画笔路径。保存、更新与离线重开保留两类数据的区分。
 
 默认正文行距 2.05，阅读设置可选 1.85 / 2.05 / 2.25；旧 1.65 偏好仍可读取。PDF 的正文也采用 2.05 行距。
+
+## 制作质量与发布运行时
+
+交付必须执行 Skill 中 quality-workflow.md：构建阶段同时拒绝文字 cue 缺失/失配 anchor、无效代码说明、选项引用、表格列数和强调错误。全文加粗与变色必须实际存在，不要求逐页配额。build-report 的 anchors、statistics、capacity、fonts 与 contentReview 分别报告结构、容量、字体回退和编辑信号；0 条措辞提示不表示语义合格。
+
+运行时包含 reader-shell.sha256 与 runtime-manifest.json。复用缓存前检查 downloads/runtime.json；release 改变时校验包指纹并覆盖运行时管理文件，保留源稿与用户数据。finalize 重新核验模板、源文、中文规范及逐章审阅记录；有浏览器时核对全物理页排版报告，无浏览器时记录实际原因。
+
+可选 extensions.terminology 使用 `[{term,aliases:[...]}]` 指定标准术语与备选写法，供跨章审阅定位；brief.termPolicy/languageStyle/scope 由逐章审阅记录核对，不从自然语言字段臆造强制词表。

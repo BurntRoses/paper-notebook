@@ -1,6 +1,6 @@
 {
   "name": "paper-notebook-kit",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "private": false,
   "type": "module",
   "description": "Create illustrated study notes with AI, annotate text and figures, practise and review.",

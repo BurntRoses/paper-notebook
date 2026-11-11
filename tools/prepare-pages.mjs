@@ -26,6 +26,7 @@ for(const name of ['machine-learning','compound-interest','concept','literature'
 // This is the runtime fetched by the AI creation instructions, not a promotional download.
 await cp(dist+'downloads/paper-notebook-skill.zip',site+'downloads/paper-notebook-skill.zip');
 await cp(dist+'downloads/paper-notebook-conversation.zip',site+'downloads/paper-notebook-conversation.zip');
+await cp(dist+'downloads/runtime.json',site+'downloads/runtime.json');
 await cp(dist+'downloads/paper-notebook-upload.zip',site+'downloads/paper-notebook-upload.zip');
 for(const path of ['paper-landscape-3.jpg','paper-portrait-3.jpg','paper-notebook-film.mp4','paper-notebook-film-portrait.mp4','paper-notebook-film-1080.mp4','paper-notebook-film-portrait-1080.mp4','paper-notebook-film-low.mp4','paper-notebook-film-portrait-low.mp4','story/film-landscape-poster-1.webp','story/film-portrait-poster-1.webp'])await cp(publicDir+'promo/'+path,site+'promo/'+path);
 await writeFile(site + 'reader.html', reader);

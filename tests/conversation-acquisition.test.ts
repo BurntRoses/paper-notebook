@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
 import {execFile} from 'node:child_process';
 import {createServer} from 'node:http';
 import {access,mkdtemp,readFile,writeFile,rm} from 'node:fs/promises';
@@ -24,11 +25,16 @@ async function fixture(extra:Record<string,Uint8Array>={}){
   'paper-notebook/scripts/study_quality.py':await readFile('skills/paper-notebook/scripts/study_quality.py'),
   'paper-notebook/references/notebook.schema.json':await readFile('schemas/notebook.schema.json'),
  };
+ for(const name of ['editorial_metrics.py','build_metrics.py','quality_gate.py','authoring.py'])files['paper-notebook/scripts/'+name]=await readFile('skills/paper-notebook/scripts/'+name);
+ for(const name of ['chinese-writing.md','quality-workflow.md'])files['paper-notebook/references/'+name]=await readFile('skills/paper-notebook/references/'+name);
+ files['paper-notebook/assets/reader-shell.sha256']=strToU8(createHash('sha256').update(files['paper-notebook/assets/reader.html']).digest('hex'));
+ const managed={...files,...extra},hashes=Object.fromEntries(Object.entries(managed).filter(([name])=>name.startsWith('paper-notebook/')&&!name.includes('..')&&!name.endsWith('.DS_Store')).map(([name,data])=>[name.slice(15),createHash('sha256').update(data).digest('hex')]));
+ files['paper-notebook/runtime-manifest.json']=strToU8(JSON.stringify({format:1,release:createHash('sha256').update(JSON.stringify(hashes)).digest('hex'),files:hashes}));
  return zipSync({...files,...extra});
 }
 async function prepare(args:string[]){
  try{
-  const result=await run(process.env.PYTHON||'python3',[helper,...args]);
+  const result=await run(process.env.PYTHON||'python3',[helper,...(args.includes('--archive')?['--offline']:[]),...args]);
   return {code:0,report:JSON.parse(result.stdout)};
  }catch(error){
   const failure=error as {code:number;stdout:string};
@@ -43,9 +49,10 @@ async function withServer(handler:Parameters<typeof createServer>[0],fn:(url:str
  finally{await new Promise<void>((done,reject)=>server.close(error=>error?reject(error):done()))}
 }
 
-test('conversation runtime downloads, retries a transient failure, builds and reuses without another request',async()=>{
+test('conversation runtime retries package download and checks version before cache reuse',async()=>{
  const directory=await mkdtemp(join(tmpdir(),'paper-auto-')),archive=await fixture();let requests=0;
- try{await withServer((_req,res)=>{
+ try{await withServer((req,res)=>{
+  if(req!.url!.startsWith('/runtime.json')){const manifest=JSON.parse(new TextDecoder().decode(unzipSync(archive)['paper-notebook/runtime-manifest.json']));res.end(JSON.stringify({format:1,release:manifest.release,sha256:createHash('sha256').update(archive).digest('hex')}));return;}
   requests++;res.writeHead(requests===1?503:200,{'content-type':'application/zip'});res.end(requests===1?'Try again':archive);
  },async url=>{
   const args=['--url',url,'--out',join(directory,'runtime')];
@@ -71,7 +78,7 @@ test('manual upload is requested only after an actual failed download, including
   const directory=await mkdtemp(join(tmpdir(),'paper-blocked-'));let requests=0;
   try{await withServer((_req,res)=>{requests++;res.writeHead(status);res.end('<html>Not a runtime ZIP</html>')},async url=>{
    const result=await prepare(['--url',url,'--out',join(directory,'runtime')]);
-   assert.equal(result.code,1);assert.equal(result.report.status,'upload_required');assert.equal(result.report.stage,'download');assert.equal(result.report.manualUploadRequired,true);assert.equal(requests,2);
+   assert.equal(result.code,1);assert.equal(result.report.status,'upload_required');assert.equal(result.report.stage,'download');assert.equal(result.report.manualUploadRequired,true);assert.equal(requests,3);
    assert.equal(result.report.userMessage,(await readFile('skills/paper-notebook/references/responses/download-unavailable.zh-CN.txt','utf8')).trim());
   })}finally{await rm(directory,{recursive:true,force:true})}
  }
@@ -150,4 +157,19 @@ test('upload wrappers reject traversal, corrupt inner archives and additional ne
   }
   await assert.rejects(access(join(directory,'outside.txt')));
  }finally{await rm(directory,{recursive:true,force:true})}
+});
+
+test('a new release replaces cached runtime files, keeps authored files, and rejects a corrupt update',async()=>{
+ const directory=await mkdtemp(join(tmpdir(),'paper-refresh-'));
+ let archive=await fixture(),corrupt=false;
+ try{await withServer((req,res)=>{
+  if(req!.url!.startsWith('/runtime.json')){const manifest=JSON.parse(new TextDecoder().decode(unzipSync(archive)['paper-notebook/runtime-manifest.json']));res.end(JSON.stringify({format:1,release:manifest.release,sha256:createHash('sha256').update(archive).digest('hex')}));}
+  else res.end(corrupt?'broken':archive);
+ },async url=>{
+  const args=['--url',url,'--out',join(directory,'runtime')];const first=await prepare(args);assert.equal(first.code,0,JSON.stringify(first.report));
+  const personal=join(first.report.runtime,'my-notebook.json');await writeFile(personal,'authored lesson and records');
+  archive=await fixture({'paper-notebook/SKILL.md':strToU8('New release: actual mandatory instructions.')});const next=await prepare(args);assert.equal(next.code,0,JSON.stringify(next.report));assert.equal(next.report.source,'updated');assert.notEqual(next.report.release,first.report.release);assert.equal(await readFile(personal,'utf8'),'authored lesson and records');
+  assert.equal(await readFile(join(next.report.runtime,'SKILL.md'),'utf8'),'New release: actual mandatory instructions.');
+  archive=await fixture({'paper-notebook/SKILL.md':strToU8('Third release')});corrupt=true;const failure=await prepare(args);assert.equal(failure.code,1);assert.equal(failure.report.status,'runtime_invalid');assert.equal(await readFile(personal,'utf8'),'authored lesson and records');assert.equal(await readFile(join(next.report.runtime,'SKILL.md'),'utf8'),'New release: actual mandatory instructions.');
+ })}finally{await rm(directory,{recursive:true,force:true})}
 });

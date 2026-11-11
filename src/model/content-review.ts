@@ -1,5 +1,6 @@
 import rules from '../../skills/paper-notebook/references/writing-rules.json';
 import { textOf, type NotebookDocument } from './types';
+import { editorialMetrics } from './editorial-metrics';
 import { reviewTeaching } from './teaching-review';
 export interface WritingWarning {rule:string;location:string;at:number;phrase:string;context:string;guidance:string}
 /** Advisory only. Never edit source, quotations, technical literals or personal records. */
@@ -18,8 +19,8 @@ export function reviewContent(d:NotebookDocument){
   let characters=0,figures=0,tables=0;
   for(const b of page.blocks){
    characters+=textOf(b).length;if(['image','diagram','chart'].includes(b.type))figures++;if(b.type==='comparison')tables++;
-   if(['quote','code'].includes(b.type))continue;
-   for(const key of ['title','text','question','prompt','result','explanation','caption','alt','xLabel','yLabel'])inspect(b[key],b.id+'.'+key);
+
+   for(const key of ['title','text','question','prompt','result','explanation','caption','alt','xLabel','yLabel'])if(!(key==='text'&&['quote','code'].includes(b.type)))inspect(b[key],b.id+'.'+key);
    for(const item of [...b.items||[],...b.steps||[],...b.options||[]])inspect(item.text,item.id);
    b.parameters?.forEach((p,i)=>{inspect(p.name,`${b.id}.parameters.${i}.name`);inspect(p.description,`${b.id}.parameters.${i}.description`)});
    [...b.columns||[],...(b.rows||[]).flat()].forEach((v,i)=>inspect(v,`${b.id}.cells.${i}`));
@@ -32,7 +33,7 @@ export function reviewContent(d:NotebookDocument){
  const imageIds=new Set(d.notebook.chapters.flatMap(c=>c.pages).flatMap(p=>p.blocks).filter(b=>b.type==='image').map(b=>b.assetId));
  const assets=d.assets.map(a=>({assetId:a.id,used:imageIds.has(a.id),bytes:a.data.includes(';base64,')?Math.floor((a.data.length-a.data.indexOf(',')-1)*3/4):new TextEncoder().encode(a.data).length})).sort((a,b)=>b.bytes-a.bytes);
  const visualWarnings:string[]=[];
- if(pages.some((p,i)=>i>0&&p.characters>=300&&pages[i-1].characters>=300&&!p.figures&&!pages[i-1].figures))visualWarnings.push('连续讲解缺少实际配图；按关系、空间、数值等教学需要增加图解。表格单独计数。');
+ for(let i=1;i<pages.length;i++){const p=pages[i],before=pages[i-1];if(p.characters>=300&&before.characters>=300&&!p.figures&&!before.figures)visualWarnings.push(`${before.pageId}, ${p.pageId}: 连续讲解缺少实际配图；核对这两页是否需要图解。表格单独计数。`);}
  for(const a of assets){if(!a.used)visualWarnings.push(`${a.assetId}: 未引用素材，检查是否仍供原图追溯。`);if(a.bytes>300000)visualWarnings.push(`${a.assetId}: 素材超过 300 KB，核对显示尺寸与文字清晰度后压缩。`);}
- return {advisory:true,automaticRewrite:false,writing:{warnings},teaching:reviewTeaching(d),visuals:{pages,figures:pages.reduce((s,p)=>s+p.figures,0),tables:pages.reduce((s,p)=>s+p.tables,0),warnings:visualWarnings},assets};
+ return {advisory:true,automaticRewrite:false,writing:{warnings,summary:[...new Set(warnings.map(w=>w.rule))].map(rule=>[rule,warnings.filter(w=>w.rule===rule)] as const).map(([rule,items])=>({rule,severity:'review',count:items!.length,locations:[...new Set(items!.map(w=>w.location))],samples:items!.slice(0,5)}))},metrics:editorialMetrics(d),teaching:reviewTeaching(d),visuals:{pages,figures:pages.reduce((s,p)=>s+p.figures,0),tables:pages.reduce((s,p)=>s+p.tables,0),warnings:visualWarnings},assets};
 }

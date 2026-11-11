@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {createHash} from 'node:crypto';
 import assert from 'node:assert/strict';
 import {readFileSync,mkdtempSync,writeFileSync,rmSync,existsSync} from 'node:fs';
 import {spawnSync} from 'node:child_process';
@@ -31,7 +32,9 @@ test('authored mark checks reject empty or invalid emphasis without changing sou
  assert.equal(inspectStudyMarks(document).valid,false);
  assert.equal(checkStudyMarks(document,true).required,false);assert.equal(JSON.stringify(document),before);
  document.notebook.chapters[0].pages[0].blocks[0].study={marks:[{text:'参数',kind:'circle'},{text:'固定后',kind:'dots'},{text:'已经核验',kind:'check'}]};
- const report=checkStudyMarks(document);assert.equal(report.total,3);assert.deepEqual(report.byKind,{circle:1,dots:1,check:1});
+ assert.throws(()=>checkStudyMarks(document),/requires authored bold/);
+ document.notebook.chapters[0].pages[0].blocks[0].study.marks!.push({text:'参数',kind:'bold'},{text:'参数',kind:'red',color:'#285f9e'});
+ const report=checkStudyMarks(document);assert.equal(report.total,5);assert.deepEqual(report.byKind,{circle:1,dots:1,check:1,bold:1,red:1});
  document.notebook.chapters[0].pages[0].blocks[0].study.marks![0].text='标题里才有的词';
  assert.throws(()=>checkStudyMarks(document),/must match actual block text/);
  assert.throws(()=>checkStudyMarks(document,true),/must match actual block text/);
@@ -40,7 +43,7 @@ test('authored mark checks reject empty or invalid emphasis without changing sou
 test('Python builds and both reader verifiers enforce the same mark policy',()=>{
  const dir=mkdtempSync(join(tmpdir(),'paper-study-quality-')),template=readFileSync('tests/fixtures/reader-template.html','utf8');
  try{
-  writeFileSync(join(dir,'template.html'),template);
+  writeFileSync(join(dir,'template.html'),template);writeFileSync(join(dir,'reader-shell.sha256'),createHash('sha256').update(template).digest('hex'));
   const document=blankDocument();document.notebook.chapters[0].pages[0].blocks=[{id:'lesson',type:'prose',text:'参数固定后再预测。结论已经核验。'}];
   const source=join(dir,'source.json'),output=join(dir,'output');
   const build=(args:string[]=[])=>spawnSync('python3',['skills/paper-notebook/scripts/build_reader.py',source,'--out',output,'--template',join(dir,'template.html'),'--schema','schemas/notebook.schema.json','--notices','THIRD_PARTY_NOTICES.txt',...args],{encoding:'utf8'});
@@ -55,6 +58,7 @@ test('Python builds and both reader verifiers enforce the same mark policy',()=>
   assert.equal(build(['--allow-unmarked']).status,0);assert.equal(verify(embed(),['--allow-unmarked']).status,0);
   assert.equal(verifyBundledReader(embed(),template,document,true).studyMarks.required,false);
   document.notebook.chapters[0].pages[0].blocks[0].study={marks:[{text:'参数',kind:'circle'},{text:'固定后',kind:'dots'},{text:'已经核验',kind:'check'}]};
+  document.notebook.chapters[0].pages[0].blocks[0].study.marks!.push({text:'参数',kind:'bold'},{text:'参数',kind:'red',color:'#285f9e'});
   writeFileSync(source,JSON.stringify(document));
   assert.equal(build().status,0);const python=verify(embed());assert.equal(python.status,0,python.stderr);
   assert.deepEqual(JSON.parse(python.stdout).studyMarks,verifyBundledReader(embed(),template,document).studyMarks);

@@ -1579,6 +1579,15 @@
               }
             }
           }
+        },
+        "columnWidths": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "number",
+            "minimum": 48,
+            "maximum": 1200
+          }
         }
       },
       "allOf": [

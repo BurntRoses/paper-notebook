@@ -10,7 +10,7 @@ export interface Block {
   id: string; type: BlockType | string; title?: string; text?: string;
   study?:StudyPresentation; figure?:FigureLayout;
   items?: Item[]; steps?: Item[]; prompt?: string; result?: string;
-  columns?: string[]; rows?: string[][]; latex?: string; language?: string;
+  columns?: string[]; columnWidths?:number[]; rows?: string[][]; latex?: string; language?: string;
   parameters?:FormulaParameter[];
   align?: ('left'|'center'|'right')[]; keepTogether?:boolean;
   chartType?:'scatter'|'line'|'bar';xLabel?:string;yLabel?:string;series?:{id:string;label:string;points:{x:number;y:number;label?:string}[]}[];

@@ -13,7 +13,7 @@ const pages:Page[]=[
   {id:'idea-map',type:'diagram',arrangement:'row',nodes:[{id:'organize',label:'AI 输出讲解'},{id:'read',label:'按主题排版'},{id:'review',label:'圈画与复习'}],edges:[{from:'organize',to:'read'},{from:'read',to:'review'}],study:{visual:'sketch',label:'内容分层，方便阅读与复习'}},
   {id:'idea-value',type:'prose',text:'书签保存选中的原句，点击记录可查看原文。',study:{visual:'extract',marks:[{text:'查看原文',kind:'star'}]}}
  ]},
- {id:'product-structure',title:'条件、推导与例题',subject:'stem',layout:'cornell',cues:[{id:'structure-cue-1',text:'条件',blockId:'structure-condition'},{id:'structure-cue-2',text:'推导',blockId:'structure-formula'},{id:'structure-cue-3',text:'验算',blockId:'structure-example'}],blocks:[
+ {id:'product-structure',title:'条件、推导与例题',subject:'stem',layout:'cornell',cues:[{id:'structure-cue-1',title:'复利条件',text:'固定增长率、利息计入本金且无额外存取时，每期金额都乘以同一增长因子。',blockId:'structure-condition',anchor:'每期增长率固定'},{id:'structure-cue-2',title:'递推关系',text:'连续两期使用相同增长因子，乘积为 (1+r)²；n 期对应 n 次相乘。',blockId:'structure-formula',anchor:'上一期金额'},{id:'structure-cue-3',title:'累计增长',text:'第二期的 10% 以 110 元为基数，新增 11 元，累计利息为 21 元。',blockId:'structure-example',anchor:'期末 121 元'}],blocks:[
   {id:'structure-condition',type:'prose',text:'复利例子：每期增长率固定，利息计入本金，期间没有额外存取。',study:{label:'模型条件',marks:[{text:'没有额外存取',kind:'underline'}]}},
   {id:'structure-formula',type:'formula',latex:'P_n=P_0(1+r)^n',text:'每期金额 = 上一期金额 × (1 + r)。',study:{visual:'blackboard',label:'递推公式',marks:[{text:'上一期金额',kind:'box'}]}},
   {id:'structure-example',type:'example',prompt:'100 元，每期增长 10%，共两期。',steps:[{id:'structure-e1',text:'100 × 1.1 = 110'},{id:'structure-e2',text:'110 × 1.1 = 121'}],result:'期末 121 元，累计增长 21 元。',study:{label:'数值计算',marks:[{text:'期末 121 元',kind:'check'}]}}

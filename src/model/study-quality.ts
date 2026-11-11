@@ -23,7 +23,20 @@ export function inspectStudyMarks(document:NotebookDocument,allowUnmarked=false)
 
 export function checkStudyMarks(document:NotebookDocument,allowUnmarked=false){
  const report=inspectStudyMarks(document,allowUnmarked);
+ const anchors={declared:0,resolved:0,exact:0,blockLevel:0,degraded:0};
+ for(const page of pagesOf(document)){
+  for(const cue of page.cues||[]){
+   anchors.declared++;const source=page.blocks.find(b=>b.id===cue.blockId),location=`${page.id}.cues.${cue.id}`;
+   if(!source)throw new Error(`${location}.blockId: reference a block on this page`);
+   if(cue.anchor){if(!textOf(source).includes(cue.anchor))throw new Error(`${location}.anchor: must match source text`);anchors.exact++;}
+   else if(['image','diagram','chart'].includes(source.type))anchors.blockLevel++;
+   else throw new Error(`${location}.anchor: missing exact source phrase; anchors must not be silently removed`);
+   anchors.resolved++;
+  }
+  for(const b of page.blocks)for(const [i,e] of (b.study?.explanations||[]).entries())if(!(b.text||'').includes(e.text))throw new Error(`${page.id}.${b.id}.study.explanations.${i}.text: must match code/source text`);
+ }
  if(report.invalidTargets.length)throw new Error('Authored study mark must match actual block text: '+report.invalidTargets.join('; '));
  if(!report.valid)throw new Error('No authored study marks in this tutorial. Add sparse study.marks anchored to exact source phrases before delivery. Use --allow-unmarked only when the user explicitly requested unmarked content.');
- return report;
+ if(report.required&&(!report.typography.bold||!report.typography.coloredText))throw new Error('Tutorial emphasis requires authored bold and colored core concepts across the document; there is no per-page quota.');
+ return {...report,anchors};
 }

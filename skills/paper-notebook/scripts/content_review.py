@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import re
 from study_quality import block_text
+from editorial_metrics import editorial_metrics
 
 RULES = json.loads((Path(__file__).resolve().parents[1] / 'references/writing-rules.json').read_text(encoding='utf-8'))
 LITERALS = re.compile(r'```[\s\S]*?```|`[^`\n]+`|\$\$[\s\S]*?\$\$|\$[^$\n]+\$|https?://[^\s)]+')
@@ -37,8 +38,8 @@ def review_content(doc):
             for b in page['blocks']:
                 characters += units(block_text(b));figures += b['type'] in ['image','diagram','chart'];tables += b['type']=='comparison'
                 if b['type']=='image':image_ids.add(b.get('assetId'))
-                if b['type'] in ['quote','code']:continue
-                for key in ['title','text','question','prompt','result','explanation','caption','alt','xLabel','yLabel']:inspect(b.get(key), b['id']+'.'+key)
+                for key in ['title','text','question','prompt','result','explanation','caption','alt','xLabel','yLabel']:
+                    if not (key=='text' and b['type'] in ['quote','code']):inspect(b.get(key), b['id']+'.'+key)
                 for key in ['items','steps','options']:
                     for item in b.get(key, []):inspect(item['text'], item['id'])
                 for i, p in enumerate(b.get('parameters', [])):
@@ -54,11 +55,16 @@ def review_content(doc):
             pages.append(dict(pageId=page['id'], characters=characters, figures=figures, tables=tables))
     assets = sorted([dict(assetId=a['id'], used=a['id'] in image_ids, bytes=(len(a['data'])-a['data'].index(',')-1)*3//4 if ';base64,' in a['data'] else len(a['data'].encode())) for a in doc['assets']], key=lambda a: -a['bytes'])
     visual_warnings=[]
-    if any(p['characters']>=300 and pages[i-1]['characters']>=300 and not p['figures'] and not pages[i-1]['figures'] for i,p in enumerate(pages) if i>0):visual_warnings.append('连续讲解缺少实际配图；按关系、空间、数值等教学需要增加图解。表格单独计数。')
+    for i,p in enumerate(pages):
+        if i and p['characters']>=300 and pages[i-1]['characters']>=300 and not p['figures'] and not pages[i-1]['figures']:visual_warnings.append(pages[i-1]['pageId']+', '+p['pageId']+': 连续讲解缺少实际配图；核对这两页是否需要图解。表格单独计数。')
     for a in assets:
         if not a['used']:visual_warnings.append(a['assetId']+': 未引用素材，检查是否仍供原图追溯。')
         if a['bytes']>300000:visual_warnings.append(a['assetId']+': 素材超过 300 KB，核对显示尺寸与文字清晰度后压缩。')
-    return dict(advisory=True, automaticRewrite=False, writing=dict(warnings=warnings), teaching=review_teaching(doc), visuals=dict(pages=pages,figures=sum(p['figures'] for p in pages),tables=sum(p['tables'] for p in pages),warnings=visual_warnings), assets=assets)
+    summary=[]
+    for rule in dict.fromkeys(w["rule"] for w in warnings):
+        items=[w for w in warnings if w["rule"]==rule]
+        summary.append(dict(rule=rule,severity="review",count=len(items),locations=list(dict.fromkeys(w["location"] for w in items)),samples=items[:5]))
+    return dict(advisory=True, automaticRewrite=False, writing=dict(warnings=warnings,summary=summary),metrics=editorial_metrics(doc), teaching=review_teaching(doc), visuals=dict(pages=pages,figures=sum(p['figures'] for p in pages),tables=sum(p['tables'] for p in pages),warnings=visual_warnings), assets=assets)
 
 
 def review_teaching(doc):
@@ -78,10 +84,6 @@ def review_teaching(doc):
                 if body in seen and body:warn('margin-repeat', cue['id'], '重复的页边说明应就近保留一次。')
                 if not body:warn('margin-empty', cue['id'], '页边注释需要完整的说明内容。')
                 seen.add(body)
-            marks = [m for b in page['blocks'] for m in b.get('study', {}).get('marks', [])]
-            if any(b['type'] in ['prose','concept'] and units(block_text(b))>=40 for b in page['blocks']):
-                if not any(m['kind']=='bold' for m in marks):warn('emphasis-bold', page['id'], '检查本节核心概念及定义的关键关系是否已加粗。')
-                if not any(m['kind']=='red' for m in marks):warn('emphasis-color', page['id'], '为本节最重要的概念、关系或条件选择语义一致的文字颜色。')
             for block in page['blocks']:
                 used = set()
                 for mark in block.get('study', {}).get('marks', []):

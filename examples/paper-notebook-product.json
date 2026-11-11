@@ -187,18 +187,24 @@
             "cues": [
               {
                 "id": "structure-cue-1",
-                "text": "条件",
-                "blockId": "structure-condition"
+                "title": "复利条件",
+                "text": "固定增长率、利息计入本金且无额外存取时，每期金额都乘以同一增长因子。",
+                "blockId": "structure-condition",
+                "anchor": "每期增长率固定"
               },
               {
                 "id": "structure-cue-2",
-                "text": "推导",
-                "blockId": "structure-formula"
+                "title": "递推关系",
+                "text": "连续两期使用相同增长因子，乘积为 (1+r)²；n 期对应 n 次相乘。",
+                "blockId": "structure-formula",
+                "anchor": "上一期金额"
               },
               {
                 "id": "structure-cue-3",
-                "text": "验算",
-                "blockId": "structure-example"
+                "title": "累计增长",
+                "text": "第二期的 10% 以 110 元为基数，新增 11 元，累计利息为 21 元。",
+                "blockId": "structure-example",
+                "anchor": "期末 121 元"
               }
             ],
             "blocks": [

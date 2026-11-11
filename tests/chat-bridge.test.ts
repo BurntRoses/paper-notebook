@@ -1,3 +1,4 @@
+import {createHash} from 'node:crypto';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync,mkdtempSync,writeFileSync,rmSync} from 'node:fs';
@@ -29,7 +30,7 @@ test('Python chat builder embeds exact source safely and rejects invalid referen
  try{
   const doc=blankDocument();doc.notebook.title='知识 </script><script>alert(1)</script> 😀';
   writeFileSync(join(dir,'source.json'),JSON.stringify(doc));
-  writeFileSync(join(dir,'reader.html'),readFileSync('tests/fixtures/reader-template.html'));
+  writeFileSync(join(dir,'reader.html'),readFileSync('tests/fixtures/reader-template.html'));writeFileSync(join(dir,'reader-shell.sha256'),createHash('sha256').update(readFileSync('tests/fixtures/reader-template.html')).digest('hex'));
   const build=()=>spawnSync('python3',['skills/paper-notebook/scripts/build_reader.py',join(dir,'source.json'),'--out',join(dir,'output'),'--template',join(dir,'reader.html'),'--schema','schemas/notebook.schema.json','--notices','THIRD_PARTY_NOTICES.txt'],{encoding:'utf8'});
   const result=build();assert.equal(result.status,0,result.stderr);
   const html=readFileSync(join(dir,'output',artifactStem(doc.notebook.title,doc.notebook.revision)+'.html'),'utf8');const json=html.match(/<script id="notebook-data" type="application\/json">([\s\S]*?)<\/script>/)![1];

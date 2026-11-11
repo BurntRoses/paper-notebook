@@ -18,11 +18,6 @@ export function reviewTeaching(d:NotebookDocument){
    if(!body)warn('margin-empty',cue.id,'页边注释需要完整的说明内容。');
    seen.add(body);
   }
-  const marks=page.blocks.flatMap(b=>b.study?.marks||[]);
-  if(page.blocks.some(b=>['prose','concept'].includes(b.type)&&textOf(b).length>=40)){
-   if(!marks.some(m=>m.kind==='bold'))warn('emphasis-bold',page.id,'检查本节核心概念及定义的关键关系是否已加粗。');
-   if(!marks.some(m=>m.kind==='red'))warn('emphasis-color',page.id,'为本节最重要的概念、关系或条件选择语义一致的文字颜色。');
-  }
   for(const block of page.blocks){
    const used=new Set<string>();
    for(const mark of block.study?.marks||[]){

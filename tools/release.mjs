@@ -36,6 +36,8 @@ await mkdir(skillRoot+'assets',{recursive:true});await mkdir(skillRoot+'scripts'
 for(const name of ['content-contract','components'])await cp(root+'docs/'+name+'.md',skillRoot+'references/'+name+'.md');
 await cp(root+'schemas/notebook.schema.json',skillRoot+'references/notebook.schema.json');
 await cp(root+'examples/blank-notebook.json',skillRoot+'assets/blank-notebook.json');
+await writeFile(root+'dist/reader-shell.sha256',createHash('sha256').update(template).digest('hex')+'\n');
+await writeFile(skillRoot+'assets/reader-shell.sha256',createHash('sha256').update(template).digest('hex')+'\n');
 await writeFile(skillRoot+'assets/reader.html',template);await cp(root+'THIRD_PARTY_NOTICES.txt',skillRoot+'assets/THIRD_PARTY_NOTICES.txt');
 await cp(root+'dist/skill-runtime/notebook.mjs',skillRoot+'scripts/notebook.mjs');
 for(const file of ['LICENSE','THIRD_PARTY_NOTICES.txt','README.md','README.en.md'])await cp(root+file,root+'dist/'+file);
@@ -43,14 +45,19 @@ for(const file of ['LICENSE','THIRD_PARTY_NOTICES.txt','README.md','README.en.md
 await writeFile(root+'dist/README.md',(await readFile(root+'README.md','utf8')).replaceAll('(public/promo.html','(promo.html').replaceAll('(../README.md)','(start.html)').replaceAll('[归档清单](../archives/2026-10-23-cleanup/manifest.json)','归档清单（工作区 ../archives/2026-10-23-cleanup/manifest.json）'));
 const excludedEntry=entry=>entry.name==='.DS_Store'||entry.name==='__pycache__'||entry.name==='.vite'||entry.name==='.cache'||entry.name.endsWith('.pyc')||entry.name.endsWith('.log')||entry.name.endsWith('.tmp')||entry.name.endsWith('.rendering.mp4');
 const walk=async(path,prefix='')=>{const result={};for(const entry of (await readdir(path,{withFileTypes:true})).sort((a,b)=>a.name<b.name?-1:a.name>b.name?1:0)){if(excludedEntry(entry))continue;const name=prefix+entry.name;if(entry.isDirectory())Object.assign(result,await walk(path+'/'+entry.name,name+'/'));else if(entry.isFile())result[name]=new Uint8Array(await readFile(path+'/'+entry.name));}return result;};
+await cp(root+'skills/paper-notebook/references/conversation-start.md',skillRoot+'START-HERE.md');
+const runtimeFiles=await walk(skillRoot),fileHashes=Object.fromEntries(Object.entries(runtimeFiles).filter(([name])=>['SKILL.md','START-HERE.md'].includes(name)||/^(assets|scripts|references|prompts)\//.test(name)).map(([name,data])=>[name,createHash('sha256').update(data).digest('hex')]));
+const runtimeManifest={format:1,release:createHash('sha256').update(JSON.stringify(fileHashes)).digest('hex'),version:JSON.parse(await readFile(root+'package.json','utf8')).version,files:fileHashes};
+await writeFile(skillRoot+'runtime-manifest.json',JSON.stringify(runtimeManifest,null,2));
 await writeFile(root+'dist/downloads/paper-notebook-skill.zip',zipSync(await walk(skillRoot,'paper-notebook/'),{level:6,mtime:new Date('2026-01-01T00:00:00Z')}));
-const chatFiles={};
+const chatFiles={'paper-notebook/runtime-manifest.json':new Uint8Array(await readFile(skillRoot+'runtime-manifest.json'))};
 for(const dir of ['assets','prompts','references','scripts'])Object.assign(chatFiles,await walk(skillRoot+dir,'paper-notebook/'+dir+'/'));
 chatFiles['paper-notebook/SKILL.md']=new Uint8Array(await readFile(skillRoot+'SKILL.md'));
 chatFiles['paper-notebook/START-HERE.md']=new Uint8Array(await readFile(root+'skills/paper-notebook/references/conversation-start.md'));
 chatFiles['paper-notebook/assets/example.md']=new Uint8Array(await readFile(root+'examples/chat-import.md'));
 const chatZip=zipSync(chatFiles,{level:6,mtime:new Date('2026-01-01T00:00:00Z')});
 await writeFile(root+'dist/downloads/paper-notebook-conversation.zip',chatZip);
+await writeFile(root+'dist/downloads/runtime.json',JSON.stringify({format:1,release:runtimeManifest.release,version:runtimeManifest.version,package:'paper-notebook-conversation.zip',sha256:createHash('sha256').update(chatZip).digest('hex')},null,2));
 await writeFile(root+'dist/downloads/paper-notebook-upload.zip',conversationUpload(chatZip));
 
 if(!pagesOnly){
@@ -63,7 +70,7 @@ const toolkit={};for(const dir of ['src','assets','schemas','skills','tools','do
 for(const name of ['package.json','pnpm-lock.yaml','pnpm-workspace.yaml','tsconfig.json','vite.config.ts','index.html','.gitignore','AGENTS.md','README.md','README.en.md','LICENSE','THIRD_PARTY_NOTICES.txt'])toolkit[name]=new Uint8Array(await readFile(root+name));
 for(const name of ['plugin.json'])toolkit[name]=new Uint8Array(await readFile(root+name));
 Object.assign(toolkit,await walk(root+'tests','tests/'));
-toolkit['dist/index.html']=strToU8(template);toolkit['dist/downloads/blank-notebook.html']=new Uint8Array(await readFile(root+'dist/downloads/blank-notebook.html'));
+toolkit['dist/reader-shell.sha256']=strToU8(createHash('sha256').update(template).digest('hex')+'\n');toolkit['dist/index.html']=strToU8(template);toolkit['dist/downloads/blank-notebook.html']=new Uint8Array(await readFile(root+'dist/downloads/blank-notebook.html'));
 await writeFile(root+'dist/downloads/paper-notebook-toolkit.zip',zipSync(toolkit,{level:6,mtime:new Date('2026-01-01T00:00:00Z')}));
 const offline={};for(const a of artifacts)for(const ext of ['html'])offline[a.name+'.'+ext]=new Uint8Array(await readFile(root+'dist/downloads/'+a.name+'.'+ext));offline['README.md']=strToU8('Open any .html file. blank-notebook.html accepts Markdown, TXT, JSON or notebook ZIP.\n打开任一 HTML；空白容器支持导入。工具包源码见 paper-notebook-toolkit.zip。');offline['THIRD_PARTY_NOTICES.txt']=notices;
 await writeFile(root+'dist/downloads/paper-notebook-offline.zip',zipSync(offline,{level:6,mtime:new Date('2026-01-01T00:00:00Z')}));

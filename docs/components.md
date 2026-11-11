@@ -83,3 +83,7 @@ Markdown 的 `notebook-page` 围栏可在 ### 后指定 {id, layout, subject, cu
 圈、箭头与文字解释具体位置，保持数据、刻度和原图标签可读。下载阅读器自带图像批注与新手教程，不需外部脚本或网络。
 
 重点选择与右栏讲解规范见 [emphasis-and-margins.md](https://github.com/BurntRoses/paper-notebook/blob/main/skills/paper-notebook/references/emphasis-and-margins.md)。
+
+`comparison.columnWidths` 可按列提供 48–1200 px 的阅读宽度；长度须等于 columns。表格最小总宽按这些值相加，窄屏在表格内横滚，续页沿用原表列宽。每行单元格数必须与表头一致。未指定宽度时保留自适应布局。
+
+`diagram` 的默认分层依据有向 edges；分支同层、合流放在所有前驱之后。环路按强连通分量同层显示，无障碍描述逐条陈述实际连线及孤立节点。显式 row 仅用于最多四个节点的简单序列。复杂技术图可用具有明确坐标的内嵌 SVG。

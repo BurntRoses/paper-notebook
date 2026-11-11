@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {createHash} from 'node:crypto';
 import assert from 'node:assert/strict';
 import {readFileSync,mkdtempSync,writeFileSync,rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
@@ -29,7 +30,7 @@ const cases=[
 test('Node and Python reject substituted readers while allowing normal font trimming',()=>{
  const dir=mkdtempSync(join(tmpdir(),'paper-reader-proof-'));
  try{
-  writeFileSync(join(dir,'template.html'),template);writeFileSync(join(dir,'source.json'),JSON.stringify(source));
+  writeFileSync(join(dir,'template.html'),template);writeFileSync(join(dir,'reader-shell.sha256'),createHash('sha256').update(template).digest('hex'));writeFileSync(join(dir,'source.json'),JSON.stringify(source));
   for(const item of cases){
    if(item.valid){const proof=verifyBundledReader(item.html,template,source);assert.equal(proof.bundledReaderMatches,true,item.name);assert.equal(proof.sourceMatches,true);assert.equal(proof.studyMarks.total,0);}
    else assert.throws(()=>verifyBundledReader(item.html,template,source),undefined,item.name);

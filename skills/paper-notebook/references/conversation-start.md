@@ -4,6 +4,8 @@ Use this workflow in a chat environment that can create and attach files. The re
 
 The existing reader is mandatory: author `notebook.json`, then use the supplied builder. Do not independently write the HTML/CSS/JS reader, imitate the screenshots or use another framework. A download failure requires the fallback ZIP, not a replacement UI. Keep already prepared content and preferences while waiting for that package.
 
+Read and execute [mandatory quality workflow](quality-workflow.md), including the full [Chinese writing rules](chinese-writing.md). Existing cached files still require a version check; replace managed files when the release differs. Finalize the artifact against the final source before attaching it.
+
 ## Prepare the runtime before the brief
 
 1. Check for a file execution environment with Node or Python and a real downloadable-file attachment capability. Either runtime is sufficient. If those capabilities are explicitly unavailable, use the preset in `responses/file-delivery-unavailable.zh-CN.txt` before collecting preferences. Do not infer missing file capabilities from a failed web request.

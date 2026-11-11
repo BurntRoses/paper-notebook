@@ -16,7 +16,7 @@ for(const [name,bytes] of Object.entries(files)){
  assert.ok(target.startsWith(destination+'/'),'package path must stay inside its output folder');
  await mkdir(dirname(target),{recursive:true});await writeFile(target,bytes);
 }
-for(const name of ['SKILL.md','START-HERE.md','assets/reader.html','assets/blank-notebook.json','prompts/README.md','prompts/conversation-model.txt','prompts/coding-agent.txt','scripts/build_reader.py','scripts/verify_reader.py','scripts/study_quality.py','scripts/content_review.py','references/writing-rules.json','references/writing-review.md','references/multimodal.md','scripts/prepare_conversation.py','scripts/notebook.mjs','references/notebook.schema.json','references/conversation-start.md','references/workspace-start.md','references/responses/download-unavailable.zh-CN.txt','references/responses/file-delivery-unavailable.zh-CN.txt','references/content-contract.md','references/components.md','references/writing.md','references/reader-output.md'])assert.ok(files['paper-notebook/'+name],name);
+for(const name of ['SKILL.md','START-HERE.md','assets/reader.html','assets/blank-notebook.json','prompts/README.md','prompts/conversation-model.txt','prompts/coding-agent.txt','scripts/build_reader.py','scripts/verify_reader.py','runtime-manifest.json','assets/reader-shell.sha256','scripts/quality_gate.py','scripts/authoring.py','scripts/patch_pages.py','scripts/inspect_layout.mjs','references/chinese-writing.md','references/quality-workflow.md','scripts/study_quality.py','scripts/content_review.py','references/writing-rules.json','references/writing-review.md','references/multimodal.md','scripts/prepare_conversation.py','scripts/notebook.mjs','references/notebook.schema.json','references/conversation-start.md','references/workspace-start.md','references/responses/download-unavailable.zh-CN.txt','references/responses/file-delivery-unavailable.zh-CN.txt','references/content-contract.md','references/components.md','references/writing.md','references/reader-output.md'])assert.ok(files['paper-notebook/'+name],name);
 assert.equal(strFromU8(files['paper-notebook/START-HERE.md']),await readFile('skills/paper-notebook/references/conversation-start.md','utf8'));
 assert.equal(strFromU8(files['paper-notebook/prompts/conversation-model.txt']),await readFile('public/paper-notebook-prompt.txt','utf8'));
 for(const name of ['download-unavailable','file-delivery-unavailable']){
@@ -58,11 +58,29 @@ for(const [folder,report] of [['output',builtReport],['node-output',nodeReport]]
  const pythonProof=JSON.parse(run(process.env.PYTHON||'python3',['scripts/verify_reader.py',artifact,'--source','notebook.json'],kit));
  for(const proof of [nodeProof,pythonProof]){assert.equal(proof.bundledReaderMatches,true);assert.equal(proof.sourceMatches,true);assert.deepEqual(proof.studyMarks,nodeReport.studyMarks);}
 }
+// Exercise the actual delivery commands, not only the in-process review helpers.
+const analysis=JSON.parse(run(process.execPath,['scripts/notebook.mjs','review','notebook.json'],kit,true));
+const pythonAnalysis=JSON.parse(run(process.env.PYTHON||'python3',['scripts/quality_gate.py','review','notebook.json'],kit));
+assert.deepEqual(analysis,pythonAnalysis);
+const editorial=analysis.review;await writeFile(kit+'/review.json',JSON.stringify(editorial));
+assert.notEqual(execute(process.execPath,['scripts/notebook.mjs','finalize','node-output/'+nodeReport.html,'--source','notebook.json','--review','review.json'],kit,true).status,0);
+for(const chapter of editorial.chapters)for(const key of ['writing','teaching','facts','brief'])chapter[key]='Integration fixture: exercises the recorded-review gate, without claiming a substantive editorial audit.';
+for(const decision of editorial.decisions)decision.decision='Integration fixture: exercises finding acknowledgement without changing protected source.';
+editorial.browser.reason='This package fixture does not launch a browser; browser acceptance is tested separately.';
+await writeFile(kit+'/review.json',JSON.stringify(editorial));
+const delivered=JSON.parse(run(process.execPath,['scripts/notebook.mjs','finalize','node-output/'+nodeReport.html,'--source','notebook.json','--review','review.json'],kit,true));
+const pythonDelivered=JSON.parse(run(process.env.PYTHON||'python3',['scripts/quality_gate.py','finalize','node-output/'+nodeReport.html,'--source','notebook.json','--review','review.json'],kit));
+assert.equal(delivered.deliveryReady,true);assert.equal(pythonDelivered.deliveryReady,true);
+assert.equal(delivered.sourceSHA256,pythonDelivered.sourceSHA256);assert.equal(delivered.rulesSHA256,pythonDelivered.rulesSHA256);
 const changed=nodeHTML.replace('</head>','<style>body{background:red}</style></head>');
 assert.notEqual(changed,nodeHTML);await writeFile(kit+'/custom-reader.html',changed);
 for(const [command,args,nodeOnly] of [[process.execPath,['scripts/notebook.mjs','verify','custom-reader.html','--source','notebook.json'],true],[process.env.PYTHON||'python3',['scripts/verify_reader.py','custom-reader.html','--source','notebook.json'],false]]){
  const result=execute(command,args,kit,nodeOnly);assert.notEqual(result.status,0);assert.match(result.stderr,/Reader shell differs/);
 }
+const templatePath=kit+'/assets/reader.html',pinnedTemplate=await readFile(templatePath,'utf8');
+await writeFile(templatePath,pinnedTemplate.replace('</head>','<style>body{background:red}</style></head>'));
+for(const [command,args] of [[process.execPath,['scripts/notebook.mjs','verify','custom-reader.html','--source','notebook.json']],[process.env.PYTHON||'python3',['scripts/verify_reader.py','custom-reader.html','--source','notebook.json']]]){const result=execute(command,args,kit);assert.notEqual(result.status,0);assert.match(result.stderr,/fingerprint mismatch/);}
+await writeFile(templatePath,pinnedTemplate);
 const unmarked=JSON.parse(source);
 for(const chapter of unmarked.notebook.chapters)for(const page of chapter.pages)for(const block of page.blocks)if(block.study)delete block.study.marks;
 await writeFile(kit+'/unmarked.json',JSON.stringify(unmarked));
@@ -76,5 +94,5 @@ for(const args of [['scripts/build_reader.py','unmarked.json','--out','unmarked-
 run(process.execPath,['scripts/notebook.mjs','build','unmarked.json','--out','explicitly-unmarked','--allow-unmarked'],kit,true);
 assert.equal(JSON.parse(run(process.execPath,['scripts/notebook.mjs','verify','unmarked.html','--source','unmarked.json','--allow-unmarked'],kit,true)).studyMarks.required,false);
 await mkdir('docs/verification',{recursive:true});
-await writeFile('docs/verification/conversation-package-report.json',JSON.stringify({date:new Date().toISOString(),archive:'paper-notebook-conversation.zip',uploadArchive:'paper-notebook-upload.zip',entries:Object.keys(files).length,uploadWrapper:{innerMatches:true,overheadBytes:wrapperZIP.byteLength-runtimeZIP.byteLength},promptMatches:true,presetsMatch:true,pythonBuild:true,nodeBuild:true,nodeWithoutPython:true,readerShellVerified:true,customReaderRejected:true,studyMarksVerified:true,missingStudyMarksRejected:true,exactSourcePreserved:true,embeddedSourceMatches:true,zipMatches:true,validation,build,nodeReport,scope:'Local package extraction, independent Python and Node builds without fetching resources, Node path with only Node on PATH, exact reader/source verification, authored-emphasis checks and substituted-reader rejection. No remote chat service/API used; browser results are recorded separately.'},null,2));
+await writeFile('docs/verification/conversation-package-report.json',JSON.stringify({date:new Date().toISOString(),archive:'paper-notebook-conversation.zip',uploadArchive:'paper-notebook-upload.zip',entries:Object.keys(files).length,uploadWrapper:{innerMatches:true,overheadBytes:wrapperZIP.byteLength-runtimeZIP.byteLength},promptMatches:true,presetsMatch:true,pythonBuild:true,nodeBuild:true,nodeWithoutPython:true,readerShellVerified:true,customReaderRejected:true,studyMarksVerified:true,missingStudyMarksRejected:true,pinnedTemplateVerified:true,finalizeGateVerified:true,exactSourcePreserved:true,embeddedSourceMatches:true,zipMatches:true,validation,build,nodeReport,scope:'Local package extraction, independent Python and Node builds without fetching resources, Node path with only Node on PATH, exact reader/source verification, authored-emphasis checks and substituted-reader rejection. No remote chat service/API used; browser results are recorded separately.'},null,2));
 console.log('Conversation package: preset replies, Node-only/Python builds, exact reader/source verification and substituted-reader rejection passed.');

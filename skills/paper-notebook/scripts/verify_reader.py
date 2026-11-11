@@ -25,6 +25,8 @@ def shell(text):
 
 def verify(artifact, template, source=None, allow_unmarked=False):
     original = template.read_text(encoding='utf-8')
+    fingerprint=template.with_name('reader-shell.sha256')
+    if not fingerprint.is_file() or sha256(original.encode()).hexdigest()!=fingerprint.read_text().strip():raise ValueError('Bundled reader fingerprint mismatch; reacquire the published runtime instead of editing the template.')
     html = artifact.read_text(encoding='utf-8')
     if not all(marker in original for marker in ['page-surface', 'reader-content', 'StudyHand']):
         raise ValueError('The reference must be the bundled Paper Notebook assets/reader.html')
@@ -36,6 +38,9 @@ def verify(artifact, template, source=None, allow_unmarked=False):
     if not actual or any(face not in allowed for face in actual) or any(face not in actual for face in core):
         raise ValueError('The bundled reading fonts were removed or replaced')
     embedded = json.loads(DATA.search(html)[2])
+    from build_reader import validate,check_references
+    schema_path=Path(__file__).resolve().parents[1]/'references/notebook.schema.json'
+    schema=json.loads(schema_path.read_text());validate(embedded,schema,schema);check_references(embedded)
     if source is not None and embedded != json.loads(source.read_text(encoding='utf-8-sig')):
         raise ValueError('Embedded notebook data differs from the authored source')
     return {'valid': True, 'bundledReaderMatches': True,

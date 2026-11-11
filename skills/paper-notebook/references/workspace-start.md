@@ -1,9 +1,11 @@
 # Workspace workflow
 
+Read and execute [mandatory quality workflow](quality-workflow.md) and [Chinese writing rules](chinese-writing.md). Check runtime.json before reusing a cached release; a newer published runtime replaces managed files, preserving authored data. Use the finalize gate before delivery.
+
 Use this route for an agent with local files and command execution. Node is sufficient; do not require Python or a chat attachment tool.
 
 1. Reuse the current checkout or installed portable Skill. Read `SKILL.md` and the relevant content/component references. Keep existing materials and preference answers.
-2. Reuse `dist/index.html` and existing project dependencies when available. In a source-only checkout, install the declared dependencies and run the project build. A portable Skill/conversation package already contains the compiled reader and bundled Node CLI, so it needs no dependency installation. Do not clone or download another copy when the required files are present.
+2. Reuse `dist/index.html` and existing project dependencies when available. In a source-only checkout, install the declared dependencies and run the project build. A portable Skill/conversation package already contains the compiled reader and bundled Node CLI, so it needs no dependency installation. Reuse the current package after checking its release; download and verify the current runtime if the release changed.
 3. Author `notebook.json` from the blank source, including sparse `study.marks` anchored to meaningful exact phrases. In the repository run `node tools/notebook.mjs validate notebook.json` and `node tools/notebook.mjs build notebook.json --out output/my-notebook`. In a portable package use `node scripts/notebook.mjs` for the same commands. Check the report's `studyMarks` counts, kinds and unmarked pages. The default tutorial must include authored emphasis; `--allow-unmarked` is only for an explicit user request for plain content.
 4. Run `node tools/notebook.mjs verify output/my-notebook/<title>-v<revision>.html --source notebook.json` (portable package: `node scripts/notebook.mjs verify ...`). This checks the complete immutable reader against the local bundled template, including CSS/JS and the embedded source. Preserve the reader's textures, fonts, Cornell layout and controls.
 5. Inspect the generated HTML offline when browser tools are available and provide the actual workspace file path. Keep content/source IDs, user records and selected references intact. File attachment support is not required for this route.

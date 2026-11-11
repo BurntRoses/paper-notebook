@@ -11,9 +11,13 @@ import unicodedata
 from verify_reader import verify
 from study_quality import check_study_marks, block_text
 from content_review import review_content
+from build_metrics import build_metrics
+from hashlib import sha256
 
 
 def validate(value, rule, schema, path='$'):
+    if rule is True:return
+    if rule is False:raise ValueError(f'{path}: schema rejects value')
     if '$ref' in rule:
         target = schema
         for key in rule['$ref'][2:].split('/'):
@@ -28,6 +32,17 @@ def validate(value, rule, schema, path='$'):
     if 'const' in rule and value != rule['const']:fail('incorrect constant')
     if 'enum' in rule and value not in rule['enum']:fail('unknown option')
     for sub in rule.get('allOf',[]):validate(value,sub,schema,path)
+    for keyword in ['oneOf', 'anyOf']:
+        if keyword in rule:
+            matches=0
+            for sub in rule[keyword]:
+                try:validate(value,sub,schema,path);matches+=1
+                except ValueError:pass
+            if (keyword=='oneOf' and matches!=1) or (keyword=='anyOf' and matches==0):fail(keyword+': no unique matching branch' if keyword=='oneOf' else keyword+': no matching branch')
+    if 'not' in rule:
+        try:validate(value,rule['not'],schema,path)
+        except ValueError:pass
+        else:fail('not: forbidden value')
     if 'if' in rule:
         try:validate(value,rule['if'],schema,path)
         except ValueError:validate(value,rule.get('else',{}),schema,path)
@@ -70,21 +85,22 @@ def check_references(doc):
             add(page);pages.append(page);blockids={b['id'] for b in page['blocks']}
             for cue in page.get('cues',[]):
                 add(cue)
-                if cue.get('blockId') and cue['blockId'] not in blockids:raise ValueError('missing cue block')
+                if cue.get('blockId') and cue['blockId'] not in blockids:raise ValueError(f"{chapter['id']}/{page['id']}/cues/{cue['id']}.blockId: missing block {cue.get('blockId')}")
                 if cue.get('anchor'):
                     source=next((b for b in page['blocks'] if b['id']==cue.get('blockId')),None)
-                    if not source or cue['anchor'] not in block_text(source):raise ValueError('cue anchor must match source text')
+                    if not source or cue['anchor'] not in block_text(source):raise ValueError(f"{chapter['id']}/{page['id']}/cues/{cue['id']}.anchor: cue anchor must match source text")
             for block in page['blocks']:
                 add(block)
                 for key in ['items','steps','options','pairs']:
                     for item in block.get(key,[]):add(item)
+                if block['type']=='comparison' and (any(len(row)!=len(block['columns']) for row in block['rows']) or 'columnWidths' in block and len(block['columnWidths'])!=len(block['columns'])):raise ValueError(block['id']+': rows and columnWidths must match columns.length')
                 if block['type']=='image' and block.get('assetId') not in assets:raise ValueError('missing image asset')
                 if block['type']=='diagram':
                     nodes={n['id'] for n in block.get('nodes',[])}
                     if len(nodes)!=len(block.get('nodes',[])) or any(e['from'] not in nodes or e['to'] not in nodes for e in block.get('edges',[])):raise ValueError('invalid diagram edge or node')
                 if block.get('questionType') in ['single','multiple','truefalse']:
                     options={v['id'] for v in block.get('options',[])};solution=block.get('solution',[])
-                    if not solution or any(v not in options for v in solution) or (block['questionType']!='multiple' and len(solution)!=1):raise ValueError('invalid exercise solution')
+                    if not solution or any(v not in options for v in solution) or (block['questionType']!='multiple' and len(solution)!=1):raise ValueError(f"{chapter['id']}/{page['id']}/{block['id']}.solution: answer must reference actual option IDs")
     if len(pages)>500 or sum(len(p['blocks']) for p in pages)>5000:raise ValueError('split into smaller notebooks')
     for key in ['notes','annotations','doubts']:
         for item in doc['userState'][key]:add(item)
@@ -120,6 +136,8 @@ def build(source, template, schema_path, notices, output, allow_unmarked=False):
     validate(doc,schema,schema);check_references(doc)
     study_marks=check_study_marks(doc, allow_unmarked)
     template_text=template.read_text(encoding='utf-8')
+    fingerprint=template.with_name('reader-shell.sha256')
+    if not fingerprint.is_file() or sha256(template_text.encode()).hexdigest()!=fingerprint.read_text().strip():raise ValueError('Bundled reader fingerprint mismatch; reacquire the published runtime.')
     if re.search(r'src=[\"\'][^\"\']*/src/',template_text):raise ValueError('Use the bundled reader.html template')
     data=json.dumps(doc,ensure_ascii=False,separators=(',',':')).replace('<','\\u003c').replace('\u2028','\\u2028').replace('\u2029','\\u2029')
     result,count=re.subn(r'(<script\b[^>]*\bid=[\"\']notebook-data[\"\'][^>]*>)[\s\S]*?(</script>)',lambda m:m[1]+data+m[2],template_text)
@@ -134,7 +152,7 @@ def build(source, template, schema_path, notices, output, allow_unmarked=False):
     reader_check=verify(output/(stem+'.html'),template,source,allow_unmarked)
     with zipfile.ZipFile(output/(stem+'.zip'),'w',zipfile.ZIP_DEFLATED) as bundle:
         bundle.writestr(stem+'.html',result);bundle.writestr('notebook.json',text);bundle.writestr('THIRD_PARTY_NOTICES.txt',notice);bundle.writestr('打开我-README.txt','打开 '+stem+'.html 即可离线阅读；notebook.json 保留源数据。\nPaper Notebook · https://github.com/BurntRoses/paper-notebook')
-    report={'id':doc['notebook']['id'],'revision':doc['notebook']['revision'],'schemaValidated':True,'coreReferencesChecked':True,'bundledReaderMatches':reader_check['bundledReaderMatches'],'studyMarks':study_marks,'contentReview':review_content(doc),'browserInspected':False,'htmlBytes':len(result.encode()),'html':stem+'.html','zip':stem+'.zip'}
+    report={'id':doc['notebook']['id'],'revision':doc['notebook']['revision'],'schemaValidated':True,'coreReferencesChecked':True,'bundledReaderMatches':reader_check['bundledReaderMatches'],'studyMarks':study_marks,'anchors':study_marks['anchors'],'contentReview':review_content(doc),**build_metrics(doc,template_text),'browserInspected':False,'deliveryReady':False,'nextStep':'Review source-bound editorial findings, inspect layout when available, then run finalize_reader.py.','htmlBytes':len(result.encode()),'html':stem+'.html','zip':stem+'.zip'}
     (output/'build-report.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
     return report
 
