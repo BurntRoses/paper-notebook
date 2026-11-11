@@ -73,3 +73,12 @@
  html[lang=en] .reader-settings .settings-row{grid-template-columns:minmax(0,1fr)}
  html[lang=en] .reader-settings .settings-size{grid-template-columns:62px minmax(0,1fr) 24px}
 }
+/* Paper thumbnails are choices, with one whole-surface selected state. */
+.reader-settings{border:0;box-shadow:0 12px 48px var(--turn-shadow);border-radius:10px}
+.reader-settings .field-label{font-size:13px}.settings-section h3{font-size:14px}.settings-paper-status{font-size:12px}.settings-size-value{font-size:13px;font-variant-numeric:tabular-nums}
+.paper-preset{position:relative;padding:7px;border:0;border-radius:6px;gap:6px}
+.paper-preset:hover{border-color:transparent}.paper-preset[aria-checked=true]{background:var(--selected);border-color:transparent;box-shadow:none}
+.paper-preset[aria-checked=true]:after{content:'✓';position:absolute;right:5px;top:4px;display:grid;place-items:center;width:17px;height:17px;border-radius:50%;background:var(--accent);color:var(--accent-text);font:12px/1 system-ui}
+.paper-preset-name{font-size:12px}.paper-sample{height:34px}.reader-settings .settings-toggles{gap:4px 18px}.reader-settings .settings-toggles .field-toggle{gap:7px;min-height:38px}
+.reader-settings .settings-section:first-child{border-top:0;padding-top:12px}.reader-settings .dialog-head{padding-block:10px 4px}.reader-settings .dialog-body{padding-bottom:2px}
+@media(max-width:799px){.reader-settings{max-height:calc(100dvh - 80px)}.reader-settings .dialog-body{overscroll-behavior:contain}}

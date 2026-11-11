@@ -28,7 +28,7 @@ for (const [engine, type] of Object.entries({ chromium, webkit })) {
     assert.equal(await example('machine-learning').getAttribute('aria-pressed'), 'true');
     assert.equal(await page.locator('[data-example][aria-pressed=true]').count(), 1);
     assert.match(await page.locator('#preview-open').getAttribute('href'), /machine-learning\.html/);
-    assert.equal(await page.locator('.reader-preview').getAttribute('title'), '试读：机器学习入门');
+    assert.equal(await page.locator('.reader-preview').getAttribute('title'), '试读：线性回归与模型评估');
     assert.equal(await page.locator('.reader-preview').evaluate(frame => frame.contentWindow.reader.pageIndex), 1);
 
     await example('literature').evaluate(button => button.click()); await started;

@@ -1,6 +1,6 @@
 {
   "name": "paper-notebook-kit",
-  "version": "2.5.1",
+  "version": "2.5.2",
   "private": false,
   "type": "module",
   "description": "Create illustrated study notes with AI, annotate text and figures, practise and review.",
@@ -26,6 +26,7 @@
     "test:hosting": "node tests/hosting-browser.mjs",
     "test:film": "node tests/film-buffering-browser.mjs",
     "test:showcase": "node tests/showcase-browser.mjs",
+    "test:ui": "node tests/prescription-ui-browser.mjs",
     "test:runtime": "node tests/runtime-browser.mjs",
     "test:experience": "node tests/experience-browser.mjs",
     "test:workspace": "node tests/workspace-browser.mjs",

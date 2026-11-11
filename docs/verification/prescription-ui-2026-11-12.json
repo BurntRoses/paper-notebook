@@ -1,0 +1,238 @@
+{
+  "date": "2026-11-12",
+  "version": "2.5.2",
+  "scope": "Intro/home, reader settings, native actions, menus, responsive states and downloadable reader",
+  "engines": [
+    {
+      "engine": "chromium",
+      "menus": true,
+      "copySuccessAndDenied": true,
+      "noActionLayoutShift": true,
+      "retry": true,
+      "rovingExamples": true,
+      "defaultIvoryAndWenKai": true,
+      "paperSingleBoundary": true,
+      "responsiveSettings": true,
+      "reducedMotion": true,
+      "initialShellRetry": true,
+      "lightContrast": [
+        {
+          "pair": [
+            "--site-ink",
+            "--site-bg"
+          ],
+          "ratio": 7.5998604389288476
+        },
+        {
+          "pair": [
+            "--site-muted",
+            "--site-surface"
+          ],
+          "ratio": 5.7140905387275405
+        },
+        {
+          "pair": [
+            "--site-on-accent",
+            "--site-accent"
+          ],
+          "ratio": 6.968158475072463
+        },
+        {
+          "pair": [
+            "--site-ink",
+            "--site-selected"
+          ],
+          "ratio": 6.921199932861529
+        }
+      ],
+      "darkContrast": [
+        {
+          "pair": [
+            "--site-ink",
+            "--site-bg"
+          ],
+          "ratio": 11.606911330424188
+        },
+        {
+          "pair": [
+            "--site-muted",
+            "--site-surface"
+          ],
+          "ratio": 7.057856169645134
+        },
+        {
+          "pair": [
+            "--site-on-accent",
+            "--site-accent"
+          ],
+          "ratio": 7.961124637748037
+        },
+        {
+          "pair": [
+            "--site-ink",
+            "--site-selected"
+          ],
+          "ratio": 6.330356156148561
+        }
+      ],
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "menus": true,
+      "copySuccessAndDenied": true,
+      "noActionLayoutShift": true,
+      "retry": true,
+      "rovingExamples": true,
+      "defaultIvoryAndWenKai": true,
+      "paperSingleBoundary": true,
+      "responsiveSettings": true,
+      "reducedMotion": true,
+      "initialShellRetry": true,
+      "lightContrast": [
+        {
+          "pair": [
+            "--site-ink",
+            "--site-bg"
+          ],
+          "ratio": 7.5998604389288476
+        },
+        {
+          "pair": [
+            "--site-muted",
+            "--site-surface"
+          ],
+          "ratio": 5.7140905387275405
+        },
+        {
+          "pair": [
+            "--site-on-accent",
+            "--site-accent"
+          ],
+          "ratio": 6.968158475072463
+        },
+        {
+          "pair": [
+            "--site-ink",
+            "--site-selected"
+          ],
+          "ratio": 6.921199932861529
+        }
+      ],
+      "darkContrast": [
+        {
+          "pair": [
+            "--site-ink",
+            "--site-bg"
+          ],
+          "ratio": 11.606911330424188
+        },
+        {
+          "pair": [
+            "--site-muted",
+            "--site-surface"
+          ],
+          "ratio": 7.057856169645134
+        },
+        {
+          "pair": [
+            "--site-on-accent",
+            "--site-accent"
+          ],
+          "ratio": 7.961124637748037
+        },
+        {
+          "pair": [
+            "--site-ink",
+            "--site-selected"
+          ],
+          "ratio": 6.330356156148561
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "modelTests": 85,
+  "checkedSheets": 293,
+  "artifacts": [
+    {
+      "name": "paper-notebook",
+      "checkedSheets": 72,
+      "issues": [],
+      "sourceSHA256": "69577aec19d3acc0f6c361731ebf9bfe04d808e5f323fbb40513fcad6ad1c85f",
+      "artifactSHA256": "66ee8341a8aa8f9284b9e4c43250af06c1de5491be093e4a62e7c78ee41c0e43"
+    },
+    {
+      "name": "machine-learning",
+      "checkedSheets": 78,
+      "issues": [],
+      "sourceSHA256": "3bc9aa0ea1af3b42a8a4bbd850cabf80a27d60110b6f4dd28d749a179bc1fa3d",
+      "artifactSHA256": "37afc4ca1163dbaa969110f863dc9ef3bab3a1c5c805f3f9f2a090c2fe373770"
+    },
+    {
+      "name": "concept",
+      "checkedSheets": 28,
+      "issues": [],
+      "sourceSHA256": "486e987a0ac20dea394510b54183bc81c63a08a33b73019ae353ed1745c96910",
+      "artifactSHA256": "37759bc428860f118199c88d2f875c2beb8f02150bb8ca69730330444553c4ee"
+    },
+    {
+      "name": "formula",
+      "checkedSheets": 13,
+      "issues": [],
+      "sourceSHA256": "a7beae45c27c6cfecf31f9d196aa750aba75ac0d264af4281ee229338f90be93",
+      "artifactSHA256": "f5f9e08b4abff9f49bef97faf8bfed1b01861e3bd2d717f871bedbc321c6b5ea"
+    },
+    {
+      "name": "practice",
+      "checkedSheets": 11,
+      "issues": [],
+      "sourceSHA256": "cbcf677768910d770e9ba85a25a8380c649f924541c20272fcc4a034419c0db2",
+      "artifactSHA256": "0da3dac71c7284aca3123df8b703eb10206f20cd99ff58046cb3125688874585"
+    },
+    {
+      "name": "compound-interest",
+      "checkedSheets": 20,
+      "issues": [],
+      "sourceSHA256": "4cf8062b360f30e4509f124a5e8d363844c381fae73dfbe42dc7bf741666b8be",
+      "artifactSHA256": "58304421f0ce9495cbd9af3c08fd24bbaf286590cb432934e2c03f00fc5da766"
+    },
+    {
+      "name": "literature",
+      "checkedSheets": 12,
+      "issues": [],
+      "sourceSHA256": "2379f657fe47678a7b9fb574ddc342313ff6053f991b5e5e0a729397b7463eb0",
+      "artifactSHA256": "50d502d0edd39c0fd3619797848aeb113ca34cd6f59e49974955d799ccb9a8f8"
+    },
+    {
+      "name": "business",
+      "checkedSheets": 13,
+      "issues": [],
+      "sourceSHA256": "49266b03e0623dcb16b6ca3c6f6fc2b78b9f5ceae66043d1e9a0771a66e7fa28",
+      "artifactSHA256": "029ae836ba77c1c4e27a1d4ae987988c2cb4ef4d6a495cdafc156d6a31b25dcc"
+    },
+    {
+      "name": "programming",
+      "checkedSheets": 13,
+      "issues": [],
+      "sourceSHA256": "2c7bbda5d00ec3cbc684259dda56b92d6cbdbcc319a0194e5e621196e22f2a7b",
+      "artifactSHA256": "8c3d0a0161a0b8cffd96eba29b2150ed0ee1f2dc532004163c94aaf766b4016d"
+    },
+    {
+      "name": "paper-notebook-product",
+      "checkedSheets": 33,
+      "issues": [],
+      "sourceSHA256": "599770840b42fd43b1cef79547ab0e8207acb4c0ba8e9324389814032f32fe13",
+      "artifactSHA256": "467a29a263b4656d17db9fd9c1e9d94bc841de8aeb66154adef7ac2f00a08348"
+    }
+  ],
+  "hostingPassed": true,
+  "controlsPassed": true,
+  "showcasePassed": true,
+  "portablePackagePassed": true,
+  "defaults": {
+    "paperStyle": "ivory",
+    "font": "hand (WenKai)"
+  },
+  "preserved": "Existing explicitly chosen paper/font, paper-turn effects, authored content and personal records"
+}

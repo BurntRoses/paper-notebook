@@ -152,6 +152,14 @@ class ReaderApp {
     const files=el('details','reader-files'),fileTrigger=el('summary','reader-label-control');fileTrigger.title=this.t('文件与工具','Files and tools');fileTrigger.setAttribute('aria-label',fileTrigger.title);fileTrigger.setAttribute('aria-expanded','false');fileTrigger.append(icon('folder'),el('span','control-label',this.t('文件','Files')));files.append(fileTrigger);files.ontoggle=()=>fileTrigger.setAttribute('aria-expanded',String(files.open));
     const menu=el('div','reader-file-menu');for(const [name,action] of [[this.t('导入','Import'),()=>this.showImport()],[this.t('下载','Download'),()=>this.showExport()],[this.t('导出 PDF','Export PDF'),()=>this.showPDF()]] as [string,()=>void][])menu.append(button(name,()=>{files.open=false;action()}));
     menu.append(el('hr','reader-menu-divider'),button(this.t(this.immersive?'退出沉浸阅读':'沉浸阅读',this.immersive?'Exit immersive reading':'Immersive reading'),()=>{files.open=false;this.setImmersive()},'immersion-entry'),button(this.t('功能介绍','Features'),()=>{files.open=false;this.showGuide()}));files.append(menu);
+    files.addEventListener('keydown',e=>{
+      if(e.isComposing||e.altKey||e.ctrlKey||e.metaKey)return;
+      if(e.key==='Escape'&&files.open){e.preventDefault();e.stopPropagation();files.open=false;fileTrigger.focus();return;}
+      if(!['ArrowDown','ArrowUp','Home','End'].includes(e.key))return;
+      e.preventDefault();e.stopPropagation();files.open=true;
+      const items=[...menu.querySelectorAll<HTMLButtonElement>('button:not(:disabled)')],current=items.indexOf(document.activeElement as HTMLButtonElement);
+      const next=e.key==='Home'?0:e.key==='End'?items.length-1:current<0?(e.key==='ArrowDown'?0:items.length-1):(current+(e.key==='ArrowDown'?1:-1)+items.length)%items.length;items[next]?.focus();
+    });
     const star=el('a','reader-control reader-star');star.href='https://github.com/BurntRoses/paper-notebook';star.target='_blank';star.rel='noopener noreferrer';star.title=this.t('给 GitHub 项目加星','Star on GitHub');star.setAttribute('aria-label',star.title);star.append(icon('star'));
     const tools=el('div','reader-control-group reader-tools');tools.append(star,files);controls.append(browse,appearance,tools);
     header.append(brand,controls);appRoot.append(header);
@@ -368,9 +376,11 @@ class ReaderApp {
       for(const node of roots){let parent=node.parentElement;while(parent&&!roots.has(parent))parent=parent.parentElement;if(!parent)enhanceSelects(node);}
     }).observe(document.body,{childList:true,subtree:true});
     document.addEventListener('pointerdown',e=>{const target=e.target as HTMLElement;if(!target.closest('.reader-selection-toolbar'))this.clearToolbar();for(const files of appRoot.querySelectorAll<HTMLDetailsElement>('.reader-files[open]'))if(!files.contains(target))files.open=false;});
+    document.addEventListener('focusin',e=>{for(const files of appRoot.querySelectorAll<HTMLDetailsElement>('.reader-files[open]'))if(!files.contains(e.target as Node))files.open=false;});
     document.addEventListener('contextmenu',e=>{const target=e.target as HTMLElement;if(!target.closest('.reader-stage .page-surface')||target.closest('input,textarea,a,button,[contenteditable=true]'))return;e.preventDefault();this.showToolbar({x:e.clientX,y:e.clientY});});
     document.addEventListener('click',e=>{const cue=(e.target as HTMLElement).closest<HTMLElement>('[data-cue-block]');if(!cue)return;const pageId=cue.closest<HTMLElement>('[data-page]')!.dataset.page!,selector=cueSelector(this.d,pageId,{id:cue.dataset.cueId||'',text:cue.textContent||'',blockId:cue.dataset.cueBlock,anchor:cue.dataset.cueAnchor});if(selector)this.goSelector(pageId,selector);else this.goBlock(pageId,cue.dataset.cueBlock!);});
     document.addEventListener('keydown',e=>{
+      if(e.isComposing||e.keyCode===229)return;
       if(e.key==='Escape'){if(this.toolbar){this.clearToolbar();getSelection()?.removeAllRanges();return;}if(this.sidebarOpen&&!document.querySelector('dialog[open]')){this.toggleSidebar(false);return;}if(this.immersive&&!document.querySelector('dialog[open]')){this.setImmersive(false);return;}this.cancelGesture(true);this.clearToolbar();return}
       if(document.querySelector('dialog[open]')||(e.target as HTMLElement).closest('input,textarea,select,[contenteditable=true]'))return;
       // Scroll the focused viewport instead of turning pages. WebKit does not
@@ -391,7 +401,7 @@ class ReaderApp {
       if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='p'){e.preventDefault();this.showPDF();return;}
       if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='f'){e.preventDefault();this.sidebarTab='contents';this.toggleSidebar(true);appRoot.querySelector<HTMLInputElement>('.sidebar-search')?.focus();return}
       if(e.ctrlKey||e.metaKey||e.altKey)return;if(e.key.toLowerCase()==='i'){e.preventDefault();this.setImmersive();return;}
-      if((e.key===' '||e.key==='Enter')&&(e.target as HTMLElement).closest('button,a,summary,[role=button]'))return;
+      if((e.target as HTMLElement).closest('button,a,summary,[role=button],[role=radio],[role=menu]'))return;
       if(e.key===' '){e.preventDefault();this.turn(e.shiftKey?-1:1);return;}
       if(['ArrowRight','PageDown','Enter'].includes(e.key)||(this.verticalTurn&&e.key==='ArrowDown')){e.preventDefault();this.turn(1)}
       else if(['ArrowLeft','PageUp'].includes(e.key)||(this.verticalTurn&&e.key==='ArrowUp')){e.preventDefault();this.turn(-1)}

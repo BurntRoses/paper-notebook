@@ -58,3 +58,17 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
  .choice-segment{padding-inline:4px}
  .sheet-dialog .dialog-foot{padding:10px 16px}
 }
+/* Localized from 前端处方's native control states and segmented choices.
+   The component owns one focus indicator and a stable hit area. */
+:root{--control-fast:150ms;--control-panel:240ms;--control-ease:cubic-bezier(.2,.8,.2,1)}
+:is(.reader-control,.reader-files summary,.reader-file-menu button,.close-dialog,.choice-segment,.paper-preset,.primary,.quiet){transition:background var(--control-fast) var(--control-ease),color var(--control-fast) var(--control-ease),transform var(--control-fast) var(--control-ease)}
+:is(.reader-control,.reader-files summary,.close-dialog,.choice-segment,.paper-preset,.primary,.quiet):active:not(:disabled){transform:scale(.975)}
+:is(.reader-control,.reader-file-menu button,.choice-segment,.paper-preset,.primary,.quiet):disabled{opacity:.45;cursor:default}
+.reader-tools .reader-file-menu{padding:6px}.reader-file-menu button{display:flex;align-items:center;width:100%;min-height:40px;padding:8px 12px;text-align:left;border-radius:5px;font:14px/1.5 system-ui}
+.choice-segment{border:0;min-height:34px;font-size:13px;box-shadow:none}
+.choice-segment[aria-checked=true]{background:var(--selected);color:var(--ink);border-color:transparent;box-shadow:none;font-weight:600}
+.reader-settings [aria-label="正文字体"] [data-value=hand],.reader-settings [aria-label=Font] [data-value=hand]{font-family:StudyHand,'Kaiti SC',serif;font-size:15px}
+.reader-settings [aria-label="正文字体"] [data-value=serif],.reader-settings [aria-label=Font] [data-value=serif]{font-family:'Songti SC','SimSun',serif;font-size:14px}
+.reader-settings [aria-label="正文字体"] [data-value=sans],.reader-settings [aria-label=Font] [data-value=sans]{font-family:system-ui,'PingFang SC',sans-serif;font-size:14px}
+@media(pointer:coarse){.choice-segment{min-height:40px}.reader-file-menu button{min-height:44px}}
+@media(prefers-reduced-motion:reduce){:is(.reader-control,.reader-files summary,.reader-file-menu button,.close-dialog,.choice-segment,.paper-preset,.primary,.quiet){transition:none;transform:none}}

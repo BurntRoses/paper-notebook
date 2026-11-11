@@ -30,9 +30,11 @@
     playButton.innerHTML = video.paused ? glyphs.play : glyphs.pause; playButton.setAttribute('aria-label', video.paused ? '播放' : '暂停');
     muteButton.innerHTML = video.muted ? glyphs.muted : glyphs.volume; muteButton.setAttribute('aria-label', video.muted ? '取消静音' : '静音');
     progress.max = String(video.duration || 64); progress.value = String(video.currentTime || 0);
+    progress.disabled = !Number.isFinite(video.duration);
+    progress.setAttribute('aria-valuetext', `${clock(video.currentTime)} / ${clock(video.duration || 64)}`);
     timeLabel.textContent = `${clock(video.currentTime)} / ${clock(video.duration || 64)}`;
   };
-  playButton.addEventListener('click', () => { if (video.paused) void video.play().catch(() => {}); else video.pause(); });
+  playButton.addEventListener('click', () => { if (video.paused) void video.play().catch(() => message('无法播放，请重新加载视频。')); else video.pause(); });
   video.addEventListener('click', () => playButton.click());
   muteButton.addEventListener('click', () => { video.muted = !video.muted; });
   progress.addEventListener('input', () => { if (Number.isFinite(video.duration)) video.currentTime = Number(progress.value); });
@@ -41,11 +43,15 @@
     else if (screen.requestFullscreen) void screen.requestFullscreen();
     else video.webkitEnterFullscreen?.();
   });
+  document.addEventListener('fullscreenchange', () => {
+    const full = document.fullscreenElement === screen, button = controls.querySelector('[data-film-fullscreen]');
+    button.setAttribute('aria-label', full ? '退出全屏' : '全屏'); button.setAttribute('aria-pressed', String(full));
+  });
   for (const event of ['play', 'pause', 'timeupdate', 'durationchange', 'volumechange', 'loadedmetadata']) video.addEventListener(event, syncControls);
   syncControls();
   const orientation = matchMedia('(orientation: portrait)');
   const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-  const revision = '3.14';
+  const revision = '3.15';
   const hdCopies = new Map(), attempted = new Set();
   let active = '', quality = '', mode = 'auto', request = 0, switching = false;
   let wantedTime = 0, wantedPlay = false, sourceController, upgradeController, stallTimer, recentStalls = [];
@@ -62,7 +68,7 @@
     selector.setAttribute('aria-expanded', String(menu && !menu.hidden));
     const label = selector.querySelector('[data-quality-label]');
     if (label) label.textContent = mode === 'auto' ? `自动 · ${quality || '1080'}p` : `${mode}p`;
-    choices.forEach(item => item.setAttribute('aria-checked', String(item === selected)));
+    choices.forEach(item => {item.setAttribute('aria-checked', String(item === selected));item.tabIndex=item===selected?0:-1;});
     const autoQuality = menu?.querySelector('[data-auto-quality]');
     if (autoQuality) autoQuality.textContent = `${quality || '1080'}p`;
   };

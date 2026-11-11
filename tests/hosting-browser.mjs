@@ -17,7 +17,7 @@ try {
     const response = await page.goto(base + route);
     assert.equal(response.status(), 200, route);
     if(hash!==null)await page.waitForURL(url=>url.pathname===new URL(base).pathname&&url.hash===hash);
-    assert.deepEqual(await page.locator('.site-header nav a').allTextContents(),['制作笔记','在线试读','功能演示','GitHub ☆']);
+    assert.deepEqual(await page.locator('.site-header nav a').allTextContents(),['制作笔记','在线试读','功能演示']);
     assert.equal(await page.locator('#site-menu').isVisible(),false);
     assert.equal(await page.locator('.read-next,a[href="downloads/blank-notebook.html"]').count(),0);
     assert.doesNotMatch(await page.locator('body').innerText(),/笔记生成后，在这里阅读|聊天附件预览不等于/);
@@ -48,7 +48,7 @@ try {
   }
   checks.push(`All ${links.size} same-site navigation, image, film and download targets return HTTP 200`);
 
-  const toggle=page.getByRole('button',{name:'快速开始 ＋',exact:true});
+  const toggle=page.getByRole('button',{name:'快速开始',exact:true});
   await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));
   await toggle.click();assert.equal(await toggle.getAttribute('aria-expanded'),'true');
   await page.screenshot({path:out+'/quick-menu.png'});
@@ -205,7 +205,7 @@ try {
     const sc=await safari.newContext({viewport:{width:1440,height:1000},reducedMotion:'reduce'}),sp=await sc.newPage();
     sp.on('pageerror',error=>errors.push(error.message));
     await sp.goto(base+'chat-start.html#chat');await sp.waitForURL(url=>url.hash==='#chat'&&url.pathname===new URL(base).pathname);
-    await sp.getByRole('button',{name:'快速开始 ＋',exact:true}).click();
+    await sp.getByRole('button',{name:'快速开始',exact:true}).click();
     assert.ok(await sp.locator('#site-menu').isVisible());await sp.keyboard.press('Escape');assert.equal(await sp.locator('#site-menu').isVisible(),false);
     await sp.getByRole('button',{name:'复制给对话模型',exact:true}).click();
     await sp.waitForFunction(()=>/已复制|已选中/.test(document.querySelector('#status').textContent));

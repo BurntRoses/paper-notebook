@@ -14,12 +14,16 @@ export function showReaderSettings(host:SettingsHost){
  const existing=document.querySelector<HTMLDialogElement>('.reader-settings');if(existing){existing.close();return;}
  const t=(zh:string,en:string)=>host.en?en:zh,m=modal(t('阅读设置','Reading settings'),'',{modal:false});
  m.dialog.classList.add('reader-settings');m.dialog.setAttribute('aria-modal','false');
+ // Keep the panel below the real toolbar, including wrapped and zoomed layouts.
+ const place=()=>{const bottom=document.querySelector('.reader-header')?.getBoundingClientRect().bottom||60,top=Math.max(8,Math.min(bottom+8,innerHeight-160));m.dialog.style.top=top+'px';m.dialog.style.maxHeight=`calc(100dvh - ${top+8}px)`;};
+ place();window.addEventListener('resize',place);window.visualViewport?.addEventListener('resize',place);
  document.querySelector('.settings-entry')?.setAttribute('aria-expanded','true');
  const outside=(e:PointerEvent)=>{if(!m.dialog.contains(e.target as Node)&&!(e.target as HTMLElement).closest('.settings-entry'))m.close();};
  const escape=(e:KeyboardEvent)=>{if(e.key==='Escape'&&!e.defaultPrevented){e.preventDefault();e.stopPropagation();m.close();}};
  document.addEventListener('pointerdown',outside);m.dialog.addEventListener('keydown',escape);
- m.dialog.addEventListener('close',()=>{document.removeEventListener('pointerdown',outside);document.querySelector('.settings-entry')?.setAttribute('aria-expanded','false');host.remember();});
+ m.dialog.addEventListener('close',()=>{window.removeEventListener('resize',place);window.visualViewport?.removeEventListener('resize',place);document.removeEventListener('pointerdown',outside);document.querySelector('.settings-entry')?.setAttribute('aria-expanded','false');host.remember();});
  const change=<K extends keyof ReaderPresentation>(key:K,value:ReaderPresentation[K])=>{
+  if(host.profile[key]===value)return;
   const anchor=host.anchor();host.profile[key]=value;
   if(['theme','paperStyle','transition','motion'].includes(key))host.refreshAppearance();else host.render(anchor);
  };
@@ -58,7 +62,7 @@ export function showReaderSettings(host:SettingsHost){
   const b=button(name,()=>{change('paperStyle',preset.id);sync();},'paper-preset','');b.dataset.style=preset.id;b.setAttribute('role','radio');
   const sample=el('span','paper-sample');sample.dataset.paperStyle=resolvePaperStyle(preset.id,host.page.subject);sample.setAttribute('aria-hidden','true');sample.append(el('span','sample-lines'));
   b.append(sample,el('span','paper-preset-name',preset.id==='auto'?t('自动','Auto'):name));
-  b.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(e.key))return;e.preventDefault();e.stopPropagation();const next=e.key==='Home'?0:e.key==='End'?choices.length-1:(index+(['ArrowLeft','ArrowUp'].includes(e.key)?-1:1)+choices.length)%choices.length;choices[next].click();choices[next].focus();});
+  b.addEventListener('keydown',e=>{if(e.altKey||e.ctrlKey||e.metaKey||e.isComposing||!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(e.key))return;e.preventDefault();e.stopPropagation();const next=e.key==='Home'?0:e.key==='End'?choices.length-1:(index+(['ArrowLeft','ArrowUp'].includes(e.key)?-1:1)+choices.length)%choices.length;choices[next].click();choices[next].focus();});
   choices.push(b);palette.append(b);
  }sync();paper.append(palette,
   inline(choiceGroup(t('明暗模式','Appearance'),[['paper-light',t('浅色','Light')],['paper-night',t('深色','Dark')]],host.profile.theme,v=>change('theme',v as ReaderPresentation['theme'])))

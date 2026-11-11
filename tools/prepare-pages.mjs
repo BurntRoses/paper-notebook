@@ -19,7 +19,7 @@ await rm(site, { recursive: true, force: true });
 await mkdir(site+'downloads', {recursive:true});
 await mkdir(site+'promo/story', {recursive:true});
 await mkdir(site+'previews', {recursive:true});
-for(const path of ['start.html','promo-motion.html','site.css','site-nav.js','create-notebook.js','responsive-film.js','paper-grain.svg','paper-notebook-prompt.txt'])await cp(publicDir+path,site+path);
+for(const path of ['start.html','promo-motion.html','site.css','site-ui.js','site-nav.js','create-notebook.js','responsive-film.js','paper-grain.svg','paper-notebook-prompt.txt'])await cp(publicDir+path,site+path);
 for(const path of ['THIRD_PARTY_NOTICES.txt','LICENSE'])await cp(root+path,site+path);
 for(const name of ['blank-notebook','paper-notebook','paper-notebook-product','machine-learning','concept','formula','practice','compound-interest','literature','business','programming'])await cp(dist+'downloads/'+name+'.html',site+'downloads/'+name+'.html');
 for(const name of ['machine-learning','compound-interest','concept','literature','business','programming'])await cp(dist+'downloads/'+name+'.json',site+'previews/'+name+'.json');

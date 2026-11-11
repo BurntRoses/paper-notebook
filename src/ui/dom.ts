@@ -13,7 +13,7 @@ export function choiceGroup(name:string,options:[string,string][],value:string,c
  group.setAttribute('role','radiogroup');group.setAttribute('aria-label',uiText(name));
  const buttons=options.map(([key,text],i)=>{
   const b=button(text,()=>{if(value===key)return;value=key;sync();change(key);},'choice-segment');b.setAttribute('role','radio');b.dataset.value=key;
-  b.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(e.key))return;e.preventDefault();e.stopPropagation();const next=e.key==='Home'?0:e.key==='End'?buttons.length-1:(i+(['ArrowLeft','ArrowUp'].includes(e.key)?-1:1)+buttons.length)%buttons.length;buttons[next].click();buttons[next].focus();});return b;
+  b.addEventListener('keydown',e=>{if(e.altKey||e.ctrlKey||e.metaKey||e.isComposing||!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(e.key))return;e.preventDefault();e.stopPropagation();const rtl=getComputedStyle(group).direction==='rtl',step=(['ArrowLeft','ArrowUp'].includes(e.key)?-1:1)*(rtl&&['ArrowLeft','ArrowRight'].includes(e.key)?-1:1);const next=e.key==='Home'?0:e.key==='End'?buttons.length-1:(i+step+buttons.length)%buttons.length;buttons[next].click();buttons[next].focus();});return b;
  });
  const sync=()=>{const selected=buttons.some(b=>b.dataset.value===value);buttons.forEach((b,i)=>{const checked=b.dataset.value===value;b.setAttribute('aria-checked',String(checked));b.tabIndex=checked||!selected&&i===0?0:-1;});};
  sync();group.append(...buttons);field.append(caption,group);return field;
