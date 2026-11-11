@@ -1,3 +1,4 @@
+import { searchNotebook } from './search';
 import './style.css';
 import './math.css';
 import './paper.css';
@@ -32,9 +33,9 @@ import { startReaderTour, stopReaderTour } from './tour';
 import { indexForReadingAnchor, indexForBookmark } from './anchors';
 import { authoredAnnotations, distinctPassages } from '../model/study';
 import { PaperEditor, readingMarks } from './editor';
-import { flashPassage } from './ink';
+import { flashPassage, revealPassage } from './ink';
 import { readerGeometry } from './geometry';
-import { saveDraft, loadDraft } from '../model/store';
+import { saveDraft, loadDraft, restoreDraft } from '../model/store';
 import { unzipSync, strFromU8 } from 'fflate';
 import { captureShell, exportHTML, exportBundle, exportPreview, pagePNG, notices } from '../io/export';
 import { importText, exportMarkdown } from '../io/markdown';
@@ -84,8 +85,7 @@ class ReaderApp {
     // Font subsets may emit several loadingdone events while a new page is mounted.
     // One ready pass is enough to correct pagination without replacing controls in a loop.
     document.fonts.ready.then(()=>{if(this.fontsCalibrated)return;this.fontsCalibrated=true;const a=this.anchor();this.invalidate();this.render(a);if(new URLSearchParams(location.search).has('visual'))this.showVisualPage();});
-    const noDraft=!this.persistDrafts;
-    if(!noDraft)loadDraft(d.notebook.id).then(draft=>{if(this.d===d&&draft&&draft.userState.updatedAt>d.userState.updatedAt){this.d=parseDocument(draft).document;this.profile={...this.profile,...this.d.extensions.readerProfile as object};this.rightSidebarOpen=this.profile.marginNotes??this.rightSidebarOpen;this.invalidate();this.paginate();const saved=structuredClone(this.d.userState.readingAnchor);this.pageIndex=this.indexForAnchor(saved||{pageId:this.d.userState.lastPageId});this.render();if(saved)this.restoreSaved(saved);toast('已恢复本机草稿');}this.ready=true;}).catch(()=>{this.ready=true;toast('本机草稿不可用，请及时导出副本。',true);});else this.ready=true;
+    this.ready=true;
     if(location.protocol==='file:'&&!new URLSearchParams(location.search).has('demo')){try{if(!localStorage.getItem('paper-notebook-guide-v4'))requestAnimationFrame(()=>this.showGuide());}catch{requestAnimationFrame(()=>this.showGuide());}}
     if(loadError)toast(this.t('内嵌内容无效，当前显示示例。可重新导入源文件。','Embedded data is invalid. A sample is open; import your source again.'),true);
   }
@@ -117,9 +117,10 @@ class ReaderApp {
   }
   private finishDocumentSession(){
     this.cancelTurn();this.remember();clearTimeout(this.saveTick);clearTimeout(this.scrollSaveTick);
-    if(this.ready&&this.persistDrafts)void this.persistDraft();
+    const saved=this.ready&&this.persistDrafts?this.persistDraft():Promise.resolve();
     stopReaderTour();for(const dialog of document.querySelectorAll<HTMLDialogElement>('dialog[open]'))dialog.close();
     this.editor.cancel();getSelection()?.removeAllRanges();
+    return saved;
   }
   anchor():Anchor{
     const nodes=[...appRoot.querySelectorAll<HTMLElement>('.reader-stage > .reader-page-wrap .reader-page [data-block]')];
@@ -204,14 +205,27 @@ class ReaderApp {
     const tabs=el('nav','sidebar-tabs');for(const [id,zh,en] of [['contents','目录','Contents'],['highlights','重点','Key passages'],['records','记录','Records'],['sources','来源','Sources']] as const){const b=button(this.t(zh,en),()=>{this.sidebarTab=id;this.refreshSidebar()},'sidebar-tab');b.setAttribute('aria-pressed',String(this.sidebarTab===id));tabs.append(b)}aside.append(tabs);
     if(this.sidebarTab==='contents'){
       const search=input(this.search,this.t('搜索正文','Search text'));search.type='search';search.setAttribute('aria-label',this.t('搜索正文','Search text'));search.className='sidebar-search';
-      const list=el('div','sidebar-list');const fill=()=>{list.replaceChildren();if(this.search.trim()){
-        const query=this.search.toLocaleLowerCase();let count=0;
-        this.pages.forEach(p=>p.blocks.forEach(b=>{if((p.title+' '+(b.title||'')+' '+textOf(b)).toLocaleLowerCase().includes(query)){count++;const hit=button(b.title||textOf(b).slice(0,70)||p.title,()=>this.goBlock(p.id,b.id),'sidebar-result');hit.append(el('span','result-page',p.title));list.append(hit)}}));
-        if(!count)list.append(el('p','empty-state',this.t('没有匹配内容','No results')));
+      const list=el('div','sidebar-list');list.id='reader-search-results';search.setAttribute('aria-controls',list.id);
+      let resultOffset=0,searchTimer=0;
+      const fill=()=>{list.replaceChildren();if(this.search.trim()){
+        const {hits,total}=searchNotebook(this.d,this.search,resultOffset),status=el('p','search-count',this.t(`${total} 处匹配`,`${total} matches`));status.setAttribute('role','status');list.append(status);
+        for(const hit of hits){
+          const result=button('',()=>hit.selector?this.goSelector(hit.pageId,hit.selector):this.goBlock(hit.pageId,hit.blockId||''),'sidebar-result','');
+          result.setAttribute('aria-label',`${hit.match} · ${hit.pageTitle}`);
+          result.append(document.createTextNode(hit.before),el('mark','search-match',hit.match),document.createTextNode(hit.after),el('span','result-page',hit.pageTitle));list.append(result);
+        }
+        if(!total)list.append(el('p','empty-state',this.t('没有匹配内容','No results')));
+        if(total>40){const pages=el('nav','search-pagination');pages.setAttribute('aria-label',this.t('搜索结果翻页','Search result pages'));
+          const move=(delta:number)=>{resultOffset+=delta;fill();aside.scrollTop=0;list.querySelector<HTMLButtonElement>('.sidebar-result')?.focus({preventScroll:true});};
+          const previous=button(this.t('上一组','Previous results'),()=>move(-40),'quiet'),next=button(this.t('下一组','Next results'),()=>move(40),'quiet');previous.disabled=resultOffset===0;next.disabled=resultOffset+hits.length>=total;
+          pages.append(previous,el('span','',`${resultOffset+1}–${resultOffset+hits.length} / ${total}`),next);list.append(pages);
+        }
       }else this.d.notebook.chapters.forEach(c=>{const section=el('section','sidebar-chapter');section.append(el('h2','',c.title));c.pages.forEach(p=>{const b=button(p.title,()=>this.goPage(this.pages.findIndex(s=>s.id===p.id),true),'sidebar-page');b.dataset.pageLink=p.id;if(this.d.userState.bookmarks.some(x=>(typeof x==='string'?x:x.pageId)===p.id)){const flag=el('span','index-bookmark','⚑');flag.setAttribute('aria-label','有书签');b.append(flag);}b.setAttribute('aria-current',p.id===this.page.id?'page':'false');section.append(b);
         for(const block of p.blocks.filter(b=>['formula','diagram','chart','exercise','comparison'].includes(b.type)))section.append(button(this.blockLabel(block),()=>this.goBlock(p.id,block.id),'sidebar-block'));
       });list.append(section)})};
-      search.oninput=()=>{this.search=search.value;fill()};aside.append(search,list);fill();
+      search.oninput=()=>{this.search=search.value;resultOffset=0;clearTimeout(searchTimer);searchTimer=window.setTimeout(()=>{if(aside.isConnected)fill();},100);};
+      search.onkeydown=e=>{if(e.isComposing||e.keyCode===229||e.altKey||e.ctrlKey||e.metaKey)return;if(e.key==='Enter'){e.preventDefault();clearTimeout(searchTimer);fill();list.querySelector<HTMLButtonElement>('.sidebar-result')?.click();}else if(e.key==='ArrowDown'){e.preventDefault();clearTimeout(searchTimer);fill();list.querySelector<HTMLButtonElement>('.sidebar-result')?.focus();}};
+      list.addEventListener('keydown',e=>{if(e.isComposing||e.keyCode===229||e.altKey||e.ctrlKey||e.metaKey||!(e.target as HTMLElement).matches('.sidebar-result')||!['ArrowUp','ArrowDown','Home','End'].includes(e.key))return;e.preventDefault();e.stopPropagation();const results=[...list.querySelectorAll<HTMLButtonElement>('.sidebar-result')],at=results.indexOf(e.target as HTMLButtonElement),next=e.key==='Home'?0:e.key==='End'?results.length-1:at+(e.key==='ArrowUp'?-1:1);if(next<0)search.focus();else results[Math.min(next,results.length-1)]?.focus();});aside.append(search,list);fill();
     }else if(this.sidebarTab==='highlights'){
       for(const page of pagesOf(this.d)){
         const marks=distinctPassages([...authoredAnnotations(this.d,page.id),...this.marks.filter(a=>a.pageId===page.id&&a.kind!=='freehand'&&(!a.status||a.status==='resolved'))]);if(!marks.length)continue;
@@ -262,7 +276,7 @@ class ReaderApp {
     const note:Note={id:uid('note'),pageId:first?.pageId||page.id,blockId:first?.selector.blockId,selector:first?.selector,anchors:parts.length?structuredClone(parts):undefined,title:'',text:'',back:'',material:'transparent',seed:Math.floor(Math.random()*2147483646)+1,x:20,y:20,z:this.d.userState.notes.length+1,face:'front',attached:!!first,collapsed:true,surface:'page',region,marginPosition:position,sheet:sheet.part};
     this.d.userState.notes.push(note);getSelection()?.removeAllRanges();this.editor.selection=[];this.clearToolbar();
     if(region==='right'&&!this.rightSidebarOpen){this.rightSidebarOpen=true;this.render(this.anchor());}else if(region==='bottom'&&this.profile.bottomNotes===false){this.profile.bottomNotes=true;this.render(this.anchor());}else this.refreshWorkspace();this.remember();
-    requestAnimationFrame(()=>{const field=appRoot.querySelector<HTMLTextAreaElement>(`[data-note="${CSS.escape(note.id)}"] textarea`);field?.scrollIntoView({block:'nearest'});field?.focus({preventScroll:true});});
+    requestAnimationFrame(()=>{const field=appRoot.querySelector<HTMLTextAreaElement>(`[data-note="${CSS.escape(note.id)}"] textarea`),active=document.activeElement;if(!field||active&&active!==document.body&&active!==field&&active.isConnected&&!active.matches('.paper-notes,.paper-bottom'))return;field.scrollIntoView({block:'nearest'});if(active!==field)field.focus({preventScroll:true});});
   }
   closeWorkspace(){this.rightSidebarOpen=false;this.render(this.anchor());appRoot.querySelector<HTMLElement>('.workspace-entry')?.focus({preventScroll:true});}
   showFollowupExport(){
@@ -363,7 +377,7 @@ class ReaderApp {
     const resolved=resolveSelector(this.d,selector);
     if(resolved.status!=='resolved'){toast(this.t('原文待重新关联，记录仍保留。','The passage needs relinking. Your record is kept.'));return;}
     const index=this.indexForAnchor({pageId,blockId:selector.blockId,textOffset:resolved.start});this.goPage(index,true);
-    requestAnimationFrame(()=>{const target=this.anchorNode({pageId,blockId:selector.blockId,textOffset:resolved.start});target?.focus({preventScroll:true});const paper=target?.closest<HTMLElement>('.page-surface');if(paper)flashPassage(paper,this.d,selector);});
+    requestAnimationFrame(()=>{const target=this.anchorNode({pageId,blockId:selector.blockId,textOffset:resolved.start});target?.focus({preventScroll:true});const paper=target?.closest<HTMLElement>('.page-surface');if(paper){revealPassage(paper,this.d,selector);this.editor.paint();flashPassage(paper,this.d,selector);}});
   }
   updateProgress(){
     appRoot.querySelectorAll<HTMLElement>('[data-page-link]').forEach(n=>n.setAttribute('aria-current',n.dataset.pageLink===this.page.id?'page':'false'));
@@ -488,7 +502,7 @@ class ReaderApp {
   // The website swaps only lesson data; the bundled reader and fonts stay loaded.
   openPreview(document:NotebookDocument){
     const parsed=parseDocument(document).document;
-    this.finishDocumentSession();this.persistDrafts=false;
+    void this.finishDocumentSession();this.persistDrafts=false;
     this.sessionBooks.set(this.d.notebook.id,this.d);
     const next=this.sessionBooks.get(parsed.notebook.id)||parsed;
     const {fontSize,language,motion}=this.d.userState.preferences;Object.assign(next.userState.preferences,{fontSize,language,motion});
@@ -512,7 +526,7 @@ class ReaderApp {
     const file=el('input');file.type='file';file.accept='.md,.txt,.json,.zip,.html';file.setAttribute('aria-label',this.t('选择教程文件','Choose tutorial file'));const preview=el('div','import-preview');preview.setAttribute('role','status');
     let candidate:NotebookDocument|null=null;let update=false,readVersion=0;
     m.dialog.addEventListener('close',()=>{readVersion++;});
-    const accept=button(this.t('导入','Import'),()=>{if(!candidate)return;const next=candidate;this.finishDocumentSession();this.persistDrafts=true;this.sessionBooks.set(this.d.notebook.id,this.d);this.d=next;this.editor.reset();this.profile={...this.profile,...next.extensions.readerProfile as object};this.rightSidebarOpen=this.profile.marginNotes??this.rightSidebarOpen;this.invalidate();this.paginate();this.sessionBooks.set(next.notebook.id,next);const saved=structuredClone(next.userState.readingAnchor);this.pageIndex=this.indexForAnchor(saved||{pageId:next.userState.lastPageId});this.pageHeights.clear();this.search='';setLocale(this.en?'en':'zh');this.sidebarTab='contents';this.render();window.scrollTo(0,0);if(saved)this.restoreSaved(saved)},'primary');accept.disabled=true;
+    const accept=button(this.t('导入','Import'),async()=>{if(!candidate||accept.disabled)return;accept.disabled=true;const next=candidate;await this.finishDocumentSession();this.persistDrafts=true;this.sessionBooks.set(this.d.notebook.id,this.d);this.d=next;this.editor.reset();this.profile={...this.profile,...next.extensions.readerProfile as object};this.rightSidebarOpen=this.profile.marginNotes??this.rightSidebarOpen;this.invalidate();this.paginate();this.sessionBooks.set(next.notebook.id,next);const saved=structuredClone(next.userState.readingAnchor);this.pageIndex=this.indexForAnchor(saved||{pageId:next.userState.lastPageId});this.pageHeights.clear();this.search='';setLocale(this.en?'en':'zh');this.sidebarTab='contents';this.render();window.scrollTo(0,0);if(saved)this.restoreSaved(saved)},'primary');accept.disabled=true;
     const inspect=(source:string)=>{candidate=null;accept.disabled=true;preview.replaceChildren();try{
       const parsed=importText(source);let next=parsed.document;update=next.notebook.id===this.d.notebook.id&&next.extensions.baseRevision!==undefined;
       if(update){const merged=mergeUpdate(this.d,next);next=merged.document;parsed.warnings.push(...merged.warnings);}
@@ -615,4 +629,15 @@ class ReaderApp {
     for(const [name,url] of [['项目首页','https://burntroses.github.io/paper-notebook/'],['制作笔记','https://burntroses.github.io/paper-notebook/#create'],['GitHub','https://github.com/BurntRoses/paper-notebook'],['使用许可','https://github.com/BurntRoses/paper-notebook/blob/main/LICENSE']]){const a=el('a','',name);a.href=url;a.target='_blank';a.rel='noopener noreferrer';links.append(a);}m.body.append(links);
     const details=el('details');details.append(el('summary','','第三方许可'),el('pre','license-text',notices));m.body.append(details);m.foot.append(button('继续阅读',m.close,'primary'))}
 }
-new ReaderApp(embedded||structuredClone(introNotebook));
+async function startReader(){
+  const source=embedded||structuredClone(introNotebook);
+  if(new URLSearchParams(location.search).has('demo')){new ReaderApp(source);return;}
+  const en=source.userState.preferences.language==='en';
+  const status=el('p','reader-startup',en?'Opening notebook…':'正在打开笔记…');status.setAttribute('role','status');appRoot.append(status);appRoot.setAttribute('aria-busy','true');
+  let document=source,failed=false;
+  try{document=restoreDraft(source,await loadDraft(source.notebook.id));}catch{failed=true;}
+  appRoot.removeAttribute('aria-busy');new ReaderApp(document);
+  if(failed)toast(en?'Local draft unavailable. Download a copy after editing.':'本机草稿不可用，请在编辑后下载副本。',true);
+  else if(document!==source)toast(en?'Local draft restored.':'已恢复本机草稿');
+}
+void startReader();

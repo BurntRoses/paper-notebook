@@ -36,7 +36,7 @@
   function roving(buttons, selected, activate) {
     const sync = () => buttons.forEach((b, i) => b.tabIndex = b === selected() || !selected() && i === 0 ? 0 : -1);
     for (const b of buttons) b.addEventListener('keydown', e => {
-      if (e.altKey || e.ctrlKey || e.metaKey || e.isComposing || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
+      if (e.altKey || e.ctrlKey || e.metaKey || e.isComposing || e.keyCode === 229 || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
       e.preventDefault(); const current = buttons.indexOf(b), rtl = getComputedStyle(b.parentElement).direction === 'rtl';
       const step = (e.key === 'ArrowRight' ? 1 : -1) * (rtl ? -1 : 1);
       const next = e.key === 'Home' ? 0 : e.key === 'End' ? buttons.length - 1 : (current + step + buttons.length) % buttons.length;

@@ -28,6 +28,19 @@ export function selectorRects(paper:HTMLElement,d:NotebookDocument,selector:Sele
   const offset=Number(span.dataset.offset||0),start=Math.max(0,resolved.start-offset),end=Math.min(span.textContent?.length||0,resolved.end-offset);if(end>start){const r=rangeFor(span,start,end);if(r)rects.push(...r.getClientRects());}
  }return lineRects(rects);
 }
+/** Reveal a match inside a scrollable code/table without moving the paper itself. */
+export function revealPassage(paper:HTMLElement,d:NotebookDocument,selector:Selector){
+ const block=paper.querySelector<HTMLElement>(`[data-block="${CSS.escape(selector.blockId)}"]`);if(!block)return;
+ const source=blocksOf(d).find(b=>b.id===selector.blockId);if(!source)return;
+ const resolved=resolveInText(textOf(source),selector),span=[...block.querySelectorAll<HTMLElement>('.ink-text')].find(n=>{const offset=Number(n.dataset.offset||0);return resolved.start>=offset&&resolved.start<offset+(n.textContent?.length||0);});
+ for(let node:HTMLElement|null=span?.parentElement||block;node&&node!==paper;node=node.parentElement){
+  const style=getComputedStyle(node),rect=selectorRects(paper,d,selector)[0];if(!rect)break;
+  const box=node.getBoundingClientRect(),sx=box.width/node.offsetWidth||1,sy=box.height/node.offsetHeight||1;
+  const delta=(a:number,b:number,min:number,max:number)=>a<min?a-min:b>max?Math.min(a-min,b-max):0;
+  if(['auto','scroll'].includes(style.overflowY)&&node.scrollHeight>node.clientHeight)node.scrollTop+=delta(rect.top,rect.bottom,box.top+12*sy,box.bottom-12*sy)/sy;
+  if(['auto','scroll'].includes(style.overflowX)&&node.scrollWidth>node.clientWidth)node.scrollLeft+=delta(rect.left,rect.right,box.left+12*sx,box.right-12*sx)/sx;
+ }
+}
 export function flashPassage(paper:HTMLElement,d:NotebookDocument,selector:Selector){
  const overlay=paper.querySelector('.ink-overlay');if(!overlay)return;
  overlay.querySelector('.passage-located')?.remove();

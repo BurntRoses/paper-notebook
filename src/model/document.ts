@@ -1,4 +1,4 @@
-import validate from './notebook-validator.cjs';
+import validate from './notebook-validator.js';
 import { migrateInk } from './paper';
 import { blocksOf, pagesOf, textOf, defaultPreferences, type NotebookDocument, type Selector, type Block, type Answer } from './types';
 export function parseDocument(raw: unknown): { document: NotebookDocument; warnings: string[] } {

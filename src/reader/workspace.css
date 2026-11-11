@@ -69,3 +69,5 @@
    controls and text fields keep their normal focus treatment. */
 .page-surface :is(.oversize-object,.table-scroll,.block-code pre,.paper-notes,.paper-bottom,.cornell-cue):focus-visible{outline:0!important;outline-offset:0;box-shadow:none}
 .page-surface .workspace-note:focus-within{outline:0}
+.note-deleted{display:flex;align-items:center;justify-content:space-between;gap:8px;font:13px/1.6 system-ui;color:var(--muted)}
+.note-undo{min-height:32px;padding:4px 8px;color:var(--accent);font-weight:600}

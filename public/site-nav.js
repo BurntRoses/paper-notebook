@@ -31,9 +31,9 @@
   const close=(restore=false)=>{nav.hidden=true;button.setAttribute('aria-expanded','false');if(restore)button.focus({preventScroll:true});};
   const open=()=>{nav.hidden=false;button.setAttribute('aria-expanded','true');};
   button.addEventListener('click',()=>{if(nav.hidden)open();else close();});
-  button.addEventListener('keydown',event=>{if(!['ArrowDown','ArrowUp'].includes(event.key))return;event.preventDefault();open();const links=nav.querySelectorAll('a');links[event.key==='ArrowDown'?0:links.length-1]?.focus();});
+  button.addEventListener('keydown',event=>{if(event.isComposing||event.keyCode===229||event.altKey||event.ctrlKey||event.metaKey||!['ArrowDown','ArrowUp'].includes(event.key))return;event.preventDefault();open();const links=nav.querySelectorAll('a');links[event.key==='ArrowDown'?0:links.length-1]?.focus();});
   nav.addEventListener('keydown',event=>{
-    if(event.altKey||event.ctrlKey||event.metaKey||!['ArrowDown','ArrowUp','Home','End'].includes(event.key))return;
+    if(event.isComposing||event.keyCode===229||event.altKey||event.ctrlKey||event.metaKey||!['ArrowDown','ArrowUp','Home','End'].includes(event.key))return;
     event.preventDefault();const links=[...nav.querySelectorAll('a')],current=links.indexOf(document.activeElement);
     const next=event.key==='Home'?0:event.key==='End'?links.length-1:(current+(event.key==='ArrowDown'?1:-1)+links.length)%links.length;links[next]?.focus();
   });
@@ -60,7 +60,7 @@
     for(const item of examples)item.setAttribute('aria-pressed',String(item===option));syncExamples();
     if(!option||!preview)return;
     preview.title=`试读：${option.dataset.exampleTitle}`;
-    if(openPreview)openPreview.href=`downloads/${option.dataset.example}.html?demo&v=3.17`;
+    if(openPreview)openPreview.href=`downloads/${option.dataset.example}.html?demo&v=3.18`;
   };
   const previewDocuments=new Map();
   const fetchPreview=name=>{
@@ -68,7 +68,7 @@
     if(!entry){
       const controller=new AbortController();entry={controller,settled:false};
       const timeout=setTimeout(()=>controller.abort(),20000);
-      entry.promise=fetch(`previews/${name}.json?v=3.17`,{signal:controller.signal,priority:'high'}).then(response=>{if(!response.ok)throw new Error('Preview unavailable');return response.json();}).then(document=>{entry.settled=true;return document;}).catch(error=>{if(previewDocuments.get(name)===entry)previewDocuments.delete(name);throw error;}).finally(()=>clearTimeout(timeout));
+      entry.promise=fetch(`previews/${name}.json?v=3.18`,{signal:controller.signal,priority:'high'}).then(response=>{if(!response.ok)throw new Error('Preview unavailable');return response.json();}).then(document=>{entry.settled=true;return document;}).catch(error=>{if(previewDocuments.get(name)===entry)previewDocuments.delete(name);throw error;}).finally(()=>clearTimeout(timeout));
       previewDocuments.set(name,entry);
     }
     return entry.promise;

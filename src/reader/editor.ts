@@ -16,7 +16,7 @@ export class PaperEditor {
   root.addEventListener('pointerdown',e=>{this.down={x:e.clientX,y:e.clientY};});
   root.addEventListener('pointerup',e=>{if(e.button!==0)return;const down=this.down;this.down=null;if(!down||Math.hypot(e.clientX-down.x,e.clientY-down.y)>6||(e.target as HTMLElement).closest('button,input,select,textarea,dialog,.reader-selection-toolbar'))return;window.setTimeout(()=>{if(getSelection()?.toString())return;this.inspectAt(e.clientX,e.clientY)},0);});
   document.addEventListener('pointerdown',e=>{if(this.inspector&&!this.inspector.contains(e.target as Node))this.closeInspector();});
-  document.addEventListener('keydown',e=>{if(document.querySelector('dialog[open]')||(e.target as HTMLElement).closest('input,textarea,select'))return;if((e.key==='Delete'||e.key==='Backspace')&&this.selected.length){e.preventDefault();this.removeSelected();return;}if(e.key==='Escape')this.closeInspector();if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?this.redo():this.undo();}});
+  document.addEventListener('keydown',e=>{if(e.isComposing||e.keyCode===229||e.altKey||document.querySelector('dialog[open]')||(e.target as HTMLElement).closest('input,textarea,select,[contenteditable=true]'))return;if((e.key==='Delete'||e.key==='Backspace')&&this.selected.length){e.preventDefault();this.removeSelected();return;}if(e.key==='Escape')this.closeInspector();if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?this.redo():this.undo();}});
  }
  get d(){return this.host.d;}
  private refresh(){if(this.host.refreshAnnotations)this.host.refreshAnnotations();else this.host.render();this.updateToolbar();}

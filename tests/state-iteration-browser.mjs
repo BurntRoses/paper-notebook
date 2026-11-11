@@ -54,7 +54,7 @@ for(const [engine,type] of Object.entries({chromium,webkit})){
   await page.evaluate(()=>{reader.d.userState.checks['before-switch']=true;reader.remember();reader.showImport();});
   await page.getByLabel('教程源文本',{exact:true}).fill(JSON.stringify(source));await page.getByRole('button',{name:'预览导入',exact:true}).click();
   await page.locator('.dialog-foot').getByRole('button',{name:'导入',exact:true}).click();
-  assert.equal(await page.evaluate(()=>reader.d.notebook.id),source.notebook.id);
+  await page.waitForFunction(id=>reader.d.notebook.id===id,source.notebook.id);
   await page.goto(base+'/downloads/machine-learning.html');await page.waitForFunction(()=>reader?.ready&&reader.d.userState.checks['before-switch']);
   assert.deepEqual(errors,[]);await context.close();
   console.log(`✓ ${engine}: latest import wins, edits preserved, document UI cleanup, preview draft isolation, save failure/recovery and import flush`);

@@ -29,15 +29,19 @@ export function renderMargin(host:MarginHost,page:SurfacePage,region:'right'|'bo
   if(note.title)card.append(el('strong','note-legacy-title',note.title));
   if(note.selector){const quote=button('返回原文：'+note.selector.exact,()=>host.goSelector(note.pageId,note.selector!),'note-anchor','↗');card.append(quote);}
   const text=textarea(note.text,1);text.setAttribute('aria-label','便条内容');text.placeholder='写下想法…';
-  const expand=button('展开便条',()=>{note.collapsed=!note.collapsed;host.remember();resize();},'note-expand','展开全部');
+  let editing=false,collapseAfterEdit=false;
+  const expand=button('展开便条',()=>{editing=false;note.collapsed=!note.collapsed;host.remember();resize();},'note-expand','展开全部');
   const resize=()=>{text.style.height='0px';const full=Math.max(28,text.scrollHeight);const long=full>112;const collapsed=note.collapsed!==false;text.style.height=(long&&collapsed?100:full)+'px';card.dataset.collapsed=String(long&&collapsed);expand.hidden=!long;expand.textContent=collapsed?'展开全部':'收起';expand.setAttribute('aria-label',collapsed?'展开便条':'收起便条');expand.setAttribute('aria-expanded',String(!collapsed));arrange();};
-  text.onfocus=()=>{note.collapsed=false;resize();};
+  text.onfocus=()=>{editing=true;collapseAfterEdit=note.collapsed!==false;note.collapsed=false;resize();};
   text.oninput=()=>{note.text=text.value;host.remember();resize();};
-  card.addEventListener('focusout',e=>{if(e.relatedTarget instanceof Node&&card.contains(e.relatedTarget))return;if(text.scrollHeight>112){note.collapsed=true;resize();host.remember();}});
+  card.addEventListener('focusout',e=>{if(e.relatedTarget instanceof Node&&card.contains(e.relatedTarget))return;if(editing&&collapseAfterEdit&&text.scrollHeight>112){note.collapsed=true;resize();host.remember();}editing=false;});
   card.append(text);if(note.back)card.append(el('p','note-back',note.back));card.append(expand);
   const actions=el('div','note-tools');actions.onpointerdown=e=>e.preventDefault();actions.setAttribute('role','group');actions.setAttribute('aria-label','便条颜色');
   for(const [material,name,color] of colors){const swatch=button('便条颜色：'+name,()=>{note.material=material;card.dataset.material=material;actions.querySelectorAll('button[data-color]').forEach(n=>n.setAttribute('aria-pressed',String((n as HTMLElement).dataset.color===material)));host.remember();},'note-swatch','');swatch.dataset.color=material;swatch.style.setProperty('--note-color',color);swatch.setAttribute('aria-pressed',String(note.material===material));actions.append(swatch);}
-  actions.append(button('删除便条',()=>{host.d.userState.notes=host.d.userState.notes.filter(n=>n.id!==note.id);host.remember();host.refreshWorkspace();},'note-delete','×'));
+  actions.append(button('删除便条',()=>{const index=host.d.userState.notes.findIndex(n=>n.id===note.id);if(index<0)return;host.d.userState.notes.splice(index,1);host.remember();
+   const undo=button('撤销删除便条',()=>{host.d.userState.notes.splice(Math.min(index,host.d.userState.notes.length),0,note);host.remember();host.refreshWorkspace();requestAnimationFrame(()=>document.querySelector<HTMLTextAreaElement>(`[data-note="${CSS.escape(note.id)}"] textarea`)?.focus({preventScroll:true}));},'note-undo','撤销');
+   card.classList.add('note-deleted');card.removeAttribute('data-material');card.replaceChildren(el('span','','已删除便条'),undo);undo.focus({preventScroll:true});arrange();
+  },'note-delete','×'));
   card.append(actions);card.dataset.marginPosition=String(note.marginPosition??.08);entries.push({node:card,position:note.marginPosition??.08});requestAnimationFrame(resize);
  }
  entries.sort((a,b)=>a.position-b.position);for(const entry of entries)stream.append(entry.node);

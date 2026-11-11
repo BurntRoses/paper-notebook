@@ -1,5 +1,5 @@
 import type { NotebookDocument } from './types';
-import { resolveSelector } from './document';
+import { parseDocument, resolveSelector } from './document';
 export class NotebookStore {
   document: NotebookDocument; private past: NotebookDocument[]=[];private future: NotebookDocument[]=[];
   private listeners=new Set<(reason:string)=>void>();
@@ -18,18 +18,30 @@ export class NotebookStore {
   get canUndo(){return !!this.past.length;}get canRedo(){return !!this.future.length;}
 }
 let database:Promise<IDBDatabase>|undefined;
+/** Restore personal records before input is enabled; an old draft cannot downgrade the supplied lesson. */
+export function restoreDraft(source:NotebookDocument,draft?:NotebookDocument){
+ if(!draft||draft.notebook.id!==source.notebook.id||draft.userState.updatedAt<=source.userState.updatedAt)return source;
+ const restored=parseDocument(draft).document;
+ if(restored.notebook.revision>=source.notebook.revision)return restored;
+ const next=structuredClone(source);next.userState=restored.userState;
+ next.assets.push(...restored.assets.filter(asset=>!next.assets.some(current=>current.id===asset.id)));
+ if(restored.extensions.readerProfile)next.extensions.readerProfile=restored.extensions.readerProfile;
+ return parseDocument(next).document;
+}
 function db(){
  return database ||= new Promise<IDBDatabase>((resolve,reject)=>{
   if(!globalThis.indexedDB){reject(new Error('当前浏览器无法保存本机草稿，请导出文件。'));return;}
-  const request=indexedDB.open('paper-notebook-v1',1);
+  const request=indexedDB.open('paper-notebook-v1',1);let blocked=false;
   request.onupgradeneeded=()=>request.result.createObjectStore('documents',{keyPath:'notebook.id'});
   request.onsuccess=()=>{
    const connection=request.result;
+   if(blocked){connection.close();return;}
    const release=()=>{connection.close();database=undefined;};
    connection.onversionchange=release;connection.onclose=()=>{database=undefined;};
    resolve(connection);
   };
   request.onerror=()=>reject(request.error);
+  request.onblocked=()=>{blocked=true;reject(new Error('本机草稿数据库正在升级，请关闭旧窗口后重新打开。'));};
  }).catch(error=>{database=undefined;throw error;});
 }
 export async function saveDraft(d:NotebookDocument){const database=await db();return new Promise<void>((resolve,reject)=>{const t=database.transaction('documents','readwrite');

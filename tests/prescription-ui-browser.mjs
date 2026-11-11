@@ -10,7 +10,7 @@ for(const [engine,type] of Object.entries({chromium,webkit})){
   await context.addInitScript(()=>{window.copies=[];window.holdCopy=true;Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>{window.copies.push(text);if(window.holdCopy)await new Promise(r=>window.releaseCopy=r);}}});});
   const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(base,{waitUntil:'domcontentloaded'});
-  const menu=page.locator('.site-menu-toggle');await menu.focus();await page.keyboard.press('ArrowDown');assert.equal(await page.evaluate(()=>document.activeElement.textContent),'制作笔记');
+  const menu=page.locator('.site-menu-toggle');await menu.dispatchEvent('keydown',{key:'ArrowDown',isComposing:true});assert.equal(await menu.getAttribute('aria-expanded'),'false');await menu.dispatchEvent('keydown',{key:'ArrowDown',altKey:true});assert.equal(await menu.getAttribute('aria-expanded'),'false');await menu.focus();await page.keyboard.press('ArrowDown');assert.equal(await page.evaluate(()=>document.activeElement.textContent),'制作笔记');
   await page.keyboard.press('End');assert.equal(await page.evaluate(()=>document.activeElement.textContent),'功能演示');await page.keyboard.press('Escape');assert.equal(await menu.getAttribute('aria-expanded'),'false');assert.ok(await menu.evaluate(n=>n===document.activeElement));
   const contrast=()=>page.evaluate(()=>{
    const style=getComputedStyle(document.documentElement),luma=name=>{const hex=style.getPropertyValue(name).trim().replace('#',''),v=[0,2,4].map(i=>parseInt(hex.slice(i,i+2),16)/255).map(n=>n<=.04045?n/12.92:((n+.055)/1.055)**2.4);return v[0]*.2126+v[1]*.7152+v[2]*.0722;};
