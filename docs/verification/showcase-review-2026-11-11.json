@@ -1,0 +1,404 @@
+{
+  "date": "2026-11-11",
+  "scope": "Published lessons, introduction and product notebook; actual editorial findings with source-bound finalize and browser measurement.",
+  "reports": [
+    {
+      "name": "paper-notebook",
+      "revision": 14,
+      "sourceSHA256": "69577aec19d3acc0f6c361731ebf9bfe04d808e5f323fbb40513fcad6ad1c85f",
+      "artifactSHA256": "e03e77caa5ba0ce95bf1009ae326fd99515ca176f71676f33c9dcbc5a163a7e2",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "intro-chapter",
+          "writing": "删去泛化介绍，按复利基数、递推、周期和核算组织正文。",
+          "teaching": "强调期末值和增长因子；侧栏解释利息继续增长与幂次来源。",
+          "facts": "核算 100×1.1²=121、200×1.05²=220.5、1.01¹²−1≈12.68%。",
+          "brief": "保留数学入门所需的条件和逐次计算，标题不再带路线串。"
+        },
+        {
+          "chapterId": "subject-chapter",
+          "writing": "文学、商学和编程分别采用细读、指标分析与状态跟踪。",
+          "teaching": "首联改为上下句对读图并前置；商学表格配置列宽；代码说明解释实际操作。",
+          "facts": "原诗对照香港教育局资料；Costco 数值及销售增长来源对照 2025 年报；Python 函数与断言已执行。",
+          "brief": "主介绍笔记保留多学科内容，与六个独立试读例子共享源块。"
+        }
+      ],
+      "browser": {
+        "inspected": true,
+        "checkedSheets": 72,
+        "expectedSheets": 72,
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "machine-learning",
+      "revision": 11,
+      "sourceSHA256": "3bc9aa0ea1af3b42a8a4bbd850cabf80a27d60110b6f4dd28d749a179bc1fa3d",
+      "artifactSHA256": "d8435f05d344d677064b65cf96447b5b4c938d3a95b5d1d9bdc6eaae64f3b3a5",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "ml-ch-data",
+          "writing": "开篇直接说明参数、损失和优化，房价情境与无量纲教学数据分别交代。",
+          "teaching": "侧栏补特征向量和预测时点，旧的参数锚点已更新。",
+          "facts": "核对 A/B/C 的输入 1/2/3 与标签 2/4/5；未将房价单位套入无量纲数据。",
+          "brief": "按具备一次函数基础的读者组织机制讲解。"
+        },
+        {
+          "chapterId": "ml-ch-model",
+          "writing": "删去重复的算术问句，以误差方向、汇总和尺度说明补充正文。",
+          "teaching": "叠加粗体与颜色突出线性回归、特征、标签、均方误差；异常值解释独立成框。",
+          "facts": "核算 ŷ=x+1 的误差 0/−1/−1、MSE=2/3；+2/−2 的 MSE=4；所有公式经 KaTeX 解析。",
+          "brief": "保留参数含义与残差图示，图像和侧栏关联已在浏览器逐页检查。"
+        },
+        {
+          "chapterId": "ml-ch-train",
+          "writing": "更新说明围绕导数、步长与损失变化展开，删去正文复述式侧栏。",
+          "teaching": "增加连续更新的损失曲线；侧栏补第二次更新和临界步长。",
+          "facts": "J=2.5(w−2)²，η=.1 时 1→1.5→1.75→1.875；损失依次 2.5/.625/.15625/.0390625；收缩条件 0<η<.4。",
+          "brief": "提供推导和核算，保留固定 b=0 的条件。"
+        },
+        {
+          "chapterId": "ml-ch-evaluate",
+          "writing": "以候选方案选择解释验证偏差，泛化定义采用直接表述。",
+          "teaching": "增加 L2 参数收缩与两特征内积的具体计算，避免术语罗列。",
+          "facts": "L2 目标导数为 5(w−2)+2λw，λ=.5 时 w=5/3；两特征预测 3×2−1×1+4=9。",
+          "brief": "用患者分组和时间拆分说明评估设计，保留真实任务中的输入时点要求。"
+        }
+      ],
+      "browser": {
+        "inspected": true,
+        "checkedSheets": 78,
+        "expectedSheets": 78,
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "concept",
+      "revision": 9,
+      "sourceSHA256": "486e987a0ac20dea394510b54183bc81c63a08a33b73019ae353ed1745c96910",
+      "artifactSHA256": "887b43fefbc1fc83475b5476c8e5723b8f2a5b17de66be62a8de793325f66a28",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "notebook-observation-chapter",
+          "writing": "标题直接命名订单、顾客和统计口径，正文使用具体名单。",
+          "teaching": "增加订单合流图和交集图；侧栏解释分母、频次与筛选顺序。",
+          "facts": "SQL 已实际执行：月份边界、付款、退款、重复顾客及 NULL 编号夹具得到 4 笔订单、2 位顾客。4+3−2=5。",
+          "brief": "练习检验统计约定，选项和答案与正文筛选条件一致。"
+        }
+      ],
+      "browser": {
+        "inspected": true,
+        "checkedSheets": 28,
+        "expectedSheets": 28,
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "formula",
+      "revision": 7,
+      "sourceSHA256": "a7beae45c27c6cfecf31f9d196aa750aba75ac0d264af4281ee229338f90be93",
+      "artifactSHA256": "1fe6e0b9e655989466a2132ca575c18368afd51b97969f350f593ef9e240f8c1",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "notebook-growth-chapter",
+          "writing": "删去无实质信息的开场修饰，金额和周期在正文直接给出。",
+          "teaching": "增加逐期余额曲线，将相同增长率与增加额联系起来。",
+          "facts": "核算 100/110/121/133.1；变化率不同的三期结果为 124.74。",
+          "brief": "保留递推关系与条件变化，不追加泛化总结。"
+        }
+      ],
+      "browser": {
+        "inspected": true,
+        "checkedSheets": 13,
+        "expectedSheets": 13,
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "practice",
+      "revision": 7,
+      "sourceSHA256": "cbcf677768910d770e9ba85a25a8380c649f924541c20272fcc4a034419c0db2",
+      "artifactSHA256": "9979294854439d3c1849b0d7c5afb251d97e08e576c260aafcd3b22881ce9859",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "notebook-observe-plant-chapter",
+          "writing": "观察步骤改为位置、颜色、数量和养护记录，减少空泛要求。",
+          "teaching": "补植物位置图，圈出两片黄叶并用箭头标注，与记录表对应。",
+          "facts": "图示用于定位叶片；正文按植物名称、浇水、盆土和根系记录讨论原因。未将黄叶直接等同于某种病因。",
+          "brief": "适合观察记录练习；保留开放作答和复查所需信息。"
+        }
+      ],
+      "browser": {
+        "inspected": true,
+        "checkedSheets": 11,
+        "expectedSheets": 11,
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "compound-interest",
+      "revision": 6,
+      "sourceSHA256": "4cf8062b360f30e4509f124a5e8d363844c381fae73dfbe42dc7bf741666b8be",
+      "artifactSHA256": "c0474673afb22d7d0f1bc2737973d6555231738fed5caf43a4b77b2995334726",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "compound-interest-chapter",
+          "writing": "标题精简为复利与增长，讲解沿逐期基数展开。",
+          "teaching": "面积图中圈出额外的 1 元，侧栏补增长因子和周期换算。",
+          "facts": "两期末 121 元；每期 5% 的 200 元两期末为 220.5。",
+          "brief": "独立试读从第一页开始，与主介绍笔记共享经过修改的数学内容。"
+        }
+      ],
+      "browser": {
+        "inspected": true,
+        "checkedSheets": 20,
+        "expectedSheets": 20,
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "literature",
+      "revision": 6,
+      "sourceSHA256": "2379f657fe47678a7b9fb574ddc342313ff6053f991b5e5e0a729397b7463eb0",
+      "artifactSHA256": "fe2138330352fd238b13f6d28bea37459ac27106dff7e0e4baf9025337b35406",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "literature-chapter",
+          "writing": "删去标题路线串，背景、炼字、修辞与尾联按文本顺序展开。",
+          "teaching": "用对读图呈现并列诗句；侧栏解释“深”的作用、视线收束和家国对仗。",
+          "facts": "原句对照香港教育局《春望》；保留原有背景来源；花鸟两种句法解读明确各自表达效果。",
+          "brief": "采用文学细读方式，删除把诗句关系处理为时序流程的旧图。"
+        }
+      ],
+      "browser": {
+        "inspected": true,
+        "checkedSheets": 12,
+        "expectedSheets": 12,
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "business",
+      "revision": 6,
+      "sourceSHA256": "49266b03e0623dcb16b6ca3c6f6fc2b78b9f5ceae66043d1e9a0771a66e7fa28",
+      "artifactSHA256": "5a381ef5da6b588cc0ce55901147a5cc4c3965411956004fc6f544020a5f3c58",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "business-chapter",
+          "writing": "标题命名单位贡献与会员制，企业事实与教学算式在正常行文中交代。",
+          "teaching": "盈亏平衡图标注收入等于总成本；年报表格按列宽保留可读性。",
+          "facts": "3000/(80−50)=100；Costco 2025 净销售额 2699.12 亿美元、会员费 53.23 亿、续费率 92.3%/89.8%，均对照官方年报。",
+          "brief": "独立给定成本模型；案例讨论会员、销售规模、周转与经营效率。"
+        }
+      ],
+      "browser": {
+        "inspected": true,
+        "checkedSheets": 13,
+        "expectedSheets": 13,
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "programming",
+      "revision": 6,
+      "sourceSHA256": "2c7bbda5d00ec3cbc684259dda56b92d6cbdbcc319a0194e5e621196e22f2a7b",
+      "artifactSHA256": "5cb08a82d86266dd1b4ed370738971018af1cfb6fe9088d6872e5777f6f91ad2",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "programming-chapter",
+          "writing": "标题精简为 Python 集合与顾客去重，说明指向 set、len 和元素状态。",
+          "teaching": "状态表逐条显示 A/A/B 的集合变化；侧栏补编号映射和断言作用。",
+          "facts": "在同一 Python 进程执行函数与空列表、单值、重复值及不同值四项断言，输出 2。",
+          "brief": "保留字符串编号和字典记录提取方式，代码可直接运行。"
+        }
+      ],
+      "browser": {
+        "inspected": true,
+        "checkedSheets": 13,
+        "expectedSheets": 13,
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "paper-notebook-product",
+      "revision": 7,
+      "sourceSHA256": "599770840b42fd43b1cef79547ab0e8207acb4c0ba8e9324389814032f32fe13",
+      "artifactSHA256": "0a12f485243c9bc018acd669048563dc7890f91a6b70814c864a06efd1a8e1a3",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "product-story",
+          "writing": "制作介绍直接说明仓库、材料与学习要求，功能标题使用中性表达。",
+          "teaching": "把文字标记和保存书签改为从选中文字分支的关系图，保持其真实操作关系。",
+          "facts": "图像批注、侧栏/底栏、保存功能经当前阅读器捕获；16 张逻辑页的所有续页与块均完整捕获。",
+          "brief": "使用说明和影片素材共同来自新版产品笔记，保留原有镜头与动效。"
+        }
+      ],
+      "browser": {
+        "inspected": true,
+        "checkedSheets": 33,
+        "expectedSheets": 33,
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "issues": []
+      },
+      "deliveryReady": true
+    }
+  ]
+}

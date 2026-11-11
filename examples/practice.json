@@ -2,8 +2,8 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "notebook-observe-plant",
-    "revision": 6,
-    "title": "给窗边的植物做一份记录",
+    "revision": 7,
+    "title": "植物观察记录",
     "author": "Paper Notebook",
     "language": "zh-CN",
     "goals": [
@@ -20,7 +20,7 @@
     "chapters": [
       {
         "id": "notebook-observe-plant-chapter",
-        "title": "给窗边的植物做一份记录",
+        "title": "植物观察记录",
         "pages": [
           {
             "id": "plant-1",
@@ -30,11 +30,11 @@
               {
                 "id": "plant-intro",
                 "type": "prose",
-                "text": "一次植物观察记录包括叶片的位置、颜色变化、盆土干湿、最近一次浇水日期。用相同角度的照片和具体日期连续记录，可以对照变化的方向与速度。先记录看见的东西，再结合环境与养护信息分析原因。",
+                "text": "一次植物观察记录包括叶片的位置、颜色变化、盆土干湿、最近一次浇水日期。用相同角度的照片和具体日期连续记录，可以对照变化的方向与速度。逐次记录同一叶片的位置与颜色，再结合环境与养护信息分析原因。",
                 "study": {
                   "marks": [
                     {
-                      "text": "先记录看见的东西",
+                      "text": "同一叶片的位置与颜色",
                       "kind": "underline"
                     },
                     {
@@ -50,6 +50,26 @@
                 }
               },
               {
+                "id": "plant-figure",
+                "type": "image",
+                "assetId": "plant-observation",
+                "alt": "固定角度的盆栽观察示意，圈出下部两片黄色叶片，标注叶片位置、颜色、浇水日期和盆土干湿记录。",
+                "caption": "先定位同一批叶片，再记录各次观察的颜色、数量和养护操作。圈注用于保持观察位置一致。",
+                "figure": {
+                  "size": "wide",
+                  "ratio": "auto",
+                  "annotations": [
+                    {
+                      "kind": "text",
+                      "x": 6,
+                      "y": 14,
+                      "text": "连续观察同一位置",
+                      "color": "#b1483d"
+                    }
+                  ]
+                }
+              },
+              {
                 "id": "plant-steps",
                 "type": "steps",
                 "items": [
@@ -59,7 +79,7 @@
                   },
                   {
                     "id": "plant-s2",
-                    "text": "观察叶片：下垂的是新叶、老叶，还是整株？"
+                    "text": "标明叶片位置，记录颜色、数量以及是否下垂。"
                   },
                   {
                     "id": "plant-s3",
@@ -196,7 +216,7 @@
     ]
   },
   "userState": {
-    "updatedAt": "2026-11-01T00:00:00.000Z",
+    "updatedAt": "2026-11-11T12:00:00.000Z",
     "lastPageId": "plant-1",
     "notes": [],
     "annotations": [],
@@ -225,7 +245,19 @@
       "timerRunning": false
     }
   },
-  "assets": [],
+  "assets": [
+    {
+      "id": "plant-observation",
+      "name": "植物观察位置.svg",
+      "mime": "image/svg+xml",
+      "data": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22850%22%20height%3D%22430%22%20viewBox%3D%220%200%20850%20430%22%3E%3Crect%20width%3D%22850%22%20height%3D%22430%22%20fill%3D%22%23faf7ed%22%2F%3E%3Cg%20stroke%3D%22%236e885e%22%20stroke-width%3D%223%22%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M320%20319%20V105%20M320%20180%20Q285%20155%20255%20134%20M320%20228%20Q362%20204%20391%20177%20M320%20268%20Q285%20247%20259%20226%20M320%20293%20Q367%20282%20394%20263%22%2F%3E%3C%2Fg%3E%3Cg%20stroke%3D%22%236e885e%22%20stroke-width%3D%222%22%3E%3Cpath%20d%3D%22M320%20139%20Q272%2099%20309%2057%20Q348%2092%20320%20139%22%20fill%3D%22%23bfd0a1%22%2F%3E%3Cpath%20d%3D%22M269%20148%20Q201%20143%20204%2092%20Q261%2088%20269%20148%22%20fill%3D%22%23b8c995%22%2F%3E%3Cpath%20d%3D%22M376%20190%20Q371%20127%20433%20129%20Q437%20181%20376%20190%22%20fill%3D%22%23b8c995%22%2F%3E%3Cpath%20d%3D%22M272%20238%20Q205%20240%20207%20191%20Q266%20187%20272%20238%22%20fill%3D%22%23ddcd83%22%2F%3E%3Cpath%20d%3D%22M377%20275%20Q389%20223%20446%20240%20Q440%20289%20377%20275%22%20fill%3D%22%23ddcd83%22%2F%3E%3Cpath%20d%3D%22M265%20319%20H378%20L362%20388%20H282%20Z%22%20fill%3D%22%23d5b895%22%20stroke%3D%22%238d7963%22%2F%3E%3C%2Fg%3E%3Cg%20font-family%3D%22serif%22%20font-size%3D%2223%22%20fill%3D%22%23345867%22%3E%3Ctext%20x%3D%22500%22%20y%3D%22101%22%3E%E5%9B%BA%E5%AE%9A%E6%8B%8D%E6%91%84%E8%A7%92%E5%BA%A6%E4%B8%8E%E8%B7%9D%E7%A6%BB%3C%2Ftext%3E%3Ctext%20x%3D%22500%22%20y%3D%22183%22%3E%E8%AE%B0%E5%BD%95%E5%8F%B6%E7%89%87%E4%BD%8D%E7%BD%AE%E3%80%81%E9%A2%9C%E8%89%B2%E5%92%8C%E6%95%B0%E9%87%8F%3C%2Ftext%3E%3Ctext%20x%3D%22500%22%20y%3D%22266%22%3E%E4%B8%8B%E9%83%A8%E4%B8%A4%E7%89%87%E5%8F%B6%E5%AD%90%E5%8F%91%E9%BB%84%3C%2Ftext%3E%3Ctext%20x%3D%22500%22%20y%3D%22349%22%3E%E5%90%8C%E6%97%B6%E8%AE%B0%E4%B8%8B%E6%B5%87%E6%B0%B4%E6%97%A5%E6%9C%9F%E3%80%81%E7%9B%86%E5%9C%9F%E5%B9%B2%E6%B9%BF%3C%2Ftext%3E%3Ctext%20x%3D%2240%22%20y%3D%22410%22%20font-size%3D%2219%22%3E%E8%A7%82%E5%AF%9F%E4%BD%8D%E7%BD%AE%E7%A4%BA%E6%84%8F%EF%BC%9B%E9%BB%84%E5%8F%B6%E5%8E%9F%E5%9B%A0%E7%BB%93%E5%90%88%E6%A4%8D%E7%89%A9%E7%A7%8D%E7%B1%BB%E4%B8%8E%E5%85%BB%E6%8A%A4%E8%AE%B0%E5%BD%95%E5%88%A4%E6%96%AD%E3%80%82%3C%2Ftext%3E%3C%2Fg%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b1483d%22%20stroke-width%3D%222.5%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M188%20179%20Q201%20161%20244%20175%20Q293%20189%20282%20236%20Q267%20266%20204%20253%20Q178%20233%20188%20179%22%2F%3E%3Cpath%20d%3D%22M371%20232%20Q414%20210%20457%20231%20Q482%20267%20440%20292%20Q389%20310%20371%20274%20Q360%20256%20371%20232%22%2F%3E%3Cpath%20d%3D%22M494%20257%20Q481%20255%20456%20259%20m12-8-12%208%2014%206%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E",
+      "width": 850,
+      "height": 430,
+      "source": "Paper Notebook 原创观察记录示意",
+      "license": "MIT",
+      "verified": true
+    }
+  ],
   "extensions": {
     "readerProfile": {
       "layout": "auto",
@@ -236,6 +268,6 @@
       "theme": "paper-light",
       "motion": "full"
     },
-    "baseRevision": 5
+    "baseRevision": 6
   }
 }

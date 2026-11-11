@@ -4,7 +4,7 @@
 
 [在线试读](https://burntroses.github.io/paper-notebook/#read) · [制作笔记](https://burntroses.github.io/paper-notebook/#create) · [功能演示](https://burntroses.github.io/paper-notebook/#film) · [English](README.en.md)
 
-![图文笔记中的图解、圈点标记和页边批注](public/promo/paper-landscape-3.jpg)
+![图文笔记中的图解、圈点标记和页边批注](public/promo/paper-landscape-3.jpg?v=3.14)
 
 ## 主要功能
 

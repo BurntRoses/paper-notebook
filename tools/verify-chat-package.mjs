@@ -31,6 +31,9 @@ const run=(command,args,cwd=root,nodeOnly=false)=>{
  const result=execute(command,args,cwd,nodeOnly);
  assert.equal(result.status,0,result.stderr||result.stdout);return result.stdout.trim();
 };
+run(process.execPath,['scripts/notebook.mjs','convert','assets/example.md','--out','example.json'],kit,true);
+run(process.execPath,['scripts/notebook.mjs','validate','example.json'],kit,true);
+run(process.execPath,['scripts/notebook.mjs','build','example.json','--out','example-output'],kit,true);
 const build=run(process.env.PYTHON||'python3',['scripts/build_reader.py','notebook.json','--out','output'],kit);
 const builtReport=JSON.parse(await readFile(kit+'/output/build-report.json','utf8'));
 assert.equal(builtReport.bundledReaderMatches,true);assert.equal(builtReport.contentReview.advisory,true);

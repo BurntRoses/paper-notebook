@@ -4,8 +4,8 @@ import {userState, type NotebookDocument, type Page} from './model/types';
 // from this reader; headings, blackboards, diagrams and ink share its renderer.
 const pages:Page[]=[
  {id:'product-pain',title:'使用 AI 制作图文学习笔记',subject:'general',layout:'reading',blocks:[
-  {id:'pain-context',type:'prose',text:'向常用的 AI 发送制作指令，上传材料或说明没有文件，再提供主题、基础和学习目标。',study:{label:'制作流程',marks:[{text:'上传材料',kind:'underline'},{text:'学习目标',kind:'circle'},{text:'学习目标',kind:'bold'},{text:'学习目标',kind:'red',color:'#285f9e'}]}},
-  {id:'pain-fragments',type:'code',language:'Markdown',text:'先提供：参考文件，或说明没有文件\n再选择：主题、基础和学习目标\n内容包括：概念、图解、推导和例题\n讲解要求：交代条件，说明每一步\n文件格式：单文件离线 HTML\n保存记录：圈画、便条、疑问与作答',study:{label:'学习需求与文件格式'}},
+  {id:'pain-context',type:'prose',text:'向 AI 提供仓库地址和材料，说明主题、已有基础和学习目标。没有材料时，可按选定主题生成讲解。',study:{label:'制作流程',marks:[{text:'仓库地址和材料',kind:'underline'},{text:'学习目标',kind:'circle'},{text:'学习目标',kind:'bold'},{text:'学习目标',kind:'red',color:'#285f9e'}]}},
+  {id:'pain-fragments',type:'code',language:'Text',text:'参考材料：讲义、书页、题目或代码\n学习要求：主题、基础、目标与范围\n内容形式：图解、推导、例题与赏析\n页边说明：定义、示例与图像解读\n批注方式：圈画、箭头、便条与书签\n保存格式：单文件离线 HTML',study:{label:'学习需求与文件格式'}},
   {id:'pain-need',type:'prose',text:'离线 HTML 内含讲解、图像和学习记录，浏览器打开后可直接阅读与批注。',study:{visual:'extract',label:'离线文件',marks:[{text:'讲解、图像和学习记录',kind:'highlight'},{text:'阅读与批注',kind:'underline'}]}}
  ]},
  {id:'product-idea',title:'Paper Notebook',subject:'general',layout:'reading',blocks:[
@@ -21,7 +21,7 @@ const pages:Page[]=[
  {id:'product-marks',title:'文字标记与书签',subject:'general',layout:'reading',blocks:[
   {id:'marks-select',type:'prose',text:'选中文字可加粗、变色或圈注。书签与疑问在右上角集中查看，点击可返回原文。',study:{label:'文字标记与收录',marks:[{text:'选中文字',kind:'highlight'},{text:'书签与疑问',kind:'circle'},{text:'书签与疑问',kind:'bold'},{text:'书签与疑问',kind:'red',color:'#285f9e'},{text:'返回原文',kind:'star'}]}},
   {id:'marks-examples',type:'prose',text:'条件、推导和关键概念，可以分别框选、划线、加着重点。',study:{label:'按内容选择标记',marks:[{text:'条件',kind:'box'},{text:'推导',kind:'wave'},{text:'关键概念',kind:'dots'},{text:'划线',kind:'check'}]}},
-  {id:'marks-map',type:'diagram',arrangement:'row',nodes:[{id:'sentence',label:'选中文字'},{id:'mark',label:'圈出重点'},{id:'return',label:'书签与疑问定位原文'}],edges:[{from:'sentence',to:'mark'},{from:'mark',to:'return'}],study:{visual:'sketch'}},
+  {id:'marks-map',type:'diagram',arrangement:'row',nodes:[{id:'sentence',label:'选中文字'},{id:'mark',label:'添加文字标记'},{id:'return',label:'保存书签或疑问'}],edges:[{from:'sentence',to:'mark'},{from:'sentence',to:'return'}],study:{visual:'sketch'}},
   {id:'marks-return',type:'quote',text:'双击右栏或底栏空白处添加便条，圆形色块切换底色。',study:{visual:'extract',marks:[{text:'右栏或底栏',kind:'underline'}]}}
  ]},
  {id:'product-subjects',title:'公式、原文与代码',subject:'general',layout:'reading',blocks:[
@@ -38,7 +38,7 @@ const pages:Page[]=[
  {id:'product-focus',title:'横竖版阅读与离线保存',subject:'general',layout:'reading',blocks:[
   {id:'focus-read',type:'concept',title:'横竖版与双页阅读',text:'横竖纸张独立切换，双页可左右或上下排列。右栏和底栏可分别开关，夜间模式使用深色纸张。',study:{label:'阅读设置',marks:[{text:'双页',kind:'underline'}]}},
   {id:'focus-table',type:'comparison',columns:['功能','操作'],rows:[['页边批注','双击右栏或底栏空白处'],['图像批注','添加圈注、箭头和文字说明'],['保存文件','下载含学习记录的离线 HTML']],study:{label:'批注与保存'}},
-  {id:'focus-offline',type:'quote',text:'下载一份 HTML，离线阅读。圈画和作答同时保存。',study:{visual:'extract',label:'阅读无需账号',marks:[{text:'离线阅读',kind:'highlight'},{text:'同时保存',kind:'star'}]}}
+  {id:'focus-offline',type:'quote',text:'下载一份 HTML，离线阅读。圈画和作答同时保存。',study:{visual:'extract',label:'离线保存',marks:[{text:'离线阅读',kind:'highlight'},{text:'同时保存',kind:'star'}]}}
  ]},
  {id:'product-start',title:'Paper Notebook',subject:'general',layout:'reading',blocks:[
   {id:'start-message',type:'concept',title:'图文阅读、批注与复习',text:'阅读器支持文字标记、图像批注、页边便条和离线保存。',study:{label:'图文笔记阅读器',marks:[{text:'文字标记',kind:'highlight'},{text:'图像批注',kind:'circle'},{text:'图像批注',kind:'bold'},{text:'图像批注',kind:'red',color:'#285f9e'}]}},
@@ -46,12 +46,12 @@ const pages:Page[]=[
   {id:'start-close',type:'prose',text:'修改正文或批注后，重新下载 HTML 可保存当前内容与记录。',study:{visual:'extract',marks:[{text:'当前内容与记录',kind:'star'}]}}
  ]}
 ];
-export const productStory:NotebookDocument={schemaVersion:'1.0.0',notebook:{id:'paper-notebook-product-story',revision:6,title:'Paper Notebook · 产品笔记',author:'Paper Notebook',language:'zh-CN',goals:['了解纸页阅读与圈画如何服务学习','查看公式、原文、代码的笔记表达','按自己的目标与材料生成学习内容'],sources:[{id:'product-source',title:'Paper Notebook 阅读器',locator:'本册展示图文阅读、标记与离线保存功能。'},{id:'product-spring',title:'杜甫《春望》首联',locator:'公共领域原诗；用于文学笔记展示。'},{id:'product-math',title:'数值核验',locator:'100 × 1.1² = 121；3000 ÷ (80 − 50) = 100。'}],chapters:[{id:'product-story',title:'Paper Notebook 产品介绍',pages}]},userState:userState(pages[0].id),assets:[],extensions:{baseRevision:5,readerProfile:{layout:'single',direction:'horizontal',sidebar:'collapsed',pageShape:'auto',transition:'cover',theme:'paper-light',motion:'full'}}};
+export const productStory:NotebookDocument={schemaVersion:'1.0.0',notebook:{id:'paper-notebook-product-story',revision:7,title:'Paper Notebook 使用说明',author:'Paper Notebook',language:'zh-CN',goals:['了解纸页阅读与圈画如何服务学习','查看公式、原文、代码的笔记表达','按自己的目标与材料生成学习内容'],sources:[{id:'product-source',title:'Paper Notebook 阅读器',locator:'本册展示图文阅读、标记与离线保存功能。'},{id:'product-spring',title:'杜甫《春望》首联',locator:'公共领域原诗；用于文学笔记展示。'},{id:'product-math',title:'数值核验',locator:'100 × 1.1² = 121；3000 ÷ (80 − 50) = 100。'}],chapters:[{id:'product-story',title:'Paper Notebook 产品介绍',pages}]},userState:userState(pages[0].id),assets:[],extensions:{baseRevision:6,readerProfile:{layout:'single',direction:'horizontal',sidebar:'collapsed',pageShape:'auto',transition:'cover',theme:'paper-light',motion:'full'}}};
 productStory.userState.preferences.fontSize=26;
-productStory.userState.updatedAt='2026-10-24T18:00:00.000Z';
+productStory.userState.updatedAt='2026-11-11T12:00:00.000Z';
 
 export const productFilm={title:'Paper Notebook — 用 AI 生成学习笔记',duration:64,fps:30,bpm:120,music:'Original score: Paper / Pulse',scenes:[
- {id:'pain',pageId:'product-pain',start:0,end:8,headline:'使用 AI 制作图文学习笔记',purpose:'先提供材料，再确认学习需求，交付可离线阅读的图文笔记',visual:'原生标题与入口说明从首帧出现；真实生成指令分三段踩点进入，构建文件和复制导入两种路径明确呈现。',sound:'短马林巴开场动机，电钢琴与轻鼓逐层进入，生成指令出现时点入高音木琴'},
+ {id:'pain',pageId:'product-pain',start:0,end:8,headline:'使用 AI 制作图文学习笔记',purpose:'先提供材料，再确认学习需求，交付可离线阅读的图文笔记',visual:'原生标题与入口说明从首帧出现；材料、讲解和保存要求分三组踩点进入。',sound:'短马林巴开场动机，电钢琴与轻鼓逐层进入，功能列表出现时点入高音木琴'},
  {id:'idea',pageId:'product-idea',start:8,end:16,headline:'长篇 AI 讲解，整理成学习笔记。',purpose:'呈现长篇回答枯燥难读的痛点与结构化阅读方式',visual:'品牌落在真实纸面；页面展开，三步关系图逐段出现，荧光划过核心句。',sound:'鼓组与低音进入，电钢琴琶音连接主旋律，图示出现时短笛高音回应'},
  {id:'structure',pageId:'product-structure',start:16,end:24,headline:'条件、推导与例题',purpose:'展示知识组织和页面设计',visual:'康奈尔页边线索与正文分层展开；推进黑板公式，移向数值例子和勾记。',sound:'拨弦切分，黑板出现时短钟琴高音，计算结果配马林巴轻点'},
  {id:'marks',pageId:'product-marks',start:24,end:32,headline:'圈画重点，集中复习。',purpose:'展示圈画、引线旁注和复习回到原文',visual:'荧光、圈注、星标、方框按节拍逐笔出现；镜头从原句移向回顾线索。',sound:'主旋律变奏，荧光配木琴，圈注和星标分别点入钟琴高音，保留铅笔划线声'},

@@ -4,7 +4,7 @@
   "allBlocksCaptured": true,
   "errors": [],
   "source": "production reader, Chromium headless, CSS geometry and raster in the same viewport",
-  "readerSha256": "8c65950bb9bff5a9c6120db75d20ac8cc6efa4e2cc16b893ff1ac3f827fd851c",
+  "readerSha256": "248195a8155fe1888abac69ff2c6cdc986ccc22486e1b506da9d6630cb3208c6",
   "uiSource": "downloads/machine-learning.html; landscape/portrait spreads, right/bottom notes, figure annotation tools",
   "physicalDevices": false
 }

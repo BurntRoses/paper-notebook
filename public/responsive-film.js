@@ -45,10 +45,10 @@
   syncControls();
   const orientation = matchMedia('(orientation: portrait)');
   const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-  const revision = '3.3';
+  const revision = '3.14';
   const hdCopies = new Map(), attempted = new Set();
   let active = '', quality = '', mode = 'auto', request = 0, switching = false;
-  let wantedTime = 0, wantedPlay = false, sourceController, upgradeController, stallTimer;
+  let wantedTime = 0, wantedPlay = false, sourceController, upgradeController, stallTimer, recentStalls = [];
   const message = text => { if (status) status.textContent = text; };
   const slowNetwork = () => connection?.saveData || /(^|-)2g$|^3g$/.test(connection?.effectiveType || '') || (connection?.downlink > 0 && connection.downlink < 2);
   const url = (direction, level) => `promo/paper-notebook-film${direction === 'portrait' ? '-portrait' : ''}${level === '540' ? '-low' : level === '1080' ? '-1080' : ''}.mp4?v=${revision}`;
@@ -102,7 +102,7 @@
     const initial = !active, token = ++request, time = wantedTime, play = wantedPlay || retryPlay;
     const frame = reason === 'quality' ? stillFrame() : undefined;
     sourceController?.abort(); sourceController = new AbortController(); const { signal } = sourceController;
-    clearTimeout(stallTimer); switching = true; active = direction; quality = level; video.pause();
+    clearTimeout(stallTimer); recentStalls = []; switching = true; active = direction; quality = level; video.pause();
     video.dataset.orientation = direction; video.dataset.quality = level;
     updateQuality();
     video.poster = frame || poster(direction); video.preload = 'auto';
@@ -173,8 +173,8 @@
     if (!['ArrowDown', 'ArrowUp'].includes(event.key)) return;
     event.preventDefault(); openMenu();
   });
-  selector?.parentElement.addEventListener('focusout', event => {
-    if (!event.currentTarget.contains(event.relatedTarget)) closeMenu();
+  document.addEventListener('focusin', event => {
+    if (menu && !menu.hidden && !selector?.parentElement.contains(event.target)) closeMenu();
   });
   choices.forEach(choice => choice.addEventListener('click', () => {
     if (!['auto', '1080', '720', '540'].includes(choice.dataset.qualityChoice)) return;
@@ -214,7 +214,12 @@
   video.addEventListener('waiting', () => {
     if (video.paused || switching || bufferAhead() >= 4) return;
     message('正在缓冲…'); cancelUpgrade();
-    if (mode === 'auto' && quality !== '540' && !hdCopies.has(active)) { clearTimeout(stallTimer); stallTimer = setTimeout(() => void fallback(), 2500); }
+    if (mode === 'auto' && quality !== '540' && !hdCopies.has(active)) {
+      const now = performance.now(); recentStalls = recentStalls.filter(at => now - at < 10000); recentStalls.push(now);
+      clearTimeout(stallTimer);
+      if (recentStalls.length >= 2) void fallback();
+      else stallTimer = setTimeout(() => void fallback(), 2500);
+    }
   });
   video.addEventListener('error', () => { if (!switching) { if (mode === 'auto' && quality !== '540') void fallback(); else message('视频加载失败，可点击下方按钮重试。'); } });
   document.querySelector('.film-retry')?.addEventListener('click', () => adapt(true));

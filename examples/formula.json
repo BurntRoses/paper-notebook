@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "notebook-growth",
-    "revision": 6,
+    "revision": 7,
     "title": "复利的递推关系",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -30,7 +30,7 @@
               {
                 "id": "growth-intro",
                 "type": "prose",
-                "text": "一个假想账户初始有 100 元，每期增长 10%，不取出利息。第一期后是 110 元，第二期增长的基础变成了 110 元，因此增加 11 元。第三期再以121元为基础，增加12.1元；增长率相同，增长金额随基数扩大。",
+                "text": "账户初始有 100 元，每期增长 10%，不取出利息。第一期后是 110 元，第二期增长的基础变成了 110 元，因此增加 11 元。第三期再以121元为基础，增加12.1元；增长率相同，增长金额随基数扩大。",
                 "study": {
                   "marks": [
                     {
@@ -90,6 +90,43 @@
                 ]
               },
               {
+                "id": "growth-chart",
+                "type": "chart",
+                "title": "每期利率相同，增加额逐期扩大",
+                "chartType": "line",
+                "xLabel": "期数",
+                "yLabel": "期末金额 / 元",
+                "series": [
+                  {
+                    "id": "growth-balance",
+                    "label": "复利余额",
+                    "points": [
+                      {
+                        "x": 0,
+                        "y": 100
+                      },
+                      {
+                        "x": 1,
+                        "y": 110
+                      },
+                      {
+                        "x": 2,
+                        "y": 121
+                      },
+                      {
+                        "x": 3,
+                        "y": 133.1
+                      }
+                    ]
+                  }
+                ],
+                "caption": "相邻两期分别增加 10、11、12.1 元，变化来自逐期扩大的计息基数。",
+                "figure": {
+                  "size": "wide",
+                  "ratio": "3:2"
+                }
+              },
+              {
                 "id": "growth-steps",
                 "type": "example",
                 "prompt": "第三期末有多少？",
@@ -103,7 +140,7 @@
                     "text": "第三期末：121 × 1.1 = 133.1。"
                   }
                 ],
-                "result": "三期一共增加 33.1，而每期固定加 10 只会增加 30。",
+                "result": "三期一共增加 33.1 元，等于期末金额 133.1 元减去初始本金 100 元。",
                 "study": {
                   "marks": [
                     {
@@ -236,7 +273,7 @@
     ]
   },
   "userState": {
-    "updatedAt": "2026-11-01T00:00:00.000Z",
+    "updatedAt": "2026-11-11T12:00:00.000Z",
     "lastPageId": "growth-1",
     "notes": [],
     "annotations": [],
@@ -276,6 +313,6 @@
       "theme": "paper-light",
       "motion": "full"
     },
-    "baseRevision": 5
+    "baseRevision": 6
   }
 }

@@ -2,8 +2,8 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "showcase-literature",
-    "revision": 5,
-    "title": "《春望》 · 背景、文本与修辞",
+    "revision": 6,
+    "title": "杜甫《春望》",
     "author": "Paper Notebook",
     "language": "zh-CN",
     "goals": [
@@ -28,7 +28,7 @@
     "chapters": [
       {
         "id": "literature-chapter",
-        "title": "《春望》 · 背景、文本与修辞",
+        "title": "杜甫《春望》",
         "pages": [
           {
             "id": "subject-literature",
@@ -81,10 +81,24 @@
                 }
               },
               {
+                "id": "literature-map",
+                "type": "image",
+                "assetId": "spring-parallel",
+                "alt": "首联上下两句对读：国破与城春相对，山河在与草木深相对，圈出破与深两字。",
+                "caption": "“破”写国都处境，“深”写草木蔓生。上下句对仗，景物中寄寓战乱之痛。",
+                "figure": {
+                  "size": "wide",
+                  "ratio": "auto"
+                },
+                "study": {
+                  "visual": "plain"
+                }
+              },
+              {
                 "id": "literature-detail",
                 "type": "concept",
                 "title": "“破”“在”“深”的炼字",
-                "text": "“国破”中的“国”指国都长安。“破”写都城沦陷，“在”写山河依旧。山河的恒常衬出人事凋零，起句便含忧国之情。\n\n“城春”点明时令，“草木深”写草木蔓生，呈现战乱后城中的荒芜。",
+                "text": "“国破”中的“国”指国都长安。“破”写都城沦陷，“在”写山河依旧。山河的恒常衬出人事凋零：山川仍在，国都的秩序与生活已经破坏。忧国之情由这一对照生发。\n\n“城春”点明时令，“草木深”写草木蔓生，呈现战乱后城中的荒芜。",
                 "study": {
                   "tone": "red",
                   "marks": [
@@ -95,53 +109,6 @@
                     {
                       "text": "人事凋零",
                       "kind": "red",
-                      "color": "#b1483d"
-                    }
-                  ]
-                }
-              },
-              {
-                "id": "literature-map",
-                "type": "diagram",
-                "nodes": [
-                  {
-                    "id": "scene",
-                    "label": "山河、草木：所见"
-                  },
-                  {
-                    "id": "context",
-                    "label": "国破、城春：语境"
-                  },
-                  {
-                    "id": "reading",
-                    "label": "恒常景物衬出人事凋零"
-                  }
-                ],
-                "edges": [
-                  {
-                    "from": "scene",
-                    "to": "context"
-                  },
-                  {
-                    "from": "context",
-                    "to": "reading"
-                  }
-                ],
-                "caption": "景物的存在、城市的处境和诗人的感受沿着“望”字相连。",
-                "study": {
-                  "visual": "sketch"
-                },
-                "figure": {
-                  "size": "wide",
-                  "ratio": "auto",
-                  "style": "sketch",
-                  "annotations": [
-                    {
-                      "kind": "circle",
-                      "x": 17,
-                      "y": 78,
-                      "x2": 83,
-                      "y2": 96,
                       "color": "#b1483d"
                     }
                   ]
@@ -190,7 +157,7 @@
               {
                 "id": "literature-context",
                 "type": "prose",
-                "text": "安史之乱中，长安于756年六月失守。杜甫安顿家人后前往投奔肃宗，途中被叛军带回长安，《春望》写于次年三月。诗人身陷沦陷的都城，与家人音信隔绝。战乱、隔绝和人事凋残构成诗人的写作处境，眼前春景因而牵动忧思。",
+                "text": "安史之乱中，长安于 756 年失守。杜甫安顿家人后前往投奔肃宗，途中被叛军俘获，被困长安。《春望》写于次年三月，诗人与家人音信隔绝。\n\n诗题中的“望”贯穿全篇：首联望见都城的山河草木，颔联写见花闻鸟引发的感时恨别，颈联写战事与家书，尾联回到搔首的诗人。战乱、隔绝和人事凋残共同构成眼前春景的情感背景。",
                 "sourceRefs": [
                   {
                     "sourceId": "source-spring-commentary",
@@ -218,7 +185,7 @@
               {
                 "id": "literature-structure",
                 "type": "diagram",
-                "title": "“望”字统摄的起承转合",
+                "title": "全诗的视线与情感",
                 "arrangement": "row",
                 "nodes": [
                   {
@@ -350,7 +317,7 @@
               {
                 "id": "literature-rhetoric-analysis",
                 "type": "prose",
-                "text": "“感时”写忧国，“恨别”写思家；“花溅泪”与“鸟惊心”以整齐的句法相对。花与鸟本是春日常见的景物，诗人见花落泪、闻鸟惊心，乐景反衬出战乱中的忧惧。另一种读法以花鸟为主语：花为时局落泪，鸟因离别惊心，移情于物更添悲意。\n\n“烽火”代指战争，“连”写战事延续。“家书抵万金”以夸张的价值换算写音信珍贵。家书关系到家人安危，战火又使音信难通，诗人对家书的盼望因此格外迫切。对仗将国事与家事并列，忧国与思家相互加深。",
+                "text": "“感时”写忧国，“恨别”写思家；“花溅泪”与“鸟惊心”以整齐的句法相对。花与鸟本是春日常见的景物，诗人见花落泪、闻鸟惊心，乐景反衬出战乱中的忧惧。另一种读法以花鸟为主语：花为时局落泪，鸟因离别惊心，移情于物更添悲意。\n\n“烽火”代指战争，“连”写战事延续。“家书抵万金”以夸张写音信珍贵：“万金”抬高一封家书的分量，突出战乱中平安消息的难得。家书关系到家人安危，战火又使音信难通，诗人对家书的盼望因此格外迫切。对仗将国事与家事并列，忧国与思家相互加深。",
                 "study": {
                   "marks": [
                     {
@@ -368,7 +335,7 @@
                       "color": "#b1483d"
                     },
                     {
-                      "text": "夸张的价值换算",
+                      "text": "以夸张写音信珍贵",
                       "kind": "dots"
                     }
                   ]
@@ -378,7 +345,7 @@
                 "id": "literature-rhetoric-close",
                 "type": "callout",
                 "title": "尾联的动作与韵脚",
-                "text": "尾联由城中景物收回自身。“搔”写忧愁中的动作，“更短”写白发愈搔愈稀，“不胜簪”将衰老与忧思落实到发簪难以束住的细节。全诗以“深、心、金、簪”押韵，整齐的五言句式与连贯韵脚贯穿景、情、事、人，末句以一个具体形象收束家国之痛。",
+                "text": "尾联由城中景物收回自身。“搔”写忧愁中的动作，“更短”写白发愈搔愈稀，“不胜簪”将衰老与忧思落实到发簪难以束住的细节。偶数句以“深、心、金、簪”为韵脚。尾联的身体细节承接前六句忧思，以具体形象收束家国之痛。",
                 "study": {
                   "marks": [
                     {
@@ -403,7 +370,7 @@
     ]
   },
   "userState": {
-    "updatedAt": "2026-11-01T00:00:00.000Z",
+    "updatedAt": "2026-11-11T12:00:00.000Z",
     "lastPageId": "subject-literature",
     "notes": [],
     "annotations": [],
@@ -432,9 +399,21 @@
       "timerRunning": false
     }
   },
-  "assets": [],
+  "assets": [
+    {
+      "id": "spring-parallel",
+      "name": "春望首联对读.svg",
+      "mime": "image/svg+xml",
+      "data": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22900%22%20height%3D%22420%22%20viewBox%3D%220%200%20900%20420%22%3E%3Crect%20width%3D%22900%22%20height%3D%22420%22%20fill%3D%22%23faf7ed%22%2F%3E%3Cg%20fill%3D%22%23345867%22%20font-family%3D%22serif%22%20text-anchor%3D%22middle%22%3E%3Cg%20font-size%3D%2239%22%3E%3Ctext%20x%3D%22130%22%20y%3D%22105%22%3E%E5%9B%BD%3C%2Ftext%3E%3Ctext%20x%3D%22210%22%20y%3D%22105%22%20fill%3D%22%23b1483d%22%3E%E7%A0%B4%3C%2Ftext%3E%3Ctext%20x%3D%22440%22%20y%3D%22105%22%3E%E5%B1%B1%E6%B2%B3%3C%2Ftext%3E%3Ctext%20x%3D%22650%22%20y%3D%22105%22%20fill%3D%22%23285f9e%22%3E%E5%9C%A8%3C%2Ftext%3E%3Ctext%20x%3D%22130%22%20y%3D%22270%22%3E%E5%9F%8E%3C%2Ftext%3E%3Ctext%20x%3D%22210%22%20y%3D%22270%22%3E%E6%98%A5%3C%2Ftext%3E%3Ctext%20x%3D%22440%22%20y%3D%22270%22%3E%E8%8D%89%E6%9C%A8%3C%2Ftext%3E%3Ctext%20x%3D%22650%22%20y%3D%22270%22%20fill%3D%22%23b1483d%22%3E%E6%B7%B1%3C%2Ftext%3E%3C%2Fg%3E%3Cg%20font-size%3D%2223%22%3E%3Ctext%20x%3D%22170%22%20y%3D%22152%22%3E%E5%9B%BD%E9%83%BD%E6%B2%A6%E9%99%B7%3C%2Ftext%3E%3Ctext%20x%3D%22550%22%20y%3D%22152%22%3E%E5%B1%B1%E6%B2%B3%E4%BE%9D%E6%97%A7%3C%2Ftext%3E%3Ctext%20x%3D%22170%22%20y%3D%22317%22%3E%E6%98%A5%E5%9B%9E%E9%95%BF%E5%AE%89%3C%2Ftext%3E%3Ctext%20x%3D%22550%22%20y%3D%22317%22%3E%E8%8D%89%E6%9C%A8%E8%94%93%E7%94%9F%3C%2Ftext%3E%3Ctext%20x%3D%22450%22%20y%3D%22389%22%3E%E5%8F%A5%E5%BC%8F%E7%9B%B8%E5%AF%B9%EF%BC%8C%E6%98%A5%E6%99%AF%E4%B8%AD%E5%AF%84%E5%AF%93%E5%BF%A7%E5%9B%BD%E4%B9%8B%E6%83%85%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23aa7257%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M177%2064%20C171%2040%20246%2038%20249%2079%20C255%20121%20172%20126%20177%2064%20M179%2066%20C174%2042%20248%2043%20246%2081%22%2F%3E%3Cpath%20d%3D%22M618%20225%20C610%20205%20687%20201%20691%20239%20C695%20282%20613%20288%20618%20225%20M620%20227%20C615%20207%20686%20207%20688%20240%22%2F%3E%3Cpath%20d%3D%22M361%20169%20Q480%20179%20670%20168%20M362%20332%20Q495%20343%20672%20332%22%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%2378928a%22%20stroke-width%3D%221.5%22%20stroke-dasharray%3D%225%207%22%3E%3Cpath%20d%3D%22M130%20173%20V209%20M210%20173%20V209%20M440%20173%20V209%20M650%20173%20V209%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E",
+      "width": 900,
+      "height": 420,
+      "source": "杜甫《春望》首联；Paper Notebook 编写对读标注",
+      "license": "MIT",
+      "verified": true
+    }
+  ],
   "extensions": {
-    "baseRevision": 4,
+    "baseRevision": 5,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

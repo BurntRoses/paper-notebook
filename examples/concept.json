@@ -2,8 +2,8 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "notebook-observation",
-    "revision": 8,
-    "title": "数字与证据",
+    "revision": 9,
+    "title": "订单、顾客与统计口径",
     "author": "Paper Notebook",
     "language": "zh-CN",
     "goals": [
@@ -26,7 +26,7 @@
     "chapters": [
       {
         "id": "notebook-observation-chapter",
-        "title": "数字与证据",
+        "title": "订单、顾客与统计口径",
         "pages": [
           {
             "id": "observation-1",
@@ -36,13 +36,13 @@
               {
                 "id": "obs-opening",
                 "type": "prose",
-                "text": "书店的订单表记录每笔交易的订单号、顾客编号和金额。顾客编号连接同一人的多笔购买。统计订单数与顾客数时，需要分别选择计数对象。"
+                "text": "书店的订单表记录每笔交易的订单号、顾客编号和金额。顾客编号连接同一人的多笔购买。同一位顾客可产生多笔订单，因此订单数与顾客数分别反映交易次数和购买人数。"
               },
               {
                 "id": "obs-concept",
                 "type": "concept",
                 "title": "统计粒度",
-                "text": "统计粒度是每条记录代表的对象。订单表以一笔交易为单位，同一顾客可占多行；顾客表以一位顾客为单位，同一编号占一行。从订单数转为顾客数，需要先按顾客编号去重。",
+                "text": "统计粒度是每条记录代表的对象，也是表格组织数据的基本单位。订单表以一笔交易为单位，同一顾客可占多行；顾客表以一位顾客为单位，同一编号占一行。从订单数转为顾客数，需要先按顾客编号去重。",
                 "study": {
                   "marks": [
                     {
@@ -93,6 +93,65 @@
                 ]
               },
               {
+                "id": "obs-customer-map",
+                "type": "diagram",
+                "title": "三笔订单指向同一顾客",
+                "nodes": [
+                  {
+                    "id": "obs-order-01",
+                    "label": "订单 01：38 元"
+                  },
+                  {
+                    "id": "obs-order-02",
+                    "label": "订单 02：62 元"
+                  },
+                  {
+                    "id": "obs-order-03",
+                    "label": "订单 03：45 元"
+                  },
+                  {
+                    "id": "obs-customer-lin",
+                    "label": "顾客：小林"
+                  }
+                ],
+                "edges": [
+                  {
+                    "from": "obs-order-01",
+                    "to": "obs-customer-lin"
+                  },
+                  {
+                    "from": "obs-order-02",
+                    "to": "obs-customer-lin"
+                  },
+                  {
+                    "from": "obs-order-03",
+                    "to": "obs-customer-lin"
+                  }
+                ],
+                "figure": {
+                  "size": "wide",
+                  "ratio": "auto",
+                  "annotations": [
+                    {
+                      "kind": "circle",
+                      "x": 39,
+                      "y": 67,
+                      "x2": 63,
+                      "y2": 94,
+                      "color": "#285f9e"
+                    },
+                    {
+                      "kind": "text",
+                      "x": 67,
+                      "y": 77,
+                      "text": "按编号去重",
+                      "color": "#285f9e"
+                    }
+                  ]
+                },
+                "caption": "三条交易记录共享一个顾客编号：交易计三次，顾客计一次。"
+              },
+              {
                 "id": "obs-key",
                 "type": "callout",
                 "tone": "note",
@@ -135,39 +194,46 @@
               {
                 "id": "obs-path",
                 "type": "diagram",
-                "title": "统计范围与筛选",
+                "title": "同一批筛选记录的两种计数",
                 "nodes": [
                   {
                     "id": "raw",
-                    "label": "原始材料"
+                    "label": "订单表"
                   },
                   {
                     "id": "define",
-                    "label": "确定对象与范围"
+                    "label": "指定月份、已付款、未退款"
                   },
                   {
                     "id": "count",
-                    "label": "计算与核对"
+                    "label": "按订单行计数"
                   },
                   {
                     "id": "judge",
-                    "label": "解释结果"
+                    "label": "顾客编号去重后计数"
                   }
                 ],
                 "edges": [
                   {
                     "from": "raw",
-                    "to": "define"
+                    "to": "define",
+                    "label": "先筛选"
                   },
                   {
                     "from": "define",
-                    "to": "count"
+                    "to": "count",
+                    "label": "交易次数"
                   },
                   {
-                    "from": "count",
-                    "to": "judge"
+                    "from": "define",
+                    "to": "judge",
+                    "label": "购买人数"
                   }
-                ]
+                ],
+                "figure": {
+                  "size": "wide",
+                  "ratio": "auto"
+                }
               },
               {
                 "id": "obs-steps",
@@ -262,7 +328,7 @@
               {
                 "id": "obs-overlap",
                 "type": "prose",
-                "text": "同一个人，可能在上海和杭州都下过单。两座城市的顾客人数直接相加，就会数他两次。合并的是名单，去重之后才是全体人数。",
+                "text": "上海的顾客编号为 A、B、C、D，杭州为 C、D、E。两地分别有 4 人和 3 人，C、D 在两地都出现。合并的是名单，去重之后才是全体人数，本例共 5 人。",
                 "study": {
                   "marks": [
                     {
@@ -275,6 +341,17 @@
                       "color": "#285f9e"
                     }
                   ]
+                }
+              },
+              {
+                "id": "obs-union-figure",
+                "type": "image",
+                "assetId": "customer-overlap",
+                "alt": "上海四位顾客A、B、C、D，杭州三位C、D、E，两位重复；合并去重后五人。",
+                "caption": "交集 C、D 在两份名单中各出现一次。相加后减去一次交集人数，得到 4+3−2=5。",
+                "figure": {
+                  "size": "wide",
+                  "ratio": "auto"
                 }
               },
               {
@@ -303,14 +380,37 @@
               {
                 "id": "obs-sql",
                 "type": "code",
+                "title": "统计十月已付款且未退款的订单",
                 "language": "sql",
-                "text": "SELECT COUNT(*) AS orders,\n       COUNT(DISTINCT customer_id) AS customers\nFROM orders\nWHERE status = 'paid';",
+                "text": "SELECT COUNT(*) AS orders,\n       COUNT(DISTINCT customer_id) AS customers\nFROM orders\nWHERE paid_at >= '2026-10-01'\n  AND paid_at <  '2026-11-01'\n  AND status = 'paid'\n  AND refunded_at IS NULL;",
+                "study": {
+                  "explanations": [
+                    {
+                      "text": "COUNT(*)",
+                      "note": "对筛选后的每行计数，得到订单数。"
+                    },
+                    {
+                      "text": "COUNT(DISTINCT customer_id)",
+                      "note": "顾客编号去重后计数；NULL 不参与这一计数。"
+                    },
+                    {
+                      "text": "refunded_at IS NULL",
+                      "note": "退款时间为空，表示该记录没有退款事件。"
+                    }
+                  ]
+                },
                 "sourceRefs": [
                   {
                     "sourceId": "postgres-count",
                     "locator": "count(*) 与 count(DISTINCT expression)"
                   }
                 ]
+              },
+              {
+                "id": "obs-sql-fields",
+                "type": "callout",
+                "title": "时间区间与缺失编号",
+                "text": "本例 orders 表包含付款时间 paid_at、付款状态 status、退款时间 refunded_at 和顾客编号 customer_id。时间条件包含十月一日零点，排除十一月一日零点；付款时间按同一业务时区解释。顾客编号为空的订单仍计入订单数，人数统计前应核查这些缺失记录。"
               },
               {
                 "id": "obs-checks",
@@ -376,7 +476,7 @@
                 "id": "obs-quiz-2",
                 "type": "exercise",
                 "questionType": "multiple",
-                "question": "比较两个统计结果，至少需要核对哪些条件？",
+                "question": "比较两个月的活跃顾客人数，需要保持哪些统计约定一致？",
                 "options": [
                   {
                     "id": "obs-q2-a",
@@ -392,7 +492,7 @@
                   },
                   {
                     "id": "obs-q2-d",
-                    "text": "图表的背景颜色"
+                    "text": "两个月的订单总数必须相同"
                   }
                 ],
                 "solution": [
@@ -400,14 +500,14 @@
                   "obs-q2-b",
                   "obs-q2-c"
                 ],
-                "explanation": "对象、时间和筛选条件会改变结果。背景颜色不会改变统计口径。",
+                "explanation": "计数对象、时间区间的定义和筛选条件须一致。两个月的订单总数可以变化，它本身就是待观察的结果。",
                 "points": 3
               },
               {
                 "id": "obs-quiz-3",
                 "type": "exercise",
                 "questionType": "truefalse",
-                "question": "两个城市的顾客人数，可以始终直接相加得到总人数。",
+                "question": "两地没有共同顾客时，总人数等于两地人数之和。",
                 "options": [
                   {
                     "id": "obs-q3-t",
@@ -419,9 +519,9 @@
                   }
                 ],
                 "solution": [
-                  "obs-q3-f"
+                  "obs-q3-t"
                 ],
-                "explanation": "同一位顾客可能在两个城市都出现，需要在合并后去重。",
+                "explanation": "交集为空时，集合并集公式中的交集人数为 0，因此两地人数可以直接相加。",
                 "points": 1
               }
             ]
@@ -431,7 +531,7 @@
     ]
   },
   "userState": {
-    "updatedAt": "2026-11-01T00:00:00.000Z",
+    "updatedAt": "2026-11-11T12:00:00.000Z",
     "lastPageId": "observation-1",
     "notes": [],
     "annotations": [
@@ -479,7 +579,19 @@
       "timerRunning": false
     }
   },
-  "assets": [],
+  "assets": [
+    {
+      "id": "customer-overlap",
+      "name": "两地顾客名单.svg",
+      "mime": "image/svg+xml",
+      "data": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22860%22%20height%3D%22390%22%20viewBox%3D%220%200%20860%20390%22%3E%3Crect%20width%3D%22860%22%20height%3D%22390%22%20fill%3D%22%23faf7ed%22%2F%3E%3Cg%20fill-opacity%3D%22.12%22%20stroke-width%3D%222.4%22%3E%3Cellipse%20cx%3D%22340%22%20cy%3D%22195%22%20rx%3D%22185%22%20ry%3D%22130%22%20fill%3D%22%23285f9e%22%20stroke%3D%22%23527e96%22%2F%3E%3Cellipse%20cx%3D%22520%22%20cy%3D%22195%22%20rx%3D%22185%22%20ry%3D%22130%22%20fill%3D%22%2374885b%22%20stroke%3D%22%2374885b%22%2F%3E%3C%2Fg%3E%3Cg%20font-family%3D%22serif%22%20font-size%3D%2225%22%20text-anchor%3D%22middle%22%20fill%3D%22%23345867%22%3E%3Ctext%20x%3D%22275%22%20y%3D%2245%22%3E%E4%B8%8A%E6%B5%B7%EF%BC%9A4%20%E4%BA%BA%3C%2Ftext%3E%3Ctext%20x%3D%22590%22%20y%3D%2245%22%3E%E6%9D%AD%E5%B7%9E%EF%BC%9A3%20%E4%BA%BA%3C%2Ftext%3E%3Ctext%20x%3D%22270%22%20y%3D%22190%22%3EA%E3%80%81B%3C%2Ftext%3E%3Ctext%20x%3D%22430%22%20y%3D%22190%22%3EC%E3%80%81D%3C%2Ftext%3E%3Ctext%20x%3D%22590%22%20y%3D%22190%22%3EE%3C%2Ftext%3E%3Ctext%20x%3D%22430%22%20y%3D%22240%22%20font-size%3D%2220%22%3E%E4%B8%A4%E5%9C%B0%E5%9D%87%E6%9C%89%E8%AE%A2%E5%8D%95%3C%2Ftext%3E%3Ctext%20x%3D%22430%22%20y%3D%22365%22%3E%E5%90%88%E5%B9%B6%E5%8E%BB%E9%87%8D%EF%BC%9A4%20%2B%203%20%E2%88%92%202%20%3D%205%20%E4%BA%BA%3C%2Ftext%3E%3C%2Fg%3E%3Cpath%20d%3D%22M388%20163%20C380%20140%20487%20139%20487%20183%20C482%20216%20379%20217%20388%20163%22%20fill%3D%22none%22%20stroke%3D%22%23b1483d%22%20stroke-width%3D%222.5%22%2F%3E%3Cpath%20d%3D%22M702%2092%20Q638%2085%20486%20156%20m12-16-12%2016%2020-1%22%20fill%3D%22none%22%20stroke%3D%22%23b1483d%22%20stroke-width%3D%222.4%22%2F%3E%3Ctext%20x%3D%22695%22%20y%3D%2273%22%20font-family%3D%22serif%22%20font-size%3D%2222%22%20text-anchor%3D%22middle%22%20fill%3D%22%23b1483d%22%3E%E4%BA%A4%E9%9B%86%E5%8F%AA%E8%AE%A1%E4%B8%80%E6%AC%A1%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "width": 860,
+      "height": 390,
+      "source": "本例给定的两地顾客名单",
+      "license": "MIT",
+      "verified": true
+    }
+  ],
   "extensions": {
     "readerProfile": {
       "layout": "auto",
@@ -490,6 +602,6 @@
       "theme": "paper-light",
       "motion": "full"
     },
-    "baseRevision": 7
+    "baseRevision": 8
   }
 }

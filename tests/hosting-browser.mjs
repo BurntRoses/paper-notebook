@@ -70,9 +70,9 @@ try {
   checks.push('Conversation route downloads a wrapper containing the unchanged runtime ZIP; copying instructions remains the primary action');
   await page.locator('#download-help summary').click();
   assert.match(await page.locator('#download-help').innerText(),/压缩/);
-  assert.match(await page.locator('#download-help').innerText(),/paper-notebook-conversation\.zip/);
+  assert.doesNotMatch(await page.locator('#download-help').innerText(),/paper-notebook-conversation\.zip/);
   assert.doesNotMatch(await page.locator('#download-help').innerText(),/Safari|此前下载/);
-  checks.push('Auto-expanded downloads have a folder-recompression recovery path and optional Safari setting instructions');
+  checks.push('Auto-expanded downloads retain one concise folder-recompression recovery path');
   const prompt = await page.getByLabel('对话模型提示词', { exact: true }).inputValue();
   assert.equal(prompt, await readFile('skills/paper-notebook/prompts/conversation-model.txt', 'utf8'));
   const repositoryPrompt = await page.getByLabel('编程智能体提示词', { exact: true }).inputValue();
@@ -190,9 +190,15 @@ try {
   const slowContext=await browser.newContext({viewport:{width:1440,height:1000}}),slow=await slowContext.newPage();
   const network=await slowContext.newCDPSession(slow);await network.send('Network.enable');await network.send('Network.emulateNetworkConditions',{offline:false,latency:150,downloadThroughput:180*1024,uploadThroughput:60*1024});
   await slow.goto(base,{waitUntil:'domcontentloaded'});await slow.waitForFunction(()=>document.querySelector('#film-player')?.readyState>=2,{},{timeout:45000});
-  const playback=await slow.locator('#film-player').evaluate(async v=>{let waits=0;v.addEventListener('waiting',()=>waits++);const began=performance.now();await v.play();await new Promise(resolve=>setTimeout(resolve,8000));return{elapsed:(performance.now()-began)/1000,played:v.currentTime,waits,width:v.videoWidth}});
-  assert.ok(playback.played>6,JSON.stringify(playback));assert.ok([960,1280,1920].includes(playback.width));await slowContext.close();
-  checks.push(`At 180 KiB/s download and 150 ms latency, playback advances ${playback.played.toFixed(1)} seconds during ${playback.elapsed.toFixed(1)} seconds (${playback.waits} waiting events)`);
+  const began=Date.now();
+  await slow.locator('#film-player').evaluate(v=>v.play());
+  // NetworkInformation still reports 4G in this emulation. Measure the cold
+  // HD fallback separately from continuous playback at the adapted quality.
+  await slow.waitForFunction(()=>{const v=document.querySelector('#film-player');return v.dataset.quality!=='1080'&&!v.hasAttribute('aria-busy')&&!v.paused&&v.currentTime>2;},{},{timeout:15000});
+  const adaptationSeconds=(Date.now()-began)/1000;
+  const playback=await slow.locator('#film-player').evaluate(async v=>{let waits=0;v.addEventListener('waiting',()=>waits++);const began=performance.now(),start=v.currentTime;await new Promise(resolve=>setTimeout(resolve,8000));return{elapsed:(performance.now()-began)/1000,played:v.currentTime-start,waits,width:v.videoWidth}});
+  assert.ok(playback.played>6,JSON.stringify(playback));assert.ok([960,1280].includes(playback.width));await slowContext.close();
+  checks.push(`At 180 KiB/s download and 150 ms latency, cold HD playback adapts in ${adaptationSeconds.toFixed(1)} seconds, then advances ${playback.played.toFixed(1)} seconds during ${playback.elapsed.toFixed(1)} seconds (${playback.waits} waiting events)`);
 
   const safari=await webkit.launch({headless:true});
   try{

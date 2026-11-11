@@ -2,8 +2,8 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "showcase-compound-interest",
-    "revision": 5,
-    "title": "复利 · 递推与增长",
+    "revision": 6,
+    "title": "复利与增长",
     "author": "Paper Notebook",
     "language": "zh-CN",
     "goals": [
@@ -26,7 +26,7 @@
     "chapters": [
       {
         "id": "compound-interest-chapter",
-        "title": "复利 · 递推与增长",
+        "title": "复利与增长",
         "pages": [
           {
             "id": "intro-capabilities",
@@ -67,12 +67,12 @@
                     }
                   ]
                 },
-                "text": "复利以上一期的期末值为下一期的增长基础。新增利息计入本金，继续参与增长。"
+                "text": "复利将上一期的期末值作为下一期的增长基础。以 100 元、每期 10% 为例，第一期末有 110 元，第二期的利息按 110 元计算。新增利息计入本金，继续参与增长。"
               },
               {
                 "id": "intro-read",
                 "type": "concept",
-                "title": "恒定利率模型的条件",
+                "title": "计息周期与资金流",
                 "study": {
                   "tone": "red",
                   "explanations": [
@@ -167,7 +167,7 @@
                     }
                   ]
                 },
-                "text": "第二期多出的 1 元，来自第一期 10 元利息的再次增长：10 × 10% = 1。"
+                "text": "第二期多出的 1 元等于 10 × 10%。展开两期增长因子，(1+r)²=1+2r+r²；图中的小方块对应 r²P₀，也就是前一期利息在后一期新增的利息。"
               }
             ]
           },
@@ -234,7 +234,7 @@
                   ]
                 },
                 "latex": "P_n=P_0(1+r)^n",
-                "text": "P₀：初始值；r：每期增长率；n：期数。"
+                "text": "P₀：初始值；r：每期增长率；n：期数。递推式 Pₙ₊₁=Pₙ(1+r) 连续代入 n 次，初始本金后便有 n 个相同因子。"
               },
               {
                 "id": "intro-anchor",
@@ -429,7 +429,7 @@
                     }
                   ]
                 },
-                "text": "220 是单利结果；复利结果多出的 0.5，来自第一期利息的再次增长。"
+                "text": "220 是单利结果。第一期产生 10 元利息，这 10 元在第二期又产生 0.5 元，所以复利终值为 220.5 元。"
               }
             ]
           },
@@ -514,7 +514,7 @@
                     }
                   ]
                 },
-                "text": "净增长等于期末总值减去累计存入。"
+                "text": "净增长等于期末总值减去累计存入。本例累计存入 150 元，终值为 176 元；把终值中的本金扣除，才得到 26 元利息。"
               }
             ]
           }
@@ -523,7 +523,7 @@
     ]
   },
   "userState": {
-    "updatedAt": "2026-11-01T00:00:00.000Z",
+    "updatedAt": "2026-11-11T12:00:00.000Z",
     "lastPageId": "intro-capabilities",
     "notes": [],
     "annotations": [],
@@ -566,7 +566,7 @@
     }
   ],
   "extensions": {
-    "baseRevision": 4,
+    "baseRevision": 5,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

@@ -2,8 +2,8 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "paper-notebook-product-story",
-    "revision": 6,
-    "title": "Paper Notebook · 产品笔记",
+    "revision": 7,
+    "title": "Paper Notebook 使用说明",
     "author": "Paper Notebook",
     "language": "zh-CN",
     "goals": [
@@ -42,12 +42,12 @@
               {
                 "id": "pain-context",
                 "type": "prose",
-                "text": "向常用的 AI 发送制作指令，上传材料或说明没有文件，再提供主题、基础和学习目标。",
+                "text": "向 AI 提供仓库地址和材料，说明主题、已有基础和学习目标。没有材料时，可按选定主题生成讲解。",
                 "study": {
                   "label": "制作流程",
                   "marks": [
                     {
-                      "text": "上传材料",
+                      "text": "仓库地址和材料",
                       "kind": "underline"
                     },
                     {
@@ -69,8 +69,8 @@
               {
                 "id": "pain-fragments",
                 "type": "code",
-                "language": "Markdown",
-                "text": "先提供：参考文件，或说明没有文件\n再选择：主题、基础和学习目标\n内容包括：概念、图解、推导和例题\n讲解要求：交代条件，说明每一步\n文件格式：单文件离线 HTML\n保存记录：圈画、便条、疑问与作答",
+                "language": "Text",
+                "text": "参考材料：讲义、书页、题目或代码\n学习要求：主题、基础、目标与范围\n内容形式：图解、推导、例题与赏析\n页边说明：定义、示例与图像解读\n批注方式：圈画、箭头、便条与书签\n保存格式：单文件离线 HTML",
                 "study": {
                   "label": "学习需求与文件格式"
                 }
@@ -339,11 +339,11 @@
                   },
                   {
                     "id": "mark",
-                    "label": "圈出重点"
+                    "label": "添加文字标记"
                   },
                   {
                     "id": "return",
-                    "label": "书签与疑问定位原文"
+                    "label": "保存书签或疑问"
                   }
                 ],
                 "edges": [
@@ -352,7 +352,7 @@
                     "to": "mark"
                   },
                   {
-                    "from": "mark",
+                    "from": "sentence",
                     "to": "return"
                   }
                 ],
@@ -585,7 +585,7 @@
                 "text": "下载一份 HTML，离线阅读。圈画和作答同时保存。",
                 "study": {
                   "visual": "extract",
-                  "label": "阅读无需账号",
+                  "label": "离线保存",
                   "marks": [
                     {
                       "text": "离线阅读",
@@ -682,7 +682,7 @@
     ]
   },
   "userState": {
-    "updatedAt": "2026-10-24T18:00:00.000Z",
+    "updatedAt": "2026-11-11T12:00:00.000Z",
     "lastPageId": "product-pain",
     "notes": [],
     "annotations": [],
@@ -713,7 +713,7 @@
   },
   "assets": [],
   "extensions": {
-    "baseRevision": 5,
+    "baseRevision": 6,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

@@ -96,7 +96,7 @@ for(const [engine,type] of Object.entries({chromium,webkit}).filter(([name])=>!p
    }
   }
   await op.goto(pathToFileURL(resolve('output/site/downloads/paper-notebook-product.html')).href+'?demo');await op.waitForFunction(()=>window.reader?.fontsCalibrated);
-  assert.equal(await op.evaluate(()=>window.reader.d.notebook.revision),6);
+  assert.equal(await op.evaluate(()=>window.reader.d.notebook.revision),7);
   await op.screenshot({path:`${out}/${engine}-product-offline.png`});
   await op.goto(pathToFileURL(resolve('output/site/downloads/compound-interest.html')).href+'?demo');await op.waitForFunction(()=>window.reader?.fontsCalibrated);
   const markId=await op.evaluate(()=>{const r=window.reader,text=r.page.blocks.find(b=>b.id==='intro-lead').text;r.editor.mark('underline',[{pageId:r.page.id,selector:{blockId:'intro-lead',start:0,end:2,exact:text.slice(0,2),prefix:'',suffix:text.slice(2,18)}}]);r.showExport();return r.d.userState.annotations.at(-1).id});

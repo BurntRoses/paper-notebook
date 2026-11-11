@@ -4,7 +4,7 @@ Turn lecture notes, book pages and questions into illustrated study notes with A
 
 [Try the reader](https://burntroses.github.io/paper-notebook/#read) · [Create a notebook](https://burntroses.github.io/paper-notebook/#create) · [Watch the demo](https://burntroses.github.io/paper-notebook/#film) · [中文](README.md)
 
-![Illustrated notes with reading marks and margin annotations](public/promo/paper-landscape-3.jpg)
+![Illustrated notes with reading marks and margin annotations](public/promo/paper-landscape-3.jpg?v=3.14)
 
 ## Features
 

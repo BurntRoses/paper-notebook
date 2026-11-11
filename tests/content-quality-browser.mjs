@@ -59,7 +59,7 @@ for(const [engine,type] of Object.entries({chromium,webkit}).filter(([name])=>!p
   const offline=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});await offline.route(/^https?:/,route=>route.abort());const copy=await offline.newPage();
   copy.on('pageerror',e=>errors.push(e.message));
   await copy.goto(pathToFileURL(copyPath).href+'?demo');await copy.waitForFunction(()=>reader?.fontsCalibrated);
-  await copy.evaluate(async()=>{reader.goPage(reader.pages.findIndex(p=>p.blocks.some(b=>b.id==='ml-learning'&&(b.text||'').includes('选择模型参数'))),true);await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));});
+  await copy.evaluate(async()=>{reader.goPage(reader.pages.findIndex(p=>p.blocks.some(b=>b.id==='ml-learning'&&(b.text||'').includes('模型参数包括斜率和截距'))),true);await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));});
   assert.ok(await copy.locator('.reader-stage .cue-title').count());assert.ok(await copy.locator('.reader-stage .bold-ink').count());
   if(engine==='chromium')await copy.screenshot({path:'output/content-quality/phone.png'});
   assert.deepEqual(errors,[]);await offline.close();await context.close();

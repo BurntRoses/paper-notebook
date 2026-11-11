@@ -2,8 +2,8 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "showcase-business",
-    "revision": 5,
-    "title": "商学 · 会员制与盈亏平衡",
+    "revision": 6,
+    "title": "单位贡献与会员制",
     "author": "Paper Notebook",
     "language": "zh-CN",
     "goals": [
@@ -27,7 +27,7 @@
     "chapters": [
       {
         "id": "business-chapter",
-        "title": "商学 · 会员制与盈亏平衡",
+        "title": "单位贡献与会员制",
         "pages": [
           {
             "id": "subject-business",
@@ -171,7 +171,7 @@
                       "kind": "text",
                       "x": 34,
                       "y": 17,
-                      "text": "交点：收支相等",
+                      "text": "100 件：收入等于总成本",
                       "color": "#b1483d"
                     },
                     {
@@ -240,7 +240,7 @@
               {
                 "id": "business-case-facts",
                 "type": "prose",
-                "text": "Costco 以会员仓储零售经营：有限品类集中采购，低价吸引购买，高销量和快速周转配合高效配送，支持较低商品毛利下的经营。会员费为这套业务增加一项持续收入。\n\n这份案例采用截至2025年8月31日的财年年报，经营指标见下表。",
+                "text": "Costco 以会员仓储零售经营：有限品类集中采购，低价吸引购买，高销量和快速周转配合高效配送，支持较低商品毛利下的经营。会员费随会员资格按期收取，续费率反映已有会员继续付费的比例。商品销售的规模、周转效率与会员关系共同支撑经营。\n\n下表采用截至 2025 年 8 月 31 日的财年数据，金额均为美元。",
                 "sourceRefs": [
                   {
                     "sourceId": "business-costco",
@@ -268,7 +268,12 @@
               {
                 "id": "business-case-table",
                 "type": "comparison",
-                "title": "年报指标与经营含义",
+                "title": "2025 财年经营指标",
+                "columnWidths": [
+                  140,
+                  230,
+                  230
+                ],
                 "columns": [
                   "报告指标",
                   "2025 年数据",
@@ -350,7 +355,7 @@
                     "to": "business-renewal"
                   }
                 ],
-                "caption": "业务关系依据年报第4页；采购与周转效率支持低价经营。",
+                "caption": "有限品类集中采购降低单项采购成本；快速周转减少库存占款，经营效率支持低价。见年报第 4 页。",
                 "figure": {
                   "size": "wide",
                   "ratio": "auto",
@@ -386,7 +391,7 @@
                 "id": "business-case-analysis",
                 "type": "callout",
                 "title": "销售增长的来源",
-                "text": "销售额可分解为交易次数 × 平均客单价。年报显示，可比销售增长中购物频率增加5%，平均客单价约增加1%；新仓库也贡献了销售增长。",
+                "text": "销售额可分解为交易次数 × 平均客单价。年报披露，可比销售增长中的购物频率增加约 5%，平均客单价增加约 1%。按这两个约数相乘，销售增长约为 1.05×1.01−1=6.05%。净销售额还包含新仓库贡献，因此与既有仓库的可比销售增长口径不同。",
                 "sourceRefs": [
                   {
                     "sourceId": "business-costco",
@@ -396,7 +401,7 @@
                 "study": {
                   "marks": [
                     {
-                      "text": "购物频率增加5%",
+                      "text": "购物频率增加约 5%",
                       "kind": "check"
                     },
                     {
@@ -413,7 +418,7 @@
     ]
   },
   "userState": {
-    "updatedAt": "2026-11-01T00:00:00.000Z",
+    "updatedAt": "2026-11-11T12:00:00.000Z",
     "lastPageId": "subject-business",
     "notes": [],
     "annotations": [],
@@ -444,7 +449,7 @@
   },
   "assets": [],
   "extensions": {
-    "baseRevision": 4,
+    "baseRevision": 5,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

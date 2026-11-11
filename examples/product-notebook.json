@@ -2,8 +2,8 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "paper-notebook-product-story",
-    "revision": 4,
-    "title": "Paper Notebook · 产品笔记",
+    "revision": 7,
+    "title": "Paper Notebook 使用说明",
     "author": "Paper Notebook",
     "language": "zh-CN",
     "goals": [
@@ -36,19 +36,18 @@
           {
             "id": "product-pain",
             "title": "使用 AI 制作图文学习笔记",
-            "subtitle": "01 / 从你的材料开始",
             "subject": "general",
             "layout": "reading",
             "blocks": [
               {
                 "id": "pain-context",
                 "type": "prose",
-                "text": "把制作指令发给你常用的 AI。先上传材料，或回复没有文件，再选择主题、基础和学习目标。",
+                "text": "向 AI 提供仓库地址和材料，说明主题、已有基础和学习目标。没有材料时，可按选定主题生成讲解。",
                 "study": {
-                  "label": "用你常用的 AI，生成自己的笔记",
+                  "label": "制作流程",
                   "marks": [
                     {
-                      "text": "先上传材料",
+                      "text": "仓库地址和材料",
                       "kind": "underline"
                     },
                     {
@@ -70,26 +69,26 @@
               {
                 "id": "pain-fragments",
                 "type": "code",
-                "language": "Markdown",
-                "text": "先提供：参考文件，或说明没有文件\n再选择：主题、基础和学习目标\n内容包括：概念、图解、推导和例题\n讲解要求：交代条件，说明每一步\n文件格式：单文件离线 HTML\n保存记录：圈画、便条、疑问与作答",
+                "language": "Text",
+                "text": "参考材料：讲义、书页、题目或代码\n学习要求：主题、基础、目标与范围\n内容形式：图解、推导、例题与赏析\n页边说明：定义、示例与图像解读\n批注方式：圈画、箭头、便条与书签\n保存格式：单文件离线 HTML",
                 "study": {
-                  "label": "告诉 AI 学什么、怎么讲"
+                  "label": "学习需求与文件格式"
                 }
               },
               {
                 "id": "pain-need",
-                "type": "quote",
-                "text": "AI 整理内容，你按自己的节奏读。",
+                "type": "prose",
+                "text": "离线 HTML 内含讲解、图像和学习记录，浏览器打开后可直接阅读与批注。",
                 "study": {
                   "visual": "extract",
-                  "label": "从讲解到理解",
+                  "label": "离线文件",
                   "marks": [
                     {
-                      "text": "整理内容",
+                      "text": "讲解、图像和学习记录",
                       "kind": "highlight"
                     },
                     {
-                      "text": "自己的节奏",
+                      "text": "阅读与批注",
                       "kind": "underline"
                     }
                   ]
@@ -100,32 +99,31 @@
           {
             "id": "product-idea",
             "title": "Paper Notebook",
-            "subtitle": "02 / 从长篇回答到学习笔记",
             "subject": "general",
             "layout": "reading",
             "blocks": [
               {
                 "id": "idea-statement",
                 "type": "concept",
-                "title": "长篇 AI 回答，读着枯燥，重点难找。",
-                "text": "定义、公式和例题挤在一段回答里。Paper Notebook 按主题排成纸页，讲解有层次，重点随手标。",
+                "title": "按主题组织讲解",
+                "text": "Paper Notebook 按主题排成纸页，分别呈现定义、公式、图解和例题。读者可选中文字，添加标记和批注。",
                 "study": {
-                  "label": "解决长篇讲解的阅读问题",
+                  "label": "内容组织",
                   "marks": [
                     {
                       "text": "按主题排成纸页",
                       "kind": "highlight"
                     },
                     {
-                      "text": "重点随手标",
+                      "text": "添加标记和批注",
                       "kind": "circle"
                     },
                     {
-                      "text": "重点随手标",
+                      "text": "添加标记和批注",
                       "kind": "bold"
                     },
                     {
-                      "text": "重点随手标",
+                      "text": "添加标记和批注",
                       "kind": "red",
                       "color": "#285f9e"
                     }
@@ -167,8 +165,8 @@
               },
               {
                 "id": "idea-value",
-                "type": "quote",
-                "text": "重点摘录，点击查看原文。",
+                "type": "prose",
+                "text": "书签保存选中的原句，点击记录可查看原文。",
                 "study": {
                   "visual": "extract",
                   "marks": [
@@ -184,7 +182,6 @@
           {
             "id": "product-structure",
             "title": "条件、推导与例题",
-            "subtitle": "03 / 同一主题，集中阅读",
             "subject": "stem",
             "layout": "cornell",
             "cues": [
@@ -210,14 +207,13 @@
                 "anchor": "期末 121 元"
               }
             ],
-            "summary": "条件、推导、验算依次展开；页边线索帮助回忆。",
             "blocks": [
               {
                 "id": "structure-condition",
                 "type": "prose",
                 "text": "复利例子：每期增长率固定，利息计入本金，期间没有额外存取。",
                 "study": {
-                  "label": "01 · 条件写明白",
+                  "label": "模型条件",
                   "marks": [
                     {
                       "text": "没有额外存取",
@@ -233,7 +229,7 @@
                 "text": "每期金额 = 上一期金额 × (1 + r)。",
                 "study": {
                   "visual": "blackboard",
-                  "label": "02 · 公式",
+                  "label": "递推公式",
                   "marks": [
                     {
                       "text": "上一期金额",
@@ -258,7 +254,7 @@
                 ],
                 "result": "期末 121 元，累计增长 21 元。",
                 "study": {
-                  "label": "03 · 数值对照",
+                  "label": "数值计算",
                   "marks": [
                     {
                       "text": "期末 121 元",
@@ -271,8 +267,7 @@
           },
           {
             "id": "product-marks",
-            "title": "圈画重点，集中复习。",
-            "subtitle": "04 / 选中文字即可标记",
+            "title": "文字标记与书签",
             "subject": "general",
             "layout": "reading",
             "blocks": [
@@ -344,11 +339,11 @@
                   },
                   {
                     "id": "mark",
-                    "label": "圈出重点"
+                    "label": "添加文字标记"
                   },
                   {
                     "id": "return",
-                    "label": "书签与疑问定位原文"
+                    "label": "保存书签或疑问"
                   }
                 ],
                 "edges": [
@@ -357,7 +352,7 @@
                     "to": "mark"
                   },
                   {
-                    "from": "mark",
+                    "from": "sentence",
                     "to": "return"
                   }
                 ],
@@ -383,8 +378,7 @@
           },
           {
             "id": "product-subjects",
-            "title": "公式、原文和代码分别排版。",
-            "subtitle": "05 / 一套阅读方式，多种笔记表达",
+            "title": "公式、原文与代码",
             "subject": "general",
             "layout": "reading",
             "blocks": [
@@ -395,7 +389,7 @@
                 "attribution": "文学 · 杜甫《春望》首联",
                 "study": {
                   "visual": "extract",
-                  "label": "读原句，理清语境",
+                  "label": "原文",
                   "marks": [
                     {
                       "text": "破",
@@ -424,7 +418,7 @@
                 "text": "单价 80 元，单位变动成本 50 元，固定成本 3000 元。",
                 "study": {
                   "visual": "blackboard",
-                  "label": "看变量，对照计算"
+                  "label": "盈亏平衡计算"
                 }
               },
               {
@@ -433,7 +427,7 @@
                 "language": "Python",
                 "text": "ids = [\"A\", \"A\", \"B\"]\ncount = len(set(ids))  # 2",
                 "study": {
-                  "label": "顺着代码，看输入与结果",
+                  "label": "输入与输出",
                   "explanations": [
                     {
                       "text": "set",
@@ -450,15 +444,14 @@
           },
           {
             "id": "product-fit",
-            "title": "按基础、目标和材料生成。",
-            "subtitle": "06 / 用自己的材料生成笔记",
+            "title": "学习基础、目标与材料",
             "subject": "general",
             "layout": "reading",
             "blocks": [
               {
                 "id": "fit-brief",
                 "type": "concept",
-                "title": "先交材料，再选学习目标。",
+                "title": "参考材料与学习需求",
                 "text": "上传讲义、题库或已有笔记；没有文件也可以开始。随后选择已有基础、学习范围、难度和练习需求。",
                 "study": {
                   "label": "先材料，后需求",
@@ -485,19 +478,15 @@
               },
               {
                 "id": "fit-source",
-                "type": "quote",
-                "text": "按讲义学，照题库练。",
+                "type": "prose",
+                "text": "严格材料模式保留原题、答案和顺序。",
                 "study": {
                   "visual": "extract",
                   "label": "严格遵循材料时",
                   "marks": [
                     {
-                      "text": "按讲义学",
+                      "text": "原题、答案和顺序",
                       "kind": "highlight"
-                    },
-                    {
-                      "text": "照题库练",
-                      "kind": "box"
                     }
                   ]
                 }
@@ -505,9 +494,9 @@
               {
                 "id": "fit-boundary",
                 "type": "prose",
-                "text": "有材料时保留原题和顺序；无材料时，AI 按可用能力检索资料、绘制图解。引用来源与补充解释分清楚。",
+                "text": "原文引用附页码或段落位置，来源条目记录资料名称与出处。",
                 "study": {
-                  "label": "原文保留，补充解释另列"
+                  "label": "来源记录"
                 }
               },
               {
@@ -547,7 +536,6 @@
           {
             "id": "product-focus",
             "title": "横竖版阅读与离线保存",
-            "subtitle": "07 / 界面与保存",
             "subject": "general",
             "layout": "reading",
             "blocks": [
@@ -597,7 +585,7 @@
                 "text": "下载一份 HTML，离线阅读。圈画和作答同时保存。",
                 "study": {
                   "visual": "extract",
-                  "label": "阅读无需账号",
+                  "label": "离线保存",
                   "marks": [
                     {
                       "text": "离线阅读",
@@ -615,7 +603,6 @@
           {
             "id": "product-start",
             "title": "Paper Notebook",
-            "subtitle": "08 / 试读与制作",
             "subject": "general",
             "layout": "reading",
             "blocks": [
@@ -623,24 +610,24 @@
                 "id": "start-message",
                 "type": "concept",
                 "title": "图文阅读、批注与复习",
-                "text": "分主题阅读，圈画重点，按需复习。",
+                "text": "阅读器支持文字标记、图像批注、页边便条和离线保存。",
                 "study": {
                   "label": "图文笔记阅读器",
                   "marks": [
                     {
-                      "text": "分主题阅读",
+                      "text": "文字标记",
                       "kind": "highlight"
                     },
                     {
-                      "text": "按需复习",
+                      "text": "图像批注",
                       "kind": "circle"
                     },
                     {
-                      "text": "按需复习",
+                      "text": "图像批注",
                       "kind": "bold"
                     },
                     {
-                      "text": "按需复习",
+                      "text": "图像批注",
                       "kind": "red",
                       "color": "#285f9e"
                     }
@@ -676,13 +663,13 @@
               },
               {
                 "id": "start-close",
-                "type": "quote",
-                "text": "AI 生成，纸页阅读，重点复习。",
+                "type": "prose",
+                "text": "修改正文或批注后，重新下载 HTML 可保存当前内容与记录。",
                 "study": {
                   "visual": "extract",
                   "marks": [
                     {
-                      "text": "重点复习",
+                      "text": "当前内容与记录",
                       "kind": "star"
                     }
                   ]
@@ -695,7 +682,7 @@
     ]
   },
   "userState": {
-    "updatedAt": "2026-10-24T18:00:00.000Z",
+    "updatedAt": "2026-11-11T12:00:00.000Z",
     "lastPageId": "product-pain",
     "notes": [],
     "annotations": [],
@@ -726,7 +713,7 @@
   },
   "assets": [],
   "extensions": {
-    "baseRevision": 3,
+    "baseRevision": 6,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

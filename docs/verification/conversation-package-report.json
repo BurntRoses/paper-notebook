@@ -1,8 +1,8 @@
 {
-  "date": "2026-11-06T16:32:09.348Z",
+  "date": "2026-11-11T13:31:35.845Z",
   "archive": "paper-notebook-conversation.zip",
   "uploadArchive": "paper-notebook-upload.zip",
-  "entries": 33,
+  "entries": 43,
   "uploadWrapper": {
     "innerMatches": true,
     "overheadBytes": 564
@@ -16,6 +16,8 @@
   "customReaderRejected": true,
   "studyMarksVerified": true,
   "missingStudyMarksRejected": true,
+  "pinnedTemplateVerified": true,
+  "finalizeGateVerified": true,
   "exactSourcePreserved": true,
   "embeddedSourceMatches": true,
   "zipMatches": true,
@@ -28,7 +30,7 @@
     "studyMarks": {
       "valid": true,
       "required": true,
-      "total": 43,
+      "total": 42,
       "byKind": {
         "underline": 6,
         "circle": 6,
@@ -36,7 +38,7 @@
         "red": 6,
         "highlight": 6,
         "star": 4,
-        "box": 3,
+        "box": 2,
         "check": 3,
         "wave": 1,
         "dots": 2
@@ -64,56 +66,176 @@
           "product-structure",
           "product-focus"
         ]
+      },
+      "anchors": {
+        "declared": 3,
+        "resolved": 3,
+        "exact": 3,
+        "blockLevel": 0,
+        "degraded": 0
       }
+    },
+    "statistics": {
+      "pages": 8,
+      "blocks": 26,
+      "characters": 866,
+      "figures": 3,
+      "tables": 1,
+      "marks": 42
+    },
+    "capacity": {
+      "limits": {
+        "pages": 500,
+        "blocks": 5000
+      },
+      "warnings": []
+    },
+    "fonts": {
+      "checked": false,
+      "basis": "Bundled StudyHand unicode-range; uncovered characters use system fallback, not proven missing glyphs.",
+      "fallbackCharacters": []
     },
     "contentReview": {
       "advisory": true,
       "automaticRewrite": false,
       "writing": {
-        "warnings": []
+        "warnings": [],
+        "summary": []
+      },
+      "metrics": {
+        "consistency": {
+          "terminology": [],
+          "chapterReferences": []
+        },
+        "basis": "Observable signals for editorial review; zero matches is not editorial approval.",
+        "characters": 1161,
+        "frequency": [
+          {
+            "phrase": "这",
+            "count": 0,
+            "per10000": 0
+          },
+          {
+            "phrase": "这个",
+            "count": 0,
+            "per10000": 0
+          },
+          {
+            "phrase": "这里",
+            "count": 0,
+            "per10000": 0
+          },
+          {
+            "phrase": "一个",
+            "count": 0,
+            "per10000": 0
+          },
+          {
+            "phrase": "可以",
+            "count": 2,
+            "per10000": 17.2
+          },
+          {
+            "phrase": "需要",
+            "count": 0,
+            "per10000": 0
+          },
+          {
+            "phrase": "并",
+            "count": 0,
+            "per10000": 0
+          },
+          {
+            "phrase": "同时",
+            "count": 0,
+            "per10000": 0
+          },
+          {
+            "phrase": "所以",
+            "count": 0,
+            "per10000": 0
+          },
+          {
+            "phrase": "因此",
+            "count": 0,
+            "per10000": 0
+          },
+          {
+            "phrase": "把",
+            "count": 0,
+            "per10000": 0
+          },
+          {
+            "phrase": "让",
+            "count": 0,
+            "per10000": 0
+          },
+          {
+            "phrase": "使",
+            "count": 4,
+            "per10000": 34.5
+          }
+        ],
+        "sentences": {
+          "count": 84,
+          "mean": 12.5,
+          "bins": {
+            "upTo15": 59,
+            "from16To30": 19,
+            "from31To40": 6,
+            "over40": 0
+          }
+        },
+        "paragraphs": {
+          "count": 79,
+          "mean": 13.7,
+          "median": 8
+        },
+        "repetitions": [],
+        "cues": {
+          "total": 3,
+          "questions": 0,
+          "unique": 3,
+          "pagesWithout": [
+            "product-pain",
+            "product-idea",
+            "product-marks",
+            "product-subjects",
+            "product-fit",
+            "product-focus",
+            "product-start"
+          ]
+        },
+        "figures": {
+          "total": 3,
+          "pages": 8,
+          "pagesPerFigure": 2.7
+        },
+        "brief": null,
+        "chapters": [
+          {
+            "chapterId": "product-story",
+            "pages": 8,
+            "characters": 866
+          }
+        ]
       },
       "teaching": {
         "marginNotes": 3,
-        "titledNotes": 0,
-        "warnings": [
-          {
-            "rule": "margin-anchor",
-            "location": "structure-cue-1",
-            "guidance": "为文字注释补充所解释的原句 anchor，使说明随原句对齐和续页。"
-          },
-          {
-            "rule": "margin-anchor",
-            "location": "structure-cue-2",
-            "guidance": "为文字注释补充所解释的原句 anchor，使说明随原句对齐和续页。"
-          },
-          {
-            "rule": "margin-anchor",
-            "location": "structure-cue-3",
-            "guidance": "为文字注释补充所解释的原句 anchor，使说明随原句对齐和续页。"
-          },
-          {
-            "rule": "emphasis-bold",
-            "location": "product-focus",
-            "guidance": "检查本节核心概念及定义的关键关系是否已加粗。"
-          },
-          {
-            "rule": "emphasis-color",
-            "location": "product-focus",
-            "guidance": "为本节最重要的概念、关系或条件选择语义一致的文字颜色。"
-          }
-        ]
+        "titledNotes": 3,
+        "warnings": []
       },
       "visuals": {
         "pages": [
           {
             "pageId": "product-pain",
-            "characters": 157,
+            "characters": 182,
             "figures": 0,
             "tables": 0
           },
           {
             "pageId": "product-idea",
-            "characters": 63,
+            "characters": 75,
             "figures": 1,
             "tables": 0
           },
@@ -137,7 +259,7 @@
           },
           {
             "pageId": "product-fit",
-            "characters": 103,
+            "characters": 89,
             "figures": 1,
             "tables": 0
           },
@@ -149,7 +271,7 @@
           },
           {
             "pageId": "product-start",
-            "characters": 69,
+            "characters": 92,
             "figures": 0,
             "tables": 0
           }
@@ -162,19 +284,19 @@
     },
     "warnings": []
   },
-  "build": "{\"id\": \"paper-notebook-product-story\", \"revision\": 4, \"schemaValidated\": true, \"coreReferencesChecked\": true, \"bundledReaderMatches\": true, \"studyMarks\": {\"valid\": true, \"required\": true, \"total\": 43, \"byKind\": {\"underline\": 6, \"circle\": 6, \"bold\": 6, \"red\": 6, \"highlight\": 6, \"star\": 4, \"box\": 3, \"check\": 3, \"wave\": 1, \"dots\": 2}, \"markedPages\": [\"product-pain\", \"product-idea\", \"product-structure\", \"product-marks\", \"product-subjects\", \"product-fit\", \"product-focus\", \"product-start\"], \"unmarkedPages\": [], \"invalidTargets\": [], \"typography\": {\"bold\": 6, \"coloredText\": 6, \"missingBoldPages\": [\"product-structure\", \"product-focus\"], \"missingColorPages\": [\"product-structure\", \"product-focus\"]}}, \"contentReview\": {\"advisory\": true, \"automaticRewrite\": false, \"writing\": {\"warnings\": []}, \"teaching\": {\"marginNotes\": 3, \"titledNotes\": 0, \"warnings\": [{\"rule\": \"margin-anchor\", \"location\": \"structure-cue-1\", \"guidance\": \"为文字注释补充所解释的原句 anchor，使说明随原句对齐和续页。\"}, {\"rule\": \"margin-anchor\", \"location\": \"structure-cue-2\", \"guidance\": \"为文字注释补充所解释的原句 anchor，使说明随原句对齐和续页。\"}, {\"rule\": \"margin-anchor\", \"location\": \"structure-cue-3\", \"guidance\": \"为文字注释补充所解释的原句 anchor，使说明随原句对齐和续页。\"}, {\"rule\": \"emphasis-bold\", \"location\": \"product-focus\", \"guidance\": \"检查本节核心概念及定义的关键关系是否已加粗。\"}, {\"rule\": \"emphasis-color\", \"location\": \"product-focus\", \"guidance\": \"为本节最重要的概念、关系或条件选择语义一致的文字颜色。\"}]}, \"visuals\": {\"pages\": [{\"pageId\": \"product-pain\", \"characters\": 157, \"figures\": 0, \"tables\": 0}, {\"pageId\": \"product-idea\", \"characters\": 63, \"figures\": 1, \"tables\": 0}, {\"pageId\": \"product-structure\", \"characters\": 123, \"figures\": 0, \"tables\": 0}, {\"pageId\": \"product-marks\", \"characters\": 86, \"figures\": 1, \"tables\": 0}, {\"pageId\": \"product-subjects\", \"characters\": 92, \"figures\": 0, \"tables\": 0}, {\"pageId\": \"product-fit\", \"characters\": 103, \"figures\": 1, \"tables\": 0}, {\"pageId\": \"product-focus\", \"characters\": 127, \"figures\": 0, \"tables\": 1}, {\"pageId\": \"product-start\", \"characters\": 69, \"figures\": 0, \"tables\": 0}], \"figures\": 3, \"tables\": 1, \"warnings\": []}, \"assets\": []}, \"browserInspected\": false, \"htmlBytes\": 2175272, \"html\": \"Paper-Notebook-·-产品笔记-v4.html\", \"zip\": \"Paper-Notebook-·-产品笔记-v4.zip\"}",
+  "build": "{\"id\": \"paper-notebook-product-story\", \"revision\": 7, \"schemaValidated\": true, \"coreReferencesChecked\": true, \"bundledReaderMatches\": true, \"studyMarks\": {\"anchors\": {\"declared\": 3, \"resolved\": 3, \"exact\": 3, \"blockLevel\": 0, \"degraded\": 0}, \"valid\": true, \"required\": true, \"total\": 42, \"byKind\": {\"underline\": 6, \"circle\": 6, \"bold\": 6, \"red\": 6, \"highlight\": 6, \"star\": 4, \"box\": 2, \"check\": 3, \"wave\": 1, \"dots\": 2}, \"markedPages\": [\"product-pain\", \"product-idea\", \"product-structure\", \"product-marks\", \"product-subjects\", \"product-fit\", \"product-focus\", \"product-start\"], \"unmarkedPages\": [], \"invalidTargets\": [], \"typography\": {\"bold\": 6, \"coloredText\": 6, \"missingBoldPages\": [\"product-structure\", \"product-focus\"], \"missingColorPages\": [\"product-structure\", \"product-focus\"]}}, \"anchors\": {\"declared\": 3, \"resolved\": 3, \"exact\": 3, \"blockLevel\": 0, \"degraded\": 0}, \"contentReview\": {\"advisory\": true, \"automaticRewrite\": false, \"writing\": {\"warnings\": [], \"summary\": []}, \"metrics\": {\"consistency\": {\"terminology\": [], \"chapterReferences\": []}, \"basis\": \"Observable signals for editorial review; zero matches is not editorial approval.\", \"characters\": 1161, \"frequency\": [{\"phrase\": \"这\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"这个\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"这里\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"一个\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"可以\", \"count\": 2, \"per10000\": 17.2}, {\"phrase\": \"需要\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"并\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"同时\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"所以\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"因此\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"把\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"让\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"使\", \"count\": 4, \"per10000\": 34.5}], \"sentences\": {\"count\": 84, \"mean\": 12.5, \"bins\": {\"upTo15\": 59, \"from16To30\": 19, \"from31To40\": 6, \"over40\": 0}}, \"paragraphs\": {\"count\": 79, \"mean\": 13.7, \"median\": 8.0}, \"repetitions\": [], \"cues\": {\"total\": 3, \"questions\": 0, \"unique\": 3, \"pagesWithout\": [\"product-pain\", \"product-idea\", \"product-marks\", \"product-subjects\", \"product-fit\", \"product-focus\", \"product-start\"]}, \"figures\": {\"total\": 3, \"pages\": 8, \"pagesPerFigure\": 2.7}, \"brief\": null, \"chapters\": [{\"chapterId\": \"product-story\", \"pages\": 8, \"characters\": 866}]}, \"teaching\": {\"marginNotes\": 3, \"titledNotes\": 3, \"warnings\": []}, \"visuals\": {\"pages\": [{\"pageId\": \"product-pain\", \"characters\": 182, \"figures\": 0, \"tables\": 0}, {\"pageId\": \"product-idea\", \"characters\": 75, \"figures\": 1, \"tables\": 0}, {\"pageId\": \"product-structure\", \"characters\": 123, \"figures\": 0, \"tables\": 0}, {\"pageId\": \"product-marks\", \"characters\": 86, \"figures\": 1, \"tables\": 0}, {\"pageId\": \"product-subjects\", \"characters\": 92, \"figures\": 0, \"tables\": 0}, {\"pageId\": \"product-fit\", \"characters\": 89, \"figures\": 1, \"tables\": 0}, {\"pageId\": \"product-focus\", \"characters\": 127, \"figures\": 0, \"tables\": 1}, {\"pageId\": \"product-start\", \"characters\": 92, \"figures\": 0, \"tables\": 0}], \"figures\": 3, \"tables\": 1, \"warnings\": []}, \"assets\": []}, \"statistics\": {\"pages\": 8, \"blocks\": 26, \"characters\": 866, \"figures\": 3, \"tables\": 1, \"marks\": 42}, \"capacity\": {\"limits\": {\"pages\": 500, \"blocks\": 5000}, \"warnings\": []}, \"fonts\": {\"checked\": true, \"basis\": \"Bundled StudyHand unicode-range; uncovered characters use system fallback, not proven missing glyphs.\", \"fallbackCharacters\": []}, \"browserInspected\": false, \"deliveryReady\": false, \"nextStep\": \"Review source-bound editorial findings, inspect layout when available, then run finalize_reader.py.\", \"htmlBytes\": 2077855, \"html\": \"Paper-Notebook-使用说明-v7.html\", \"zip\": \"Paper-Notebook-使用说明-v7.zip\"}",
   "nodeReport": {
     "id": "paper-notebook-product-story",
-    "revision": 4,
-    "html": "Paper-Notebook-·-产品笔记-v4.html",
-    "zip": "Paper-Notebook-·-产品笔记-v4.zip",
-    "htmlBytes": 2175272,
+    "revision": 7,
+    "html": "Paper-Notebook-使用说明-v7.html",
+    "zip": "Paper-Notebook-使用说明-v7.zip",
+    "htmlBytes": 2077855,
     "bundledReaderMatches": true,
     "sourceMatches": true,
     "studyMarks": {
       "valid": true,
       "required": true,
-      "total": 43,
+      "total": 42,
       "byKind": {
         "underline": 6,
         "circle": 6,
@@ -182,7 +304,7 @@
         "red": 6,
         "highlight": 6,
         "star": 4,
-        "box": 3,
+        "box": 2,
         "check": 3,
         "wave": 1,
         "dots": 2
@@ -210,56 +332,188 @@
           "product-structure",
           "product-focus"
         ]
+      },
+      "anchors": {
+        "declared": 3,
+        "resolved": 3,
+        "exact": 3,
+        "blockLevel": 0,
+        "degraded": 0
       }
     },
+    "anchors": {
+      "declared": 3,
+      "resolved": 3,
+      "exact": 3,
+      "blockLevel": 0,
+      "degraded": 0
+    },
+    "statistics": {
+      "pages": 8,
+      "blocks": 26,
+      "characters": 866,
+      "figures": 3,
+      "tables": 1,
+      "marks": 42
+    },
+    "capacity": {
+      "limits": {
+        "pages": 500,
+        "blocks": 5000
+      },
+      "warnings": []
+    },
+    "fonts": {
+      "checked": true,
+      "basis": "Bundled StudyHand unicode-range; uncovered characters use system fallback, not proven missing glyphs.",
+      "fallbackCharacters": []
+    },
+    "schemaValidated": true,
+    "coreReferencesChecked": true,
+    "browserInspected": false,
+    "deliveryReady": false,
+    "nextStep": "Review source-bound editorial findings and run finalize.",
     "contentReview": {
       "advisory": true,
       "automaticRewrite": false,
       "writing": {
-        "warnings": []
+        "warnings": [],
+        "summary": []
+      },
+      "metrics": {
+        "consistency": {
+          "terminology": [],
+          "chapterReferences": []
+        },
+        "basis": "Observable signals for editorial review; zero matches is not editorial approval.",
+        "characters": 1161,
+        "frequency": [
+          {
+            "phrase": "这",
+            "count": 0,
+            "per10000": 0
+          },
+          {
+            "phrase": "这个",
+            "count": 0,
+            "per10000": 0
+          },
+          {
+            "phrase": "这里",
+            "count": 0,
+            "per10000": 0
+          },
+          {
+            "phrase": "一个",
+            "count": 0,
+            "per10000": 0
+          },
+          {
+            "phrase": "可以",
+            "count": 2,
+            "per10000": 17.2
+          },
+          {
+            "phrase": "需要",
+            "count": 0,
+            "per10000": 0
+          },
+          {
+            "phrase": "并",
+            "count": 0,
+            "per10000": 0
+          },
+          {
+            "phrase": "同时",
+            "count": 0,
+            "per10000": 0
+          },
+          {
+            "phrase": "所以",
+            "count": 0,
+            "per10000": 0
+          },
+          {
+            "phrase": "因此",
+            "count": 0,
+            "per10000": 0
+          },
+          {
+            "phrase": "把",
+            "count": 0,
+            "per10000": 0
+          },
+          {
+            "phrase": "让",
+            "count": 0,
+            "per10000": 0
+          },
+          {
+            "phrase": "使",
+            "count": 4,
+            "per10000": 34.5
+          }
+        ],
+        "sentences": {
+          "count": 84,
+          "mean": 12.5,
+          "bins": {
+            "upTo15": 59,
+            "from16To30": 19,
+            "from31To40": 6,
+            "over40": 0
+          }
+        },
+        "paragraphs": {
+          "count": 79,
+          "mean": 13.7,
+          "median": 8
+        },
+        "repetitions": [],
+        "cues": {
+          "total": 3,
+          "questions": 0,
+          "unique": 3,
+          "pagesWithout": [
+            "product-pain",
+            "product-idea",
+            "product-marks",
+            "product-subjects",
+            "product-fit",
+            "product-focus",
+            "product-start"
+          ]
+        },
+        "figures": {
+          "total": 3,
+          "pages": 8,
+          "pagesPerFigure": 2.7
+        },
+        "brief": null,
+        "chapters": [
+          {
+            "chapterId": "product-story",
+            "pages": 8,
+            "characters": 866
+          }
+        ]
       },
       "teaching": {
         "marginNotes": 3,
-        "titledNotes": 0,
-        "warnings": [
-          {
-            "rule": "margin-anchor",
-            "location": "structure-cue-1",
-            "guidance": "为文字注释补充所解释的原句 anchor，使说明随原句对齐和续页。"
-          },
-          {
-            "rule": "margin-anchor",
-            "location": "structure-cue-2",
-            "guidance": "为文字注释补充所解释的原句 anchor，使说明随原句对齐和续页。"
-          },
-          {
-            "rule": "margin-anchor",
-            "location": "structure-cue-3",
-            "guidance": "为文字注释补充所解释的原句 anchor，使说明随原句对齐和续页。"
-          },
-          {
-            "rule": "emphasis-bold",
-            "location": "product-focus",
-            "guidance": "检查本节核心概念及定义的关键关系是否已加粗。"
-          },
-          {
-            "rule": "emphasis-color",
-            "location": "product-focus",
-            "guidance": "为本节最重要的概念、关系或条件选择语义一致的文字颜色。"
-          }
-        ]
+        "titledNotes": 3,
+        "warnings": []
       },
       "visuals": {
         "pages": [
           {
             "pageId": "product-pain",
-            "characters": 157,
+            "characters": 182,
             "figures": 0,
             "tables": 0
           },
           {
             "pageId": "product-idea",
-            "characters": 63,
+            "characters": 75,
             "figures": 1,
             "tables": 0
           },
@@ -283,7 +537,7 @@
           },
           {
             "pageId": "product-fit",
-            "characters": 103,
+            "characters": 89,
             "figures": 1,
             "tables": 0
           },
@@ -295,7 +549,7 @@
           },
           {
             "pageId": "product-start",
-            "characters": 69,
+            "characters": 92,
             "figures": 0,
             "tables": 0
           }

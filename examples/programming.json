@@ -2,8 +2,8 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "showcase-programming",
-    "revision": 5,
-    "title": "Python · 集合与去重",
+    "revision": 6,
+    "title": "Python 集合与顾客去重",
     "author": "Paper Notebook",
     "language": "zh-CN",
     "goals": [
@@ -20,7 +20,7 @@
     "chapters": [
       {
         "id": "programming-chapter",
-        "title": "Python · 集合与去重",
+        "title": "Python 集合与顾客去重",
         "pages": [
           {
             "id": "subject-code",
@@ -65,11 +65,11 @@
                   "explanations": [
                     {
                       "text": "set",
-                      "note": "同值去重，得到 {A, B}。"
+                      "note": "将列表转为集合，重复的字符串 A 只保留一个，得到 {\"A\", \"B\"}。"
                     },
                     {
                       "text": "len",
-                      "note": "求集合长度，结果为 2。"
+                      "note": "返回集合中的元素个数，结果为整数 2。"
                     }
                   ]
                 }
@@ -117,6 +117,13 @@
                       "y": 80,
                       "x2": 68,
                       "y2": 94,
+                      "color": "#285f9e"
+                    },
+                    {
+                      "kind": "text",
+                      "x": 66,
+                      "y": 76,
+                      "text": "两个不同编号",
                       "color": "#285f9e"
                     }
                   ]
@@ -213,7 +220,7 @@
               {
                 "id": "code-state",
                 "type": "prose",
-                "text": "集合按元素是否相等决定是否保留。第二次加入 A 时，已有集合包含 A，大小保持为 1；加入 B 时出现一个新值，大小增为 2。set(ids) 一次完成这个去重过程，len 再读取结果的元素数。",
+                "text": "set() 创建一个新的集合，原列表保持不变。集合按元素是否相等决定是否保留。第二次加入 A 时，已有集合包含 A，大小保持为 1；加入 B 时出现一个新值，大小增为 2。set(ids) 一次完成这个去重过程，len 再读取结果的元素数。",
                 "study": {
                   "marks": [
                     {
@@ -249,7 +256,7 @@
                 "id": "code-contract",
                 "type": "callout",
                 "title": "编号的数据形式",
-                "text": "本例的顾客编号使用字符串。字符串可以作为集合元素；若记录是字典，则提取其中的 customer_id 字段后再去重。列表保留记录顺序，集合用于成员判定与去重。",
+                "text": "本例的顾客编号使用字符串。字符串可以作为集合元素；若记录是字典，则提取其中的 customer_id 字段后再去重。列表保留记录顺序，集合用于成员判定与去重，遍历集合时不依赖元素的排列顺序。先在同一解释器执行前页的函数定义，再运行本页断言。",
                 "study": {
                   "marks": [
                     {
@@ -270,7 +277,7 @@
     ]
   },
   "userState": {
-    "updatedAt": "2026-11-01T00:00:00.000Z",
+    "updatedAt": "2026-11-11T12:00:00.000Z",
     "lastPageId": "subject-code",
     "notes": [],
     "annotations": [],
@@ -301,7 +308,7 @@
   },
   "assets": [],
   "extensions": {
-    "baseRevision": 4,
+    "baseRevision": 5,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",
