@@ -60,7 +60,7 @@
     for(const item of examples)item.setAttribute('aria-pressed',String(item===option));syncExamples();
     if(!option||!preview)return;
     preview.title=`试读：${option.dataset.exampleTitle}`;
-    if(openPreview)openPreview.href=`downloads/${option.dataset.example}.html?demo&v=3.16`;
+    if(openPreview)openPreview.href=`downloads/${option.dataset.example}.html?demo&v=3.17`;
   };
   const previewDocuments=new Map();
   const fetchPreview=name=>{
@@ -68,7 +68,7 @@
     if(!entry){
       const controller=new AbortController();entry={controller,settled:false};
       const timeout=setTimeout(()=>controller.abort(),20000);
-      entry.promise=fetch(`previews/${name}.json?v=3.16`,{signal:controller.signal,priority:'high'}).then(response=>{if(!response.ok)throw new Error('Preview unavailable');return response.json();}).then(document=>{entry.settled=true;return document;}).catch(error=>{if(previewDocuments.get(name)===entry)previewDocuments.delete(name);throw error;}).finally(()=>clearTimeout(timeout));
+      entry.promise=fetch(`previews/${name}.json?v=3.17`,{signal:controller.signal,priority:'high'}).then(response=>{if(!response.ok)throw new Error('Preview unavailable');return response.json();}).then(document=>{entry.settled=true;return document;}).catch(error=>{if(previewDocuments.get(name)===entry)previewDocuments.delete(name);throw error;}).finally(()=>clearTimeout(timeout));
       previewDocuments.set(name,entry);
     }
     return entry.promise;

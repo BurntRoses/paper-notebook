@@ -62,7 +62,7 @@ try {
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
   await page.goto(base + 'chat-start.html');
   assert.equal(await page.locator('#chat .actions > :first-child').getAttribute('id'),'copy');
-  const packageLink=page.getByRole('link',{name:'备用：下载构建包',exact:true});
+  const packageLink=page.getByRole('link',{name:'下载构建包',exact:true});
   assert.equal(await packageLink.getAttribute('href'),'downloads/paper-notebook-upload.zip');
   const packageDownload=page.waitForEvent('download');await packageLink.click();
   const uploadedPackage=await packageDownload;assert.equal(uploadedPackage.suggestedFilename(),'paper-notebook-upload.zip');

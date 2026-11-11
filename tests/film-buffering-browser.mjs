@@ -55,11 +55,11 @@ for(const [engine,type] of Object.entries({chromium,webkit})){
   await network(mp,slowProfile);assert.equal(await mode(mp),'1080');assert.equal(await mp.locator('video').getAttribute('data-quality'),'1080');
   await mp.locator('video').evaluate(v=>v.pause());await mp.setViewportSize({width:720,height:1280});await ready(mp,1080);assert.ok(await mp.locator('video').evaluate(v=>v.paused&&v.currentTime>=12));assert.equal(await mode(mp),'1080');
   await choose(mp,'auto');await ready(mp,540);assert.equal(await mode(mp),'auto');assert.match(await selector.innerText(),/自动.*540p/);
-  await mp.setViewportSize({width:390,height:844});await ready(mp,540);await mp.locator('.film-feedback').scrollIntoViewIfNeeded();
+  await mp.setViewportSize({width:390,height:844});await ready(mp,540);await mp.locator('.film-screen').scrollIntoViewIfNeeded();
   assert.ok(await mp.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   await mkdir('output/film-buffering',{recursive:true});await mp.screenshot({path:`output/film-buffering/quality-${engine}-phone.png`});
   await mp.setViewportSize({width:1440,height:1000});await ready(mp,960);await network(mp,fastProfile);await ready(mp,1920);
-  await mp.locator('.film-feedback').scrollIntoViewIfNeeded();await mp.screenshot({path:`output/film-buffering/quality-${engine}-desktop.png`});await manual.close();
+  await mp.locator('.film-screen').scrollIntoViewIfNeeded();await mp.screenshot({path:`output/film-buffering/quality-${engine}-desktop.png`});await manual.close();
   reports.push({engine,autoDefaultsToHD:true,manualQualityKeepsTimeAndPlayback:true,manualChoiceSurvivesNetworkAndRotation:true,autoRestoresAdaptation:true,phoneFits:true});
 
   // A real stalled HD request falls back in auto mode without changing the selected mode.
