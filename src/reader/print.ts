@@ -14,7 +14,7 @@ const mm=(n:number)=>n*96/25.4;
 
 function printDocument(source:NotebookDocument,records:boolean){
  const d=structuredClone(source);d.extensions.readerProfile={...(d.extensions.readerProfile as object),lineSpacing:2.05,theme:'paper-light'};
- if(!records){d.userState.answers={};d.userState.checks={};}
+ if(!records){d.userState.explorations={};d.userState.answers={};d.userState.checks={};}
  if(records){
   const blocks:Page['blocks']=[];
   for(const n of d.userState.notes)blocks.push({id:'print-note-'+n.id,type:'prose',title:n.title||'我的笔记',text:[pagesOf(d).find(p=>p.id===n.pageId)?.title,n.selector?.exact,n.text,n.back].filter(Boolean).join('\n\n')});
@@ -34,7 +34,7 @@ export function createPrintView(source:NotebookDocument,options:PrintOptions,ori
  const dimensions=options.orientation==='portrait'?{width:mm(210),height:mm(297)}:{width:mm(297),height:mm(210)};
  const d=printDocument(source,options.includeRecords);
  const sourceBlocks=new Map(blocksOf(d).map(b=>[b.id,b]));
- const surface=new PageSurface(d,options.orientation,16,b=>{const n=renderBlock(b,d,{answer:()=>{},check:()=>{},edit:()=>{},image:()=>{}},sourceBlocks.get(b.id)||b);(n as HTMLElement&{__block:unknown}).__block=sourceBlocks.get(b.id)||b;return n;},dimensions,root);
+ const surface=new PageSurface(d,options.orientation,16,b=>{const n=renderBlock(b,d,{staticView:true,answer:()=>{},check:()=>{},edit:()=>{},image:()=>{}},sourceBlocks.get(b.id)||b);(n as HTMLElement&{__block:unknown}).__block=sourceBlocks.get(b.id)||b;return n;},dimensions,root);
  const populate=()=>{
   root.replaceChildren();const sheets=surface.paginate();sheets.forEach((p,i)=>root.append(surface.render(p,i)));fitPageFigures(root);
   if(options.includeRecords&&original){

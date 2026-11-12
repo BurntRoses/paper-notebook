@@ -84,6 +84,10 @@ BRANDS={i:HEADINGS[i] for i in [1,7]}
 UIS={o:Image.open(SOURCE/f'ui-{o}.png').convert('RGBA') for o in ['landscape','portrait']}
 EDITORS={o:Image.open(SOURCE/f'editor-{o}.png').convert('RGBA') for o in ['landscape','portrait']}
 
+@lru_cache(maxsize=12)
+def activity_frame(kind,index):
+    return Image.open(SOURCE/f'activity-{ORIENTATION}-{kind}-{index}.png').convert('RGBA')
+
 def paste(frame,pic,cx,cy,width,height,angle=0,alpha=1,shadow=False):
     ratio=min(width/pic.width,height/pic.height)
     size=(max(1,round(pic.width*ratio)),max(1,round(pic.height*ratio)))
@@ -133,31 +137,22 @@ def render_scene(scene,t):
         panel(frame,1,'idea-map',source,t,2.1,.63 if PORTRAIT else .65,.25 if PORTRAIT else .20,.90,1)
         panel(frame,1,'idea-value',source,t,4.4,.86 if PORTRAIT else .86,.10,.82)
     elif scene==2:
-        panel(frame,2,'structure-condition',source,t,.55,.25 if PORTRAIT else .28,.12,.88)
-        # The real blackboard moves into focus, rather than a separate formula card.
-        pop=1+.025*math.sin(clamp((t-1.4)/2)*math.pi)
-        panel(frame,2,'structure-formula',source,t,1.4,.48,.27,.90*pop,-1,-1.3)
-        panel(frame,2,'structure-example',source,t,3.6,.78 if PORTRAIT else .79,.29 if PORTRAIT else .28,.86,1)
+        # Each frame came from the native slider input; curve and values share its calculation.
+        index=round(20*smooth((t-1.1)/4.7))
+        pic=activity_frame('growth',index)
+        arrive(frame,pic,t,.45,W*.5,H*(.58 if PORTRAIT else .59),W*.91,H*(.64 if PORTRAIT else .74))
+        if PORTRAIT:panel(frame,2,'structure-formula',source,t,.2,.28,.14,.84)
     elif scene==3:
         panel(frame,3,'marks-select',source,t,.55,.27 if PORTRAIT else .30,.15,.89)
         panel(frame,3,'marks-examples',source,t,1.35,.45 if PORTRAIT else .47,.14,.89)
         panel(frame,3,'marks-map',source,t,2.5,.65 if PORTRAIT else .65,.22 if PORTRAIT else .16,.89,1)
         panel(frame,3,'marks-return',source,t,3.6,.85 if PORTRAIT else .85,.16,.89)
     elif scene==4:
-        blocks=['subjects-poem','subjects-business','subjects-code']
-        if PORTRAIT:
-            for k,b in enumerate(blocks):panel(frame,4,b,source,t,.7+k*1.4,.30+k*.245,.23,.88,(-1 if k%2 else 1),(-.8 if k%2 else .8))
-        else:
-            focus=smooth((t-2.4)/.7)+smooth((t-4.8)/.7)
-            for k,b in enumerate(blocks):
-                weight=1-clamp(abs(k-focus))
-                x=W*(.49+(-.37 if k<focus else .42)*(1-weight))
-                y=H*(.58+.11*(1-weight))
-                pic=region(4,b,source)
-                if t>=.7+k*.25:
-                    alpha=.48+.52*weight
-                    e=ease((t-(.7+k*.25))/.8)
-                    paste(frame,pic,x+(1-e)*W*.3,y,W*(.23+.53*weight),H*(.24+.35*weight),(-4 if k<focus else 4)*(1-weight),alpha*e,weight<.8)
+        # Interpretations and process states are the real authored reader components.
+        kind='reading' if t<4 else 'sequence'
+        index=min(3,max(0,int((t if t<4 else t-4)//1)))
+        pic=activity_frame(kind,index)
+        arrive(frame,pic,t,.4,W*.5,H*.57,W*.91,H*(.66 if PORTRAIT else .73))
     elif scene==5:
         panel(frame,5,'fit-brief',source,t,.55,.28 if PORTRAIT else .31,.19,.88)
         panel(frame,5,'fit-source',source,t,1.7,.47 if PORTRAIT else .49,.12,.90,-1)
@@ -239,6 +234,6 @@ try:
 except BaseException:
     process.kill();temporary.unlink(missing_ok=True);raise
 temporary.replace(output)
-manifest={'orientation':ORIENTATION,'width':W,'height':H,'fps':FPS,'duration':DURATION,'frames':DURATION*FPS,'notebookId':'paper-notebook-product-story','source':'examples/product-notebook.json','productionSource':'production/promo/story','renderCache':'output/promo/story','titles':'SVG glyph outlines rasterized at the displayed size','motion':'Native paper fragments, camera reframing, SVG stroke/clip reveals, beat-aligned paper wipes','screenRecording':False,'music':'product-film-music.wav','script':'product-film-script.json','file':output.name,'encoding':{'video':'H.264','crf':18,'preset':'slow','maxrate':'6000 kb/s','buffer':'12000 kb/s','keyframeSeconds':2,'audio':'AAC 96 kb/s','fastStart':True},'bytes':output.stat().st_size}
+manifest={'orientation':ORIENTATION,'width':W,'height':H,'fps':FPS,'duration':DURATION,'frames':DURATION*FPS,'notebookId':'paper-notebook-product-story','source':'examples/product-notebook.json','productionSource':'production/promo/story','renderCache':'output/promo/story','titles':'SVG glyph outlines rasterized at the displayed size','motion':'Native paper fragments, camera reframing, SVG stroke/clip reveals, beat-aligned paper wipes','screenRecording':False,'interactiveStates':'Native input/tab handlers, growth 21 states, reading 4 passages, sequence 4 states; 2x device density','music':'product-film-music.wav','script':'product-film-script.json','file':output.name,'encoding':{'video':'H.264','crf':18,'preset':'slow','maxrate':'6000 kb/s','buffer':'12000 kb/s','keyframeSeconds':2,'audio':'AAC 96 kb/s','fastStart':True},'bytes':output.stat().st_size}
 (OUT/(name+'.json')).write_text(json.dumps(manifest,ensure_ascii=False,indent=2))
 print(output,flush=True)

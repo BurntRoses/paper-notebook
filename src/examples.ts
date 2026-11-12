@@ -1,3 +1,4 @@
+import { sequenceActivity } from './learning-activities';
 import {customerOverlap,plantObservation} from './lesson-figures';
 import { userState, type NotebookDocument, type Page, type StudyPresentation } from './model/types';
 function make(id:string,title:string,pages:Page[],goals:string[]):NotebookDocument{
@@ -27,6 +28,9 @@ export const conceptExample=make('notebook-observation','订单、顾客与统�
   {id:'obs-quiz-1',type:'exercise',questionType:'single',question:'A、A、B、C、A 共五笔订单，涉及多少位顾客？',options:[{id:'obs-q1-a',text:'3 位'},{id:'obs-q1-b',text:'4 位'},{id:'obs-q1-c',text:'5 位'}],solution:['obs-q1-a'],explanation:'去重后的顾客编号为 A、B、C，共 3 位。',points:2},
   {id:'obs-quiz-2',type:'exercise',questionType:'multiple',question:'比较两个月的活跃顾客人数，需要保持哪些统计约定一致？',options:[{id:'obs-q2-a',text:'计数对象'},{id:'obs-q2-b',text:'时间范围'},{id:'obs-q2-c',text:'筛选条件'},{id:'obs-q2-d',text:'两个月的订单总数必须相同'}],solution:['obs-q2-a','obs-q2-b','obs-q2-c'],explanation:'计数对象、时间区间的定义和筛选条件须一致。两个月的订单总数可以变化，它本身就是待观察的结果。',points:3},
   {id:'obs-quiz-3',type:'exercise',questionType:'truefalse',question:'两地没有共同顾客时，总人数等于两地人数之和。',options:[{id:'obs-q3-t',text:'正确'},{id:'obs-q3-f',text:'错误'}],solution:['obs-q3-t'],explanation:'交集为空时，集合并集公式中的交集人数为 0，因此两地人数可以直接相加。',points:1}]}],['区分订单数与顾客数','识别分组之间的重复','在解释数字前写清统计口径']);
+conceptExample.notebook.revision=2;conceptExample.extensions.baseRevision=1;
+const counting=structuredClone(sequenceActivity);counting.id='statistics-exploration';counting.title='订单记录与顾客去重';
+conceptExample.notebook.chapters[0].pages.push({id:'observation-lab',title:'订单记录与顾客去重',subject:'stem',layout:'reading',blocks:[counting]});
 conceptExample.userState.annotations=[{id:'annotation-first',pageId:'observation-1',kind:'underline',selectors:[{blockId:'obs-opening',start:0,end:2,exact:'订单',prefix:'',suffix:''}],color:'#6c7355',width:2,seed:15}];
 // Derive the sample selector from the actual text, rather than maintaining a stale offset.
 const opening=conceptExample.notebook.chapters[0].pages[0].blocks[0].text!;

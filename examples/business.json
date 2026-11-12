@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "showcase-business",
-    "revision": 6,
+    "revision": 7,
     "title": "单位贡献与会员制",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -412,13 +412,164 @@
                 }
               }
             ]
+          },
+          {
+            "id": "business-lab",
+            "title": "成本结构与平衡销量",
+            "subject": "business",
+            "layout": "reading",
+            "blocks": [
+              {
+                "id": "business-lab-intro",
+                "type": "prose",
+                "text": "两条直线的交点对应收入恰好覆盖总成本的销量。提高固定成本会使成本线整体上移；降低单位变动成本会使成本线变缓。本例沿用单一产品、价格与单位成本恒定的模型。",
+                "study": {
+                  "marks": [
+                    {
+                      "text": "收入恰好覆盖总成本",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "收入恰好覆盖总成本",
+                      "kind": "red",
+                      "color": "#285f9e"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "business-exploration",
+                "type": "exploration",
+                "title": "成本结构与平衡销量",
+                "exploration": {
+                  "kind": "plot",
+                  "parameters": [
+                    {
+                      "id": "price",
+                      "label": "单价",
+                      "min": 75,
+                      "max": 150,
+                      "step": 1,
+                      "value": 80,
+                      "unit": "元/件"
+                    },
+                    {
+                      "id": "variable",
+                      "label": "单位变动成本",
+                      "min": 0,
+                      "max": 70,
+                      "step": 1,
+                      "value": 50,
+                      "unit": "元/件"
+                    },
+                    {
+                      "id": "fixed",
+                      "label": "固定成本",
+                      "min": 500,
+                      "max": 10000,
+                      "step": 100,
+                      "value": 3000,
+                      "unit": "元"
+                    }
+                  ],
+                  "domain": {
+                    "min": 0,
+                    "max": 250,
+                    "label": "销量（件）"
+                  },
+                  "yLabel": "金额（元）",
+                  "series": [
+                    {
+                      "label": "销售收入",
+                      "expression": {
+                        "op": "mul",
+                        "args": [
+                          "price",
+                          "x"
+                        ]
+                      }
+                    },
+                    {
+                      "label": "总成本",
+                      "expression": {
+                        "op": "add",
+                        "args": [
+                          "fixed",
+                          {
+                            "op": "mul",
+                            "args": [
+                              "variable",
+                              "x"
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "outputs": [
+                    {
+                      "label": "单位贡献",
+                      "expression": {
+                        "op": "sub",
+                        "args": [
+                          "price",
+                          "variable"
+                        ]
+                      },
+                      "unit": "元/件"
+                    },
+                    {
+                      "label": "平衡销量",
+                      "expression": {
+                        "op": "div",
+                        "args": [
+                          "fixed",
+                          {
+                            "op": "sub",
+                            "args": [
+                              "price",
+                              "variable"
+                            ]
+                          }
+                        ]
+                      },
+                      "unit": "件",
+                      "digits": 1
+                    },
+                    {
+                      "label": "销售 120 件的利润",
+                      "expression": {
+                        "op": "sub",
+                        "args": [
+                          {
+                            "op": "mul",
+                            "args": [
+                              120,
+                              {
+                                "op": "sub",
+                                "args": [
+                                  "price",
+                                  "variable"
+                                ]
+                              }
+                            ]
+                          },
+                          "fixed"
+                        ]
+                      },
+                      "unit": "元"
+                    }
+                  ]
+                }
+              }
+            ]
           }
         ]
       }
     ]
   },
   "userState": {
-    "updatedAt": "2026-11-11T12:00:00.000Z",
+    "updatedAt": "2026-11-12T12:00:00.000Z",
     "lastPageId": "subject-business",
     "notes": [],
     "annotations": [],
@@ -449,7 +600,7 @@
   },
   "assets": [],
   "extensions": {
-    "baseRevision": 5,
+    "baseRevision": 6,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

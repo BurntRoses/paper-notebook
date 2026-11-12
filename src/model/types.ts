@@ -1,4 +1,12 @@
-export type BlockType = 'prose'|'concept'|'steps'|'example'|'comparison'|'formula'|'code'|'quote'|'image'|'diagram'|'chart'|'callout'|'checklist'|'exercise';
+export type BlockType = 'prose'|'concept'|'steps'|'example'|'comparison'|'formula'|'code'|'quote'|'image'|'diagram'|'chart'|'callout'|'checklist'|'exercise'|'exploration';
+
+export type Expression = number|string|{op:'add'|'sub'|'mul'|'div'|'pow'|'ln'|'exp'|'abs'|'min'|'max';args:Expression[]};
+export interface ExplorationParameter {id:string;label:string;min:number;max:number;step:number;value:number;unit?:string}
+export interface ExplorationMeasure {label:string;expression:Expression;unit?:string;digits?:number}
+export interface ExplorationFrame {id:string;label:string;quote?:string;text:string;facts?:{label:string;value:string}[]}
+export type Exploration = {kind:'plot';parameters:ExplorationParameter[];domain:{min:number;max:number;label:string};yLabel:string;observations?:{x:number;y:number;label?:string}[];series:{label:string;expression:Expression}[];outputs:ExplorationMeasure[]}|{kind:'sequence'|'reading';frames:ExplorationFrame[]};
+export interface ExplorationState {values?:Record<string,number>;active?:string}
+export function explorationText(a:Exploration):string {return a.kind==='plot'?[...a.parameters.map(p=>p.label),a.domain.label,a.yLabel,...a.series.map(s=>s.label),...a.outputs.map(o=>o.label)].join('\n'):a.frames.flatMap(f=>[f.label,f.quote||'',f.text,...(f.facts||[]).map(v=>v.label+'：'+v.value)]).filter(Boolean).join('\n');}
 export interface Item { id: string; text: string }
 export interface FormulaParameter { symbol:string; name:string; description:string }
 export interface DiagramNode { id: string; label: string; x?: number; y?: number; shape?:'rounded'|'rectangle'|'circle'|'ellipse'|'diamond'|'hexagon'|'pill'|'document'|'cylinder' }
@@ -8,7 +16,7 @@ export interface FigureMark {kind:'circle'|'arrow'|'check'|'text'|'pen';x:number
 export interface FigureLayout {annotations?:FigureMark[];size?:'small'|'medium'|'wide'|'full';ratio?:'auto'|'1:1'|'4:3'|'3:2'|'16:9'|'3:4';align?:'left'|'center'|'right';style?:'sketch'|'precise'}
 export interface Block {
   id: string; type: BlockType | string; title?: string; text?: string;
-  study?:StudyPresentation; figure?:FigureLayout;
+  study?:StudyPresentation; figure?:FigureLayout; exploration?:Exploration;
   items?: Item[]; steps?: Item[]; prompt?: string; result?: string;
   columns?: string[]; columnWidths?:number[]; rows?: string[][]; latex?: string; language?: string;
   parameters?:FormulaParameter[];
@@ -48,7 +56,7 @@ export interface StudyBrief {languageStyle?:string;difficulty?:string;priorKnowl
 export interface NotebookDocument {
   schemaVersion: '1.0.0';
   notebook: { id: string; revision: number; title: string; subtitle?: string; author?: string; language: string; goals: string[]; sources: Source[]; chapters: Chapter[]; parent?: { notebookId: string; pageId?: string }; brief?: StudyBrief };
-  userState: { layouts?:Record<string,PagePlacements>; updatedAt: string; lastPageId: string; readingAnchor?:ReadingAnchor; notes: Note[]; figureMarks?:(FigureMark & {id:string;pageId:string;blockId:string})[]; annotations: Annotation[]; dismissedStudyMarks?:string[]; doubts: Doubt[]; answers: Record<string,Answer>; checks: Record<string,boolean>; bookmarks: (string|Bookmark)[]; readingPositions: Record<string,number>; preferences: Preferences };
+  userState: { explorations?:Record<string,ExplorationState>; layouts?:Record<string,PagePlacements>; updatedAt: string; lastPageId: string; readingAnchor?:ReadingAnchor; notes: Note[]; figureMarks?:(FigureMark & {id:string;pageId:string;blockId:string})[]; annotations: Annotation[]; dismissedStudyMarks?:string[]; doubts: Doubt[]; answers: Record<string,Answer>; checks: Record<string,boolean>; bookmarks: (string|Bookmark)[]; readingPositions: Record<string,number>; preferences: Preferences };
   assets: Asset[]; extensions: Record<string,unknown>;
 }
 export interface MaterialProfile { id: MaterialId; name: string; color: string; stiffness: number; damping: number; opacity: number; thickness: number; attachment: 'glue'|'clip'|'tape'|'hole' }
@@ -67,4 +75,4 @@ export const pagesOf = (d: NotebookDocument) => d.notebook.chapters.flatMap(c=>c
 export const blocksOf = (d: NotebookDocument) => pagesOf(d).flatMap(p=>p.blocks);
 export function blankDocument(): NotebookDocument { const id=uid('page');return {schemaVersion:'1.0.0',notebook:{id:uid('notebook'),revision:1,title:'结构化学习笔记',language:'zh-CN',goals:[],sources:[],chapters:[{id:uid('chapter'),title:'学习内容',pages:[{id,title:'导入教程',layout:'cornell',blocks:[]}]}]},userState:userState(id),assets:[],extensions:{}}; }
 export const parameterText=(p:FormulaParameter)=>p.name+'：'+p.description;
-export function textOf(b: Block): string { if(b.type==='comparison')return [...(b.columns||[]),...(b.rows||[]).flat()].join('\n');return [b.text||b.question||b.prompt||b.latex||'',...(b.items||b.steps||[]).map(i=>i.text),b.result||'',...(b.parameters||[]).map(parameterText)].filter(Boolean).join('\n'); }
+export function textOf(b: Block): string { if(b.type==='exploration'&&b.exploration)return explorationText(b.exploration); if(b.type==='comparison')return [...(b.columns||[]),...(b.rows||[]).flat()].join('\n');return [b.text||b.question||b.prompt||b.latex||'',...(b.items||b.steps||[]).map(i=>i.text),b.result||'',...(b.parameters||[]).map(parameterText)].filter(Boolean).join('\n'); }

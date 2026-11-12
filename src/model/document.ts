@@ -1,4 +1,5 @@
 import validate from './notebook-validator.js';
+import { validateExploration } from './exploration';
 import { migrateInk } from './paper';
 import { blocksOf, pagesOf, textOf, defaultPreferences, type NotebookDocument, type Selector, type Block, type Answer } from './types';
 export function parseDocument(raw: unknown): { document: NotebookDocument; warnings: string[] } {
@@ -17,6 +18,7 @@ export function parseDocument(raw: unknown): { document: NotebookDocument; warni
   if(profile){if(typeof profile!=='object'||Array.isArray(profile))throw new Error('readerProfile 必须是对象。');const allowed:Record<string,string[]>={layout:['auto','single','spread','scroll'],direction:['horizontal','vertical'],sidebar:['open','collapsed'],pageShape:['auto','portrait','landscape'],transition:['turn','cover','slide','fade','none'],theme:['paper-light','paper-night'],motion:['full','reduced'],paperStyle:['auto','white','ivory','cotton','mist','sage','inkwash'],font:['hand','serif','sans'],lineSpacing:['1.65','1.85','2.05','2.25']};for(const [key,values] of Object.entries(allowed))if(profile[key]!==undefined&&!values.includes(String(profile[key])))throw new Error(`readerProfile.${key}: 无效选项。`);}
   const assets=new Set(d.assets.map(a=>a.id)),sources=new Set(d.notebook.sources.map(s=>s.id));
   for(const b of blocksOf(d)){
+    if(b.type==='exploration'&&b.exploration)validateExploration(b.exploration,b.id);
     if(b.type==='comparison'&&(b.rows?.some(row=>row.length!==b.columns?.length)||b.columnWidths&&b.columnWidths.length!==b.columns?.length))throw new Error(`${b.id}: rows and columnWidths must match columns.length`);
     if(b.type==='image'&&!assets.has(b.assetId||''))throw new Error(`${b.id}: 图片资源不存在 ${b.assetId}`);
     if(b.type==='exercise'&&b.questionType==='matching'&&!b.pairs?.length)throw new Error(`${b.id}: 匹配题需要至少一对条目。`);

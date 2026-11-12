@@ -1,3 +1,4 @@
+import { renderExploration } from './exploration';
 import { diagramLayers } from '../model/diagram-layout';
 import { uiText } from './i18n';
 import { chartSVG } from './charts';
@@ -8,8 +9,8 @@ import { el, button, copyText, select } from './dom';
 import { projection } from './projection';
 import { codeTokens } from './code';
 import { grade } from '../model/document';
-import { parameterText, type Answer, type Block, type NotebookDocument } from '../model/types';
-export interface BlockActions { answer:(id:string,answer:Answer)=>void;check:(id:string,value:boolean)=>void; edit:(b:Block)=>void; image:(b:Block)=>void }
+import { parameterText, type ExplorationState, type Answer, type Block, type NotebookDocument } from '../model/types';
+export interface BlockActions { exploration?:(id:string,state:ExplorationState)=>void; staticView?:boolean; answer:(id:string,answer:Answer)=>void;check:(id:string,value:boolean)=>void; edit:(b:Block)=>void; image:(b:Block)=>void }
 export function diagramSVG(b:Block){
  const NS='http://www.w3.org/2000/svg',s=document.createElementNS(NS,'svg'),nodes=b.nodes||[],layers=diagramLayers(b),horizontal=b.arrangement==='row'&&nodes.length>0&&nodes.length<=4&&layers.every(row=>row.length===1)&&!matchMedia('(max-width:599px)').matches,rows=horizontal?[nodes]:layers,cols=Math.max(1,...rows.map(row=>row.length)),width=horizontal?nodes.length*360:cols===1?460:cols*350+60,nodeW=horizontal?220:cols===1?300:244,gap=82;
  const lines=(label:string,step=16)=>{const chars=[...label];const result:string[]=[];for(let i=0;i<chars.length;i+=step)result.push(chars.slice(i,i+step).join(''));return result.length?result:[''];};
@@ -70,6 +71,7 @@ export function renderBlock(b:Block,d:NotebookDocument,actions:BlockActions,sour
   case 'image':{const asset=d.assets.find(a=>a.id===b.assetId);if(asset){const image=el('img');image.src=asset.data;image.alt=b.alt||'';image.loading='lazy';image.decoding='async';const figure=figureLayout(b,image,asset,d.userState.figureMarks?.filter(a=>a.blockId===b.id));if(asset.source)figure.append(el('small','asset-source',`${asset.source} · ${asset.license||'用户提供'}`));root.append(figure);}else root.append(el('p','muted','图片尚未提供。'));break;}
   case 'diagram':{root.append(figureLayout(b,diagramSVG(b),undefined,d.userState.figureMarks?.filter(a=>a.blockId===b.id)));break;}
   case 'chart':{root.append(figureLayout(b,chartSVG(b),undefined,d.userState.figureMarks?.filter(a=>a.blockId===b.id)));break;}
+  case 'exploration':if(b.exploration){root.dataset.frame='plain';root.append(renderExploration(b,d,state=>actions.exploration?.(b.id,state),actions.staticView));}break;
   case 'exercise':renderExercise(root,b,d,actions);break;
   default:root.append(el('p','muted',`暂不支持 ${b.type}，原始数据已保留。`),el('pre','unknown-block',JSON.stringify(b,null,2)));break;
  }

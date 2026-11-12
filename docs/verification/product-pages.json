@@ -1,10 +1,10 @@
 {
   "logicalPages": 16,
-  "physicalSheets": 18,
+  "physicalSheets": 22,
   "allBlocksCaptured": true,
   "errors": [],
   "source": "production reader, Chromium headless, CSS geometry and raster in the same viewport",
-  "readerSha256": "248195a8155fe1888abac69ff2c6cdc986ccc22486e1b506da9d6630cb3208c6",
+  "readerSha256": "dea71979e0cf54a0f839a1002f90eadeb0170bc1399dd4e880fba4b7933229a1",
   "uiSource": "downloads/machine-learning.html; landscape/portrait spreads, right/bottom notes, figure annotation tools",
   "physicalDevices": false
 }

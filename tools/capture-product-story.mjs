@@ -65,6 +65,23 @@ try{
   await page.locator('.reader-stage [data-block=ml-residual-detail] .lesson-figure').click();await page.locator('.figure-editor').waitFor();
   await page.getByRole('button',{name:'图像工具：箭头',exact:true}).click();assert.ok(await page.locator('.figure-editor-canvas').isVisible());
   await page.screenshot({path:out+'editor-'+orientation+'.png',animations:'disabled'});
+  // Capture native controls at 2x density. Each state is produced by the actual input handler.
+  const activityContext=await browser.newContext({viewport:{width,height},deviceScaleFactor:2,reducedMotion:'reduce'});const activity=await activityContext.newPage();await activity.goto(base+'/downloads/paper-notebook-product.html?demo');await activity.waitForFunction(()=>window.reader?.fontsCalibrated);
+  await activity.evaluate(()=>{const r=reader;r.profile={...r.profile,layout:'single',pageShape:'auto',marginNotes:false,bottomNotes:false,paperStyle:'ivory',font:'hand',motion:'reduced',transition:'none'};r.rightSidebarOpen=false;r.render();});
+  const captureActivity=async(id,name,states)=>{
+   await activity.evaluate(id=>{const p=reader.d.notebook.chapters.flatMap(c=>c.pages).find(p=>p.blocks.some(b=>b.id===id));reader.goBlock(p.id,id);},id);
+   const component=activity.locator(`[data-block="${id}"] .exploration`);await component.waitFor();
+   for(const [i,state]of states.entries()){
+    if(typeof state==='number'){const field=component.getByRole('spinbutton',{name:'每期增长率数值'});await field.fill(String(state));await field.press('Enter');}
+    else await component.locator(`[data-exploration-frame="${state}"]`).click();
+    await activity.evaluate(()=>document.activeElement?.blur());
+    await component.screenshot({path:out+`activity-${orientation}-${name}-${i}.png`,animations:'disabled',scale:'device'});
+   }
+  };
+  await captureActivity('product-growth-exploration','growth',Array.from({length:21},(_,i)=>i*.5));
+  await captureActivity('product-reading-exploration','reading',['spring-first','spring-second','spring-third','spring-last']);
+  await captureActivity('product-sequence-exploration','sequence',['set-empty','set-first','set-repeat','set-second']);
+  await activityContext.close();
   console.log(orientation+': 8 complete logical pages, no overflow, current spread/notes/figure UI '+width+'×'+height);await context.close();
  }
  assert.deepEqual(errors,[]);await writeFile(root+'docs/verification/product-pages.json',JSON.stringify({logicalPages:16,physicalSheets:sheets,allBlocksCaptured:true,errors,source:'production reader, Chromium headless, CSS geometry and raster in the same viewport',readerSha256:createHash('sha256').update(await readFile(root+'dist/index.html')).digest('hex'),uiSource:'downloads/machine-learning.html; landscape/portrait spreads, right/bottom notes, figure annotation tools',physicalDevices:false},null,2));

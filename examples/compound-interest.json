@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "showcase-compound-interest",
-    "revision": 6,
+    "revision": 7,
     "title": "复利与增长",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -517,13 +517,226 @@
                 "text": "净增长等于期末总值减去累计存入。本例累计存入 150 元，终值为 176 元；把终值中的本金扣除，才得到 26 元利息。"
               }
             ]
+          },
+          {
+            "id": "growth-lab",
+            "title": "增长率与累计金额",
+            "subject": "stem",
+            "layout": "reading",
+            "blocks": [
+              {
+                "id": "growth-lab-intro",
+                "type": "prose",
+                "text": "相同本金下，单利每期增加相同金额，复利每期按已有余额计息。调整增长率，比较两条曲线的间距。曲线显示 20 期的金额，读数同时列出第 2 期与第 20 期的余额。",
+                "study": {
+                  "marks": [
+                    {
+                      "text": "按已有余额计息",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "按已有余额计息",
+                      "kind": "red",
+                      "color": "#285f9e"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "growth-exploration",
+                "type": "exploration",
+                "title": "增长率与累计金额",
+                "exploration": {
+                  "kind": "plot",
+                  "parameters": [
+                    {
+                      "id": "principal",
+                      "label": "初始本金",
+                      "min": 100,
+                      "max": 1000,
+                      "step": 100,
+                      "value": 100,
+                      "unit": "元"
+                    },
+                    {
+                      "id": "rate",
+                      "label": "每期增长率",
+                      "min": 0,
+                      "max": 15,
+                      "step": 0.5,
+                      "value": 10,
+                      "unit": "%"
+                    }
+                  ],
+                  "domain": {
+                    "min": 0,
+                    "max": 20,
+                    "label": "期数"
+                  },
+                  "yLabel": "金额（元）",
+                  "series": [
+                    {
+                      "label": "复利",
+                      "expression": {
+                        "op": "mul",
+                        "args": [
+                          "principal",
+                          {
+                            "op": "pow",
+                            "args": [
+                              {
+                                "op": "add",
+                                "args": [
+                                  1,
+                                  {
+                                    "op": "div",
+                                    "args": [
+                                      "rate",
+                                      100
+                                    ]
+                                  }
+                                ]
+                              },
+                              "x"
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "label": "单利",
+                      "expression": {
+                        "op": "mul",
+                        "args": [
+                          "principal",
+                          {
+                            "op": "add",
+                            "args": [
+                              1,
+                              {
+                                "op": "mul",
+                                "args": [
+                                  {
+                                    "op": "div",
+                                    "args": [
+                                      "rate",
+                                      100
+                                    ]
+                                  },
+                                  "x"
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "outputs": [
+                    {
+                      "label": "第 2 期末",
+                      "expression": {
+                        "op": "mul",
+                        "args": [
+                          "principal",
+                          {
+                            "op": "pow",
+                            "args": [
+                              {
+                                "op": "add",
+                                "args": [
+                                  1,
+                                  {
+                                    "op": "div",
+                                    "args": [
+                                      "rate",
+                                      100
+                                    ]
+                                  }
+                                ]
+                              },
+                              2
+                            ]
+                          }
+                        ]
+                      },
+                      "unit": "元"
+                    },
+                    {
+                      "label": "第 20 期末",
+                      "expression": {
+                        "op": "mul",
+                        "args": [
+                          "principal",
+                          {
+                            "op": "pow",
+                            "args": [
+                              {
+                                "op": "add",
+                                "args": [
+                                  1,
+                                  {
+                                    "op": "div",
+                                    "args": [
+                                      "rate",
+                                      100
+                                    ]
+                                  }
+                                ]
+                              },
+                              20
+                            ]
+                          }
+                        ]
+                      },
+                      "unit": "元"
+                    },
+                    {
+                      "label": "20 期累计利息",
+                      "expression": {
+                        "op": "sub",
+                        "args": [
+                          {
+                            "op": "mul",
+                            "args": [
+                              "principal",
+                              {
+                                "op": "pow",
+                                "args": [
+                                  {
+                                    "op": "add",
+                                    "args": [
+                                      1,
+                                      {
+                                        "op": "div",
+                                        "args": [
+                                          "rate",
+                                          100
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  20
+                                ]
+                              }
+                            ]
+                          },
+                          "principal"
+                        ]
+                      },
+                      "unit": "元"
+                    }
+                  ]
+                }
+              }
+            ]
           }
         ]
       }
     ]
   },
   "userState": {
-    "updatedAt": "2026-11-11T12:00:00.000Z",
+    "updatedAt": "2026-11-12T12:00:00.000Z",
     "lastPageId": "intro-capabilities",
     "notes": [],
     "annotations": [],
@@ -566,7 +779,7 @@
     }
   ],
   "extensions": {
-    "baseRevision": 5,
+    "baseRevision": 6,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

@@ -23,3 +23,8 @@ Python：`python scripts/prepare_conversation.py --out runtime`。它检查版�
 ## 小范围更新
 
 保留 notebook/entity IDs，设置 baseRevision。`scripts/patch_pages.py` 按原页 SHA-256 校验，仅替换明确指定的页面，保留其他页面及 userState；版本递增并更新实际时间。之后重建整份单文件 HTML 并重新完成受影响章节审阅。HTML 内嵌运行时是单文件离线的交付方式，分册重复包含模板不等于构建错误。不要将模板体积与压缩后的实际 HTML 体积直接相加。
+
+
+## 交互内容验收
+
+含 `exploration` 时，审阅者核对每项参数、单位、曲线与读数；数值例子至少独立核算初始值和一组变化值，并检查参数两端。过程分步逐步核对状态，原文批读核对各段原句与解释。浏览器实际操作初始、变化、重置、方向键、窄屏与深色模式，导出后断网再打开，核对当前参数/片段和学习记录；打印核对所有步骤和原文解释完整显示。在对应章节的 teaching/facts 和 browser 中记录实际测试。未执行的路径注明原因。

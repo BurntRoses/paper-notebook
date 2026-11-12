@@ -21,7 +21,7 @@
 .page-surface .content-block[data-frame=bracket]:before,.page-surface .content-block[data-frame=bracket]:after{display:none}
 .page-surface .block-code pre{border:0}
 button:focus:not(:focus-visible),summary:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:none}
-button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:0;outline-offset:0}
 .sheet-dialog[tabindex]:focus-visible,.content-block:focus{outline:none}
 /* System panels use the same type scale and compact, visible choice controls. */
 .sheet-dialog{font:14px/1.7 system-ui}
@@ -72,3 +72,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .reader-settings [aria-label="正文字体"] [data-value=sans],.reader-settings [aria-label=Font] [data-value=sans]{font-family:system-ui,'PingFang SC',sans-serif;font-size:14px}
 @media(pointer:coarse){.choice-segment{min-height:40px}.reader-file-menu button{min-height:44px}}
 @media(prefers-reduced-motion:reduce){:is(.reader-control,.reader-files summary,.reader-file-menu button,.close-dialog,.choice-segment,.paper-preset,.primary,.quiet){transition:none;transform:none}}
+
+/* Adapted from prescription focus-policy.css: keyboard feedback stays inside controls. */
+:is(button,a,summary,input,textarea,select,[role=tab],[role=option]):focus-visible{filter:brightness(.88)}

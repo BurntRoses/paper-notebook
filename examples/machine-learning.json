@@ -694,6 +694,208 @@
             ]
           },
           {
+            "id": "ml-lab",
+            "title": "参数与误差的变化",
+            "layout": "reading",
+            "subject": "stem",
+            "blocks": [
+              {
+                "id": "ml-lab-intro",
+                "type": "prose",
+                "text": "沿用样本 A(1,2)、B(2,4)、C(3,5)。图中圆点是标签，直线是当前参数的预测。调整斜率和截距，观察整条直线与三个圆点的距离，并比较均方误差。",
+                "study": {
+                  "marks": [
+                    {
+                      "text": "整条直线与三个圆点的距离",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "整条直线与三个圆点的距离",
+                      "kind": "red",
+                      "color": "#285f9e"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "ml-exploration",
+                "type": "exploration",
+                "title": "斜率、截距与平方误差",
+                "exploration": {
+                  "kind": "plot",
+                  "parameters": [
+                    {
+                      "id": "slope",
+                      "label": "斜率 w",
+                      "min": 0,
+                      "max": 3,
+                      "step": 0.1,
+                      "value": 1
+                    },
+                    {
+                      "id": "intercept",
+                      "label": "截距 b",
+                      "min": -2,
+                      "max": 2,
+                      "step": 0.1,
+                      "value": 1
+                    }
+                  ],
+                  "domain": {
+                    "min": 0,
+                    "max": 4,
+                    "label": "输入 x"
+                  },
+                  "yLabel": "标签与预测值",
+                  "observations": [
+                    {
+                      "x": 1,
+                      "y": 2,
+                      "label": "A"
+                    },
+                    {
+                      "x": 2,
+                      "y": 4,
+                      "label": "B"
+                    },
+                    {
+                      "x": 3,
+                      "y": 5,
+                      "label": "C"
+                    }
+                  ],
+                  "series": [
+                    {
+                      "label": "预测 ŷ = wx + b",
+                      "expression": {
+                        "op": "add",
+                        "args": [
+                          {
+                            "op": "mul",
+                            "args": [
+                              "slope",
+                              "x"
+                            ]
+                          },
+                          "intercept"
+                        ]
+                      }
+                    }
+                  ],
+                  "outputs": [
+                    {
+                      "label": "样本 C 的预测值",
+                      "expression": {
+                        "op": "add",
+                        "args": [
+                          {
+                            "op": "mul",
+                            "args": [
+                              "slope",
+                              3
+                            ]
+                          },
+                          "intercept"
+                        ]
+                      }
+                    },
+                    {
+                      "label": "均方误差",
+                      "expression": {
+                        "op": "div",
+                        "args": [
+                          {
+                            "op": "add",
+                            "args": [
+                              {
+                                "op": "pow",
+                                "args": [
+                                  {
+                                    "op": "sub",
+                                    "args": [
+                                      {
+                                        "op": "add",
+                                        "args": [
+                                          {
+                                            "op": "mul",
+                                            "args": [
+                                              "slope",
+                                              1
+                                            ]
+                                          },
+                                          "intercept"
+                                        ]
+                                      },
+                                      2
+                                    ]
+                                  },
+                                  2
+                                ]
+                              },
+                              {
+                                "op": "pow",
+                                "args": [
+                                  {
+                                    "op": "sub",
+                                    "args": [
+                                      {
+                                        "op": "add",
+                                        "args": [
+                                          {
+                                            "op": "mul",
+                                            "args": [
+                                              "slope",
+                                              2
+                                            ]
+                                          },
+                                          "intercept"
+                                        ]
+                                      },
+                                      4
+                                    ]
+                                  },
+                                  2
+                                ]
+                              },
+                              {
+                                "op": "pow",
+                                "args": [
+                                  {
+                                    "op": "sub",
+                                    "args": [
+                                      {
+                                        "op": "add",
+                                        "args": [
+                                          {
+                                            "op": "mul",
+                                            "args": [
+                                              "slope",
+                                              3
+                                            ]
+                                          },
+                                          "intercept"
+                                        ]
+                                      },
+                                      5
+                                    ]
+                                  },
+                                  2
+                                ]
+                              }
+                            ]
+                          },
+                          3
+                        ]
+                      },
+                      "digits": 3
+                    }
+                  ]
+                }
+              }
+            ],
+            "cues": []
+          },
+          {
             "id": "ml-visual",
             "title": "散点、直线与残差",
             "layout": "reading",

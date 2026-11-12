@@ -65,7 +65,8 @@ export class PageSurface {
     }
     return n;};
    const commit=(b:Block)=>{let node=append(b);if(this.printRoot&&height()>limit()+1&&!blocks.length){const scale=Math.min(1,(limit()-20)/node.getBoundingClientRect().height);node.remove();b={...b,_printScale:scale};node=append(b);}blocks.push(b);};
-   for(const sourceBlock of source.blocks){
+   const sourceBlocks=this.printRoot?source.blocks.flatMap(b=>b.type==='exploration'&&b.exploration&&b.exploration.kind!=='plot'?b.exploration.frames.map((f,i)=>({...b,_explorationFrame:f.id,title:i?undefined:b.title,sourceRefs:i?undefined:b.sourceRefs})):b):source.blocks;
+   for(const sourceBlock of sourceBlocks){
     let b:FragmentBlock={...sourceBlock},guard=0;
     while(guard++<1000){
      const n=append(b),media=n.querySelector<HTMLElement>('.figure-media');

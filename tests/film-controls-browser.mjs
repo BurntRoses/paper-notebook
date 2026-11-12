@@ -18,7 +18,7 @@ for(const [engine,type] of Object.entries({chromium,webkit})){
   await page.keyboard.press('ArrowLeft');await page.waitForFunction(()=>Math.abs(document.querySelector('video').currentTime-12)<.1&&!document.querySelector('video').seeking);
   assert.match(await progress.getAttribute('aria-valuetext'),/^0:12 \/ 1:0[34]$/);
   assert.notEqual(await page.locator('.film-buffered').evaluate(n=>getComputedStyle(n).backgroundImage),'none');
-  const focus=await progress.evaluate(n=>({own:getComputedStyle(n).outlineWidth,parent:getComputedStyle(n.parentElement).outlineStyle}));assert.equal(focus.own,'2px');assert.equal(focus.parent,'none');
+  const focus=await progress.evaluate(n=>({own:getComputedStyle(n).outlineWidth,parent:getComputedStyle(n.parentElement).outlineStyle}));assert.equal(focus.own,'0px');assert.equal(focus.parent,'none');
   for(const [width,height] of [[320,844],[390,844],[844,390],[1440,1000]]){
    await page.setViewportSize({width,height});await ready(page);await page.locator('.film-screen').scrollIntoViewIfNeeded();
    const bounds=await page.locator('.film-screen').evaluate(screen=>{const s=screen.getBoundingClientRect();return [...screen.querySelectorAll('.film-controls>button,.film-quality-trigger,.film-progress')].map(n=>{const r=n.getBoundingClientRect();return {name:n.getAttribute('aria-label'),x:r.x-s.x,right:r.right-s.x,y:r.y-s.y,bottom:r.bottom-s.y,width:r.width,height:r.height,screenWidth:s.width,screenHeight:s.height}})});

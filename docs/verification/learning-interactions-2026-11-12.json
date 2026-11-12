@@ -1,0 +1,641 @@
+{
+  "date": "2026-11-12",
+  "scope": "Native activities, six subject samples, introduction and product notebook; current source-bound editorial records and physical-page measurements.",
+  "reports": [
+    {
+      "name": "machine-learning",
+      "revision": 11,
+      "sourceSHA256": "fa900a08f826c7a86907076d049a76b206f23eaa6313f55e1158680de2216869",
+      "artifactSHA256": "d7110aee934e61120dd8eeab314e2b393c2593200ec0de8678d3e370bac42611",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "ml-ch-data",
+          "writing": "开篇直接说明参数、损失和优化，房价情境与无量纲教学数据分别交代。",
+          "teaching": "侧栏补特征向量和预测时点，旧的参数锚点已更新。",
+          "facts": "核对 A/B/C 的输入 1/2/3 与标签 2/4/5；未将房价单位套入无量纲数据。",
+          "brief": "按具备一次函数基础的读者组织机制讲解。"
+        },
+        {
+          "chapterId": "ml-ch-model",
+          "writing": "删去重复的算术问句，以误差方向、汇总和尺度说明补充正文。",
+          "teaching": "叠加粗体与颜色突出线性回归、特征、标签、均方误差；异常值解释独立成框。新增斜率/截距原生控件、观察点与实时 MSE；浏览器验证调参、重置和键盘不会翻页。",
+          "facts": "核算 ŷ=x+1 的误差 0/−1/−1、MSE=2/3；+2/−2 的 MSE=4；所有公式经 KaTeX 解析。本轮独立核算初始 w=1,b=1 时 MSE=2/3；w=1.5,b=2/3 时 MSE=1/18，合法输入按 0.1 步长取值。",
+          "brief": "保留参数含义与残差图示，图像和侧栏关联已在浏览器逐页检查。"
+        },
+        {
+          "chapterId": "ml-ch-train",
+          "writing": "更新说明围绕导数、步长与损失变化展开，删去正文复述式侧栏。",
+          "teaching": "增加连续更新的损失曲线；侧栏补第二次更新和临界步长。",
+          "facts": "J=2.5(w−2)²，η=.1 时 1→1.5→1.75→1.875；损失依次 2.5/.625/.15625/.0390625；收缩条件 0<η<.4。",
+          "brief": "提供推导和核算，保留固定 b=0 的条件。"
+        },
+        {
+          "chapterId": "ml-ch-evaluate",
+          "writing": "以候选方案选择解释验证偏差，泛化定义采用直接表述。",
+          "teaching": "增加 L2 参数收缩与两特征内积的具体计算，避免术语罗列。",
+          "facts": "L2 目标导数为 5(w−2)+2λw，λ=.5 时 w=5/3；两特征预测 3×2−1×1+4=9。",
+          "brief": "用患者分组和时间拆分说明评估设计，保留真实任务中的输入时点要求。"
+        }
+      ],
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "d7110aee934e61120dd8eeab314e2b393c2593200ec0de8678d3e370bac42611",
+        "sourceSHA256": "fa900a08f826c7a86907076d049a76b206f23eaa6313f55e1158680de2216869",
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 82,
+        "checkedSheets": 82,
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "compound-interest",
+      "revision": 7,
+      "sourceSHA256": "302827dfe58a63ff37508c5d408e8e61ef710c8e91de2239b19f5b701ae756a3",
+      "artifactSHA256": "4018694fb224fd61070143a7f07c7dcabcf6d5c760691a67be68f25af285bc84",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "compound-interest-chapter",
+          "writing": "正文按增长基数、递推关系、周期单位和追加资金展开；新增页用具体参数与金额说明操作，保留既有标题和段落层级。",
+          "teaching": "面积图解释额外的 1 元；页内参数同时呈现单利、复利和两期/二十期末余额。两期结果与前文例题对应，重置回到 100 元、10%。",
+          "facts": "独立核算 100×1.1²=121、100×1.1²⁰≈672.75、100×1.05²=110.25。参数端点本金 100/1000、增长率 0/15 均有限；0% 时两条曲线保持本金。",
+          "brief": "保持数学入门的递推与核算，新增交互用于比较增长率；未设置独立 brief，按本书三个学习目标核对。"
+        }
+      ],
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "4018694fb224fd61070143a7f07c7dcabcf6d5c760691a67be68f25af285bc84",
+        "sourceSHA256": "302827dfe58a63ff37508c5d408e8e61ef710c8e91de2239b19f5b701ae756a3",
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 24,
+        "checkedSheets": 24,
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "concept",
+      "revision": 9,
+      "sourceSHA256": "769bcc2649bd75070909db490e82f1a2eaf6d945d61d98ae215de8529466742a",
+      "artifactSHA256": "59f8ffa024f33c51dd2f19ac732d6f3d8c8f10e482045baae3c07b882ec87c95",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "notebook-observation-chapter",
+          "writing": "订单数、顾客数和筛选范围使用具体记录；新增分步说明逐项写明集合变化，无另设反问或泛化总结。",
+          "teaching": "在既有合流图、交集图和 SQL 后补充 A/A/B 的去重过程，分步区显示已读记录、集合与计数，前后按钮边界正确。",
+          "facts": "沿用未变更正文中已执行的 SQL 核验记录；本轮逐步核对 ∅→{A}→{A}→{A,B} 与计数 0/1/1/2，重置为空集合。",
+          "brief": "按统计口径学习目标检查，区分记录和不同编号数量；保持既有习题、答案与稳定 ID。"
+        }
+      ],
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "59f8ffa024f33c51dd2f19ac732d6f3d8c8f10e482045baae3c07b882ec87c95",
+        "sourceSHA256": "769bcc2649bd75070909db490e82f1a2eaf6d945d61d98ae215de8529466742a",
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 31,
+        "checkedSheets": 31,
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "literature",
+      "revision": 7,
+      "sourceSHA256": "1059c45b861baa67dba4bc7aeb70fba5d6c300ac81a54ff908c3bad67f2619ee",
+      "artifactSHA256": "9ebfe137ccb3c6b57be25b92b21bb2809e46dd2576eaf33f73189585756d75f9",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "literature-chapter",
+          "writing": "背景、炼字、修辞和章法按原诗展开；新赏析直接解释“深”“感时/恨别”“连”“搔”，无引用边界的防御句。",
+          "teaching": "四联分别呈现原句和对应赏析，首联意象、颔联情景、颈联家书、尾联身体细节依次推进；搜索未选中的原句会打开相应片段，打印保留四联。",
+          "facts": "核对四联原文顺序与现有引用一致。首联为映照和对偶，颔联保留触景生情与移情于物两种读法，“抵万金”解释为夸张；背景和出处沿用未改正文的已有核验。",
+          "brief": "按文学细读组织解释，保留背景、作者处境和表达赏析，不将诗歌解释改为技术流程。"
+        }
+      ],
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "9ebfe137ccb3c6b57be25b92b21bb2809e46dd2576eaf33f73189585756d75f9",
+        "sourceSHA256": "1059c45b861baa67dba4bc7aeb70fba5d6c300ac81a54ff908c3bad67f2619ee",
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 15,
+        "checkedSheets": 15,
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "business",
+      "revision": 7,
+      "sourceSHA256": "29b8e85e839fa92ce21588cace05316d0a1f5e1bd98e3d0a1c60b8941e875442",
+      "artifactSHA256": "4d68651d5a20bd012d511a52f1c46dd163c9067e3c5f6b2e1a6c3722e7bf9b44",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "business-chapter",
+          "writing": "单位贡献、成本、销量和利润使用同一套标签与单位；教学模型与 Costco 案例各自有明确背景。",
+          "teaching": "固定成本、单价、单位变动成本分别调整，收入和总成本曲线同步更新，显示贡献、平衡销量与 120 件利润。",
+          "facts": "独立核算贡献 80−50=30 元/件、平衡销量 3000/30=100 件、120 件利润 600 元；固定成本 6000 元时平衡销量 200 件。各参数端点保持单价大于单位变动成本。Costco 年报数字未修改，复用原有官方年报核验记录。",
+          "brief": "按商学成本分析目标核对，使用给定模型解释关系，真实公司案例继续保留既有来源。"
+        }
+      ],
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "4d68651d5a20bd012d511a52f1c46dd163c9067e3c5f6b2e1a6c3722e7bf9b44",
+        "sourceSHA256": "29b8e85e839fa92ce21588cace05316d0a1f5e1bd98e3d0a1c60b8941e875442",
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 17,
+        "checkedSheets": 17,
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "programming",
+      "revision": 7,
+      "sourceSHA256": "7ab2145d4436faf41e9d9b836f4780ad781693c6ac0fa434d60c96350341d26b",
+      "artifactSHA256": "f7be6883b03424ab3c34c80e83e64dc18fb2df9047d1b09e22af3cf160fe23ff",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "programming-chapter",
+          "writing": "新说明围绕实际读入的 A/A/B 和集合元素变化，代码及旁注使用一致编号。",
+          "teaching": "四个作者编写的状态与代码逐条对应；首尾按钮禁用、重置到初始状态，当前片段随离线副本保存。",
+          "facts": "逐步核对 set()、add(A)、add(A)、add(B) 得到计数 0/1/1/2；既有函数与断言保持未变，沿用已运行的四类测试结果。",
+          "brief": "保持 Python 入门的输入、操作和输出解释。分步展示已编写的状态；代码文本与状态对应。"
+        }
+      ],
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "f7be6883b03424ab3c34c80e83e64dc18fb2df9047d1b09e22af3cf160fe23ff",
+        "sourceSHA256": "7ab2145d4436faf41e9d9b836f4780ad781693c6ac0fa434d60c96350341d26b",
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 16,
+        "checkedSheets": 16,
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "paper-notebook",
+      "revision": 15,
+      "sourceSHA256": "2e09f510b0226c88b52ebe810ad8697d9db1b1b72d8a493cda91f91597847be8",
+      "artifactSHA256": "2c4c57ae7c4314beb7bd8192c80a2659d0a28767b68f3b9afcd0a3d7fc0be35f",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "intro-chapter",
+          "writing": "删去泛化介绍，按复利基数、递推、周期和核算组织正文。",
+          "teaching": "强调期末值和增长因子；侧栏解释利息继续增长与幂次来源。新增单利/复利参数计算，初始与变化值已独立核算并在浏览器实际操作。",
+          "facts": "核算 100×1.1²=121、200×1.05²=220.5、1.01¹²−1≈12.68%。",
+          "brief": "保留数学入门所需的条件和逐次计算，标题不再带路线串。"
+        },
+        {
+          "chapterId": "subject-chapter",
+          "writing": "文学、商学和编程分别采用细读、指标分析与状态跟踪。",
+          "teaching": "首联改为上下句对读图并前置；商学表格配置列宽；代码说明解释实际操作。新增春望逐联批读、成本计算与集合状态，分别采用文学、商学和编程表达；与独立示例使用同一数据。",
+          "facts": "原诗对照香港教育局资料；Costco 数值及销售增长来源对照 2025 年报；Python 函数与断言已执行。",
+          "brief": "主介绍笔记保留多学科内容，与六个独立试读例子共享源块。"
+        }
+      ],
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "2c4c57ae7c4314beb7bd8192c80a2659d0a28767b68f3b9afcd0a3d7fc0be35f",
+        "sourceSHA256": "2e09f510b0226c88b52ebe810ad8697d9db1b1b72d8a493cda91f91597847be8",
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 87,
+        "checkedSheets": 87,
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "paper-notebook-product",
+      "revision": 8,
+      "sourceSHA256": "9f1ef1485a5c83518f80c5bd6dce53bfcf72e4254dfc59da1fbea0fe818b79a6",
+      "artifactSHA256": "dfaf1d59fa8c06922c5936e91e4683f225fc8ed1a5126e272e69b937708ccb24",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "product-story",
+          "writing": "标题直接命名参数比较、文字标记、原文批读和离线保存；制作流程使用具体动作，删去旧的泛化功能表述。",
+          "teaching": "将三类原生页内交互纳入产品说明，并保留圈画、图像批注、页边与底栏批注、横竖阅读；影片从真实组件捕获参数变化和片段状态。",
+          "facts": "核对产品笔记 8 张逻辑页、3 个交互块。新横竖影片 64 秒/30fps，六档已完整解码，无黑帧；复利读数、春望四联与集合四步与示例同源。",
+          "brief": "使用说明、intro 入口、影片分镜和工具包采用同一组件协议，保留离线单文件和批注学习记录。"
+        }
+      ],
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "dfaf1d59fa8c06922c5936e91e4683f225fc8ed1a5126e272e69b937708ccb24",
+        "sourceSHA256": "9f1ef1485a5c83518f80c5bd6dce53bfcf72e4254dfc59da1fbea0fe818b79a6",
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 38,
+        "checkedSheets": 38,
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "formula",
+      "revision": 7,
+      "sourceSHA256": "a7beae45c27c6cfecf31f9d196aa750aba75ac0d264af4281ee229338f90be93",
+      "artifactSHA256": "ef89e7e9bccf9ae5bb563b7229e9bc140ad20f91099f3876c9fa80c2da82c420",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "notebook-growth-chapter",
+          "writing": "删去无实质信息的开场修饰，金额和周期在正文直接给出。",
+          "teaching": "增加逐期余额曲线，将相同增长率与增加额联系起来。",
+          "facts": "核算 100/110/121/133.1；变化率不同的三期结果为 124.74。",
+          "brief": "保留递推关系与条件变化，不追加泛化总结。"
+        }
+      ],
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "ef89e7e9bccf9ae5bb563b7229e9bc140ad20f91099f3876c9fa80c2da82c420",
+        "sourceSHA256": "a7beae45c27c6cfecf31f9d196aa750aba75ac0d264af4281ee229338f90be93",
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 13,
+        "checkedSheets": 13,
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "practice",
+      "revision": 7,
+      "sourceSHA256": "cbcf677768910d770e9ba85a25a8380c649f924541c20272fcc4a034419c0db2",
+      "artifactSHA256": "abe135be143b48931f621ed5ecc2fa5c2eb4672956bc7ca8d3886dadb5429ba6",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "notebook-observe-plant-chapter",
+          "writing": "观察步骤改为位置、颜色、数量和养护记录，减少空泛要求。",
+          "teaching": "补植物位置图，圈出两片黄叶并用箭头标注，与记录表对应。",
+          "facts": "图示用于定位叶片；正文按植物名称、浇水、盆土和根系记录讨论原因。未将黄叶直接等同于某种病因。",
+          "brief": "适合观察记录练习；保留开放作答和复查所需信息。"
+        }
+      ],
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "abe135be143b48931f621ed5ecc2fa5c2eb4672956bc7ca8d3886dadb5429ba6",
+        "sourceSHA256": "cbcf677768910d770e9ba85a25a8380c649f924541c20272fcc4a034419c0db2",
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 11,
+        "checkedSheets": 11,
+        "issues": []
+      },
+      "deliveryReady": true
+    }
+  ],
+  "version": "2.6.0",
+  "modelTests": {
+    "passed": 95,
+    "failed": 0
+  },
+  "activities": [
+    {
+      "engine": "chromium",
+      "computation": true,
+      "keyboard": true,
+      "sourceSearch": true,
+      "reset": true,
+      "offlineRoundtrip": true,
+      "printAllFrames": true,
+      "responsive": [
+        390,
+        820,
+        1440
+      ],
+      "night": true,
+      "homepageEntry": true,
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "computation": true,
+      "keyboard": true,
+      "sourceSearch": true,
+      "reset": true,
+      "offlineRoundtrip": true,
+      "printAllFrames": true,
+      "responsive": [
+        390,
+        820,
+        1440
+      ],
+      "night": true,
+      "homepageEntry": true,
+      "errors": []
+    }
+  ],
+  "interface": [
+    {
+      "engine": "chromium",
+      "menus": true,
+      "copySuccessAndDenied": true,
+      "noActionLayoutShift": true,
+      "retry": true,
+      "stalledResponseRetry": true,
+      "rovingExamples": true,
+      "defaultIvoryAndWenKai": true,
+      "paperSingleBoundary": true,
+      "responsiveSettings": true,
+      "reducedMotion": true,
+      "initialShellRetry": true,
+      "lightContrast": [
+        {
+          "pair": [
+            "--site-ink",
+            "--site-bg"
+          ],
+          "ratio": 7.5998604389288476
+        },
+        {
+          "pair": [
+            "--site-muted",
+            "--site-surface"
+          ],
+          "ratio": 5.7140905387275405
+        },
+        {
+          "pair": [
+            "--site-on-accent",
+            "--site-accent"
+          ],
+          "ratio": 6.968158475072463
+        },
+        {
+          "pair": [
+            "--site-ink",
+            "--site-selected"
+          ],
+          "ratio": 6.921199932861529
+        }
+      ],
+      "darkContrast": [
+        {
+          "pair": [
+            "--site-ink",
+            "--site-bg"
+          ],
+          "ratio": 11.606911330424188
+        },
+        {
+          "pair": [
+            "--site-muted",
+            "--site-surface"
+          ],
+          "ratio": 7.057856169645134
+        },
+        {
+          "pair": [
+            "--site-on-accent",
+            "--site-accent"
+          ],
+          "ratio": 7.961124637748037
+        },
+        {
+          "pair": [
+            "--site-ink",
+            "--site-selected"
+          ],
+          "ratio": 6.330356156148561
+        }
+      ],
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "menus": true,
+      "copySuccessAndDenied": true,
+      "noActionLayoutShift": true,
+      "retry": true,
+      "stalledResponseRetry": true,
+      "rovingExamples": true,
+      "defaultIvoryAndWenKai": true,
+      "paperSingleBoundary": true,
+      "responsiveSettings": true,
+      "reducedMotion": true,
+      "initialShellRetry": true,
+      "lightContrast": [
+        {
+          "pair": [
+            "--site-ink",
+            "--site-bg"
+          ],
+          "ratio": 7.5998604389288476
+        },
+        {
+          "pair": [
+            "--site-muted",
+            "--site-surface"
+          ],
+          "ratio": 5.7140905387275405
+        },
+        {
+          "pair": [
+            "--site-on-accent",
+            "--site-accent"
+          ],
+          "ratio": 6.968158475072463
+        },
+        {
+          "pair": [
+            "--site-ink",
+            "--site-selected"
+          ],
+          "ratio": 6.921199932861529
+        }
+      ],
+      "darkContrast": [
+        {
+          "pair": [
+            "--site-ink",
+            "--site-bg"
+          ],
+          "ratio": 11.606911330424188
+        },
+        {
+          "pair": [
+            "--site-muted",
+            "--site-surface"
+          ],
+          "ratio": 7.057856169645134
+        },
+        {
+          "pair": [
+            "--site-on-accent",
+            "--site-accent"
+          ],
+          "ratio": 7.961124637748037
+        },
+        {
+          "pair": [
+            "--site-ink",
+            "--site-selected"
+          ],
+          "ratio": 6.330356156148561
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "filmControls": [
+    {
+      "engine": "chromium",
+      "keyboardSeek": true,
+      "bufferTrack": true,
+      "controlsFit320": true,
+      "menuFitsShortPlayer": true,
+      "timeoutKeepsQualityAndTime": true,
+      "retryResumes": true,
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "keyboardSeek": true,
+      "bufferTrack": true,
+      "controlsFit320": true,
+      "menuFitsShortPlayer": true,
+      "timeoutKeepsQualityAndTime": true,
+      "retryResumes": true,
+      "errors": []
+    }
+  ],
+  "layoutSheets": 334,
+  "focusFeedback": "Native control fill and brightness; no extra outline or thumb ring. Keyboard navigation and focus return retained."
+}

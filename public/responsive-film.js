@@ -84,7 +84,7 @@
   syncPlayback(); syncControls();
   const orientation = matchMedia('(orientation: portrait)');
   const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-  const revision = '3.17';
+  const revision = '3.19';
   const hdCopies = new Map(), attempted = new Set();
   let active = '', quality = '', mode = 'auto', request = 0, switching = false;
   const message = (text, canRetry = false) => { if (status) status.textContent = text; if (feedback) feedback.hidden = !text; if (retry) retry.hidden = !canRetry; };

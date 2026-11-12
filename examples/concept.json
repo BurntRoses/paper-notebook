@@ -525,6 +525,113 @@
                 "points": 1
               }
             ]
+          },
+          {
+            "id": "observation-lab",
+            "title": "订单记录与顾客去重",
+            "subject": "stem",
+            "layout": "reading",
+            "blocks": [
+              {
+                "id": "statistics-exploration",
+                "type": "exploration",
+                "title": "订单记录与顾客去重",
+                "study": {
+                  "marks": [
+                    {
+                      "text": "集合已经包含 A",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "集合已经包含 A",
+                      "kind": "red",
+                      "color": "#285f9e"
+                    }
+                  ]
+                },
+                "exploration": {
+                  "kind": "sequence",
+                  "frames": [
+                    {
+                      "id": "set-empty",
+                      "label": "初始状态",
+                      "quote": "seen = set()",
+                      "text": "新集合为空。尚未读入记录，顾客去重数为 0。",
+                      "facts": [
+                        {
+                          "label": "集合",
+                          "value": "∅（空集）"
+                        },
+                        {
+                          "label": "去重数",
+                          "value": "0"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "set-first",
+                      "label": "读入 A",
+                      "quote": "seen.add(\"A\")",
+                      "text": "A 首次出现，加入集合。集合包含一个不同的编号。",
+                      "facts": [
+                        {
+                          "label": "已读记录",
+                          "value": "[A]"
+                        },
+                        {
+                          "label": "集合",
+                          "value": "{A}"
+                        },
+                        {
+                          "label": "去重数",
+                          "value": "1"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "set-repeat",
+                      "label": "再次读入 A",
+                      "quote": "seen.add(\"A\")",
+                      "text": "集合已经包含 A。再次加入相等的值后，集合仍为 {A}，去重数保持为 1。",
+                      "facts": [
+                        {
+                          "label": "已读记录",
+                          "value": "[A, A]"
+                        },
+                        {
+                          "label": "集合",
+                          "value": "{A}"
+                        },
+                        {
+                          "label": "去重数",
+                          "value": "1"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "set-second",
+                      "label": "读入 B",
+                      "quote": "seen.add(\"B\")",
+                      "text": "B 与已有的 A 不同，加入后集合有两个元素。三条记录对应两个不同的顾客编号。",
+                      "facts": [
+                        {
+                          "label": "已读记录",
+                          "value": "[A, A, B]"
+                        },
+                        {
+                          "label": "集合",
+                          "value": "{A, B}"
+                        },
+                        {
+                          "label": "去重数",
+                          "value": "2"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
           }
         ]
       }
@@ -593,6 +700,7 @@
     }
   ],
   "extensions": {
+    "baseRevision": 8,
     "readerProfile": {
       "layout": "auto",
       "direction": "horizontal",
@@ -601,7 +709,6 @@
       "transition": "cover",
       "theme": "paper-light",
       "motion": "full"
-    },
-    "baseRevision": 8
+    }
   }
 }

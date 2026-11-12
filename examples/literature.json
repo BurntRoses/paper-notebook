@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "showcase-literature",
-    "revision": 6,
+    "revision": 7,
     "title": "杜甫《春望》",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -364,13 +364,86 @@
                 }
               }
             ]
+          },
+          {
+            "id": "literature-lab",
+            "title": "《春望》逐联赏析",
+            "subject": "literature",
+            "layout": "reading",
+            "blocks": [
+              {
+                "id": "literature-exploration",
+                "type": "exploration",
+                "title": "《春望》逐联赏析",
+                "study": {
+                  "marks": [
+                    {
+                      "text": "忧国之情融入眼前所见",
+                      "kind": "bold"
+                    },
+                    {
+                      "text": "忧国之情融入眼前所见",
+                      "kind": "red",
+                      "color": "#285f9e"
+                    }
+                  ]
+                },
+                "exploration": {
+                  "kind": "reading",
+                  "frames": [
+                    {
+                      "id": "spring-first",
+                      "label": "首联",
+                      "quote": "国破山河在，城春草木深。",
+                      "text": "“国破”交代长安沦陷的现实，“山河在”写自然依旧。城中本应繁盛的春景只见草木滋长，“深”字写出人烟稀少、荒草蔓生的景象。国与山河、城与草木形成映照，忧国之情融入眼前所见。",
+                      "facts": [
+                        {
+                          "label": "对偶",
+                          "value": "“国破”与“城春”、“山河”与“草木”位置相对。"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "spring-second",
+                      "label": "颔联",
+                      "quote": "感时花溅泪，恨别鸟惊心。",
+                      "text": "花与鸟原是春日悦人的景物，诗人却因时局和离别而落泪、惊心。“感时”“恨别”直接点出情感来源。赏析时可从触景生情与移情于物两种读法展开：诗人见花闻鸟而动情，或花鸟也仿佛因乱世与离别而悲伤。",
+                      "facts": [
+                        {
+                          "label": "情景关系",
+                          "value": "春日花鸟承载忧时伤别的感受。"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "spring-third",
+                      "label": "颈联",
+                      "quote": "烽火连三月，家书抵万金。",
+                      "text": "战火持续，交通阻隔，家人的音讯变得极难获得。“连”写战乱延续，“抵万金”以夸张写家书的珍贵。诗的视线从城中景物转向家人，忧国与思家在同一场战乱中相连。"
+                    },
+                    {
+                      "id": "spring-last",
+                      "label": "尾联",
+                      "quote": "白头搔更短，浑欲不胜簪。",
+                      "text": "“搔”将忧思写成动作，“更短”写白发稀疏的程度不断加重，几乎难以承住发簪。诗人以衰老的身体细节收束全诗，前面的国事、离别与家书之忧都凝聚在这一动作中。",
+                      "facts": [
+                        {
+                          "label": "章法",
+                          "value": "由城中所望写到自身形象，情感逐层集中。"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
           }
         ]
       }
     ]
   },
   "userState": {
-    "updatedAt": "2026-11-11T12:00:00.000Z",
+    "updatedAt": "2026-11-12T12:00:00.000Z",
     "lastPageId": "subject-literature",
     "notes": [],
     "annotations": [],
@@ -413,7 +486,7 @@
     }
   ],
   "extensions": {
-    "baseRevision": 5,
+    "baseRevision": 6,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

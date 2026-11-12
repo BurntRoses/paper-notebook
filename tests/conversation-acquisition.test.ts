@@ -25,7 +25,7 @@ async function fixture(extra:Record<string,Uint8Array>={}){
   'paper-notebook/scripts/study_quality.py':await readFile('skills/paper-notebook/scripts/study_quality.py'),
   'paper-notebook/references/notebook.schema.json':await readFile('schemas/notebook.schema.json'),
  };
- for(const name of ['editorial_metrics.py','build_metrics.py','quality_gate.py','authoring.py'])files['paper-notebook/scripts/'+name]=await readFile('skills/paper-notebook/scripts/'+name);
+ for(const name of ['editorial_metrics.py','build_metrics.py','quality_gate.py','authoring.py','exploration.py'])files['paper-notebook/scripts/'+name]=await readFile('skills/paper-notebook/scripts/'+name);
  for(const name of ['chinese-writing.md','quality-workflow.md'])files['paper-notebook/references/'+name]=await readFile('skills/paper-notebook/references/'+name);
  files['paper-notebook/assets/reader-shell.sha256']=strToU8(createHash('sha256').update(files['paper-notebook/assets/reader.html']).digest('hex'));
  const managed={...files,...extra},hashes=Object.fromEntries(Object.entries(managed).filter(([name])=>name.startsWith('paper-notebook/')&&!name.includes('..')&&!name.endsWith('.DS_Store')).map(([name,data])=>[name.slice(15),createHash('sha256').update(data).digest('hex')]));

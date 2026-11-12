@@ -4,11 +4,12 @@ Turn lecture notes, book pages and questions into illustrated study notes with A
 
 [Try the reader](https://burntroses.github.io/paper-notebook/#read) · [Create a notebook](https://burntroses.github.io/paper-notebook/#create) · [Watch the demo](https://burntroses.github.io/paper-notebook/#film) · [中文](README.md)
 
-![Illustrated notes with reading marks and margin annotations](public/promo/paper-landscape-3.jpg?v=3.14)
+![Parameter controls, prediction curves and margin annotations](public/promo/paper-landscape-3.jpg?v=3.19)
 
 ## Features
 
 - **Illustrated lessons**: concepts, formulas, derivations, charts and worked examples organized into chapters, with key passages marked for review.
+- **In-page activities**: adjust parameters to compare curves and calculated results, examine a process step by step, or read commentary alongside selected passages.
 - **Text marks**: select a passage to apply bold, color, underlines or circles. Undo and redo your changes.
 - **Figure annotations**: enlarge a figure and draw lines, circles, arrows or short labels on it.
 - **Margin notes**: double-click the right or bottom margin to add a note. Choose a color and collapse longer notes.

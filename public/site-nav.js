@@ -60,7 +60,7 @@
     for(const item of examples)item.setAttribute('aria-pressed',String(item===option));syncExamples();
     if(!option||!preview)return;
     preview.title=`试读：${option.dataset.exampleTitle}`;
-    if(openPreview)openPreview.href=`downloads/${option.dataset.example}.html?demo&v=3.18`;
+    if(openPreview)openPreview.href=`downloads/${option.dataset.example}.html?demo&v=3.19`;
   };
   const previewDocuments=new Map();
   const fetchPreview=name=>{
@@ -68,7 +68,7 @@
     if(!entry){
       const controller=new AbortController();entry={controller,settled:false};
       const timeout=setTimeout(()=>controller.abort(),20000);
-      entry.promise=fetch(`previews/${name}.json?v=3.18`,{signal:controller.signal,priority:'high'}).then(response=>{if(!response.ok)throw new Error('Preview unavailable');return response.json();}).then(document=>{entry.settled=true;return document;}).catch(error=>{if(previewDocuments.get(name)===entry)previewDocuments.delete(name);throw error;}).finally(()=>clearTimeout(timeout));
+      entry.promise=fetch(`previews/${name}.json?v=3.19`,{signal:controller.signal,priority:'high'}).then(response=>{if(!response.ok)throw new Error('Preview unavailable');return response.json();}).then(document=>{entry.settled=true;return document;}).catch(error=>{if(previewDocuments.get(name)===entry)previewDocuments.delete(name);throw error;}).finally(()=>clearTimeout(timeout));
       previewDocuments.set(name,entry);
     }
     return entry.promise;
@@ -113,29 +113,32 @@
   for(const option of examples){
    option.addEventListener('pointerenter',()=>{if(currentReader())void fetchPreview(option.dataset.example).catch(()=>{});},{passive:true});
    option.addEventListener('focus',()=>{if(currentReader())void fetchPreview(option.dataset.example).catch(()=>{});});
-   option.addEventListener('click',async()=>{
-    if(!preview||option.getAttribute('aria-pressed')==='true')return;
+   option.addEventListener('click',()=>void activateExample(option));
+  }
+  async function activateExample(option,targetBlock){
+    if(!preview||option.getAttribute('aria-pressed')==='true'&&!targetBlock)return;
     const token=++generation;cancelOtherPreviews(option.dataset.example);
     selectExample(option);
     if(tour)tour.disabled=true;if(tourStatus)tourStatus.textContent='';
     // Selecting the displayed book cancels an unfinished switch without
     // resetting its page, selection or in-progress annotation.
     if(option===selectedExample&&currentReader()){
-      setBusy(false);if(tour)tour.disabled=false;return;
+      setBusy(false);if(tour)tour.disabled=false;if(targetBlock)locateActivity(currentReader(),targetBlock);return;
     }
     setBusy(true);
     try{
       const [document,reader]=await Promise.all([fetchPreview(option.dataset.example),waitReader()]);if(token!==generation)return;
       reader.openPreview(document);retryExample=undefined;selectedExample=option;preview.dataset.selectedExample=option.dataset.example;
-      setBusy(false);if(tour)tour.disabled=false;
+      setBusy(false);if(tour)tour.disabled=false;if(targetBlock)locateActivity(reader,targetBlock);
     }catch{
       if(token!==generation)return;
       setBusy(false);if(tour)tour.disabled=false;
       retryExample=option;failed('示例加载失败，请重试。');
       selectExample(selectedExample);
     }
-   });
   }
+  function locateActivity(reader,id){const page=reader.d.notebook.chapters.flatMap(c=>c.pages).find(p=>p.blocks.some(b=>b.id===id));if(!page)throw new Error('Activity unavailable');reader.goBlock(page.id,id);document.querySelector('#read').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}
+  for(const action of document.querySelectorAll('[data-learn-example]'))action.addEventListener('click',async()=>{const option=examples.find(b=>b.dataset.example===action.dataset.learnExample);if(!option)return;action.disabled=true;action.setAttribute('aria-busy','true');const status=document.querySelector('#learning-status');if(status)status.textContent='正在打开…';try{await activateExample(option,action.dataset.learnBlock);if(status)status.textContent=preview.dataset.selectedExample===option.dataset.example?'已打开示例，可在纸页内操作。':'加载失败，请重试。';}finally{action.disabled=false;action.removeAttribute('aria-busy');}});
   syncExamples=roving(examples,()=>examples.find(b=>b.getAttribute('aria-pressed')==='true'),b=>b.click());
   retry?.addEventListener('click',()=>{
     const wanted=retryExample||examples.find(b=>b.getAttribute('aria-pressed')==='true');retryExample=undefined;

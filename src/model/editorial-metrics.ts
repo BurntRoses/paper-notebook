@@ -10,6 +10,7 @@ export function readerFields(b:Block){
  [...b.nodes||[],...b.edges||[],...b.series||[]].forEach((v,i)=>values.push([`labels.${i}`,v.label]));
  b.pairs?.forEach((p,i)=>values.push([`pairs.${i}.left`,p.left],[`pairs.${i}.right`,p.right]));
  values.push(['study.aside',b.study?.aside],['study.label',b.study?.label]);b.study?.explanations?.forEach((e,i)=>values.push([`study.explanations.${i}`,e.note]));
+ if(b.exploration){const a=b.exploration;if(a.kind==='plot'){a.parameters.forEach((v,i)=>values.push([`exploration.parameters.${i}`,v.label]));values.push(['exploration.domain',a.domain.label],['exploration.yLabel',a.yLabel]);[...a.series,...a.outputs].forEach((v,i)=>values.push([`exploration.labels.${i}`,v.label]));}else a.frames.forEach((f,i)=>{values.push([`exploration.frames.${i}.label`,f.label],[`exploration.frames.${i}.text`,f.text]);f.facts?.forEach((v,j)=>values.push([`exploration.frames.${i}.facts.${j}`,v.label+'：'+v.value]));});}
  return values.filter((v):v is [string,string]=>typeof v[1]==='string'&&!!v[1]);
 }
 export function editorialMetrics(d:NotebookDocument){

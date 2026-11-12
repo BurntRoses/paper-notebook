@@ -12,6 +12,7 @@
   "titles": "SVG glyph outlines rasterized at the displayed size",
   "motion": "Native paper fragments, camera reframing, SVG stroke/clip reveals, beat-aligned paper wipes",
   "screenRecording": false,
+  "interactiveStates": "Native input/tab handlers, growth 21 states, reading 4 passages, sequence 4 states; 2x device density",
   "music": "product-film-music.wav",
   "script": "product-film-script.json",
   "file": "paper-notebook-film-portrait.mp4",
@@ -25,6 +26,6 @@
     "audio": "AAC 96 kb/s",
     "fastStart": true
   },
-  "bytes": 8241300,
+  "bytes": 8022720,
   "master": "paper-notebook-film-portrait-1080.mp4"
 }

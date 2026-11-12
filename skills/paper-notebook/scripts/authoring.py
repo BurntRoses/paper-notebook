@@ -58,3 +58,11 @@ def write(document, output, *, allow_unmarked=False):
     schema=json.loads((base/'references/notebook.schema.json').read_text());validate(doc,schema,schema);check_references(doc);check_study_marks(doc,allow_unmarked)
     output=Path(output);output.mkdir(parents=True,exist_ok=True);source=output/'notebook.json';source.write_text(json.dumps(doc,ensure_ascii=False,indent=2))
     return build(source,base/'assets/reader.html',base/'references/notebook.schema.json',base/'assets/THIRD_PARTY_NOTICES.txt',output,allow_unmarked)
+
+
+def exploration(title, activity, *, id=None):
+    """Native parameter plots, authored process states or close reading."""
+    from exploration import validate_exploration
+    bid=id or entity_id('exploration')
+    validate_exploration(activity,bid)
+    return dict(id=bid,type='exploration',title=title,exploration=deepcopy(activity))

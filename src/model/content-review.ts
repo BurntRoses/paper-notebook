@@ -1,6 +1,6 @@
 import rules from '../../skills/paper-notebook/references/writing-rules.json';
 import { textOf, type NotebookDocument } from './types';
-import { editorialMetrics } from './editorial-metrics';
+import { readerFields, editorialMetrics } from './editorial-metrics';
 import { reviewTeaching } from './teaching-review';
 export interface WritingWarning {rule:string;location:string;at:number;phrase:string;context:string;guidance:string}
 /** Advisory only. Never edit source, quotations, technical literals or personal records. */
@@ -18,6 +18,7 @@ export function reviewContent(d:NotebookDocument){
   page.cues?.forEach(c=>{inspect(c.title,c.id+'.title');inspect(c.text,c.id);});
   let characters=0,figures=0,tables=0;
   for(const b of page.blocks){
+   if(b.exploration)for(const [key,value]of readerFields(b).filter(([key])=>key.startsWith('exploration.')))inspect(value,b.id+'.'+key);
    characters+=textOf(b).length;if(['image','diagram','chart'].includes(b.type))figures++;if(b.type==='comparison')tables++;
 
    for(const key of ['title','text','question','prompt','result','explanation','caption','alt','xLabel','yLabel'])if(!(key==='text'&&['quote','code'].includes(b.type)))inspect(b[key],b.id+'.'+key);

@@ -14,8 +14,8 @@ try{
    await document.fonts.ready;
    reader.profile={...reader.profile,layout:orientation==='landscape'?'spread':'single',pageShape:'portrait',paperStyle:'ivory',theme:'paper-light',motion:'reduced'};
    reader.render();
-   const i=reader.pages.findIndex(p=>p.blocks.some(b=>b.id==='ml-residual-detail'));
-   if(i<0)throw new Error('Missing residual figure');
+   const i=reader.pages.findIndex(p=>p.blocks.some(b=>b.id==='ml-exploration'));
+   if(i<0)throw new Error('Missing parameter exploration');
    reader.goPage(i,true);
    await Promise.all([...document.querySelectorAll('.reader-stage img')].map(i=>i.decode()));
    await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));

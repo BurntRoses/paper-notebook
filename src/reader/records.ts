@@ -99,7 +99,7 @@ export function readerCopy(d:NotebookDocument,choices:ExportChoices){
   copy.userState.figureMarks=(old.figureMarks||[]).filter(a=>a.kind==='pen'?(choices.ink??choices.marks):choices.marks);
   if(choices.marks)copy.userState.dismissedStudyMarks=old.dismissedStudyMarks;
   if(choices.questions)copy.userState.doubts=old.doubts;
-  if(choices.answers){copy.userState.answers=old.answers;copy.userState.checks=old.checks;}
+  if(choices.answers){copy.userState.explorations=old.explorations;copy.userState.answers=old.answers;copy.userState.checks=old.checks;}
   if(choices.legacy||choices.notes){copy.userState.notes=old.notes;copy.userState.layouts=old.layouts;}
   if(choices.legacy||choices.bookmarks)copy.userState.bookmarks=old.bookmarks;
   return copy;

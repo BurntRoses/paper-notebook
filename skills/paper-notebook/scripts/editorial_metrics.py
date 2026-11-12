@@ -17,6 +17,16 @@ def reader_fields(b):
     study=b.get('study',{})
     for key in ['aside','label']:values.append(('study.'+key,study.get(key)))
     for i,e in enumerate(study.get('explanations',[])):values.append((f'study.explanations.{i}',e['note']))
+    if b.get('exploration'):
+        a=b['exploration']
+        if a['kind']=='plot':
+            values.extend((f'exploration.parameters.{i}',v['label']) for i,v in enumerate(a['parameters']))
+            values.extend([('exploration.domain',a['domain']['label']),('exploration.yLabel',a['yLabel'])])
+            values.extend((f'exploration.labels.{i}',v['label']) for i,v in enumerate(a['series']+a['outputs']))
+        else:
+            for i,f in enumerate(a['frames']):
+                values.extend([(f'exploration.frames.{i}.label',f['label']),(f'exploration.frames.{i}.text',f['text'])])
+                values.extend((f'exploration.frames.{i}.facts.{j}',v['label']+'：'+v['value']) for j,v in enumerate(f.get('facts',[])))
     return [(k,v) for k,v in values if isinstance(v,str) and v]
 
 def editorial_metrics(d):

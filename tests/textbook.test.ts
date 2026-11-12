@@ -45,7 +45,7 @@ test('artifact filenames are readable, versioned and safe on major desktop files
 });
 test('machine learning textbook validates, distinguishes examples and supplies reproducible numerical visuals',()=>{
  const {document,warnings}=parseDocument(machineLearning);assert.deepEqual(warnings,[]);
- assert.equal(document.notebook.chapters.length,4);assert.equal(pagesOf(document).length,12);
+ assert.equal(document.notebook.chapters.length,4);assert.equal(pagesOf(document).length,13);
  const blocks=blocksOf(document);assert.equal(blocks.filter(b=>b.type==='exercise').length,0);
  assert.ok(blocks.filter(b=>b.type==='chart').length>=3);assert.ok(blocks.filter(b=>b.type==='example').every(b=>b.steps?.length&&b.result));
  const loss=blocks.find(b=>b.id==='ml-loss-curve')!;

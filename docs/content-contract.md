@@ -66,3 +66,8 @@ Node validate/build 和 Python build 均输出 `contentReview`（advisory、auto
 运行时包含 reader-shell.sha256 与 runtime-manifest.json。复用缓存前检查 downloads/runtime.json；release 改变时校验包指纹并覆盖运行时管理文件，保留源稿与用户数据。finalize 重新核验模板、源文、中文规范及逐章审阅记录；有浏览器时核对全物理页排版报告，无浏览器时记录实际原因。
 
 可选 extensions.terminology 使用 `[{term,aliases:[...]}]` 指定标准术语与备选写法，供跨章审阅定位；brief.termPolicy/languageStyle/scope 由逐章审阅记录核对，不从自然语言字段臆造强制词表。
+
+
+## 页内学习交互
+
+当可调数值、过程状态或逐段解释有助于理解时，采用原生 `exploration`，按 `learning-interactions.md` 组织。计算曲线必须使用实际表达式和正确单位；过程分步保存已编写状态，标题与说明写清过程；原文批读保留原句与对应解释。保留正文中的必要推导和事实，交互不承担隐藏关键条件的作用。验证初始值、改变值、端点、重置、键盘、窄屏、离线再打开与打印。单文件 HTML 内嵌全部声明和记录，禁止附加可执行脚本或另造阅读器。

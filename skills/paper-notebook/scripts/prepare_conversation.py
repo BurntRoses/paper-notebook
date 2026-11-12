@@ -18,7 +18,7 @@ PACKAGE_URL = 'https://burntroses.github.io/paper-notebook/downloads/paper-noteb
 REQUIRED = ('START-HERE.md', 'SKILL.md', 'assets/reader.html',
             'assets/blank-notebook.json', 'assets/THIRD_PARTY_NOTICES.txt', 'scripts/build_reader.py',
             'scripts/verify_reader.py',
-            'scripts/study_quality.py', 'scripts/content_review.py', 'scripts/editorial_metrics.py', 'scripts/build_metrics.py', 'references/writing-rules.json',
+            'scripts/exploration.py', 'scripts/study_quality.py', 'scripts/content_review.py', 'scripts/editorial_metrics.py', 'scripts/build_metrics.py', 'references/writing-rules.json',
             'references/notebook.schema.json', 'assets/reader-shell.sha256', 'runtime-manifest.json', 'references/chinese-writing.md', 'references/quality-workflow.md', 'scripts/quality_gate.py', 'scripts/authoring.py')
 
 # preset-download-response:start

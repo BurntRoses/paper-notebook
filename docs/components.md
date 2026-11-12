@@ -16,6 +16,7 @@
 | checklist | items: [{id,text}] | 状态放 userState.checks |
 | image | assetId, alt, caption? | assets 中的内嵌图片 |
 | diagram | nodes: [{id,label,shape?}], edges: [{from,to,label?}] | 可导出 SVG 的关系与流程图 |
+| exploration | exploration | 原生参数计算、过程分步或原文批读；见 [交互协议](../skills/paper-notebook/references/learning-interactions.md) |
 | exercise | question, questionType, 下述字段 | 独立作答与解析 |
 
 练习的 `questionType`：single/multiple/truefalse 使用 `options: [{id,text}]` 和 `solution: [optionId]`；matching 使用 `pairs: [{id,left,right}]`；subjective 只给参考 `explanation`，不自动判分。可选 `points` 与 `explanation`。作答仅放 `userState.answers`，提交后比较选项集合或匹配映射，重做可再次编辑。
@@ -87,3 +88,10 @@ Markdown 的 `notebook-page` 围栏可在 ### 后指定 {id, layout, subject, cu
 `comparison.columnWidths` 可按列提供 48–1200 px 的阅读宽度；长度须等于 columns。表格最小总宽按这些值相加，窄屏在表格内横滚，续页沿用原表列宽。每行单元格数必须与表头一致。未指定宽度时保留自适应布局。
 
 `diagram` 的默认分层依据有向 edges；分支同层、合流放在所有前驱之后。环路按强连通分量同层显示，无障碍描述逐条陈述实际连线及孤立节点。显式 row 仅用于最多四个节点的简单序列。复杂技术图可用具有明确坐标的内嵌 SVG。
+
+
+## 原生学习交互
+
+`exploration` 使用阅读器原生控件，默认象牙纸、文楷。`kind: plot` 通过有限运算表达式计算曲线和读数，`kind: sequence` 展示作者编写的连续状态，`kind: reading` 将原文与对应赏析分组。计算、编写的过程回放和原文解释分别标明。参数、当前步骤保存在 `userState.explorations[blockId]`，随所选学习记录导出；打印展示当前参数与所有步骤或诗联。搜索与文字书签会展开对应片段。
+
+表达式支持数值、变量名和 `{op,args}`，允许 add/sub/mul/div/pow/ln/exp/abs/min/max，最多 16 层，变量 x 表示横坐标。系列最多 4 条、可调参数最多 4 个、观察点最多 100 个、步骤最多 12 个。使用 schema 与 Node/Python 语义校验，初始曲线存在无效运算时拒绝构建。读者调参超出数值范围时，在组件内显示原因并保留输入。

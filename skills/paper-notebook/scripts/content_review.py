@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import re
 from study_quality import block_text
+from editorial_metrics import reader_fields
 from editorial_metrics import editorial_metrics
 
 RULES = json.loads((Path(__file__).resolve().parents[1] / 'references/writing-rules.json').read_text(encoding='utf-8'))
@@ -36,6 +37,9 @@ def review_content(doc):
                 inspect(cue.get('title'), cue['id']+'.title');inspect(cue['text'], cue['id'])
             characters = figures = tables = 0
             for b in page['blocks']:
+                if b.get('exploration'):
+                    for key,value in reader_fields(b):
+                        if key.startswith('exploration.'):inspect(value,b['id']+'.'+key)
                 characters += units(block_text(b));figures += b['type'] in ['image','diagram','chart'];tables += b['type']=='comparison'
                 if b['type']=='image':image_ids.add(b.get('assetId'))
                 for key in ['title','text','question','prompt','result','explanation','caption','alt','xLabel','yLabel']:

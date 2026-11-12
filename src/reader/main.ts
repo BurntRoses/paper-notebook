@@ -44,6 +44,8 @@ import { conceptExample } from '../examples';
 import { introNotebook } from '../intro';
 import { blocksOf, pagesOf, textOf, uid, type Block, type Note, type Doubt, type Selector, type NotebookDocument, type Page, type ReaderPresentation, type ReaderLayout, type PaperShape, type ReadingAnchor } from '../model/types';
 import { renderBlock } from '../ui/blocks';
+import { revealExploration } from '../ui/exploration';
+import './exploration.css';
 import { button, el, modal, textarea, input, label, select, checkbox, download, safeName, copyText, toast, enhanceSelects } from '../ui/dom';
 import { setLocale } from '../ui/i18n';
 import { captureSelection, questionPrompt, readerCopy, bookmarkFor, type SelectionPart, type ExportChoices } from './records';
@@ -124,7 +126,8 @@ class ReaderApp {
   }
   anchor():Anchor{
     const nodes=[...appRoot.querySelectorAll<HTMLElement>('.reader-stage > .reader-page-wrap .reader-page [data-block]')];
-    const block=nodes.find(n=>n.getBoundingClientRect().bottom>100);
+    const active=document.activeElement as HTMLElement|null,focused=active?.closest('.exploration')?active.closest<HTMLElement>('[data-block]'):null;
+    const block=focused&&nodes.includes(focused)?focused:nodes.find(n=>n.getBoundingClientRect().bottom>100);
     const paper=block?.closest<HTMLElement>('[data-page]');return {pageId:paper?.dataset.page||this.page.id,blockId:block?.dataset.block,sheet:Number(paper?.dataset.part??this.page.part),textOffset:Number(block?.querySelector<HTMLElement>('.ink-text')?.dataset.offset||0),top:block?.getBoundingClientRect().top||100};
   }
   restore(a?:Anchor){if(!a)return;requestAnimationFrame(()=>{
@@ -133,6 +136,7 @@ class ReaderApp {
   })}
   restoreSaved(a:ReadingAnchor){requestAnimationFrame(()=>{const node=this.anchorNode(a);if(node){const r=node.getBoundingClientRect();window.scrollBy({top:r.top+a.offset*r.height-100,behavior:'instant'});this.remember()}})}
   render(a?:Anchor){
+    const active=document.activeElement as HTMLElement|null,controlId=active?.closest('.exploration')?active.id:'';
     document.documentElement.dataset.paperTheme=this.profile.theme;
     this.editor.cancel(false);
     this.cancelTurn();clearTimeout(this.warmTick);this.pageCache.clear();this.paginate();if(a)this.pageIndex=this.indexForAnchor(a);
@@ -170,6 +174,7 @@ class ReaderApp {
     if(this.actualLayout()==='scroll')this.renderScroll(wrap);else this.visiblePages().forEach(p=>wrap.append(this.renderPage(p)));
     stage.append(wrap,this.renderNavigation());shell.append(stage);appRoot.append(shell);this.mountSidebar();
     this.fitPages();this.editor.paint();this.remember();this.restore(a);this.wakeChrome();this.warmPages();
+    if(controlId)appRoot.querySelector<HTMLElement>('#'+CSS.escape(controlId))?.focus({preventScroll:true});
   }
   fitPages(){
     const stage=appRoot.querySelector<HTMLElement>('.reader-stage')!,geometry=this.geometry;
@@ -310,7 +315,7 @@ class ReaderApp {
     for(const side of ['left','right'] as const){const corner=button(side==='right'?'拖动页角到下一页':'拖动页角到上一页',()=>{},'page-corner corner-'+side,'');corner.dataset.corner=side;corner.addEventListener('click',event=>{if(event.detail===0)this.turn(side==='right'?1:-1)});paper.append(corner);}
     slot.append(paper);return slot;
   }
-  block(b:Block){const root=renderBlock(b,this.d,{answer:(id,answer)=>{this.d.userState.answers[id]=structuredClone(answer);const pageId=this.page.id;this.invalidate();this.paginate();const index=this.pages.findIndex(p=>p.id===pageId&&p.blocks.some(b=>b.id===id));if(index>=0)this.pageIndex=index;this.render();},check:(id,value)=>{this.d.userState.checks[id]=value;this.remember()},edit:()=>{},image:b=>this.showImage(b)},this.sourceBlocks.get(b.id)||b);
+  block(b:Block){const root=renderBlock(b,this.d,{exploration:(id,state)=>{(this.d.userState.explorations||={})[id]=state;this.pageCache.clear();this.remember();requestAnimationFrame(()=>this.editor.paint());},answer:(id,answer)=>{this.d.userState.answers[id]=structuredClone(answer);const pageId=this.page.id;this.invalidate();this.paginate();const index=this.pages.findIndex(p=>p.id===pageId&&p.blocks.some(b=>b.id===id));if(index>=0)this.pageIndex=index;this.render();},check:(id,value)=>{this.d.userState.checks[id]=value;this.remember()},edit:()=>{},image:b=>this.showImage(b)},this.sourceBlocks.get(b.id)||b);
     const media=root.querySelector<HTMLElement>('.figure-media');if(media){const open=button('放大与批注图像',()=>showFigureEditor(b,this.d,media,()=>{this.remember();this.pageCache.clear();this.refreshFigureMarks();}),'figure-edit-entry','↗');media.append(open);media.addEventListener('click',e=>{if(!(e.target as HTMLElement).closest('button'))showFigureEditor(b,this.d,media,()=>{this.remember();this.pageCache.clear();this.refreshFigureMarks();});});}
     (root as HTMLElement & {__block:Block}).__block=this.sourceBlocks.get(b.id)||b;return root;
   }
@@ -377,7 +382,7 @@ class ReaderApp {
     const resolved=resolveSelector(this.d,selector);
     if(resolved.status!=='resolved'){toast(this.t('原文待重新关联，记录仍保留。','The passage needs relinking. Your record is kept.'));return;}
     const index=this.indexForAnchor({pageId,blockId:selector.blockId,textOffset:resolved.start});this.goPage(index,true);
-    requestAnimationFrame(()=>{const target=this.anchorNode({pageId,blockId:selector.blockId,textOffset:resolved.start});target?.focus({preventScroll:true});const paper=target?.closest<HTMLElement>('.page-surface');if(paper){revealPassage(paper,this.d,selector);this.editor.paint();flashPassage(paper,this.d,selector);}});
+    requestAnimationFrame(()=>{const target=this.anchorNode({pageId,blockId:selector.blockId,textOffset:resolved.start});target?.focus({preventScroll:true});const paper=target?.closest<HTMLElement>('.page-surface');if(paper){if(target)revealExploration(target,resolved.start);revealPassage(paper,this.d,selector);this.editor.paint();flashPassage(paper,this.d,selector);}});
   }
   updateProgress(){
     appRoot.querySelectorAll<HTMLElement>('[data-page-link]').forEach(n=>n.setAttribute('aria-current',n.dataset.pageLink===this.page.id?'page':'false'));
@@ -490,7 +495,8 @@ class ReaderApp {
       ['expand',this.t('图像批注','Figure annotations'),this.t('点击图像放大，可添加圈注、箭头和文字说明。','Click a figure to enlarge it and add circles, arrows or text labels.')],
       ['bookmark',this.t('书签与疑问','Bookmarks and questions'),this.t('选中文字后添加书签或疑问，在顶部“收录”中查看并返回原文。','Save selected text as a bookmark or question. Open Saved in the top bar to review it or return to the passage.')],
       ['settings',this.t('阅读设置','Reading settings'),this.t('调整版式、字体、行距和纸张，分别开关右栏与底栏。修改立即生效。','Choose layout, font, line spacing and paper, or hide either margin. Changes apply immediately.')],
-      ['folder',this.t('保存副本','Save a copy'),this.t('在“文件”中下载含批注的离线 HTML，或导出 PDF。','Open Files to download an offline HTML with your annotations or export a PDF.')]
+      ['settings',this.t('页内交互','Learning activities'),this.t('拖动滑块或输入数值可更新曲线和结果；选择诗联或步骤查看相应解释。重置恢复初始状态。','Adjust a slider or number to update the chart and results. Select a passage or step to read its explanation; Reset restores the initial state.')],
+      ['folder',this.t('保存副本','Save a copy'),this.t('在“文件”中下载含批注、作答与交互记录的离线 HTML，或导出 PDF。','Open Files to download an offline HTML with your annotations or export a PDF.')]
     ] as const){const item=el('section','guide-step'),body=el('div');body.append(el('h3','',title),el('p','',text));item.append(icon(glyph),body);grid.append(item);}
     const shortcuts=el('div','guide-shortcuts');shortcuts.setAttribute('aria-label',this.t('键盘快捷键','Keyboard shortcuts'));
     for(const [keys,description] of [['← / →',this.t('翻页','Turn page')],['Shift + Space',this.t('上一页','Previous page')],['Esc',this.t('关闭面板','Close panel')]]){const item=el('span');item.append(el('kbd','',keys),document.createTextNode(description));shortcuts.append(item);}
@@ -579,7 +585,7 @@ class ReaderApp {
     const m=modal(this.t('下载副本','Download a copy'));m.body.append(el('p','export-summary',this.d.notebook.title+' · v'+this.d.notebook.revision));
     const card=el('div','export-card');card.append(el('strong','','单文件离线 HTML'),el('span','','包含正文、字体、配图和所选学习记录，可直接在浏览器中打开。'));m.body.append(card);
     const choices:ExportChoices={marks:true,questions:true,answers:true,legacy:true};
-    m.body.append(label(this.t('包含阅读标记、作答与历史学习记录','Include all personal records'),checkbox(true,v=>{choices.marks=v;choices.questions=v;choices.answers=v;choices.legacy=v;})));
+    m.body.append(label(this.t('包含批注、作答、交互与历史学习记录','Include all personal records'),checkbox(true,v=>{choices.marks=v;choices.questions=v;choices.answers=v;choices.legacy=v;})));
     const status=el('p','export-status');status.setAttribute('role','status');
     let saving=false;const exportActions:HTMLButtonElement[]=[];
     const save=async(format:string)=>{if(saving)return;saving=true;for(const action of exportActions)action.disabled=true;status.textContent=this.t('正在生成副本…','Preparing your copy…');try{

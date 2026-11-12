@@ -9,6 +9,7 @@ import re
 import zipfile
 import unicodedata
 from verify_reader import verify
+from exploration import validate_exploration
 from study_quality import check_study_marks, block_text
 from content_review import review_content
 from build_metrics import build_metrics
@@ -93,6 +94,7 @@ def check_references(doc):
                 add(block)
                 for key in ['items','steps','options','pairs']:
                     for item in block.get(key,[]):add(item)
+                if block['type']=='exploration':validate_exploration(block['exploration'],block['id'])
                 if block['type']=='comparison' and (any(len(row)!=len(block['columns']) for row in block['rows']) or 'columnWidths' in block and len(block['columnWidths'])!=len(block['columns'])):raise ValueError(block['id']+': rows and columnWidths must match columns.length')
                 if block['type']=='image' and block.get('assetId') not in assets:raise ValueError('missing image asset')
                 if block['type']=='diagram':
