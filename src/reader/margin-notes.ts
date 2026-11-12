@@ -2,6 +2,7 @@ import { type Note, type NotebookDocument, type MaterialId } from '../model/type
 import { button, el, textarea } from '../ui/dom';
 import { cueNode, cuesForSheet, layoutPaperMargins, notesForSheet, summaryForSheet } from './margins';
 import type { SurfacePage } from './surface';
+import { hasLiveReport, renderExplorationResults } from '../ui/exploration-results';
 
 interface MarginHost {
  d:NotebookDocument; pages:SurfacePage[];
@@ -18,6 +19,7 @@ export function renderMargin(host:MarginHost,page:SurfacePage,region:'right'|'bo
  zone.setAttribute('aria-label',region==='right'?'右栏批注':'底栏批注');zone.title='双击空白处写便条';zone.tabIndex=0;
  const stream=el('div','margin-stream');zone.append(stream);
  const entries:{node:HTMLElement;position:number}[]=[];
+ if(region==='right')for(const block of page.blocks.filter(hasLiveReport))entries.push({node:renderExplorationResults(block,host.d),position:0});
  if(region==='right')for(const cue of cuesForSheet(page,host.d)){
   entries.push({node:cueNode(cue),position:0});
  }
@@ -46,7 +48,7 @@ export function renderMargin(host:MarginHost,page:SurfacePage,region:'right'|'bo
  }
  entries.sort((a,b)=>a.position-b.position);for(const entry of entries)stream.append(entry.node);
  const add=(position:number)=>host.addMarginNote(page,region,position);
- zone.addEventListener('dblclick',e=>{if((e.target as HTMLElement).closest('.workspace-note,.margin-preset'))return;e.preventDefault();getSelection()?.removeAllRanges();const r=zone.getBoundingClientRect();add(Math.max(0,Math.min(1,(e.clientY-r.top)/r.height)));});
+ zone.addEventListener('dblclick',e=>{if((e.target as HTMLElement).closest('.workspace-note,.margin-preset,.exploration-results'))return;e.preventDefault();getSelection()?.removeAllRanges();const r=zone.getBoundingClientRect();add(Math.max(0,Math.min(1,(e.clientY-r.top)/r.height)));});
  zone.addEventListener('keydown',e=>{if(e.target===zone&&e.key==='Enter'){e.preventDefault();e.stopPropagation();add(.1);}});
  requestAnimationFrame(arrange);return zone;
 }

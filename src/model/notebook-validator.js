@@ -85,7 +85,7 @@ var require_notebook_validator = __commonJS({
   "notebook-validator.cjs"(exports, module) {
     module.exports = validate21;
     module.exports.default = validate21;
-    var schema6 = { "$schema": "http://json-schema.org/draft-07/schema#", "$id": "https://paper-notebook.local/notebook.schema.json", "title": "Paper Notebook Document 1.0", "type": "object", "required": ["schemaVersion", "notebook", "userState", "assets", "extensions"], "properties": { "schemaVersion": { "const": "1.0.0" }, "notebook": { "type": "object", "required": ["id", "revision", "title", "language", "goals", "sources", "chapters"], "properties": { "id": { "$ref": "#/definitions/id" }, "revision": { "type": "integer", "minimum": 1 }, "title": { "type": "string", "maxLength": 1e3 }, "subtitle": { "type": "string" }, "language": { "type": "string" }, "goals": { "type": "array", "items": { "type": "string" } }, "sources": { "type": "array", "items": { "type": "object", "required": ["id", "title"], "properties": { "id": { "$ref": "#/definitions/id" }, "title": { "type": "string" }, "url": { "type": "string" } } } }, "chapters": { "type": "array", "minItems": 1, "maxItems": 500, "items": { "type": "object", "required": ["id", "title", "pages"], "properties": { "id": { "$ref": "#/definitions/id" }, "title": { "type": "string" }, "pages": { "type": "array", "minItems": 1, "maxItems": 500, "items": { "type": "object", "required": ["id", "title", "blocks"], "properties": { "id": { "$ref": "#/definitions/id" }, "title": { "type": "string" }, "layout": { "enum": ["reading", "cornell", "grid", "exam", "free"] }, "blocks": { "type": "array", "maxItems": 5e3, "items": { "$ref": "#/definitions/block" } }, "summary": { "type": "string" }, "cues": { "type": "array", "items": { "type": "object", "required": ["id", "text"], "properties": { "id": { "$ref": "#/definitions/id" }, "text": { "type": "string" }, "blockId": { "type": "string" }, "anchor": { "type": "string", "minLength": 1, "description": "Exact source phrase in the referenced block; the cue follows its fragment and line." }, "title": { "type": "string", "minLength": 1, "description": "Optional concrete title for an explanatory margin note; text contains its complete explanation." } } } }, "paper": { "type": "object", "properties": { "ruling": { "enum": ["lined", "grid", "dots", "blank"] }, "lineHeight": { "type": "number", "minimum": 24, "maximum": 56 } } }, "placements": { "$ref": "#/definitions/placements" }, "subject": { "enum": ["general", "stem", "literature", "business", "code"] } } } } } } }, "parent": { "type": "object", "required": ["notebookId"], "properties": { "notebookId": { "$ref": "#/definitions/id" }, "pageId": { "$ref": "#/definitions/id" } } }, "brief": { "type": "object", "required": ["goal", "level", "minutes", "materials", "exercises", "language", "route", "imagePolicy"], "properties": { "goal": { "type": "string" }, "level": { "type": "string" }, "minutes": { "type": "number", "minimum": 1 }, "materials": { "type": "array", "items": { "type": "string" } }, "exercises": { "type": "boolean" }, "language": { "type": "string" }, "route": { "enum": ["quick", "systematic", "deep", "practice", "review"] }, "imagePolicy": { "enum": ["original", "programmatic", "redraw"] }, "languageStyle": { "type": "string" }, "difficulty": { "type": "string" }, "priorKnowledge": { "type": "string" }, "horizon": { "enum": ["short", "long"] }, "materialFidelity": { "enum": ["strict", "guided", "open"] }, "scope": { "type": "string" }, "termPolicy": { "type": "string" } } } } }, "userState": { "type": "object", "required": ["updatedAt", "lastPageId", "notes", "annotations", "doubts", "answers", "checks", "bookmarks", "readingPositions", "preferences"], "properties": { "updatedAt": { "type": "string" }, "lastPageId": { "type": "string" }, "notes": { "type": "array", "items": { "type": "object", "required": ["id", "pageId", "title", "text", "back", "material", "seed", "x", "y", "z", "face", "attached", "collapsed", "surface"], "properties": { "id": { "$ref": "#/definitions/id" }, "pageId": { "type": "string" }, "title": { "type": "string" }, "text": { "type": "string" }, "back": { "type": "string" }, "material": { "enum": ["butter", "rose", "sage", "lilac", "kraft", "glassine", "transparent"] }, "seed": { "type": "number" }, "x": { "type": "number" }, "y": { "type": "number" }, "z": { "type": "number" }, "face": { "enum": ["front", "back"] }, "attached": { "type": "boolean" }, "collapsed": { "type": "boolean" }, "surface": { "enum": ["page", "desk"] }, "blockId": { "$ref": "#/definitions/id" }, "selector": { "$ref": "#/definitions/selector" }, "width": { "type": "number", "minimum": 80, "maximum": 1e3 }, "height": { "type": "number", "minimum": 60, "maximum": 1e3 }, "positions": { "type": "object", "properties": { "landscape": { "type": "object", "required": ["x", "y", "width", "z"], "properties": { "x": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "y": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "width": { "type": "number", "minimum": 20, "maximum": 1e4 }, "height": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "z": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "sheet": { "type": "integer", "minimum": 0 } } }, "portrait": { "type": "object", "required": ["x", "y", "width", "z"], "properties": { "x": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "y": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "width": { "type": "number", "minimum": 20, "maximum": 1e4 }, "height": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "z": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "sheet": { "type": "integer", "minimum": 0 } } } } }, "sheet": { "type": "integer", "minimum": 0 }, "anchors": { "type": "array", "items": { "type": "object", "required": ["pageId", "selector"], "additionalProperties": false, "properties": { "pageId": { "type": "string" }, "selector": { "$ref": "#/definitions/selector" } } } }, "region": { "enum": ["right", "bottom"] }, "marginPosition": { "type": "number", "minimum": 0, "maximum": 1 } } } }, "annotations": { "type": "array", "items": { "type": "object", "required": ["id", "kind", "selectors", "color", "width", "seed", "pageId"], "properties": { "id": { "$ref": "#/definitions/id" }, "kind": { "enum": ["bold", "red", "strike", "underline", "circle", "highlight", "arrow", "check", "freehand", "wave", "box", "bracket", "star", "dots"] }, "selectors": { "type": "array", "items": { "$ref": "#/definitions/selector" } }, "color": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" }, "width": { "type": "number", "minimum": 0.5, "maximum": 40 }, "seed": { "type": "number" }, "pageId": { "type": "string" }, "points": { "type": "array", "items": { "type": "array", "minItems": 2, "maxItems": 3, "items": { "type": "number" } } }, "status": { "enum": ["resolved", "ambiguous", "orphaned", "needs-placement"] }, "coordinateSpace": { "enum": ["legacy-width", "normalized-page"] }, "originalPoints": { "type": "array", "items": { "type": "array", "minItems": 2, "maxItems": 3, "items": { "type": "number" } } }, "sourceSize": { "type": "object", "required": ["width", "height"], "properties": { "width": { "type": "number", "exclusiveMinimum": 0 }, "height": { "type": "number", "exclusiveMinimum": 0 } } }, "shape": { "enum": ["landscape", "portrait"] }, "sheet": { "type": "integer", "minimum": 0 }, "tool": { "enum": ["pencil", "pen", "marker", "arrow"] }, "attachedBlockId": { "type": "string" }, "blockFrame": { "type": "object", "required": ["x", "y", "width", "height"], "properties": { "x": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "y": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "width": { "type": "number", "minimum": 20, "maximum": 1e4 }, "height": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "z": { "type": "number", "minimum": -1e5, "maximum": 1e5 } } }, "migration": { "type": "string" } } } }, "doubts": { "type": "array", "items": { "type": "object", "required": ["id", "pageId", "selector", "question", "status"], "properties": { "id": { "$ref": "#/definitions/id" }, "pageId": { "type": "string" }, "selector": { "$ref": "#/definitions/selector" }, "question": { "type": "string" }, "status": { "enum": ["open", "resolved"] }, "category": { "enum": ["unclear", "verify", "question"] }, "answerNotebookId": { "$ref": "#/definitions/id" }, "answerPageId": { "$ref": "#/definitions/id" }, "anchors": { "type": "array", "items": { "type": "object", "required": ["pageId", "selector"], "additionalProperties": false, "properties": { "pageId": { "type": "string" }, "selector": { "$ref": "#/definitions/selector" } } } } } } }, "answers": { "type": "object", "additionalProperties": { "type": "object", "required": ["selected", "submitted"], "properties": { "selected": { "type": "array", "items": { "type": "string" } }, "submitted": { "type": "boolean" }, "text": { "type": "string" }, "matches": { "type": "object", "additionalProperties": { "type": "string" } } } } }, "checks": { "type": "object", "additionalProperties": { "type": "boolean" } }, "bookmarks": { "type": "array", "items": { "oneOf": [{ "type": "string" }, { "type": "object", "required": ["id", "pageId", "kind"], "additionalProperties": false, "properties": { "id": { "$ref": "#/definitions/id" }, "pageId": { "type": "string" }, "blockId": { "$ref": "#/definitions/id" }, "selector": { "$ref": "#/definitions/selector" }, "kind": { "enum": ["page", "text"] }, "label": { "type": "string" }, "createdAt": { "type": "string" }, "sheet": { "type": "integer", "minimum": 0 } }, "allOf": [{ "if": { "properties": { "kind": { "const": "text" } } }, "then": { "required": ["selector"] } }] }] } }, "readingPositions": { "type": "object", "additionalProperties": { "type": "number" } }, "preferences": { "type": "object", "required": ["language", "desk", "showDesk", "motion", "texture", "reading", "direction", "spread", "fontSize", "weatherCity", "weatherEnabled", "timerRemaining", "timerRunning"], "properties": { "language": { "enum": ["zh", "en"] }, "desk": { "enum": ["oak", "felt", "night"] }, "showDesk": { "type": "boolean" }, "motion": { "type": "boolean" }, "texture": { "type": "number", "minimum": 0, "maximum": 1 }, "reading": { "enum": ["pages", "scroll"] }, "direction": { "enum": ["horizontal", "vertical"] }, "spread": { "type": "boolean" }, "fontSize": { "type": "number", "minimum": 14, "maximum": 28 }, "weatherCity": { "type": "string" }, "weatherEnabled": { "type": "boolean" }, "penColor": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" }, "penWidth": { "type": "number", "minimum": 0.5, "maximum": 40 }, "penTexture": { "enum": ["pencil", "marker", "ink"] }, "timerDisplay": { "enum": ["digital", "dial", "minimal", "focus"] }, "timerRemaining": { "type": "number", "minimum": 0 }, "timerRunning": { "type": "boolean" }, "timerEnd": { "type": "number" } } }, "readingAnchor": { "type": "object", "required": ["pageId", "offset"], "properties": { "sheet": { "type": "integer", "minimum": 0 }, "textOffset": { "type": "integer", "minimum": 0 }, "pageId": { "$ref": "#/definitions/id" }, "blockId": { "$ref": "#/definitions/id" }, "offset": { "type": "number", "minimum": 0, "maximum": 1 } } }, "layouts": { "type": "object", "additionalProperties": { "$ref": "#/definitions/placements" } }, "dismissedStudyMarks": { "type": "array", "uniqueItems": true, "items": { "type": "string" } }, "figureMarks": { "type": "array", "items": { "allOf": [{ "$ref": "#/definitions/figureMark" }, { "required": ["id", "pageId", "blockId"] }] } }, "explorations": { "type": "object", "additionalProperties": { "type": "object", "additionalProperties": false, "properties": { "values": { "type": "object", "additionalProperties": { "type": "number", "minimum": -1e6, "maximum": 1e6 } }, "active": { "$ref": "#/definitions/id" } }, "required": [] } } } }, "assets": { "type": "array", "items": { "type": "object", "required": ["id", "name", "data", "mime"], "properties": { "id": { "$ref": "#/definitions/id" }, "name": { "type": "string" }, "data": { "type": "string", "maxLength": 3e7 }, "mime": { "type": "string" }, "originalAssetId": { "type": "string" }, "source": { "type": "string" }, "license": { "type": "string" }, "verified": { "type": "boolean" }, "width": { "type": "integer", "minimum": 1, "maximum": 1e5 }, "height": { "type": "integer", "minimum": 1, "maximum": 1e5 } } } }, "extensions": { "type": "object", "properties": { "doubtLinks": { "type": "array", "items": { "type": "object", "required": ["doubtId", "pageId"], "properties": { "doubtId": { "$ref": "#/definitions/id" }, "pageId": { "$ref": "#/definitions/id" } } } }, "baseRevision": { "type": "integer", "minimum": 1 } } } }, "definitions": { "id": { "type": "string", "minLength": 1, "maxLength": 200, "pattern": "^[A-Za-z0-9_.:-]+$" }, "selector": { "type": "object", "required": ["blockId", "start", "end", "exact", "prefix", "suffix"], "properties": { "blockId": { "type": "string" }, "start": { "type": "integer", "minimum": 0 }, "end": { "type": "integer", "minimum": 0 }, "exact": { "type": "string" }, "prefix": { "type": "string" }, "suffix": { "type": "string" } } }, "block": { "type": "object", "required": ["id", "type"], "properties": { "id": { "$ref": "#/definitions/id" }, "type": { "type": "string" }, "title": { "type": "string" }, "text": { "type": "string", "maxLength": 1e6 }, "items": { "$ref": "#/definitions/items" }, "steps": { "$ref": "#/definitions/items" }, "columns": { "type": "array", "items": { "type": "string" } }, "rows": { "type": "array", "items": { "type": "array", "items": { "type": "string" } } }, "nodes": { "type": "array", "items": { "type": "object", "required": ["id", "label"], "properties": { "id": { "type": "string" }, "label": { "type": "string" }, "shape": { "enum": ["rounded", "rectangle", "circle", "ellipse", "diamond", "hexagon", "pill", "document", "cylinder"] } } } }, "edges": { "type": "array", "items": { "type": "object", "required": ["from", "to"], "properties": { "from": { "type": "string" }, "to": { "type": "string" }, "label": { "type": "string" } } } }, "options": { "$ref": "#/definitions/items" }, "solution": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }, "pairs": { "type": "array", "items": { "type": "object", "required": ["id", "left", "right"], "properties": { "id": { "type": "string" }, "left": { "type": "string" }, "right": { "type": "string" } } } }, "questionType": { "enum": ["single", "multiple", "truefalse", "matching", "subjective"] }, "points": { "type": "number", "minimum": 0 }, "prompt": { "type": "string" }, "result": { "type": "string" }, "language": { "type": "string" }, "explanation": { "type": "string" }, "caption": { "type": "string" }, "attribution": { "type": "string" }, "tone": { "type": "string" }, "verification": { "type": "string" }, "sourceRefs": { "type": "array", "items": { "type": "object", "required": ["sourceId"], "properties": { "sourceId": { "type": "string" }, "locator": { "type": "string" } } } }, "study": { "type": "object", "additionalProperties": false, "properties": { "label": { "type": "string" }, "aside": { "type": "string" }, "tone": { "enum": ["blue", "red", "olive", "gold"] }, "marks": { "type": "array", "items": { "type": "object", "required": ["text", "kind"], "additionalProperties": false, "properties": { "text": { "type": "string", "minLength": 1 }, "kind": { "enum": ["highlight", "underline", "circle", "wave", "box", "bracket", "check", "star", "dots", "bold", "red"] }, "color": { "type": "string" }, "seed": { "type": "integer", "minimum": 1 } } } }, "visual": { "enum": ["plain", "blackboard", "extract", "sketch"] }, "explanations": { "type": "array", "maxItems": 3, "items": { "type": "object", "required": ["text", "note"], "additionalProperties": false, "properties": { "text": { "type": "string", "minLength": 1 }, "note": { "type": "string", "minLength": 1 } } } }, "role": { "enum": ["definition", "intuition", "derivation", "example", "evidence", "takeaway", "recall"] }, "frame": { "enum": ["auto", "plain", "pencil", "tape", "double", "margin"] } } }, "align": { "type": "array", "items": { "enum": ["left", "center", "right"] } }, "keepTogether": { "type": "boolean" }, "chartType": { "enum": ["scatter", "line", "bar"] }, "xLabel": { "type": "string" }, "yLabel": { "type": "string" }, "series": { "type": "array", "minItems": 1, "maxItems": 4, "items": { "type": "object", "required": ["id", "label", "points"], "properties": { "id": { "type": "string" }, "label": { "type": "string" }, "points": { "type": "array", "minItems": 1, "maxItems": 200, "items": { "type": "object", "required": ["x", "y"], "properties": { "x": { "type": "number" }, "y": { "type": "number" }, "label": { "type": "string" } } } } } } }, "parameters": { "type": "array", "minItems": 1, "maxItems": 30, "items": { "type": "object", "required": ["symbol", "name", "description"], "additionalProperties": false, "properties": { "symbol": { "type": "string", "minLength": 1 }, "name": { "type": "string", "minLength": 1 }, "description": { "type": "string", "minLength": 1 } } } }, "figure": { "type": "object", "additionalProperties": false, "properties": { "size": { "enum": ["small", "medium", "wide", "full"] }, "ratio": { "enum": ["auto", "1:1", "4:3", "3:2", "16:9", "3:4"] }, "align": { "enum": ["left", "center", "right"] }, "style": { "enum": ["sketch", "precise"] }, "annotations": { "type": "array", "items": { "$ref": "#/definitions/figureMark" } } } }, "columnWidths": { "type": "array", "minItems": 1, "items": { "type": "number", "minimum": 48, "maximum": 1200 } }, "exploration": { "$ref": "#/definitions/exploration" } }, "allOf": [{ "if": { "properties": { "type": { "enum": ["prose", "concept", "quote", "callout", "code"] } } }, "then": { "required": ["text"] } }, { "if": { "properties": { "type": { "enum": ["steps", "checklist"] } } }, "then": { "required": ["items"] } }, { "if": { "properties": { "type": { "const": "example" } } }, "then": { "required": ["prompt", "steps", "result"] } }, { "if": { "properties": { "type": { "const": "formula" } } }, "then": { "required": ["latex"], "properties": { "latex": { "type": "string" } } } }, { "if": { "properties": { "type": { "const": "comparison" } } }, "then": { "required": ["columns", "rows"] } }, { "if": { "properties": { "type": { "const": "image" } } }, "then": { "required": ["assetId", "alt"], "properties": { "assetId": { "type": "string" }, "alt": { "type": "string" } } } }, { "if": { "properties": { "type": { "const": "diagram" } } }, "then": { "required": ["nodes", "edges"] } }, { "if": { "properties": { "type": { "const": "exercise" } } }, "then": { "required": ["question", "questionType"], "properties": { "question": { "type": "string" } }, "allOf": [{ "if": { "properties": { "questionType": { "enum": ["single", "multiple", "truefalse"] } } }, "then": { "required": ["options", "solution"] } }, { "if": { "properties": { "questionType": { "const": "matching" } } }, "then": { "required": ["pairs"] } }] } }, { "if": { "properties": { "type": { "const": "chart" } } }, "then": { "required": ["chartType", "series", "xLabel", "yLabel"] } }, { "if": { "properties": { "type": { "const": "exploration" } } }, "then": { "required": ["exploration"] } }] }, "items": { "type": "array", "items": { "type": "object", "required": ["id", "text"], "properties": { "id": { "$ref": "#/definitions/id" }, "text": { "type": "string" } } } }, "objectFrame": { "type": "object", "required": ["x", "y", "width", "z"], "properties": { "x": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "y": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "width": { "type": "number", "minimum": 20, "maximum": 1e4 }, "height": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "z": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "sheet": { "type": "integer", "minimum": 0 } } }, "placements": { "type": "object", "properties": { "landscape": { "type": "object", "additionalProperties": { "$ref": "#/definitions/objectFrame" } }, "portrait": { "type": "object", "additionalProperties": { "$ref": "#/definitions/objectFrame" } } }, "additionalProperties": false }, "figureMark": { "type": "object", "required": ["kind", "x", "y"], "properties": { "kind": { "enum": ["circle", "arrow", "check", "text", "pen"] }, "x": { "type": "number", "minimum": 0, "maximum": 100 }, "y": { "type": "number", "minimum": 0, "maximum": 100 }, "x2": { "type": "number", "minimum": 0, "maximum": 100 }, "y2": { "type": "number", "minimum": 0, "maximum": 100 }, "text": { "type": "string", "maxLength": 240 }, "color": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" }, "points": { "type": "array", "maxItems": 5e3, "items": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "type": "number", "minimum": 0, "maximum": 100 } } }, "id": { "type": "string" }, "blockId": { "type": "string" }, "pageId": { "type": "string" } }, "additionalProperties": false }, "expression": { "oneOf": [{ "type": "number", "minimum": -1e15, "maximum": 1e15 }, { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" }, { "type": "object", "additionalProperties": false, "properties": { "op": { "enum": ["add", "sub", "mul", "div", "pow", "ln", "exp", "abs", "min", "max"] }, "args": { "type": "array", "items": { "$ref": "#/definitions/expression" }, "minItems": 1, "maxItems": 8 } }, "required": ["op", "args"] }] }, "exploration": { "oneOf": [{ "type": "object", "additionalProperties": false, "properties": { "kind": { "const": "plot" }, "parameters": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "id": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" }, "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "min": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "max": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "step": { "type": "number", "exclusiveMinimum": 0, "maximum": 1e6 }, "value": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "unit": { "type": "string", "maxLength": 30 } }, "required": ["id", "label", "min", "max", "step", "value"] }, "minItems": 1, "maxItems": 4 }, "domain": { "type": "object", "additionalProperties": false, "properties": { "min": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "max": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "label": { "type": "string", "minLength": 1, "maxLength": 120 } }, "required": ["min", "max", "label"] }, "yLabel": { "type": "string", "minLength": 1, "maxLength": 120 }, "observations": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "x": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "y": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "label": { "type": "string", "minLength": 1, "maxLength": 120 } }, "required": ["x", "y"] }, "minItems": 1, "maxItems": 100 }, "series": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "expression": { "$ref": "#/definitions/expression" } }, "required": ["label", "expression"] }, "minItems": 1, "maxItems": 4 }, "outputs": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "expression": { "$ref": "#/definitions/expression" }, "unit": { "type": "string", "maxLength": 30 }, "digits": { "type": "integer", "minimum": 0, "maximum": 6 } }, "required": ["label", "expression"] }, "minItems": 1, "maxItems": 6 } }, "required": ["kind", "parameters", "domain", "yLabel", "series", "outputs"] }, { "type": "object", "additionalProperties": false, "properties": { "kind": { "enum": ["sequence", "reading"] }, "frames": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "id": { "$ref": "#/definitions/id" }, "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "quote": { "type": "string", "maxLength": 3e3 }, "text": { "type": "string", "minLength": 1, "maxLength": 5e3 }, "facts": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "value": { "type": "string", "minLength": 1, "maxLength": 300 } }, "required": ["label", "value"] }, "minItems": 1, "maxItems": 8 } }, "required": ["id", "label", "text"] }, "minItems": 2, "maxItems": 12 } }, "required": ["kind", "frames"] }] } } };
+    var schema6 = { "$schema": "http://json-schema.org/draft-07/schema#", "$id": "https://paper-notebook.local/notebook.schema.json", "title": "Paper Notebook Document 1.0", "type": "object", "required": ["schemaVersion", "notebook", "userState", "assets", "extensions"], "properties": { "schemaVersion": { "const": "1.0.0" }, "notebook": { "type": "object", "required": ["id", "revision", "title", "language", "goals", "sources", "chapters"], "properties": { "id": { "$ref": "#/definitions/id" }, "revision": { "type": "integer", "minimum": 1 }, "title": { "type": "string", "maxLength": 1e3 }, "subtitle": { "type": "string" }, "language": { "type": "string" }, "goals": { "type": "array", "items": { "type": "string" } }, "sources": { "type": "array", "items": { "type": "object", "required": ["id", "title"], "properties": { "id": { "$ref": "#/definitions/id" }, "title": { "type": "string" }, "url": { "type": "string" } } } }, "chapters": { "type": "array", "minItems": 1, "maxItems": 500, "items": { "type": "object", "required": ["id", "title", "pages"], "properties": { "id": { "$ref": "#/definitions/id" }, "title": { "type": "string" }, "pages": { "type": "array", "minItems": 1, "maxItems": 500, "items": { "type": "object", "required": ["id", "title", "blocks"], "properties": { "id": { "$ref": "#/definitions/id" }, "title": { "type": "string" }, "layout": { "enum": ["reading", "cornell", "grid", "exam", "free"] }, "blocks": { "type": "array", "maxItems": 5e3, "items": { "$ref": "#/definitions/block" } }, "summary": { "type": "string" }, "cues": { "type": "array", "items": { "type": "object", "required": ["id", "text"], "properties": { "id": { "$ref": "#/definitions/id" }, "text": { "type": "string" }, "blockId": { "type": "string" }, "anchor": { "type": "string", "minLength": 1, "description": "Exact source phrase in the referenced block; the cue follows its fragment and line." }, "title": { "type": "string", "minLength": 1, "description": "Optional concrete title for an explanatory margin note; text contains its complete explanation." } } } }, "paper": { "type": "object", "properties": { "ruling": { "enum": ["lined", "grid", "dots", "blank"] }, "lineHeight": { "type": "number", "minimum": 24, "maximum": 56 } } }, "placements": { "$ref": "#/definitions/placements" }, "subject": { "enum": ["general", "stem", "literature", "business", "code"] } } } } } } }, "parent": { "type": "object", "required": ["notebookId"], "properties": { "notebookId": { "$ref": "#/definitions/id" }, "pageId": { "$ref": "#/definitions/id" } } }, "brief": { "type": "object", "required": ["goal", "level", "minutes", "materials", "exercises", "language", "route", "imagePolicy"], "properties": { "goal": { "type": "string" }, "level": { "type": "string" }, "minutes": { "type": "number", "minimum": 1 }, "materials": { "type": "array", "items": { "type": "string" } }, "exercises": { "type": "boolean" }, "language": { "type": "string" }, "route": { "enum": ["quick", "systematic", "deep", "practice", "review"] }, "imagePolicy": { "enum": ["original", "programmatic", "redraw"] }, "languageStyle": { "type": "string" }, "difficulty": { "type": "string" }, "priorKnowledge": { "type": "string" }, "horizon": { "enum": ["short", "long"] }, "materialFidelity": { "enum": ["strict", "guided", "open"] }, "scope": { "type": "string" }, "termPolicy": { "type": "string" } } } } }, "userState": { "type": "object", "required": ["updatedAt", "lastPageId", "notes", "annotations", "doubts", "answers", "checks", "bookmarks", "readingPositions", "preferences"], "properties": { "updatedAt": { "type": "string" }, "lastPageId": { "type": "string" }, "notes": { "type": "array", "items": { "type": "object", "required": ["id", "pageId", "title", "text", "back", "material", "seed", "x", "y", "z", "face", "attached", "collapsed", "surface"], "properties": { "id": { "$ref": "#/definitions/id" }, "pageId": { "type": "string" }, "title": { "type": "string" }, "text": { "type": "string" }, "back": { "type": "string" }, "material": { "enum": ["butter", "rose", "sage", "lilac", "kraft", "glassine", "transparent"] }, "seed": { "type": "number" }, "x": { "type": "number" }, "y": { "type": "number" }, "z": { "type": "number" }, "face": { "enum": ["front", "back"] }, "attached": { "type": "boolean" }, "collapsed": { "type": "boolean" }, "surface": { "enum": ["page", "desk"] }, "blockId": { "$ref": "#/definitions/id" }, "selector": { "$ref": "#/definitions/selector" }, "width": { "type": "number", "minimum": 80, "maximum": 1e3 }, "height": { "type": "number", "minimum": 60, "maximum": 1e3 }, "positions": { "type": "object", "properties": { "landscape": { "type": "object", "required": ["x", "y", "width", "z"], "properties": { "x": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "y": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "width": { "type": "number", "minimum": 20, "maximum": 1e4 }, "height": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "z": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "sheet": { "type": "integer", "minimum": 0 } } }, "portrait": { "type": "object", "required": ["x", "y", "width", "z"], "properties": { "x": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "y": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "width": { "type": "number", "minimum": 20, "maximum": 1e4 }, "height": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "z": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "sheet": { "type": "integer", "minimum": 0 } } } } }, "sheet": { "type": "integer", "minimum": 0 }, "anchors": { "type": "array", "items": { "type": "object", "required": ["pageId", "selector"], "additionalProperties": false, "properties": { "pageId": { "type": "string" }, "selector": { "$ref": "#/definitions/selector" } } } }, "region": { "enum": ["right", "bottom"] }, "marginPosition": { "type": "number", "minimum": 0, "maximum": 1 } } } }, "annotations": { "type": "array", "items": { "type": "object", "required": ["id", "kind", "selectors", "color", "width", "seed", "pageId"], "properties": { "id": { "$ref": "#/definitions/id" }, "kind": { "enum": ["bold", "red", "strike", "underline", "circle", "highlight", "arrow", "check", "freehand", "wave", "box", "bracket", "star", "dots"] }, "selectors": { "type": "array", "items": { "$ref": "#/definitions/selector" } }, "color": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" }, "width": { "type": "number", "minimum": 0.5, "maximum": 40 }, "seed": { "type": "number" }, "pageId": { "type": "string" }, "points": { "type": "array", "items": { "type": "array", "minItems": 2, "maxItems": 3, "items": { "type": "number" } } }, "status": { "enum": ["resolved", "ambiguous", "orphaned", "needs-placement"] }, "coordinateSpace": { "enum": ["legacy-width", "normalized-page"] }, "originalPoints": { "type": "array", "items": { "type": "array", "minItems": 2, "maxItems": 3, "items": { "type": "number" } } }, "sourceSize": { "type": "object", "required": ["width", "height"], "properties": { "width": { "type": "number", "exclusiveMinimum": 0 }, "height": { "type": "number", "exclusiveMinimum": 0 } } }, "shape": { "enum": ["landscape", "portrait"] }, "sheet": { "type": "integer", "minimum": 0 }, "tool": { "enum": ["pencil", "pen", "marker", "arrow"] }, "attachedBlockId": { "type": "string" }, "blockFrame": { "type": "object", "required": ["x", "y", "width", "height"], "properties": { "x": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "y": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "width": { "type": "number", "minimum": 20, "maximum": 1e4 }, "height": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "z": { "type": "number", "minimum": -1e5, "maximum": 1e5 } } }, "migration": { "type": "string" } } } }, "doubts": { "type": "array", "items": { "type": "object", "required": ["id", "pageId", "selector", "question", "status"], "properties": { "id": { "$ref": "#/definitions/id" }, "pageId": { "type": "string" }, "selector": { "$ref": "#/definitions/selector" }, "question": { "type": "string" }, "status": { "enum": ["open", "resolved"] }, "category": { "enum": ["unclear", "verify", "question"] }, "answerNotebookId": { "$ref": "#/definitions/id" }, "answerPageId": { "$ref": "#/definitions/id" }, "anchors": { "type": "array", "items": { "type": "object", "required": ["pageId", "selector"], "additionalProperties": false, "properties": { "pageId": { "type": "string" }, "selector": { "$ref": "#/definitions/selector" } } } } } } }, "answers": { "type": "object", "additionalProperties": { "type": "object", "required": ["selected", "submitted"], "properties": { "selected": { "type": "array", "items": { "type": "string" } }, "submitted": { "type": "boolean" }, "text": { "type": "string" }, "matches": { "type": "object", "additionalProperties": { "type": "string" } } } } }, "checks": { "type": "object", "additionalProperties": { "type": "boolean" } }, "bookmarks": { "type": "array", "items": { "oneOf": [{ "type": "string" }, { "type": "object", "required": ["id", "pageId", "kind"], "additionalProperties": false, "properties": { "id": { "$ref": "#/definitions/id" }, "pageId": { "type": "string" }, "blockId": { "$ref": "#/definitions/id" }, "selector": { "$ref": "#/definitions/selector" }, "kind": { "enum": ["page", "text"] }, "label": { "type": "string" }, "createdAt": { "type": "string" }, "sheet": { "type": "integer", "minimum": 0 } }, "allOf": [{ "if": { "properties": { "kind": { "const": "text" } } }, "then": { "required": ["selector"] } }] }] } }, "readingPositions": { "type": "object", "additionalProperties": { "type": "number" } }, "preferences": { "type": "object", "required": ["language", "desk", "showDesk", "motion", "texture", "reading", "direction", "spread", "fontSize", "weatherCity", "weatherEnabled", "timerRemaining", "timerRunning"], "properties": { "language": { "enum": ["zh", "en"] }, "desk": { "enum": ["oak", "felt", "night"] }, "showDesk": { "type": "boolean" }, "motion": { "type": "boolean" }, "texture": { "type": "number", "minimum": 0, "maximum": 1 }, "reading": { "enum": ["pages", "scroll"] }, "direction": { "enum": ["horizontal", "vertical"] }, "spread": { "type": "boolean" }, "fontSize": { "type": "number", "minimum": 14, "maximum": 28 }, "weatherCity": { "type": "string" }, "weatherEnabled": { "type": "boolean" }, "penColor": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" }, "penWidth": { "type": "number", "minimum": 0.5, "maximum": 40 }, "penTexture": { "enum": ["pencil", "marker", "ink"] }, "timerDisplay": { "enum": ["digital", "dial", "minimal", "focus"] }, "timerRemaining": { "type": "number", "minimum": 0 }, "timerRunning": { "type": "boolean" }, "timerEnd": { "type": "number" } } }, "readingAnchor": { "type": "object", "required": ["pageId", "offset"], "properties": { "sheet": { "type": "integer", "minimum": 0 }, "textOffset": { "type": "integer", "minimum": 0 }, "pageId": { "$ref": "#/definitions/id" }, "blockId": { "$ref": "#/definitions/id" }, "offset": { "type": "number", "minimum": 0, "maximum": 1 } } }, "layouts": { "type": "object", "additionalProperties": { "$ref": "#/definitions/placements" } }, "dismissedStudyMarks": { "type": "array", "uniqueItems": true, "items": { "type": "string" } }, "figureMarks": { "type": "array", "items": { "allOf": [{ "$ref": "#/definitions/figureMark" }, { "required": ["id", "pageId", "blockId"] }] } }, "explorations": { "type": "object", "additionalProperties": { "type": "object", "additionalProperties": false, "properties": { "values": { "type": "object", "additionalProperties": { "type": "number", "minimum": -1e6, "maximum": 1e6 } }, "active": { "$ref": "#/definitions/id" } }, "required": [] } } } }, "assets": { "type": "array", "items": { "type": "object", "required": ["id", "name", "data", "mime"], "properties": { "id": { "$ref": "#/definitions/id" }, "name": { "type": "string" }, "data": { "type": "string", "maxLength": 3e7 }, "mime": { "type": "string" }, "originalAssetId": { "type": "string" }, "source": { "type": "string" }, "license": { "type": "string" }, "verified": { "type": "boolean" }, "width": { "type": "integer", "minimum": 1, "maximum": 1e5 }, "height": { "type": "integer", "minimum": 1, "maximum": 1e5 } } } }, "extensions": { "type": "object", "properties": { "doubtLinks": { "type": "array", "items": { "type": "object", "required": ["doubtId", "pageId"], "properties": { "doubtId": { "$ref": "#/definitions/id" }, "pageId": { "$ref": "#/definitions/id" } } } }, "baseRevision": { "type": "integer", "minimum": 1 } } } }, "definitions": { "id": { "type": "string", "minLength": 1, "maxLength": 200, "pattern": "^[A-Za-z0-9_.:-]+$" }, "selector": { "type": "object", "required": ["blockId", "start", "end", "exact", "prefix", "suffix"], "properties": { "blockId": { "type": "string" }, "start": { "type": "integer", "minimum": 0 }, "end": { "type": "integer", "minimum": 0 }, "exact": { "type": "string" }, "prefix": { "type": "string" }, "suffix": { "type": "string" } } }, "block": { "type": "object", "required": ["id", "type"], "properties": { "id": { "$ref": "#/definitions/id" }, "type": { "type": "string" }, "title": { "type": "string" }, "text": { "type": "string", "maxLength": 1e6 }, "items": { "$ref": "#/definitions/items" }, "steps": { "$ref": "#/definitions/items" }, "columns": { "type": "array", "items": { "type": "string" } }, "rows": { "type": "array", "items": { "type": "array", "items": { "type": "string" } } }, "nodes": { "type": "array", "items": { "type": "object", "required": ["id", "label"], "properties": { "id": { "type": "string" }, "label": { "type": "string" }, "shape": { "enum": ["rounded", "rectangle", "circle", "ellipse", "diamond", "hexagon", "pill", "document", "cylinder"] } } } }, "edges": { "type": "array", "items": { "type": "object", "required": ["from", "to"], "properties": { "from": { "type": "string" }, "to": { "type": "string" }, "label": { "type": "string" } } } }, "options": { "$ref": "#/definitions/items" }, "solution": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }, "pairs": { "type": "array", "items": { "type": "object", "required": ["id", "left", "right"], "properties": { "id": { "type": "string" }, "left": { "type": "string" }, "right": { "type": "string" } } } }, "questionType": { "enum": ["single", "multiple", "truefalse", "matching", "subjective"] }, "points": { "type": "number", "minimum": 0 }, "prompt": { "type": "string" }, "result": { "type": "string" }, "language": { "type": "string" }, "explanation": { "type": "string" }, "caption": { "type": "string" }, "attribution": { "type": "string" }, "tone": { "type": "string" }, "verification": { "type": "string" }, "sourceRefs": { "type": "array", "items": { "type": "object", "required": ["sourceId"], "properties": { "sourceId": { "type": "string" }, "locator": { "type": "string" } } } }, "study": { "type": "object", "additionalProperties": false, "properties": { "label": { "type": "string" }, "aside": { "type": "string" }, "tone": { "enum": ["blue", "red", "olive", "gold"] }, "marks": { "type": "array", "items": { "type": "object", "required": ["text", "kind"], "additionalProperties": false, "properties": { "text": { "type": "string", "minLength": 1 }, "kind": { "enum": ["highlight", "underline", "circle", "wave", "box", "bracket", "check", "star", "dots", "bold", "red"] }, "color": { "type": "string" }, "seed": { "type": "integer", "minimum": 1 } } } }, "visual": { "enum": ["plain", "blackboard", "extract", "sketch"] }, "explanations": { "type": "array", "maxItems": 3, "items": { "type": "object", "required": ["text", "note"], "additionalProperties": false, "properties": { "text": { "type": "string", "minLength": 1 }, "note": { "type": "string", "minLength": 1 } } } }, "role": { "enum": ["definition", "intuition", "derivation", "example", "evidence", "takeaway", "recall"] }, "frame": { "enum": ["auto", "plain", "pencil", "tape", "double", "margin"] } } }, "align": { "type": "array", "items": { "enum": ["left", "center", "right"] } }, "keepTogether": { "type": "boolean" }, "chartType": { "enum": ["scatter", "line", "bar"] }, "xLabel": { "type": "string" }, "yLabel": { "type": "string" }, "series": { "type": "array", "minItems": 1, "maxItems": 4, "items": { "type": "object", "required": ["id", "label", "points"], "properties": { "id": { "type": "string" }, "label": { "type": "string" }, "points": { "type": "array", "minItems": 1, "maxItems": 200, "items": { "type": "object", "required": ["x", "y"], "properties": { "x": { "type": "number" }, "y": { "type": "number" }, "label": { "type": "string" } } } } } } }, "parameters": { "type": "array", "minItems": 1, "maxItems": 30, "items": { "type": "object", "required": ["symbol", "name", "description"], "additionalProperties": false, "properties": { "symbol": { "type": "string", "minLength": 1 }, "name": { "type": "string", "minLength": 1 }, "description": { "type": "string", "minLength": 1 } } } }, "figure": { "type": "object", "additionalProperties": false, "properties": { "size": { "enum": ["small", "medium", "wide", "full"] }, "ratio": { "enum": ["auto", "1:1", "4:3", "3:2", "16:9", "3:4"] }, "align": { "enum": ["left", "center", "right"] }, "style": { "enum": ["sketch", "precise"] }, "annotations": { "type": "array", "items": { "$ref": "#/definitions/figureMark" } } } }, "columnWidths": { "type": "array", "minItems": 1, "items": { "type": "number", "minimum": 48, "maximum": 1200 } }, "exploration": { "$ref": "#/definitions/exploration" } }, "allOf": [{ "if": { "properties": { "type": { "enum": ["prose", "concept", "quote", "callout", "code"] } } }, "then": { "required": ["text"] } }, { "if": { "properties": { "type": { "enum": ["steps", "checklist"] } } }, "then": { "required": ["items"] } }, { "if": { "properties": { "type": { "const": "example" } } }, "then": { "required": ["prompt", "steps", "result"] } }, { "if": { "properties": { "type": { "const": "formula" } } }, "then": { "required": ["latex"], "properties": { "latex": { "type": "string" } } } }, { "if": { "properties": { "type": { "const": "comparison" } } }, "then": { "required": ["columns", "rows"] } }, { "if": { "properties": { "type": { "const": "image" } } }, "then": { "required": ["assetId", "alt"], "properties": { "assetId": { "type": "string" }, "alt": { "type": "string" } } } }, { "if": { "properties": { "type": { "const": "diagram" } } }, "then": { "required": ["nodes", "edges"] } }, { "if": { "properties": { "type": { "const": "exercise" } } }, "then": { "required": ["question", "questionType"], "properties": { "question": { "type": "string" } }, "allOf": [{ "if": { "properties": { "questionType": { "enum": ["single", "multiple", "truefalse"] } } }, "then": { "required": ["options", "solution"] } }, { "if": { "properties": { "questionType": { "const": "matching" } } }, "then": { "required": ["pairs"] } }] } }, { "if": { "properties": { "type": { "const": "chart" } } }, "then": { "required": ["chartType", "series", "xLabel", "yLabel"] } }, { "if": { "properties": { "type": { "const": "exploration" } } }, "then": { "required": ["exploration"] } }] }, "items": { "type": "array", "items": { "type": "object", "required": ["id", "text"], "properties": { "id": { "$ref": "#/definitions/id" }, "text": { "type": "string" } } } }, "objectFrame": { "type": "object", "required": ["x", "y", "width", "z"], "properties": { "x": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "y": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "width": { "type": "number", "minimum": 20, "maximum": 1e4 }, "height": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "z": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "sheet": { "type": "integer", "minimum": 0 } } }, "placements": { "type": "object", "properties": { "landscape": { "type": "object", "additionalProperties": { "$ref": "#/definitions/objectFrame" } }, "portrait": { "type": "object", "additionalProperties": { "$ref": "#/definitions/objectFrame" } } }, "additionalProperties": false }, "figureMark": { "type": "object", "required": ["kind", "x", "y"], "properties": { "kind": { "enum": ["circle", "arrow", "check", "text", "pen"] }, "x": { "type": "number", "minimum": 0, "maximum": 100 }, "y": { "type": "number", "minimum": 0, "maximum": 100 }, "x2": { "type": "number", "minimum": 0, "maximum": 100 }, "y2": { "type": "number", "minimum": 0, "maximum": 100 }, "text": { "type": "string", "maxLength": 240 }, "color": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" }, "points": { "type": "array", "maxItems": 5e3, "items": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "type": "number", "minimum": 0, "maximum": 100 } } }, "id": { "type": "string" }, "blockId": { "type": "string" }, "pageId": { "type": "string" } }, "additionalProperties": false }, "expression": { "oneOf": [{ "type": "number", "minimum": -1e15, "maximum": 1e15 }, { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" }, { "type": "object", "additionalProperties": false, "properties": { "op": { "enum": ["add", "sub", "mul", "div", "pow", "ln", "exp", "abs", "min", "max"] }, "args": { "type": "array", "items": { "$ref": "#/definitions/expression" }, "minItems": 1, "maxItems": 8 } }, "required": ["op", "args"] }] }, "exploration": { "oneOf": [{ "type": "object", "additionalProperties": false, "properties": { "kind": { "const": "plot" }, "parameters": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "id": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" }, "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "min": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "max": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "step": { "type": "number", "exclusiveMinimum": 0, "maximum": 1e6 }, "value": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "unit": { "type": "string", "maxLength": 30 } }, "required": ["id", "label", "min", "max", "step", "value"] }, "minItems": 1, "maxItems": 4 }, "domain": { "type": "object", "additionalProperties": false, "properties": { "min": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "max": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "label": { "type": "string", "minLength": 1, "maxLength": 120 } }, "required": ["min", "max", "label"] }, "yLabel": { "type": "string", "minLength": 1, "maxLength": 120 }, "observations": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "x": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "y": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "label": { "type": "string", "minLength": 1, "maxLength": 120 } }, "required": ["x", "y"] }, "minItems": 1, "maxItems": 100 }, "series": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "expression": { "$ref": "#/definitions/expression" } }, "required": ["label", "expression"] }, "minItems": 1, "maxItems": 4 }, "outputs": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "expression": { "$ref": "#/definitions/expression" }, "unit": { "type": "string", "maxLength": 30 }, "digits": { "type": "integer", "minimum": 0, "maximum": 6 } }, "required": ["label", "expression"] }, "minItems": 1, "maxItems": 6 }, "regression": { "type": "object", "additionalProperties": false, "required": ["slope", "intercept"], "properties": { "slope": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" }, "intercept": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" } } } }, "required": ["kind", "parameters", "domain", "yLabel", "series", "outputs"] }, { "type": "object", "additionalProperties": false, "properties": { "kind": { "enum": ["sequence", "reading"] }, "frames": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "id": { "$ref": "#/definitions/id" }, "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "quote": { "type": "string", "maxLength": 3e3 }, "text": { "type": "string", "minLength": 1, "maxLength": 5e3 }, "facts": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "value": { "type": "string", "minLength": 1, "maxLength": 300 } }, "required": ["label", "value"] }, "minItems": 1, "maxItems": 8 }, "line": { "type": "integer", "minimum": 0, "maximum": 60 }, "variables": { "type": "array", "maxItems": 16, "items": { "$ref": "#/definitions/traceVariable" } }, "cursor": { "type": "integer", "minimum": 0, "maximum": 29 } }, "required": ["id", "label", "text"] }, "minItems": 2, "maxItems": 40 }, "trace": { "type": "object", "additionalProperties": false, "required": ["language", "code"], "properties": { "language": { "type": "string", "minLength": 1, "maxLength": 40 }, "code": { "type": "array", "minItems": 1, "maxItems": 60, "items": { "type": "string", "maxLength": 300 } }, "input": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" } } } }, "required": ["kind", "frames"] }] }, "traceScalar": { "oneOf": [{ "type": "string", "maxLength": 120 }, { "type": "number", "minimum": -1e15, "maximum": 1e15 }, { "type": "boolean" }, { "type": "null" }] }, "traceVariable": { "type": "object", "additionalProperties": false, "required": ["name", "value"], "properties": { "name": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" }, "value": { "oneOf": [{ "$ref": "#/definitions/traceScalar" }, { "type": "array", "maxItems": 30, "items": { "$ref": "#/definitions/traceScalar" } }] }, "display": { "enum": ["list", "set"] } } } } };
     var func3 = require_ucs2length().default;
     var pattern0 = new RegExp("^[A-Za-z0-9_.:-]+$", "u");
     function validate22(data, { instancePath = "", parentData, parentDataProperty, rootData = data } = {}) {
@@ -539,7 +539,7 @@ var require_notebook_validator = __commonJS({
       validate34.errors = vErrors;
       return errors === 0;
     }
-    var schema11 = { "oneOf": [{ "type": "object", "additionalProperties": false, "properties": { "kind": { "const": "plot" }, "parameters": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "id": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" }, "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "min": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "max": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "step": { "type": "number", "exclusiveMinimum": 0, "maximum": 1e6 }, "value": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "unit": { "type": "string", "maxLength": 30 } }, "required": ["id", "label", "min", "max", "step", "value"] }, "minItems": 1, "maxItems": 4 }, "domain": { "type": "object", "additionalProperties": false, "properties": { "min": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "max": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "label": { "type": "string", "minLength": 1, "maxLength": 120 } }, "required": ["min", "max", "label"] }, "yLabel": { "type": "string", "minLength": 1, "maxLength": 120 }, "observations": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "x": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "y": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "label": { "type": "string", "minLength": 1, "maxLength": 120 } }, "required": ["x", "y"] }, "minItems": 1, "maxItems": 100 }, "series": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "expression": { "$ref": "#/definitions/expression" } }, "required": ["label", "expression"] }, "minItems": 1, "maxItems": 4 }, "outputs": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "expression": { "$ref": "#/definitions/expression" }, "unit": { "type": "string", "maxLength": 30 }, "digits": { "type": "integer", "minimum": 0, "maximum": 6 } }, "required": ["label", "expression"] }, "minItems": 1, "maxItems": 6 } }, "required": ["kind", "parameters", "domain", "yLabel", "series", "outputs"] }, { "type": "object", "additionalProperties": false, "properties": { "kind": { "enum": ["sequence", "reading"] }, "frames": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "id": { "$ref": "#/definitions/id" }, "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "quote": { "type": "string", "maxLength": 3e3 }, "text": { "type": "string", "minLength": 1, "maxLength": 5e3 }, "facts": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "value": { "type": "string", "minLength": 1, "maxLength": 300 } }, "required": ["label", "value"] }, "minItems": 1, "maxItems": 8 } }, "required": ["id", "label", "text"] }, "minItems": 2, "maxItems": 12 } }, "required": ["kind", "frames"] }] };
+    var schema11 = { "oneOf": [{ "type": "object", "additionalProperties": false, "properties": { "kind": { "const": "plot" }, "parameters": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "id": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" }, "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "min": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "max": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "step": { "type": "number", "exclusiveMinimum": 0, "maximum": 1e6 }, "value": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "unit": { "type": "string", "maxLength": 30 } }, "required": ["id", "label", "min", "max", "step", "value"] }, "minItems": 1, "maxItems": 4 }, "domain": { "type": "object", "additionalProperties": false, "properties": { "min": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "max": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "label": { "type": "string", "minLength": 1, "maxLength": 120 } }, "required": ["min", "max", "label"] }, "yLabel": { "type": "string", "minLength": 1, "maxLength": 120 }, "observations": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "x": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "y": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "label": { "type": "string", "minLength": 1, "maxLength": 120 } }, "required": ["x", "y"] }, "minItems": 1, "maxItems": 100 }, "series": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "expression": { "$ref": "#/definitions/expression" } }, "required": ["label", "expression"] }, "minItems": 1, "maxItems": 4 }, "outputs": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "expression": { "$ref": "#/definitions/expression" }, "unit": { "type": "string", "maxLength": 30 }, "digits": { "type": "integer", "minimum": 0, "maximum": 6 } }, "required": ["label", "expression"] }, "minItems": 1, "maxItems": 6 }, "regression": { "type": "object", "additionalProperties": false, "required": ["slope", "intercept"], "properties": { "slope": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" }, "intercept": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" } } } }, "required": ["kind", "parameters", "domain", "yLabel", "series", "outputs"] }, { "type": "object", "additionalProperties": false, "properties": { "kind": { "enum": ["sequence", "reading"] }, "frames": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "id": { "$ref": "#/definitions/id" }, "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "quote": { "type": "string", "maxLength": 3e3 }, "text": { "type": "string", "minLength": 1, "maxLength": 5e3 }, "facts": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "value": { "type": "string", "minLength": 1, "maxLength": 300 } }, "required": ["label", "value"] }, "minItems": 1, "maxItems": 8 }, "line": { "type": "integer", "minimum": 0, "maximum": 60 }, "variables": { "type": "array", "maxItems": 16, "items": { "$ref": "#/definitions/traceVariable" } }, "cursor": { "type": "integer", "minimum": 0, "maximum": 29 } }, "required": ["id", "label", "text"] }, "minItems": 2, "maxItems": 40 }, "trace": { "type": "object", "additionalProperties": false, "required": ["language", "code"], "properties": { "language": { "type": "string", "minLength": 1, "maxLength": 40 }, "code": { "type": "array", "minItems": 1, "maxItems": 60, "items": { "type": "string", "maxLength": 300 } }, "input": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" } } } }, "required": ["kind", "frames"] }] };
     var pattern2 = new RegExp("^[A-Za-z][A-Za-z0-9_]{0,31}$", "u");
     var schema12 = { "oneOf": [{ "type": "number", "minimum": -1e15, "maximum": 1e15 }, { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" }, { "type": "object", "additionalProperties": false, "properties": { "op": { "enum": ["add", "sub", "mul", "div", "pow", "ln", "exp", "abs", "min", "max"] }, "args": { "type": "array", "items": { "$ref": "#/definitions/expression" }, "minItems": 1, "maxItems": 8 } }, "required": ["op", "args"] }] };
     var wrapper0 = { validate: validate37 };
@@ -734,6 +734,288 @@ var require_notebook_validator = __commonJS({
       validate37.errors = vErrors;
       return errors === 0;
     }
+    var schema13 = { "type": "object", "additionalProperties": false, "required": ["name", "value"], "properties": { "name": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" }, "value": { "oneOf": [{ "$ref": "#/definitions/traceScalar" }, { "type": "array", "maxItems": 30, "items": { "$ref": "#/definitions/traceScalar" } }] }, "display": { "enum": ["list", "set"] } } };
+    function validate42(data, { instancePath = "", parentData, parentDataProperty, rootData = data } = {}) {
+      let vErrors = null;
+      let errors = 0;
+      const _errs0 = errors;
+      let valid0 = false;
+      let passing0 = null;
+      const _errs1 = errors;
+      if (typeof data === "string") {
+        if (func3(data) > 120) {
+          const err0 = { instancePath, schemaPath: "#/oneOf/0/maxLength", keyword: "maxLength", params: { limit: 120 }, message: "must NOT have more than 120 characters" };
+          if (vErrors === null) {
+            vErrors = [err0];
+          } else {
+            vErrors.push(err0);
+          }
+          errors++;
+        }
+      } else {
+        const err1 = { instancePath, schemaPath: "#/oneOf/0/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+        if (vErrors === null) {
+          vErrors = [err1];
+        } else {
+          vErrors.push(err1);
+        }
+        errors++;
+      }
+      var _valid0 = _errs1 === errors;
+      if (_valid0) {
+        valid0 = true;
+        passing0 = 0;
+      }
+      const _errs3 = errors;
+      if (typeof data == "number") {
+        if (data > 1e15 || isNaN(data)) {
+          const err2 = { instancePath, schemaPath: "#/oneOf/1/maximum", keyword: "maximum", params: { comparison: "<=", limit: 1e15 }, message: "must be <= 1000000000000000" };
+          if (vErrors === null) {
+            vErrors = [err2];
+          } else {
+            vErrors.push(err2);
+          }
+          errors++;
+        }
+        if (data < -1e15 || isNaN(data)) {
+          const err3 = { instancePath, schemaPath: "#/oneOf/1/minimum", keyword: "minimum", params: { comparison: ">=", limit: -1e15 }, message: "must be >= -1000000000000000" };
+          if (vErrors === null) {
+            vErrors = [err3];
+          } else {
+            vErrors.push(err3);
+          }
+          errors++;
+        }
+      } else {
+        const err4 = { instancePath, schemaPath: "#/oneOf/1/type", keyword: "type", params: { type: "number" }, message: "must be number" };
+        if (vErrors === null) {
+          vErrors = [err4];
+        } else {
+          vErrors.push(err4);
+        }
+        errors++;
+      }
+      var _valid0 = _errs3 === errors;
+      if (_valid0 && valid0) {
+        valid0 = false;
+        passing0 = [passing0, 1];
+      } else {
+        if (_valid0) {
+          valid0 = true;
+          passing0 = 1;
+        }
+        const _errs5 = errors;
+        if (typeof data !== "boolean") {
+          const err5 = { instancePath, schemaPath: "#/oneOf/2/type", keyword: "type", params: { type: "boolean" }, message: "must be boolean" };
+          if (vErrors === null) {
+            vErrors = [err5];
+          } else {
+            vErrors.push(err5);
+          }
+          errors++;
+        }
+        var _valid0 = _errs5 === errors;
+        if (_valid0 && valid0) {
+          valid0 = false;
+          passing0 = [passing0, 2];
+        } else {
+          if (_valid0) {
+            valid0 = true;
+            passing0 = 2;
+          }
+          const _errs7 = errors;
+          if (data !== null) {
+            const err6 = { instancePath, schemaPath: "#/oneOf/3/type", keyword: "type", params: { type: "null" }, message: "must be null" };
+            if (vErrors === null) {
+              vErrors = [err6];
+            } else {
+              vErrors.push(err6);
+            }
+            errors++;
+          }
+          var _valid0 = _errs7 === errors;
+          if (_valid0 && valid0) {
+            valid0 = false;
+            passing0 = [passing0, 3];
+          } else {
+            if (_valid0) {
+              valid0 = true;
+              passing0 = 3;
+            }
+          }
+        }
+      }
+      if (!valid0) {
+        const err7 = { instancePath, schemaPath: "#/oneOf", keyword: "oneOf", params: { passingSchemas: passing0 }, message: "must match exactly one schema in oneOf" };
+        if (vErrors === null) {
+          vErrors = [err7];
+        } else {
+          vErrors.push(err7);
+        }
+        errors++;
+      } else {
+        errors = _errs0;
+        if (vErrors !== null) {
+          if (_errs0) {
+            vErrors.length = _errs0;
+          } else {
+            vErrors = null;
+          }
+        }
+      }
+      validate42.errors = vErrors;
+      return errors === 0;
+    }
+    function validate41(data, { instancePath = "", parentData, parentDataProperty, rootData = data } = {}) {
+      let vErrors = null;
+      let errors = 0;
+      if (data && typeof data == "object" && !Array.isArray(data)) {
+        for (const prop0 of schema13.required) {
+          if (data[prop0] === void 0) {
+            const err0 = { instancePath, schemaPath: "#/required", keyword: "required", params: { missingProperty: prop0 }, message: "must have required property '" + prop0 + "'" };
+            if (vErrors === null) {
+              vErrors = [err0];
+            } else {
+              vErrors.push(err0);
+            }
+            errors++;
+          }
+        }
+        for (const key0 in data) {
+          if (!(key0 === "name" || key0 === "value" || key0 === "display")) {
+            const err1 = { instancePath, schemaPath: "#/additionalProperties", keyword: "additionalProperties", params: { additionalProperty: key0 }, message: "must NOT have additional properties" };
+            if (vErrors === null) {
+              vErrors = [err1];
+            } else {
+              vErrors.push(err1);
+            }
+            errors++;
+          }
+        }
+        if (data.name !== void 0) {
+          let data0 = data.name;
+          if (typeof data0 === "string") {
+            if (!pattern2.test(data0)) {
+              const err2 = { instancePath: instancePath + "/name", schemaPath: "#/properties/name/pattern", keyword: "pattern", params: { pattern: "^[A-Za-z][A-Za-z0-9_]{0,31}$" }, message: 'must match pattern "^[A-Za-z][A-Za-z0-9_]{0,31}$"' };
+              if (vErrors === null) {
+                vErrors = [err2];
+              } else {
+                vErrors.push(err2);
+              }
+              errors++;
+            }
+          } else {
+            const err3 = { instancePath: instancePath + "/name", schemaPath: "#/properties/name/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+            if (vErrors === null) {
+              vErrors = [err3];
+            } else {
+              vErrors.push(err3);
+            }
+            errors++;
+          }
+        }
+        if (data.value !== void 0) {
+          let data1 = data.value;
+          const _errs5 = errors;
+          let valid1 = false;
+          let passing0 = null;
+          const _errs6 = errors;
+          if (!validate42(data1, { instancePath: instancePath + "/value", parentData: data, parentDataProperty: "value", rootData })) {
+            vErrors = vErrors === null ? validate42.errors : vErrors.concat(validate42.errors);
+            errors = vErrors.length;
+          }
+          var _valid0 = _errs6 === errors;
+          if (_valid0) {
+            valid1 = true;
+            passing0 = 0;
+          }
+          const _errs7 = errors;
+          if (Array.isArray(data1)) {
+            if (data1.length > 30) {
+              const err4 = { instancePath: instancePath + "/value", schemaPath: "#/properties/value/oneOf/1/maxItems", keyword: "maxItems", params: { limit: 30 }, message: "must NOT have more than 30 items" };
+              if (vErrors === null) {
+                vErrors = [err4];
+              } else {
+                vErrors.push(err4);
+              }
+              errors++;
+            }
+            const len0 = data1.length;
+            for (let i0 = 0; i0 < len0; i0++) {
+              if (!validate42(data1[i0], { instancePath: instancePath + "/value/" + i0, parentData: data1, parentDataProperty: i0, rootData })) {
+                vErrors = vErrors === null ? validate42.errors : vErrors.concat(validate42.errors);
+                errors = vErrors.length;
+              }
+            }
+          } else {
+            const err5 = { instancePath: instancePath + "/value", schemaPath: "#/properties/value/oneOf/1/type", keyword: "type", params: { type: "array" }, message: "must be array" };
+            if (vErrors === null) {
+              vErrors = [err5];
+            } else {
+              vErrors.push(err5);
+            }
+            errors++;
+          }
+          var _valid0 = _errs7 === errors;
+          if (_valid0 && valid1) {
+            valid1 = false;
+            passing0 = [passing0, 1];
+          } else {
+            if (_valid0) {
+              valid1 = true;
+              passing0 = 1;
+            }
+          }
+          if (!valid1) {
+            const err6 = { instancePath: instancePath + "/value", schemaPath: "#/properties/value/oneOf", keyword: "oneOf", params: { passingSchemas: passing0 }, message: "must match exactly one schema in oneOf" };
+            if (vErrors === null) {
+              vErrors = [err6];
+            } else {
+              vErrors.push(err6);
+            }
+            errors++;
+          } else {
+            errors = _errs5;
+            if (vErrors !== null) {
+              if (_errs5) {
+                vErrors.length = _errs5;
+              } else {
+                vErrors = null;
+              }
+            }
+          }
+        }
+        if (data.display !== void 0) {
+          let valid4;
+          valid4 = false;
+          for (const v0 of schema13.properties.display.enum) {
+            if (func0(data.display, v0)) {
+              valid4 = true;
+              break;
+            }
+          }
+          if (!valid4) {
+            const err7 = { instancePath: instancePath + "/display", schemaPath: "#/properties/display/enum", keyword: "enum", params: { allowedValues: schema13.properties.display.enum }, message: "must be equal to one of the allowed values" };
+            if (vErrors === null) {
+              vErrors = [err7];
+            } else {
+              vErrors.push(err7);
+            }
+            errors++;
+          }
+        }
+      } else {
+        const err8 = { instancePath, schemaPath: "#/type", keyword: "type", params: { type: "object" }, message: "must be object" };
+        if (vErrors === null) {
+          vErrors = [err8];
+        } else {
+          vErrors.push(err8);
+        }
+        errors++;
+      }
+      validate41.errors = vErrors;
+      return errors === 0;
+    }
     function validate36(data, { instancePath = "", parentData, parentDataProperty, rootData = data } = {}) {
       let vErrors = null;
       let errors = 0;
@@ -754,7 +1036,7 @@ var require_notebook_validator = __commonJS({
           }
         }
         for (const key0 in data) {
-          if (!(key0 === "kind" || key0 === "parameters" || key0 === "domain" || key0 === "yLabel" || key0 === "observations" || key0 === "series" || key0 === "outputs")) {
+          if (!(key0 === "kind" || key0 === "parameters" || key0 === "domain" || key0 === "yLabel" || key0 === "observations" || key0 === "series" || key0 === "outputs" || key0 === "regression")) {
             const err1 = { instancePath, schemaPath: "#/oneOf/0/additionalProperties", keyword: "additionalProperties", params: { additionalProperty: key0 }, message: "must NOT have additional properties" };
             if (vErrors === null) {
               vErrors = [err1];
@@ -1622,12 +1904,91 @@ var require_notebook_validator = __commonJS({
             errors++;
           }
         }
+        if (data.regression !== void 0) {
+          let data30 = data.regression;
+          if (data30 && typeof data30 == "object" && !Array.isArray(data30)) {
+            for (const prop6 of schema11.oneOf[0].properties.regression.required) {
+              if (data30[prop6] === void 0) {
+                const err81 = { instancePath: instancePath + "/regression", schemaPath: "#/oneOf/0/properties/regression/required", keyword: "required", params: { missingProperty: prop6 }, message: "must have required property '" + prop6 + "'" };
+                if (vErrors === null) {
+                  vErrors = [err81];
+                } else {
+                  vErrors.push(err81);
+                }
+                errors++;
+              }
+            }
+            for (const key6 in data30) {
+              if (!(key6 === "slope" || key6 === "intercept")) {
+                const err82 = { instancePath: instancePath + "/regression", schemaPath: "#/oneOf/0/properties/regression/additionalProperties", keyword: "additionalProperties", params: { additionalProperty: key6 }, message: "must NOT have additional properties" };
+                if (vErrors === null) {
+                  vErrors = [err82];
+                } else {
+                  vErrors.push(err82);
+                }
+                errors++;
+              }
+            }
+            if (data30.slope !== void 0) {
+              let data31 = data30.slope;
+              if (typeof data31 === "string") {
+                if (!pattern2.test(data31)) {
+                  const err83 = { instancePath: instancePath + "/regression/slope", schemaPath: "#/oneOf/0/properties/regression/properties/slope/pattern", keyword: "pattern", params: { pattern: "^[A-Za-z][A-Za-z0-9_]{0,31}$" }, message: 'must match pattern "^[A-Za-z][A-Za-z0-9_]{0,31}$"' };
+                  if (vErrors === null) {
+                    vErrors = [err83];
+                  } else {
+                    vErrors.push(err83);
+                  }
+                  errors++;
+                }
+              } else {
+                const err84 = { instancePath: instancePath + "/regression/slope", schemaPath: "#/oneOf/0/properties/regression/properties/slope/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+                if (vErrors === null) {
+                  vErrors = [err84];
+                } else {
+                  vErrors.push(err84);
+                }
+                errors++;
+              }
+            }
+            if (data30.intercept !== void 0) {
+              let data32 = data30.intercept;
+              if (typeof data32 === "string") {
+                if (!pattern2.test(data32)) {
+                  const err85 = { instancePath: instancePath + "/regression/intercept", schemaPath: "#/oneOf/0/properties/regression/properties/intercept/pattern", keyword: "pattern", params: { pattern: "^[A-Za-z][A-Za-z0-9_]{0,31}$" }, message: 'must match pattern "^[A-Za-z][A-Za-z0-9_]{0,31}$"' };
+                  if (vErrors === null) {
+                    vErrors = [err85];
+                  } else {
+                    vErrors.push(err85);
+                  }
+                  errors++;
+                }
+              } else {
+                const err86 = { instancePath: instancePath + "/regression/intercept", schemaPath: "#/oneOf/0/properties/regression/properties/intercept/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+                if (vErrors === null) {
+                  vErrors = [err86];
+                } else {
+                  vErrors.push(err86);
+                }
+                errors++;
+              }
+            }
+          } else {
+            const err87 = { instancePath: instancePath + "/regression", schemaPath: "#/oneOf/0/properties/regression/type", keyword: "type", params: { type: "object" }, message: "must be object" };
+            if (vErrors === null) {
+              vErrors = [err87];
+            } else {
+              vErrors.push(err87);
+            }
+            errors++;
+          }
+        }
       } else {
-        const err81 = { instancePath, schemaPath: "#/oneOf/0/type", keyword: "type", params: { type: "object" }, message: "must be object" };
+        const err88 = { instancePath, schemaPath: "#/oneOf/0/type", keyword: "type", params: { type: "object" }, message: "must be object" };
         if (vErrors === null) {
-          vErrors = [err81];
+          vErrors = [err88];
         } else {
-          vErrors.push(err81);
+          vErrors.push(err88);
         }
         errors++;
       }
@@ -1636,191 +1997,116 @@ var require_notebook_validator = __commonJS({
         valid0 = true;
         passing0 = 0;
       }
-      const _errs66 = errors;
+      const _errs73 = errors;
       if (data && typeof data == "object" && !Array.isArray(data)) {
-        for (const prop6 of schema11.oneOf[1].required) {
-          if (data[prop6] === void 0) {
-            const err82 = { instancePath, schemaPath: "#/oneOf/1/required", keyword: "required", params: { missingProperty: prop6 }, message: "must have required property '" + prop6 + "'" };
+        for (const prop7 of schema11.oneOf[1].required) {
+          if (data[prop7] === void 0) {
+            const err89 = { instancePath, schemaPath: "#/oneOf/1/required", keyword: "required", params: { missingProperty: prop7 }, message: "must have required property '" + prop7 + "'" };
             if (vErrors === null) {
-              vErrors = [err82];
+              vErrors = [err89];
             } else {
-              vErrors.push(err82);
+              vErrors.push(err89);
             }
             errors++;
           }
         }
-        for (const key6 in data) {
-          if (!(key6 === "kind" || key6 === "frames")) {
-            const err83 = { instancePath, schemaPath: "#/oneOf/1/additionalProperties", keyword: "additionalProperties", params: { additionalProperty: key6 }, message: "must NOT have additional properties" };
+        for (const key7 in data) {
+          if (!(key7 === "kind" || key7 === "frames" || key7 === "trace")) {
+            const err90 = { instancePath, schemaPath: "#/oneOf/1/additionalProperties", keyword: "additionalProperties", params: { additionalProperty: key7 }, message: "must NOT have additional properties" };
             if (vErrors === null) {
-              vErrors = [err83];
+              vErrors = [err90];
             } else {
-              vErrors.push(err83);
+              vErrors.push(err90);
             }
             errors++;
           }
         }
         if (data.kind !== void 0) {
-          let valid16;
-          valid16 = false;
+          let valid17;
+          valid17 = false;
           for (const v0 of schema11.oneOf[1].properties.kind.enum) {
             if (func0(data.kind, v0)) {
-              valid16 = true;
+              valid17 = true;
               break;
             }
           }
-          if (!valid16) {
-            const err84 = { instancePath: instancePath + "/kind", schemaPath: "#/oneOf/1/properties/kind/enum", keyword: "enum", params: { allowedValues: schema11.oneOf[1].properties.kind.enum }, message: "must be equal to one of the allowed values" };
+          if (!valid17) {
+            const err91 = { instancePath: instancePath + "/kind", schemaPath: "#/oneOf/1/properties/kind/enum", keyword: "enum", params: { allowedValues: schema11.oneOf[1].properties.kind.enum }, message: "must be equal to one of the allowed values" };
             if (vErrors === null) {
-              vErrors = [err84];
+              vErrors = [err91];
             } else {
-              vErrors.push(err84);
+              vErrors.push(err91);
             }
             errors++;
           }
         }
         if (data.frames !== void 0) {
-          let data31 = data.frames;
-          if (Array.isArray(data31)) {
-            if (data31.length > 12) {
-              const err85 = { instancePath: instancePath + "/frames", schemaPath: "#/oneOf/1/properties/frames/maxItems", keyword: "maxItems", params: { limit: 12 }, message: "must NOT have more than 12 items" };
+          let data34 = data.frames;
+          if (Array.isArray(data34)) {
+            if (data34.length > 40) {
+              const err92 = { instancePath: instancePath + "/frames", schemaPath: "#/oneOf/1/properties/frames/maxItems", keyword: "maxItems", params: { limit: 40 }, message: "must NOT have more than 40 items" };
               if (vErrors === null) {
-                vErrors = [err85];
+                vErrors = [err92];
               } else {
-                vErrors.push(err85);
+                vErrors.push(err92);
               }
               errors++;
             }
-            if (data31.length < 2) {
-              const err86 = { instancePath: instancePath + "/frames", schemaPath: "#/oneOf/1/properties/frames/minItems", keyword: "minItems", params: { limit: 2 }, message: "must NOT have fewer than 2 items" };
+            if (data34.length < 2) {
+              const err93 = { instancePath: instancePath + "/frames", schemaPath: "#/oneOf/1/properties/frames/minItems", keyword: "minItems", params: { limit: 2 }, message: "must NOT have fewer than 2 items" };
               if (vErrors === null) {
-                vErrors = [err86];
+                vErrors = [err93];
               } else {
-                vErrors.push(err86);
+                vErrors.push(err93);
               }
               errors++;
             }
-            const len4 = data31.length;
+            const len4 = data34.length;
             for (let i4 = 0; i4 < len4; i4++) {
-              let data32 = data31[i4];
-              if (data32 && typeof data32 == "object" && !Array.isArray(data32)) {
-                for (const prop7 of schema11.oneOf[1].properties.frames.items.required) {
-                  if (data32[prop7] === void 0) {
-                    const err87 = { instancePath: instancePath + "/frames/" + i4, schemaPath: "#/oneOf/1/properties/frames/items/required", keyword: "required", params: { missingProperty: prop7 }, message: "must have required property '" + prop7 + "'" };
+              let data35 = data34[i4];
+              if (data35 && typeof data35 == "object" && !Array.isArray(data35)) {
+                for (const prop8 of schema11.oneOf[1].properties.frames.items.required) {
+                  if (data35[prop8] === void 0) {
+                    const err94 = { instancePath: instancePath + "/frames/" + i4, schemaPath: "#/oneOf/1/properties/frames/items/required", keyword: "required", params: { missingProperty: prop8 }, message: "must have required property '" + prop8 + "'" };
                     if (vErrors === null) {
-                      vErrors = [err87];
+                      vErrors = [err94];
                     } else {
-                      vErrors.push(err87);
+                      vErrors.push(err94);
                     }
                     errors++;
                   }
                 }
-                for (const key7 in data32) {
-                  if (!(key7 === "id" || key7 === "label" || key7 === "quote" || key7 === "text" || key7 === "facts")) {
-                    const err88 = { instancePath: instancePath + "/frames/" + i4, schemaPath: "#/oneOf/1/properties/frames/items/additionalProperties", keyword: "additionalProperties", params: { additionalProperty: key7 }, message: "must NOT have additional properties" };
+                for (const key8 in data35) {
+                  if (!(key8 === "id" || key8 === "label" || key8 === "quote" || key8 === "text" || key8 === "facts" || key8 === "line" || key8 === "variables" || key8 === "cursor")) {
+                    const err95 = { instancePath: instancePath + "/frames/" + i4, schemaPath: "#/oneOf/1/properties/frames/items/additionalProperties", keyword: "additionalProperties", params: { additionalProperty: key8 }, message: "must NOT have additional properties" };
                     if (vErrors === null) {
-                      vErrors = [err88];
+                      vErrors = [err95];
                     } else {
-                      vErrors.push(err88);
+                      vErrors.push(err95);
                     }
                     errors++;
                   }
                 }
-                if (data32.id !== void 0) {
-                  if (!validate22(data32.id, { instancePath: instancePath + "/frames/" + i4 + "/id", parentData: data32, parentDataProperty: "id", rootData })) {
+                if (data35.id !== void 0) {
+                  if (!validate22(data35.id, { instancePath: instancePath + "/frames/" + i4 + "/id", parentData: data35, parentDataProperty: "id", rootData })) {
                     vErrors = vErrors === null ? validate22.errors : vErrors.concat(validate22.errors);
                     errors = vErrors.length;
                   }
                 }
-                if (data32.label !== void 0) {
-                  let data34 = data32.label;
-                  if (typeof data34 === "string") {
-                    if (func3(data34) > 120) {
-                      const err89 = { instancePath: instancePath + "/frames/" + i4 + "/label", schemaPath: "#/oneOf/1/properties/frames/items/properties/label/maxLength", keyword: "maxLength", params: { limit: 120 }, message: "must NOT have more than 120 characters" };
+                if (data35.label !== void 0) {
+                  let data37 = data35.label;
+                  if (typeof data37 === "string") {
+                    if (func3(data37) > 120) {
+                      const err96 = { instancePath: instancePath + "/frames/" + i4 + "/label", schemaPath: "#/oneOf/1/properties/frames/items/properties/label/maxLength", keyword: "maxLength", params: { limit: 120 }, message: "must NOT have more than 120 characters" };
                       if (vErrors === null) {
-                        vErrors = [err89];
+                        vErrors = [err96];
                       } else {
-                        vErrors.push(err89);
+                        vErrors.push(err96);
                       }
                       errors++;
                     }
-                    if (func3(data34) < 1) {
-                      const err90 = { instancePath: instancePath + "/frames/" + i4 + "/label", schemaPath: "#/oneOf/1/properties/frames/items/properties/label/minLength", keyword: "minLength", params: { limit: 1 }, message: "must NOT have fewer than 1 characters" };
-                      if (vErrors === null) {
-                        vErrors = [err90];
-                      } else {
-                        vErrors.push(err90);
-                      }
-                      errors++;
-                    }
-                  } else {
-                    const err91 = { instancePath: instancePath + "/frames/" + i4 + "/label", schemaPath: "#/oneOf/1/properties/frames/items/properties/label/type", keyword: "type", params: { type: "string" }, message: "must be string" };
-                    if (vErrors === null) {
-                      vErrors = [err91];
-                    } else {
-                      vErrors.push(err91);
-                    }
-                    errors++;
-                  }
-                }
-                if (data32.quote !== void 0) {
-                  let data35 = data32.quote;
-                  if (typeof data35 === "string") {
-                    if (func3(data35) > 3e3) {
-                      const err92 = { instancePath: instancePath + "/frames/" + i4 + "/quote", schemaPath: "#/oneOf/1/properties/frames/items/properties/quote/maxLength", keyword: "maxLength", params: { limit: 3e3 }, message: "must NOT have more than 3000 characters" };
-                      if (vErrors === null) {
-                        vErrors = [err92];
-                      } else {
-                        vErrors.push(err92);
-                      }
-                      errors++;
-                    }
-                  } else {
-                    const err93 = { instancePath: instancePath + "/frames/" + i4 + "/quote", schemaPath: "#/oneOf/1/properties/frames/items/properties/quote/type", keyword: "type", params: { type: "string" }, message: "must be string" };
-                    if (vErrors === null) {
-                      vErrors = [err93];
-                    } else {
-                      vErrors.push(err93);
-                    }
-                    errors++;
-                  }
-                }
-                if (data32.text !== void 0) {
-                  let data36 = data32.text;
-                  if (typeof data36 === "string") {
-                    if (func3(data36) > 5e3) {
-                      const err94 = { instancePath: instancePath + "/frames/" + i4 + "/text", schemaPath: "#/oneOf/1/properties/frames/items/properties/text/maxLength", keyword: "maxLength", params: { limit: 5e3 }, message: "must NOT have more than 5000 characters" };
-                      if (vErrors === null) {
-                        vErrors = [err94];
-                      } else {
-                        vErrors.push(err94);
-                      }
-                      errors++;
-                    }
-                    if (func3(data36) < 1) {
-                      const err95 = { instancePath: instancePath + "/frames/" + i4 + "/text", schemaPath: "#/oneOf/1/properties/frames/items/properties/text/minLength", keyword: "minLength", params: { limit: 1 }, message: "must NOT have fewer than 1 characters" };
-                      if (vErrors === null) {
-                        vErrors = [err95];
-                      } else {
-                        vErrors.push(err95);
-                      }
-                      errors++;
-                    }
-                  } else {
-                    const err96 = { instancePath: instancePath + "/frames/" + i4 + "/text", schemaPath: "#/oneOf/1/properties/frames/items/properties/text/type", keyword: "type", params: { type: "string" }, message: "must be string" };
-                    if (vErrors === null) {
-                      vErrors = [err96];
-                    } else {
-                      vErrors.push(err96);
-                    }
-                    errors++;
-                  }
-                }
-                if (data32.facts !== void 0) {
-                  let data37 = data32.facts;
-                  if (Array.isArray(data37)) {
-                    if (data37.length > 8) {
-                      const err97 = { instancePath: instancePath + "/frames/" + i4 + "/facts", schemaPath: "#/oneOf/1/properties/frames/items/properties/facts/maxItems", keyword: "maxItems", params: { limit: 8 }, message: "must NOT have more than 8 items" };
+                    if (func3(data37) < 1) {
+                      const err97 = { instancePath: instancePath + "/frames/" + i4 + "/label", schemaPath: "#/oneOf/1/properties/frames/items/properties/label/minLength", keyword: "minLength", params: { limit: 1 }, message: "must NOT have fewer than 1 characters" };
                       if (vErrors === null) {
                         vErrors = [err97];
                       } else {
@@ -1828,95 +2114,97 @@ var require_notebook_validator = __commonJS({
                       }
                       errors++;
                     }
-                    if (data37.length < 1) {
-                      const err98 = { instancePath: instancePath + "/frames/" + i4 + "/facts", schemaPath: "#/oneOf/1/properties/frames/items/properties/facts/minItems", keyword: "minItems", params: { limit: 1 }, message: "must NOT have fewer than 1 items" };
+                  } else {
+                    const err98 = { instancePath: instancePath + "/frames/" + i4 + "/label", schemaPath: "#/oneOf/1/properties/frames/items/properties/label/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+                    if (vErrors === null) {
+                      vErrors = [err98];
+                    } else {
+                      vErrors.push(err98);
+                    }
+                    errors++;
+                  }
+                }
+                if (data35.quote !== void 0) {
+                  let data38 = data35.quote;
+                  if (typeof data38 === "string") {
+                    if (func3(data38) > 3e3) {
+                      const err99 = { instancePath: instancePath + "/frames/" + i4 + "/quote", schemaPath: "#/oneOf/1/properties/frames/items/properties/quote/maxLength", keyword: "maxLength", params: { limit: 3e3 }, message: "must NOT have more than 3000 characters" };
                       if (vErrors === null) {
-                        vErrors = [err98];
+                        vErrors = [err99];
                       } else {
-                        vErrors.push(err98);
+                        vErrors.push(err99);
                       }
                       errors++;
                     }
-                    const len5 = data37.length;
+                  } else {
+                    const err100 = { instancePath: instancePath + "/frames/" + i4 + "/quote", schemaPath: "#/oneOf/1/properties/frames/items/properties/quote/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+                    if (vErrors === null) {
+                      vErrors = [err100];
+                    } else {
+                      vErrors.push(err100);
+                    }
+                    errors++;
+                  }
+                }
+                if (data35.text !== void 0) {
+                  let data39 = data35.text;
+                  if (typeof data39 === "string") {
+                    if (func3(data39) > 5e3) {
+                      const err101 = { instancePath: instancePath + "/frames/" + i4 + "/text", schemaPath: "#/oneOf/1/properties/frames/items/properties/text/maxLength", keyword: "maxLength", params: { limit: 5e3 }, message: "must NOT have more than 5000 characters" };
+                      if (vErrors === null) {
+                        vErrors = [err101];
+                      } else {
+                        vErrors.push(err101);
+                      }
+                      errors++;
+                    }
+                    if (func3(data39) < 1) {
+                      const err102 = { instancePath: instancePath + "/frames/" + i4 + "/text", schemaPath: "#/oneOf/1/properties/frames/items/properties/text/minLength", keyword: "minLength", params: { limit: 1 }, message: "must NOT have fewer than 1 characters" };
+                      if (vErrors === null) {
+                        vErrors = [err102];
+                      } else {
+                        vErrors.push(err102);
+                      }
+                      errors++;
+                    }
+                  } else {
+                    const err103 = { instancePath: instancePath + "/frames/" + i4 + "/text", schemaPath: "#/oneOf/1/properties/frames/items/properties/text/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+                    if (vErrors === null) {
+                      vErrors = [err103];
+                    } else {
+                      vErrors.push(err103);
+                    }
+                    errors++;
+                  }
+                }
+                if (data35.facts !== void 0) {
+                  let data40 = data35.facts;
+                  if (Array.isArray(data40)) {
+                    if (data40.length > 8) {
+                      const err104 = { instancePath: instancePath + "/frames/" + i4 + "/facts", schemaPath: "#/oneOf/1/properties/frames/items/properties/facts/maxItems", keyword: "maxItems", params: { limit: 8 }, message: "must NOT have more than 8 items" };
+                      if (vErrors === null) {
+                        vErrors = [err104];
+                      } else {
+                        vErrors.push(err104);
+                      }
+                      errors++;
+                    }
+                    if (data40.length < 1) {
+                      const err105 = { instancePath: instancePath + "/frames/" + i4 + "/facts", schemaPath: "#/oneOf/1/properties/frames/items/properties/facts/minItems", keyword: "minItems", params: { limit: 1 }, message: "must NOT have fewer than 1 items" };
+                      if (vErrors === null) {
+                        vErrors = [err105];
+                      } else {
+                        vErrors.push(err105);
+                      }
+                      errors++;
+                    }
+                    const len5 = data40.length;
                     for (let i5 = 0; i5 < len5; i5++) {
-                      let data38 = data37[i5];
-                      if (data38 && typeof data38 == "object" && !Array.isArray(data38)) {
-                        for (const prop8 of schema11.oneOf[1].properties.frames.items.properties.facts.items.required) {
-                          if (data38[prop8] === void 0) {
-                            const err99 = { instancePath: instancePath + "/frames/" + i4 + "/facts/" + i5, schemaPath: "#/oneOf/1/properties/frames/items/properties/facts/items/required", keyword: "required", params: { missingProperty: prop8 }, message: "must have required property '" + prop8 + "'" };
-                            if (vErrors === null) {
-                              vErrors = [err99];
-                            } else {
-                              vErrors.push(err99);
-                            }
-                            errors++;
-                          }
-                        }
-                        for (const key8 in data38) {
-                          if (!(key8 === "label" || key8 === "value")) {
-                            const err100 = { instancePath: instancePath + "/frames/" + i4 + "/facts/" + i5, schemaPath: "#/oneOf/1/properties/frames/items/properties/facts/items/additionalProperties", keyword: "additionalProperties", params: { additionalProperty: key8 }, message: "must NOT have additional properties" };
-                            if (vErrors === null) {
-                              vErrors = [err100];
-                            } else {
-                              vErrors.push(err100);
-                            }
-                            errors++;
-                          }
-                        }
-                        if (data38.label !== void 0) {
-                          let data39 = data38.label;
-                          if (typeof data39 === "string") {
-                            if (func3(data39) > 120) {
-                              const err101 = { instancePath: instancePath + "/frames/" + i4 + "/facts/" + i5 + "/label", schemaPath: "#/oneOf/1/properties/frames/items/properties/facts/items/properties/label/maxLength", keyword: "maxLength", params: { limit: 120 }, message: "must NOT have more than 120 characters" };
-                              if (vErrors === null) {
-                                vErrors = [err101];
-                              } else {
-                                vErrors.push(err101);
-                              }
-                              errors++;
-                            }
-                            if (func3(data39) < 1) {
-                              const err102 = { instancePath: instancePath + "/frames/" + i4 + "/facts/" + i5 + "/label", schemaPath: "#/oneOf/1/properties/frames/items/properties/facts/items/properties/label/minLength", keyword: "minLength", params: { limit: 1 }, message: "must NOT have fewer than 1 characters" };
-                              if (vErrors === null) {
-                                vErrors = [err102];
-                              } else {
-                                vErrors.push(err102);
-                              }
-                              errors++;
-                            }
-                          } else {
-                            const err103 = { instancePath: instancePath + "/frames/" + i4 + "/facts/" + i5 + "/label", schemaPath: "#/oneOf/1/properties/frames/items/properties/facts/items/properties/label/type", keyword: "type", params: { type: "string" }, message: "must be string" };
-                            if (vErrors === null) {
-                              vErrors = [err103];
-                            } else {
-                              vErrors.push(err103);
-                            }
-                            errors++;
-                          }
-                        }
-                        if (data38.value !== void 0) {
-                          let data40 = data38.value;
-                          if (typeof data40 === "string") {
-                            if (func3(data40) > 300) {
-                              const err104 = { instancePath: instancePath + "/frames/" + i4 + "/facts/" + i5 + "/value", schemaPath: "#/oneOf/1/properties/frames/items/properties/facts/items/properties/value/maxLength", keyword: "maxLength", params: { limit: 300 }, message: "must NOT have more than 300 characters" };
-                              if (vErrors === null) {
-                                vErrors = [err104];
-                              } else {
-                                vErrors.push(err104);
-                              }
-                              errors++;
-                            }
-                            if (func3(data40) < 1) {
-                              const err105 = { instancePath: instancePath + "/frames/" + i4 + "/facts/" + i5 + "/value", schemaPath: "#/oneOf/1/properties/frames/items/properties/facts/items/properties/value/minLength", keyword: "minLength", params: { limit: 1 }, message: "must NOT have fewer than 1 characters" };
-                              if (vErrors === null) {
-                                vErrors = [err105];
-                              } else {
-                                vErrors.push(err105);
-                              }
-                              errors++;
-                            }
-                          } else {
-                            const err106 = { instancePath: instancePath + "/frames/" + i4 + "/facts/" + i5 + "/value", schemaPath: "#/oneOf/1/properties/frames/items/properties/facts/items/properties/value/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+                      let data41 = data40[i5];
+                      if (data41 && typeof data41 == "object" && !Array.isArray(data41)) {
+                        for (const prop9 of schema11.oneOf[1].properties.frames.items.properties.facts.items.required) {
+                          if (data41[prop9] === void 0) {
+                            const err106 = { instancePath: instancePath + "/frames/" + i4 + "/facts/" + i5, schemaPath: "#/oneOf/1/properties/frames/items/properties/facts/items/required", keyword: "required", params: { missingProperty: prop9 }, message: "must have required property '" + prop9 + "'" };
                             if (vErrors === null) {
                               vErrors = [err106];
                             } else {
@@ -1925,56 +2213,364 @@ var require_notebook_validator = __commonJS({
                             errors++;
                           }
                         }
+                        for (const key9 in data41) {
+                          if (!(key9 === "label" || key9 === "value")) {
+                            const err107 = { instancePath: instancePath + "/frames/" + i4 + "/facts/" + i5, schemaPath: "#/oneOf/1/properties/frames/items/properties/facts/items/additionalProperties", keyword: "additionalProperties", params: { additionalProperty: key9 }, message: "must NOT have additional properties" };
+                            if (vErrors === null) {
+                              vErrors = [err107];
+                            } else {
+                              vErrors.push(err107);
+                            }
+                            errors++;
+                          }
+                        }
+                        if (data41.label !== void 0) {
+                          let data42 = data41.label;
+                          if (typeof data42 === "string") {
+                            if (func3(data42) > 120) {
+                              const err108 = { instancePath: instancePath + "/frames/" + i4 + "/facts/" + i5 + "/label", schemaPath: "#/oneOf/1/properties/frames/items/properties/facts/items/properties/label/maxLength", keyword: "maxLength", params: { limit: 120 }, message: "must NOT have more than 120 characters" };
+                              if (vErrors === null) {
+                                vErrors = [err108];
+                              } else {
+                                vErrors.push(err108);
+                              }
+                              errors++;
+                            }
+                            if (func3(data42) < 1) {
+                              const err109 = { instancePath: instancePath + "/frames/" + i4 + "/facts/" + i5 + "/label", schemaPath: "#/oneOf/1/properties/frames/items/properties/facts/items/properties/label/minLength", keyword: "minLength", params: { limit: 1 }, message: "must NOT have fewer than 1 characters" };
+                              if (vErrors === null) {
+                                vErrors = [err109];
+                              } else {
+                                vErrors.push(err109);
+                              }
+                              errors++;
+                            }
+                          } else {
+                            const err110 = { instancePath: instancePath + "/frames/" + i4 + "/facts/" + i5 + "/label", schemaPath: "#/oneOf/1/properties/frames/items/properties/facts/items/properties/label/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+                            if (vErrors === null) {
+                              vErrors = [err110];
+                            } else {
+                              vErrors.push(err110);
+                            }
+                            errors++;
+                          }
+                        }
+                        if (data41.value !== void 0) {
+                          let data43 = data41.value;
+                          if (typeof data43 === "string") {
+                            if (func3(data43) > 300) {
+                              const err111 = { instancePath: instancePath + "/frames/" + i4 + "/facts/" + i5 + "/value", schemaPath: "#/oneOf/1/properties/frames/items/properties/facts/items/properties/value/maxLength", keyword: "maxLength", params: { limit: 300 }, message: "must NOT have more than 300 characters" };
+                              if (vErrors === null) {
+                                vErrors = [err111];
+                              } else {
+                                vErrors.push(err111);
+                              }
+                              errors++;
+                            }
+                            if (func3(data43) < 1) {
+                              const err112 = { instancePath: instancePath + "/frames/" + i4 + "/facts/" + i5 + "/value", schemaPath: "#/oneOf/1/properties/frames/items/properties/facts/items/properties/value/minLength", keyword: "minLength", params: { limit: 1 }, message: "must NOT have fewer than 1 characters" };
+                              if (vErrors === null) {
+                                vErrors = [err112];
+                              } else {
+                                vErrors.push(err112);
+                              }
+                              errors++;
+                            }
+                          } else {
+                            const err113 = { instancePath: instancePath + "/frames/" + i4 + "/facts/" + i5 + "/value", schemaPath: "#/oneOf/1/properties/frames/items/properties/facts/items/properties/value/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+                            if (vErrors === null) {
+                              vErrors = [err113];
+                            } else {
+                              vErrors.push(err113);
+                            }
+                            errors++;
+                          }
+                        }
                       } else {
-                        const err107 = { instancePath: instancePath + "/frames/" + i4 + "/facts/" + i5, schemaPath: "#/oneOf/1/properties/frames/items/properties/facts/items/type", keyword: "type", params: { type: "object" }, message: "must be object" };
+                        const err114 = { instancePath: instancePath + "/frames/" + i4 + "/facts/" + i5, schemaPath: "#/oneOf/1/properties/frames/items/properties/facts/items/type", keyword: "type", params: { type: "object" }, message: "must be object" };
                         if (vErrors === null) {
-                          vErrors = [err107];
+                          vErrors = [err114];
                         } else {
-                          vErrors.push(err107);
+                          vErrors.push(err114);
                         }
                         errors++;
                       }
                     }
                   } else {
-                    const err108 = { instancePath: instancePath + "/frames/" + i4 + "/facts", schemaPath: "#/oneOf/1/properties/frames/items/properties/facts/type", keyword: "type", params: { type: "array" }, message: "must be array" };
+                    const err115 = { instancePath: instancePath + "/frames/" + i4 + "/facts", schemaPath: "#/oneOf/1/properties/frames/items/properties/facts/type", keyword: "type", params: { type: "array" }, message: "must be array" };
                     if (vErrors === null) {
-                      vErrors = [err108];
+                      vErrors = [err115];
                     } else {
-                      vErrors.push(err108);
+                      vErrors.push(err115);
                     }
                     errors++;
                   }
                 }
+                if (data35.line !== void 0) {
+                  let data44 = data35.line;
+                  if (!(typeof data44 == "number" && (!(data44 % 1) && !isNaN(data44)))) {
+                    const err116 = { instancePath: instancePath + "/frames/" + i4 + "/line", schemaPath: "#/oneOf/1/properties/frames/items/properties/line/type", keyword: "type", params: { type: "integer" }, message: "must be integer" };
+                    if (vErrors === null) {
+                      vErrors = [err116];
+                    } else {
+                      vErrors.push(err116);
+                    }
+                    errors++;
+                  }
+                  if (typeof data44 == "number") {
+                    if (data44 > 60 || isNaN(data44)) {
+                      const err117 = { instancePath: instancePath + "/frames/" + i4 + "/line", schemaPath: "#/oneOf/1/properties/frames/items/properties/line/maximum", keyword: "maximum", params: { comparison: "<=", limit: 60 }, message: "must be <= 60" };
+                      if (vErrors === null) {
+                        vErrors = [err117];
+                      } else {
+                        vErrors.push(err117);
+                      }
+                      errors++;
+                    }
+                    if (data44 < 0 || isNaN(data44)) {
+                      const err118 = { instancePath: instancePath + "/frames/" + i4 + "/line", schemaPath: "#/oneOf/1/properties/frames/items/properties/line/minimum", keyword: "minimum", params: { comparison: ">=", limit: 0 }, message: "must be >= 0" };
+                      if (vErrors === null) {
+                        vErrors = [err118];
+                      } else {
+                        vErrors.push(err118);
+                      }
+                      errors++;
+                    }
+                  }
+                }
+                if (data35.variables !== void 0) {
+                  let data45 = data35.variables;
+                  if (Array.isArray(data45)) {
+                    if (data45.length > 16) {
+                      const err119 = { instancePath: instancePath + "/frames/" + i4 + "/variables", schemaPath: "#/oneOf/1/properties/frames/items/properties/variables/maxItems", keyword: "maxItems", params: { limit: 16 }, message: "must NOT have more than 16 items" };
+                      if (vErrors === null) {
+                        vErrors = [err119];
+                      } else {
+                        vErrors.push(err119);
+                      }
+                      errors++;
+                    }
+                    const len6 = data45.length;
+                    for (let i6 = 0; i6 < len6; i6++) {
+                      if (!validate41(data45[i6], { instancePath: instancePath + "/frames/" + i4 + "/variables/" + i6, parentData: data45, parentDataProperty: i6, rootData })) {
+                        vErrors = vErrors === null ? validate41.errors : vErrors.concat(validate41.errors);
+                        errors = vErrors.length;
+                      }
+                    }
+                  } else {
+                    const err120 = { instancePath: instancePath + "/frames/" + i4 + "/variables", schemaPath: "#/oneOf/1/properties/frames/items/properties/variables/type", keyword: "type", params: { type: "array" }, message: "must be array" };
+                    if (vErrors === null) {
+                      vErrors = [err120];
+                    } else {
+                      vErrors.push(err120);
+                    }
+                    errors++;
+                  }
+                }
+                if (data35.cursor !== void 0) {
+                  let data47 = data35.cursor;
+                  if (!(typeof data47 == "number" && (!(data47 % 1) && !isNaN(data47)))) {
+                    const err121 = { instancePath: instancePath + "/frames/" + i4 + "/cursor", schemaPath: "#/oneOf/1/properties/frames/items/properties/cursor/type", keyword: "type", params: { type: "integer" }, message: "must be integer" };
+                    if (vErrors === null) {
+                      vErrors = [err121];
+                    } else {
+                      vErrors.push(err121);
+                    }
+                    errors++;
+                  }
+                  if (typeof data47 == "number") {
+                    if (data47 > 29 || isNaN(data47)) {
+                      const err122 = { instancePath: instancePath + "/frames/" + i4 + "/cursor", schemaPath: "#/oneOf/1/properties/frames/items/properties/cursor/maximum", keyword: "maximum", params: { comparison: "<=", limit: 29 }, message: "must be <= 29" };
+                      if (vErrors === null) {
+                        vErrors = [err122];
+                      } else {
+                        vErrors.push(err122);
+                      }
+                      errors++;
+                    }
+                    if (data47 < 0 || isNaN(data47)) {
+                      const err123 = { instancePath: instancePath + "/frames/" + i4 + "/cursor", schemaPath: "#/oneOf/1/properties/frames/items/properties/cursor/minimum", keyword: "minimum", params: { comparison: ">=", limit: 0 }, message: "must be >= 0" };
+                      if (vErrors === null) {
+                        vErrors = [err123];
+                      } else {
+                        vErrors.push(err123);
+                      }
+                      errors++;
+                    }
+                  }
+                }
               } else {
-                const err109 = { instancePath: instancePath + "/frames/" + i4, schemaPath: "#/oneOf/1/properties/frames/items/type", keyword: "type", params: { type: "object" }, message: "must be object" };
+                const err124 = { instancePath: instancePath + "/frames/" + i4, schemaPath: "#/oneOf/1/properties/frames/items/type", keyword: "type", params: { type: "object" }, message: "must be object" };
                 if (vErrors === null) {
-                  vErrors = [err109];
+                  vErrors = [err124];
                 } else {
-                  vErrors.push(err109);
+                  vErrors.push(err124);
                 }
                 errors++;
               }
             }
           } else {
-            const err110 = { instancePath: instancePath + "/frames", schemaPath: "#/oneOf/1/properties/frames/type", keyword: "type", params: { type: "array" }, message: "must be array" };
+            const err125 = { instancePath: instancePath + "/frames", schemaPath: "#/oneOf/1/properties/frames/type", keyword: "type", params: { type: "array" }, message: "must be array" };
             if (vErrors === null) {
-              vErrors = [err110];
+              vErrors = [err125];
             } else {
-              vErrors.push(err110);
+              vErrors.push(err125);
+            }
+            errors++;
+          }
+        }
+        if (data.trace !== void 0) {
+          let data48 = data.trace;
+          if (data48 && typeof data48 == "object" && !Array.isArray(data48)) {
+            for (const prop10 of schema11.oneOf[1].properties.trace.required) {
+              if (data48[prop10] === void 0) {
+                const err126 = { instancePath: instancePath + "/trace", schemaPath: "#/oneOf/1/properties/trace/required", keyword: "required", params: { missingProperty: prop10 }, message: "must have required property '" + prop10 + "'" };
+                if (vErrors === null) {
+                  vErrors = [err126];
+                } else {
+                  vErrors.push(err126);
+                }
+                errors++;
+              }
+            }
+            for (const key10 in data48) {
+              if (!(key10 === "language" || key10 === "code" || key10 === "input")) {
+                const err127 = { instancePath: instancePath + "/trace", schemaPath: "#/oneOf/1/properties/trace/additionalProperties", keyword: "additionalProperties", params: { additionalProperty: key10 }, message: "must NOT have additional properties" };
+                if (vErrors === null) {
+                  vErrors = [err127];
+                } else {
+                  vErrors.push(err127);
+                }
+                errors++;
+              }
+            }
+            if (data48.language !== void 0) {
+              let data49 = data48.language;
+              if (typeof data49 === "string") {
+                if (func3(data49) > 40) {
+                  const err128 = { instancePath: instancePath + "/trace/language", schemaPath: "#/oneOf/1/properties/trace/properties/language/maxLength", keyword: "maxLength", params: { limit: 40 }, message: "must NOT have more than 40 characters" };
+                  if (vErrors === null) {
+                    vErrors = [err128];
+                  } else {
+                    vErrors.push(err128);
+                  }
+                  errors++;
+                }
+                if (func3(data49) < 1) {
+                  const err129 = { instancePath: instancePath + "/trace/language", schemaPath: "#/oneOf/1/properties/trace/properties/language/minLength", keyword: "minLength", params: { limit: 1 }, message: "must NOT have fewer than 1 characters" };
+                  if (vErrors === null) {
+                    vErrors = [err129];
+                  } else {
+                    vErrors.push(err129);
+                  }
+                  errors++;
+                }
+              } else {
+                const err130 = { instancePath: instancePath + "/trace/language", schemaPath: "#/oneOf/1/properties/trace/properties/language/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+                if (vErrors === null) {
+                  vErrors = [err130];
+                } else {
+                  vErrors.push(err130);
+                }
+                errors++;
+              }
+            }
+            if (data48.code !== void 0) {
+              let data50 = data48.code;
+              if (Array.isArray(data50)) {
+                if (data50.length > 60) {
+                  const err131 = { instancePath: instancePath + "/trace/code", schemaPath: "#/oneOf/1/properties/trace/properties/code/maxItems", keyword: "maxItems", params: { limit: 60 }, message: "must NOT have more than 60 items" };
+                  if (vErrors === null) {
+                    vErrors = [err131];
+                  } else {
+                    vErrors.push(err131);
+                  }
+                  errors++;
+                }
+                if (data50.length < 1) {
+                  const err132 = { instancePath: instancePath + "/trace/code", schemaPath: "#/oneOf/1/properties/trace/properties/code/minItems", keyword: "minItems", params: { limit: 1 }, message: "must NOT have fewer than 1 items" };
+                  if (vErrors === null) {
+                    vErrors = [err132];
+                  } else {
+                    vErrors.push(err132);
+                  }
+                  errors++;
+                }
+                const len7 = data50.length;
+                for (let i7 = 0; i7 < len7; i7++) {
+                  let data51 = data50[i7];
+                  if (typeof data51 === "string") {
+                    if (func3(data51) > 300) {
+                      const err133 = { instancePath: instancePath + "/trace/code/" + i7, schemaPath: "#/oneOf/1/properties/trace/properties/code/items/maxLength", keyword: "maxLength", params: { limit: 300 }, message: "must NOT have more than 300 characters" };
+                      if (vErrors === null) {
+                        vErrors = [err133];
+                      } else {
+                        vErrors.push(err133);
+                      }
+                      errors++;
+                    }
+                  } else {
+                    const err134 = { instancePath: instancePath + "/trace/code/" + i7, schemaPath: "#/oneOf/1/properties/trace/properties/code/items/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+                    if (vErrors === null) {
+                      vErrors = [err134];
+                    } else {
+                      vErrors.push(err134);
+                    }
+                    errors++;
+                  }
+                }
+              } else {
+                const err135 = { instancePath: instancePath + "/trace/code", schemaPath: "#/oneOf/1/properties/trace/properties/code/type", keyword: "type", params: { type: "array" }, message: "must be array" };
+                if (vErrors === null) {
+                  vErrors = [err135];
+                } else {
+                  vErrors.push(err135);
+                }
+                errors++;
+              }
+            }
+            if (data48.input !== void 0) {
+              let data52 = data48.input;
+              if (typeof data52 === "string") {
+                if (!pattern2.test(data52)) {
+                  const err136 = { instancePath: instancePath + "/trace/input", schemaPath: "#/oneOf/1/properties/trace/properties/input/pattern", keyword: "pattern", params: { pattern: "^[A-Za-z][A-Za-z0-9_]{0,31}$" }, message: 'must match pattern "^[A-Za-z][A-Za-z0-9_]{0,31}$"' };
+                  if (vErrors === null) {
+                    vErrors = [err136];
+                  } else {
+                    vErrors.push(err136);
+                  }
+                  errors++;
+                }
+              } else {
+                const err137 = { instancePath: instancePath + "/trace/input", schemaPath: "#/oneOf/1/properties/trace/properties/input/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+                if (vErrors === null) {
+                  vErrors = [err137];
+                } else {
+                  vErrors.push(err137);
+                }
+                errors++;
+              }
+            }
+          } else {
+            const err138 = { instancePath: instancePath + "/trace", schemaPath: "#/oneOf/1/properties/trace/type", keyword: "type", params: { type: "object" }, message: "must be object" };
+            if (vErrors === null) {
+              vErrors = [err138];
+            } else {
+              vErrors.push(err138);
             }
             errors++;
           }
         }
       } else {
-        const err111 = { instancePath, schemaPath: "#/oneOf/1/type", keyword: "type", params: { type: "object" }, message: "must be object" };
+        const err139 = { instancePath, schemaPath: "#/oneOf/1/type", keyword: "type", params: { type: "object" }, message: "must be object" };
         if (vErrors === null) {
-          vErrors = [err111];
+          vErrors = [err139];
         } else {
-          vErrors.push(err111);
+          vErrors.push(err139);
         }
         errors++;
       }
-      var _valid0 = _errs66 === errors;
+      var _valid0 = _errs73 === errors;
       if (_valid0 && valid0) {
         valid0 = false;
         passing0 = [passing0, 1];
@@ -1985,11 +2581,11 @@ var require_notebook_validator = __commonJS({
         }
       }
       if (!valid0) {
-        const err112 = { instancePath, schemaPath: "#/oneOf", keyword: "oneOf", params: { passingSchemas: passing0 }, message: "must match exactly one schema in oneOf" };
+        const err140 = { instancePath, schemaPath: "#/oneOf", keyword: "oneOf", params: { passingSchemas: passing0 }, message: "must match exactly one schema in oneOf" };
         if (vErrors === null) {
-          vErrors = [err112];
+          vErrors = [err140];
         } else {
-          vErrors.push(err112);
+          vErrors.push(err140);
         }
         errors++;
       } else {
@@ -4227,12 +4823,12 @@ var require_notebook_validator = __commonJS({
       validate27.errors = vErrors;
       return errors === 0;
     }
-    var schema14 = { "type": "object", "required": ["x", "y", "width", "z"], "properties": { "x": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "y": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "width": { "type": "number", "minimum": 20, "maximum": 1e4 }, "height": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "z": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "sheet": { "type": "integer", "minimum": 0 } } };
-    function validate45(data, { instancePath = "", parentData, parentDataProperty, rootData = data } = {}) {
+    var schema16 = { "type": "object", "required": ["x", "y", "width", "z"], "properties": { "x": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "y": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "width": { "type": "number", "minimum": 20, "maximum": 1e4 }, "height": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "z": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "sheet": { "type": "integer", "minimum": 0 } } };
+    function validate50(data, { instancePath = "", parentData, parentDataProperty, rootData = data } = {}) {
       let vErrors = null;
       let errors = 0;
       if (data && typeof data == "object" && !Array.isArray(data)) {
-        for (const prop0 of schema14.required) {
+        for (const prop0 of schema16.required) {
           if (data[prop0] === void 0) {
             const err0 = { instancePath, schemaPath: "#/required", keyword: "required", params: { missingProperty: prop0 }, message: "must have required property '" + prop0 + "'" };
             if (vErrors === null) {
@@ -4430,10 +5026,10 @@ var require_notebook_validator = __commonJS({
         }
         errors++;
       }
-      validate45.errors = vErrors;
+      validate50.errors = vErrors;
       return errors === 0;
     }
-    function validate44(data, { instancePath = "", parentData, parentDataProperty, rootData = data } = {}) {
+    function validate49(data, { instancePath = "", parentData, parentDataProperty, rootData = data } = {}) {
       let vErrors = null;
       let errors = 0;
       if (data && typeof data == "object" && !Array.isArray(data)) {
@@ -4452,8 +5048,8 @@ var require_notebook_validator = __commonJS({
           let data0 = data.landscape;
           if (data0 && typeof data0 == "object" && !Array.isArray(data0)) {
             for (const key1 in data0) {
-              if (!validate45(data0[key1], { instancePath: instancePath + "/landscape/" + key1.replace(/~/g, "~0").replace(/\//g, "~1"), parentData: data0, parentDataProperty: key1, rootData })) {
-                vErrors = vErrors === null ? validate45.errors : vErrors.concat(validate45.errors);
+              if (!validate50(data0[key1], { instancePath: instancePath + "/landscape/" + key1.replace(/~/g, "~0").replace(/\//g, "~1"), parentData: data0, parentDataProperty: key1, rootData })) {
+                vErrors = vErrors === null ? validate50.errors : vErrors.concat(validate50.errors);
                 errors = vErrors.length;
               }
             }
@@ -4471,8 +5067,8 @@ var require_notebook_validator = __commonJS({
           let data2 = data.portrait;
           if (data2 && typeof data2 == "object" && !Array.isArray(data2)) {
             for (const key2 in data2) {
-              if (!validate45(data2[key2], { instancePath: instancePath + "/portrait/" + key2.replace(/~/g, "~0").replace(/\//g, "~1"), parentData: data2, parentDataProperty: key2, rootData })) {
-                vErrors = vErrors === null ? validate45.errors : vErrors.concat(validate45.errors);
+              if (!validate50(data2[key2], { instancePath: instancePath + "/portrait/" + key2.replace(/~/g, "~0").replace(/\//g, "~1"), parentData: data2, parentDataProperty: key2, rootData })) {
+                vErrors = vErrors === null ? validate50.errors : vErrors.concat(validate50.errors);
                 errors = vErrors.length;
               }
             }
@@ -4495,15 +5091,15 @@ var require_notebook_validator = __commonJS({
         }
         errors++;
       }
-      validate44.errors = vErrors;
+      validate49.errors = vErrors;
       return errors === 0;
     }
-    var schema15 = { "type": "object", "required": ["blockId", "start", "end", "exact", "prefix", "suffix"], "properties": { "blockId": { "type": "string" }, "start": { "type": "integer", "minimum": 0 }, "end": { "type": "integer", "minimum": 0 }, "exact": { "type": "string" }, "prefix": { "type": "string" }, "suffix": { "type": "string" } } };
-    function validate53(data, { instancePath = "", parentData, parentDataProperty, rootData = data } = {}) {
+    var schema17 = { "type": "object", "required": ["blockId", "start", "end", "exact", "prefix", "suffix"], "properties": { "blockId": { "type": "string" }, "start": { "type": "integer", "minimum": 0 }, "end": { "type": "integer", "minimum": 0 }, "exact": { "type": "string" }, "prefix": { "type": "string" }, "suffix": { "type": "string" } } };
+    function validate58(data, { instancePath = "", parentData, parentDataProperty, rootData = data } = {}) {
       let vErrors = null;
       let errors = 0;
       if (data && typeof data == "object" && !Array.isArray(data)) {
-        for (const prop0 of schema15.required) {
+        for (const prop0 of schema17.required) {
           if (data[prop0] === void 0) {
             const err0 = { instancePath, schemaPath: "#/required", keyword: "required", params: { missingProperty: prop0 }, message: "must have required property '" + prop0 + "'" };
             if (vErrors === null) {
@@ -4613,7 +5209,7 @@ var require_notebook_validator = __commonJS({
         }
         errors++;
       }
-      validate53.errors = vErrors;
+      validate58.errors = vErrors;
       return errors === 0;
     }
     function validate21(data, { instancePath = "", parentData, parentDataProperty, rootData = data } = {}) {
@@ -5160,8 +5756,8 @@ var require_notebook_validator = __commonJS({
                               }
                             }
                             if (data19.placements !== void 0) {
-                              if (!validate44(data19.placements, { instancePath: instancePath + "/notebook/chapters/" + i2 + "/pages/" + i3 + "/placements", parentData: data19, parentDataProperty: "placements", rootData })) {
-                                vErrors = vErrors === null ? validate44.errors : vErrors.concat(validate44.errors);
+                              if (!validate49(data19.placements, { instancePath: instancePath + "/notebook/chapters/" + i2 + "/pages/" + i3 + "/placements", parentData: data19, parentDataProperty: "placements", rootData })) {
+                                vErrors = vErrors === null ? validate49.errors : vErrors.concat(validate49.errors);
                                 errors = vErrors.length;
                               }
                             }
@@ -5750,8 +6346,8 @@ var require_notebook_validator = __commonJS({
                       }
                     }
                     if (data62.selector !== void 0) {
-                      if (!validate53(data62.selector, { instancePath: instancePath + "/userState/notes/" + i7 + "/selector", parentData: data62, parentDataProperty: "selector", rootData })) {
-                        vErrors = vErrors === null ? validate53.errors : vErrors.concat(validate53.errors);
+                      if (!validate58(data62.selector, { instancePath: instancePath + "/userState/notes/" + i7 + "/selector", parentData: data62, parentDataProperty: "selector", rootData })) {
+                        vErrors = vErrors === null ? validate58.errors : vErrors.concat(validate58.errors);
                         errors = vErrors.length;
                       }
                     }
@@ -6298,8 +6894,8 @@ var require_notebook_validator = __commonJS({
                               }
                             }
                             if (data98.selector !== void 0) {
-                              if (!validate53(data98.selector, { instancePath: instancePath + "/userState/notes/" + i7 + "/anchors/" + i8 + "/selector", parentData: data98, parentDataProperty: "selector", rootData })) {
-                                vErrors = vErrors === null ? validate53.errors : vErrors.concat(validate53.errors);
+                              if (!validate58(data98.selector, { instancePath: instancePath + "/userState/notes/" + i7 + "/anchors/" + i8 + "/selector", parentData: data98, parentDataProperty: "selector", rootData })) {
+                                vErrors = vErrors === null ? validate58.errors : vErrors.concat(validate58.errors);
                                 errors = vErrors.length;
                               }
                             }
@@ -6441,8 +7037,8 @@ var require_notebook_validator = __commonJS({
                       if (Array.isArray(data107)) {
                         const len10 = data107.length;
                         for (let i10 = 0; i10 < len10; i10++) {
-                          if (!validate53(data107[i10], { instancePath: instancePath + "/userState/annotations/" + i9 + "/selectors/" + i10, parentData: data107, parentDataProperty: i10, rootData })) {
-                            vErrors = vErrors === null ? validate53.errors : vErrors.concat(validate53.errors);
+                          if (!validate58(data107[i10], { instancePath: instancePath + "/userState/annotations/" + i9 + "/selectors/" + i10, parentData: data107, parentDataProperty: i10, rootData })) {
+                            vErrors = vErrors === null ? validate58.errors : vErrors.concat(validate58.errors);
                             errors = vErrors.length;
                           }
                         }
@@ -7069,8 +7665,8 @@ var require_notebook_validator = __commonJS({
                       }
                     }
                     if (data136.selector !== void 0) {
-                      if (!validate53(data136.selector, { instancePath: instancePath + "/userState/doubts/" + i15 + "/selector", parentData: data136, parentDataProperty: "selector", rootData })) {
-                        vErrors = vErrors === null ? validate53.errors : vErrors.concat(validate53.errors);
+                      if (!validate58(data136.selector, { instancePath: instancePath + "/userState/doubts/" + i15 + "/selector", parentData: data136, parentDataProperty: "selector", rootData })) {
+                        vErrors = vErrors === null ? validate58.errors : vErrors.concat(validate58.errors);
                         errors = vErrors.length;
                       }
                     }
@@ -7176,8 +7772,8 @@ var require_notebook_validator = __commonJS({
                               }
                             }
                             if (data146.selector !== void 0) {
-                              if (!validate53(data146.selector, { instancePath: instancePath + "/userState/doubts/" + i15 + "/anchors/" + i16 + "/selector", parentData: data146, parentDataProperty: "selector", rootData })) {
-                                vErrors = vErrors === null ? validate53.errors : vErrors.concat(validate53.errors);
+                              if (!validate58(data146.selector, { instancePath: instancePath + "/userState/doubts/" + i15 + "/anchors/" + i16 + "/selector", parentData: data146, parentDataProperty: "selector", rootData })) {
+                                vErrors = vErrors === null ? validate58.errors : vErrors.concat(validate58.errors);
                                 errors = vErrors.length;
                               }
                             }
@@ -7477,8 +8073,8 @@ var require_notebook_validator = __commonJS({
                       }
                     }
                     if (data160.selector !== void 0) {
-                      if (!validate53(data160.selector, { instancePath: instancePath + "/userState/bookmarks/" + i18 + "/selector", parentData: data160, parentDataProperty: "selector", rootData })) {
-                        vErrors = vErrors === null ? validate53.errors : vErrors.concat(validate53.errors);
+                      if (!validate58(data160.selector, { instancePath: instancePath + "/userState/bookmarks/" + i18 + "/selector", parentData: data160, parentDataProperty: "selector", rootData })) {
+                        vErrors = vErrors === null ? validate58.errors : vErrors.concat(validate58.errors);
                         errors = vErrors.length;
                       }
                     }
@@ -8087,8 +8683,8 @@ var require_notebook_validator = __commonJS({
               let data197 = data58.layouts;
               if (data197 && typeof data197 == "object" && !Array.isArray(data197)) {
                 for (const key7 in data197) {
-                  if (!validate44(data197[key7], { instancePath: instancePath + "/userState/layouts/" + key7.replace(/~/g, "~0").replace(/\//g, "~1"), parentData: data197, parentDataProperty: key7, rootData })) {
-                    vErrors = vErrors === null ? validate44.errors : vErrors.concat(validate44.errors);
+                  if (!validate49(data197[key7], { instancePath: instancePath + "/userState/layouts/" + key7.replace(/~/g, "~0").replace(/\//g, "~1"), parentData: data197, parentDataProperty: key7, rootData })) {
+                    vErrors = vErrors === null ? validate49.errors : vErrors.concat(validate49.errors);
                     errors = vErrors.length;
                   }
                 }

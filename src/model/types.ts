@@ -3,10 +3,15 @@ export type BlockType = 'prose'|'concept'|'steps'|'example'|'comparison'|'formul
 export type Expression = number|string|{op:'add'|'sub'|'mul'|'div'|'pow'|'ln'|'exp'|'abs'|'min'|'max';args:Expression[]};
 export interface ExplorationParameter {id:string;label:string;min:number;max:number;step:number;value:number;unit?:string}
 export interface ExplorationMeasure {label:string;expression:Expression;unit?:string;digits?:number}
-export interface ExplorationFrame {id:string;label:string;quote?:string;text:string;facts?:{label:string;value:string}[]}
-export type Exploration = {kind:'plot';parameters:ExplorationParameter[];domain:{min:number;max:number;label:string};yLabel:string;observations?:{x:number;y:number;label?:string}[];series:{label:string;expression:Expression}[];outputs:ExplorationMeasure[]}|{kind:'sequence'|'reading';frames:ExplorationFrame[]};
+export type TraceScalar=string|number|boolean|null;
+export interface TraceVariable {name:string;value:TraceScalar|TraceScalar[];display?:'list'|'set'}
+export interface ExplorationFrame {id:string;label:string;quote?:string;text:string;facts?:{label:string;value:string}[];line?:number;variables?:TraceVariable[];cursor?:number}
+export type PlotExploration={kind:'plot';parameters:ExplorationParameter[];domain:{min:number;max:number;label:string};yLabel:string;observations?:{x:number;y:number;label?:string}[];series:{label:string;expression:Expression}[];outputs:ExplorationMeasure[];regression?:{slope:string;intercept:string}};
+export type Exploration = PlotExploration|{kind:'sequence'|'reading';frames:ExplorationFrame[];trace?:{language:string;code:string[];input?:string}};
 export interface ExplorationState {values?:Record<string,number>;active?:string}
-export function explorationText(a:Exploration):string {return a.kind==='plot'?[...a.parameters.map(p=>p.label),a.domain.label,a.yLabel,...a.series.map(s=>s.label),...a.outputs.map(o=>o.label)].join('\n'):a.frames.flatMap(f=>[f.label,f.quote||'',f.text,...(f.facts||[]).map(v=>v.label+'：'+v.value)]).filter(Boolean).join('\n');}
+export function traceValueText(v:TraceVariable){if(!Array.isArray(v.value))return JSON.stringify(v.value);const items=v.value.map(x=>JSON.stringify(x)).join(', ');return v.display==='set'?(v.value.length?'{'+items+'}':'set()'):'['+items+']';}
+export function frameText(f:ExplorationFrame){return [f.label,f.quote||'',f.text,...(f.facts||[]).map(v=>v.label+'：'+v.value),...(f.variables||[]).map(v=>v.name+' = '+traceValueText(v))].filter(Boolean);}
+export function explorationText(a:Exploration):string {return a.kind==='plot'?[...a.parameters.map(p=>p.label),a.domain.label,a.yLabel,...a.series.map(s=>s.label),...a.outputs.map(o=>o.label)].join('\n'):[...a.frames.flatMap(frameText),...(a.trace?.code||[])].join('\n');}
 export interface Item { id: string; text: string }
 export interface FormulaParameter { symbol:string; name:string; description:string }
 export interface DiagramNode { id: string; label: string; x?: number; y?: number; shape?:'rounded'|'rectangle'|'circle'|'ellipse'|'diamond'|'hexagon'|'pill'|'document'|'cylinder' }

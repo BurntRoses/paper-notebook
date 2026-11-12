@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "showcase-business",
-    "revision": 7,
+    "revision": 8,
     "title": "单位贡献与会员制",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -563,6 +563,39 @@
                 }
               }
             ]
+          },
+          {
+            "id": "business-practice",
+            "title": "成本与利润练习",
+            "subject": "business",
+            "layout": "exam",
+            "blocks": [
+              {
+                "id": "business-practice-cost",
+                "type": "exercise",
+                "questionType": "single",
+                "question": "单价 80 元/件，单位变动成本 50 元/件，固定成本从 3000 元增加到 4500 元。销售 120 件时的利润是多少？",
+                "options": [
+                  {
+                    "id": "business-practice-cost-a",
+                    "text": "−900 元"
+                  },
+                  {
+                    "id": "business-practice-cost-b",
+                    "text": "600 元"
+                  },
+                  {
+                    "id": "business-practice-cost-c",
+                    "text": "900 元"
+                  }
+                ],
+                "solution": [
+                  "business-practice-cost-a"
+                ],
+                "explanation": "单位贡献为 80−50=30 元/件，120 件贡献 3600 元。扣除 4500 元固定成本，利润为 −900 元。新的平衡销量为 4500÷30=150 件。",
+                "points": 2
+              }
+            ]
           }
         ]
       }
@@ -600,7 +633,7 @@
   },
   "assets": [],
   "extensions": {
-    "baseRevision": 6,
+    "baseRevision": 7,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

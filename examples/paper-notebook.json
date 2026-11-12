@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "paper-notebook-introduction",
-    "revision": 15,
+    "revision": 16,
     "title": "复利与增长",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -1833,7 +1833,7 @@
               {
                 "id": "code-exploration",
                 "type": "exploration",
-                "title": "逐条读入顾客编号",
+                "title": "集合去重的执行过程",
                 "study": {
                   "marks": [
                     {
@@ -1849,85 +1849,323 @@
                 },
                 "exploration": {
                   "kind": "sequence",
+                  "trace": {
+                    "language": "Python",
+                    "code": [
+                      "records = [\"A\", \"A\", \"B\"]",
+                      "seen = set()",
+                      "for customer in records:",
+                      "    seen.add(customer)",
+                      "count = len(seen)"
+                    ],
+                    "input": "records"
+                  },
                   "frames": [
                     {
                       "id": "set-empty",
-                      "label": "初始状态",
-                      "quote": "seen = set()",
-                      "text": "新集合为空。尚未读入记录，顾客去重数为 0。",
-                      "facts": [
+                      "label": "初始化",
+                      "line": 2,
+                      "text": "输入列表保留三条记录。集合 seen 为空，尚未进入循环。",
+                      "variables": [
                         {
-                          "label": "集合",
-                          "value": "∅（空集）"
+                          "name": "records",
+                          "value": [
+                            "A",
+                            "A",
+                            "B"
+                          ]
                         },
                         {
-                          "label": "去重数",
-                          "value": "0"
+                          "name": "seen",
+                          "value": [],
+                          "display": "set"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "set-select-first",
+                      "label": "取第一条记录",
+                      "line": 3,
+                      "cursor": 0,
+                      "text": "循环从列表取出第一个 A，变量 customer 的值为 \"A\"。",
+                      "variables": [
+                        {
+                          "name": "records",
+                          "value": [
+                            "A",
+                            "A",
+                            "B"
+                          ]
+                        },
+                        {
+                          "name": "seen",
+                          "value": [],
+                          "display": "set"
+                        },
+                        {
+                          "name": "customer",
+                          "value": "A"
                         }
                       ]
                     },
                     {
                       "id": "set-first",
-                      "label": "读入 A",
-                      "quote": "seen.add(\"A\")",
-                      "text": "A 首次出现，加入集合。集合包含一个不同的编号。",
-                      "facts": [
+                      "label": "加入 A",
+                      "line": 4,
+                      "cursor": 0,
+                      "text": "seen.add(customer) 将 A 加入集合，集合中有一个元素。",
+                      "variables": [
                         {
-                          "label": "已读记录",
-                          "value": "[A]"
+                          "name": "records",
+                          "value": [
+                            "A",
+                            "A",
+                            "B"
+                          ]
                         },
                         {
-                          "label": "集合",
-                          "value": "{A}"
+                          "name": "seen",
+                          "value": [
+                            "A"
+                          ],
+                          "display": "set"
                         },
                         {
-                          "label": "去重数",
-                          "value": "1"
+                          "name": "customer",
+                          "value": "A"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "set-select-repeat",
+                      "label": "取第二条记录",
+                      "line": 3,
+                      "cursor": 1,
+                      "text": "第二条记录仍为 A。输入位置前进，customer 的值保持不变。",
+                      "variables": [
+                        {
+                          "name": "records",
+                          "value": [
+                            "A",
+                            "A",
+                            "B"
+                          ]
+                        },
+                        {
+                          "name": "seen",
+                          "value": [
+                            "A"
+                          ],
+                          "display": "set"
+                        },
+                        {
+                          "name": "customer",
+                          "value": "A"
                         }
                       ]
                     },
                     {
                       "id": "set-repeat",
-                      "label": "再次读入 A",
-                      "quote": "seen.add(\"A\")",
-                      "text": "集合已经包含 A。再次加入相等的值后，集合仍为 {A}，去重数保持为 1。",
-                      "facts": [
+                      "label": "再次加入 A",
+                      "line": 4,
+                      "cursor": 1,
+                      "text": "集合已经包含 A。执行 add 后，集合中的元素保持不变。",
+                      "variables": [
                         {
-                          "label": "已读记录",
-                          "value": "[A, A]"
+                          "name": "records",
+                          "value": [
+                            "A",
+                            "A",
+                            "B"
+                          ]
                         },
                         {
-                          "label": "集合",
-                          "value": "{A}"
+                          "name": "seen",
+                          "value": [
+                            "A"
+                          ],
+                          "display": "set"
                         },
                         {
-                          "label": "去重数",
-                          "value": "1"
+                          "name": "customer",
+                          "value": "A"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "set-select-second",
+                      "label": "取第三条记录",
+                      "line": 3,
+                      "cursor": 2,
+                      "text": "循环取出 B，customer 从 \"A\" 变为 \"B\"。",
+                      "variables": [
+                        {
+                          "name": "records",
+                          "value": [
+                            "A",
+                            "A",
+                            "B"
+                          ]
+                        },
+                        {
+                          "name": "seen",
+                          "value": [
+                            "A"
+                          ],
+                          "display": "set"
+                        },
+                        {
+                          "name": "customer",
+                          "value": "B"
                         }
                       ]
                     },
                     {
                       "id": "set-second",
-                      "label": "读入 B",
-                      "quote": "seen.add(\"B\")",
-                      "text": "B 与已有的 A 不同，加入后集合有两个元素。三条记录对应两个不同的顾客编号。",
-                      "facts": [
+                      "label": "加入 B",
+                      "line": 4,
+                      "cursor": 2,
+                      "text": "B 加入 seen，集合现在包含 A、B 两个不同的编号。",
+                      "variables": [
                         {
-                          "label": "已读记录",
-                          "value": "[A, A, B]"
+                          "name": "records",
+                          "value": [
+                            "A",
+                            "A",
+                            "B"
+                          ]
                         },
                         {
-                          "label": "集合",
-                          "value": "{A, B}"
+                          "name": "seen",
+                          "value": [
+                            "A",
+                            "B"
+                          ],
+                          "display": "set"
                         },
                         {
-                          "label": "去重数",
-                          "value": "2"
+                          "name": "customer",
+                          "value": "B"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "set-count",
+                      "label": "计算去重数",
+                      "line": 5,
+                      "cursor": 2,
+                      "text": "循环结束，len(seen) 返回 2。count 保存去重后的顾客人数。",
+                      "variables": [
+                        {
+                          "name": "records",
+                          "value": [
+                            "A",
+                            "A",
+                            "B"
+                          ]
+                        },
+                        {
+                          "name": "seen",
+                          "value": [
+                            "A",
+                            "B"
+                          ],
+                          "display": "set"
+                        },
+                        {
+                          "name": "customer",
+                          "value": "B"
+                        },
+                        {
+                          "name": "count",
+                          "value": 2
                         }
                       ]
                     }
                   ]
                 }
+              }
+            ]
+          },
+          {
+            "id": "literature-practice",
+            "title": "《春望》赏析练习",
+            "subject": "literature",
+            "layout": "exam",
+            "blocks": [
+              {
+                "id": "literature-practice-image",
+                "type": "exercise",
+                "questionType": "subjective",
+                "question": "结合“感时花溅泪，恨别鸟惊心”，分析春日花鸟与诗人情感的关系，并说明“感时”“恨别”在全诗中的作用。",
+                "explanation": "参考要点：花鸟属于春日景物，见花落泪、闻鸟惊心体现触景生情，乐景反衬忧时伤别；也可从移情于物展开。“感时”承接国破与战乱，“恨别”连向家书与思家，使忧国和思家交织。赏析须结合字词与诗句说明。",
+                "points": 0
+              }
+            ]
+          },
+          {
+            "id": "business-practice",
+            "title": "成本与利润练习",
+            "subject": "business",
+            "layout": "exam",
+            "blocks": [
+              {
+                "id": "business-practice-cost",
+                "type": "exercise",
+                "questionType": "single",
+                "question": "单价 80 元/件，单位变动成本 50 元/件，固定成本从 3000 元增加到 4500 元。销售 120 件时的利润是多少？",
+                "options": [
+                  {
+                    "id": "business-practice-cost-a",
+                    "text": "−900 元"
+                  },
+                  {
+                    "id": "business-practice-cost-b",
+                    "text": "600 元"
+                  },
+                  {
+                    "id": "business-practice-cost-c",
+                    "text": "900 元"
+                  }
+                ],
+                "solution": [
+                  "business-practice-cost-a"
+                ],
+                "explanation": "单位贡献为 80−50=30 元/件，120 件贡献 3600 元。扣除 4500 元固定成本，利润为 −900 元。新的平衡销量为 4500÷30=150 件。",
+                "points": 2
+              }
+            ]
+          },
+          {
+            "id": "code-practice",
+            "title": "集合与循环练习",
+            "subject": "code",
+            "layout": "exam",
+            "blocks": [
+              {
+                "id": "code-practice-state",
+                "type": "exercise",
+                "questionType": "single",
+                "question": "records = [\"A\", \"A\", \"B\"]。程序依次执行 seen.add(customer)，第二次 add 执行结束后，seen 的内容是什么？",
+                "options": [
+                  {
+                    "id": "code-practice-state-a",
+                    "text": "{\"A\"}"
+                  },
+                  {
+                    "id": "code-practice-state-b",
+                    "text": "[\"A\", \"A\"]"
+                  },
+                  {
+                    "id": "code-practice-state-c",
+                    "text": "{\"A\", \"B\"}"
+                  }
+                ],
+                "solution": [
+                  "code-practice-state-a"
+                ],
+                "explanation": "前两条记录都是 A。集合保留互不相等的元素，因此第二次 add 后仍为 {\"A\"}。第三条记录 B 加入后，集合才变为 {\"A\", \"B\"}。",
+                "points": 1
               }
             ]
           }
@@ -1990,7 +2228,7 @@
     }
   ],
   "extensions": {
-    "baseRevision": 14,
+    "baseRevision": 15,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

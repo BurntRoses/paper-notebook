@@ -1,0 +1,5161 @@
+{
+  "date": "2026-11-12",
+  "version": "2.7.0",
+  "scope": "在线试读统一入口、实际对象快速跳转、拟合实时指标、代码执行跟踪、完整文学赏析及生成规范",
+  "modelTests": {
+    "passed": 100,
+    "failed": 0
+  },
+  "reports": [
+    {
+      "name": "machine-learning",
+      "revision": 12,
+      "sourceSHA256": "b8973db1f8ac2675f7661c89b1186ad6a95185a4d5f8305bcadb900f555d1aae",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "ml-ch-data",
+          "writing": "开篇直接说明参数、损失和优化，房价情境与无量纲教学数据分别交代。",
+          "teaching": "侧栏补特征向量和预测时点，旧的参数锚点已更新。",
+          "facts": "核对 A/B/C 的输入 1/2/3 与标签 2/4/5；未将房价单位套入无量纲数据。",
+          "brief": "按具备一次函数基础的读者组织机制讲解。"
+        },
+        {
+          "chapterId": "ml-ch-model",
+          "writing": "拟合正文沿用原有模型说明，新增练习直接给出数据、模型与单位换算；题面不预先标记答案。",
+          "teaching": "参数、曲线与右栏的 MSE/RMSE/R²同步变化；逐点误差可展开，残差在图中标示；计算拟合参数使用最小二乘。新增两题可从习题菜单定位、作答。",
+          "facts": "独立核算初始残差 0/−1/−1，MSE=2/3；OLS 为 w=1.5、b=2/3，MSE=1/18；显示 b=0.667 时 MSE 四位小数为 0.0556。练习 w=1.5、b=.5 的 MSE=1/12；元换万元后 MSE/RMSE 分别缩小 10⁸/10⁴ 倍。",
+          "brief": "保留线性模型机制讲解；指标与图形同源，先手动调参再比较解析解。"
+        },
+        {
+          "chapterId": "ml-ch-train",
+          "writing": "更新说明围绕导数、步长与损失变化展开，删去正文复述式侧栏。",
+          "teaching": "增加连续更新的损失曲线；侧栏补第二次更新和临界步长。",
+          "facts": "J=2.5(w−2)²，η=.1 时 1→1.5→1.75→1.875；损失依次 2.5/.625/.15625/.0390625；收缩条件 0<η<.4。",
+          "brief": "提供推导和核算，保留固定 b=0 的条件。"
+        },
+        {
+          "chapterId": "ml-ch-evaluate",
+          "writing": "以候选方案选择解释验证偏差，泛化定义采用直接表述。",
+          "teaching": "增加 L2 参数收缩与两特征内积的具体计算，避免术语罗列。",
+          "facts": "L2 目标导数为 5(w−2)+2λw，λ=.5 时 w=5/3；两特征预测 3×2−1×1+4=9。",
+          "brief": "用患者分组和时间拆分说明评估设计，保留真实任务中的输入时点要求。"
+        }
+      ],
+      "decisions": [],
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "1687617e34e34764b56b746ddb290734c617de44a5f977543f3abc4be068d7b8",
+        "sourceSHA256": "b8973db1f8ac2675f7661c89b1186ad6a95185a4d5f8305bcadb900f555d1aae",
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 85,
+        "checkedSheets": 85,
+        "issues": [],
+        "sheets": [
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 0,
+            "pageId": "ml-task",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 1,
+            "pageId": "ml-vocabulary",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 965,
+                "contentWidth": 965
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 2,
+            "pageId": "ml-vocabulary",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 3,
+            "pageId": "ml-map",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 965,
+                "contentWidth": 965
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 4,
+            "pageId": "ml-model",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 5,
+            "pageId": "ml-model",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 6,
+            "pageId": "ml-parameters",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 7,
+            "pageId": "ml-parameters",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 8,
+            "pageId": "ml-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 9,
+            "pageId": "ml-lab",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 10,
+            "pageId": "ml-visual",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 11,
+            "pageId": "ml-visual",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": [
+              {
+                "width": 969,
+                "height": 509,
+                "naturalWidth": 800,
+                "naturalHeight": 420
+              }
+            ]
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 12,
+            "pageId": "ml-visual",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 13,
+            "pageId": "ml-loss",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 14,
+            "pageId": "ml-loss",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 15,
+            "pageId": "ml-loss",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 16,
+            "pageId": "ml-practice",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 17,
+            "pageId": "ml-gradient",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 18,
+            "pageId": "ml-gradient",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 19,
+            "pageId": "ml-update",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 20,
+            "pageId": "ml-update",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 21,
+            "pageId": "ml-update",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 22,
+            "pageId": "ml-validation",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 965,
+                "contentWidth": 965
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 23,
+            "pageId": "ml-overfit",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 24,
+            "pageId": "ml-overfit",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 25,
+            "pageId": "ml-recap",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 26,
+            "pageId": "ml-recap",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 27,
+            "pageId": "ml-recap",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 0,
+            "pageId": "ml-task",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 1,
+            "pageId": "ml-vocabulary",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 444,
+                "contentWidth": 444
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 2,
+            "pageId": "ml-vocabulary",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 3,
+            "pageId": "ml-map",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 444,
+                "contentWidth": 444
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 4,
+            "pageId": "ml-map",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 5,
+            "pageId": "ml-model",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 6,
+            "pageId": "ml-model",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 7,
+            "pageId": "ml-parameters",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 8,
+            "pageId": "ml-parameters",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 9,
+            "pageId": "ml-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 10,
+            "pageId": "ml-visual",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 11,
+            "pageId": "ml-visual",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": [
+              {
+                "width": 498,
+                "height": 262,
+                "naturalWidth": 800,
+                "naturalHeight": 420
+              }
+            ]
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 12,
+            "pageId": "ml-loss",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 13,
+            "pageId": "ml-loss",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 14,
+            "pageId": "ml-loss",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 15,
+            "pageId": "ml-practice",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 16,
+            "pageId": "ml-gradient",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 17,
+            "pageId": "ml-gradient",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 18,
+            "pageId": "ml-update",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 19,
+            "pageId": "ml-update",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 20,
+            "pageId": "ml-update",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 21,
+            "pageId": "ml-validation",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 444,
+                "contentWidth": 444
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 22,
+            "pageId": "ml-validation",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 23,
+            "pageId": "ml-overfit",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 24,
+            "pageId": "ml-overfit",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 25,
+            "pageId": "ml-recap",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 26,
+            "pageId": "ml-recap",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 27,
+            "pageId": "ml-recap",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 0,
+            "pageId": "ml-task",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 1,
+            "pageId": "ml-task",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 2,
+            "pageId": "ml-vocabulary",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 441,
+                "contentWidth": 441
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 3,
+            "pageId": "ml-vocabulary",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 4,
+            "pageId": "ml-map",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 441,
+                "contentWidth": 441
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 5,
+            "pageId": "ml-map",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 6,
+            "pageId": "ml-model",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 7,
+            "pageId": "ml-model",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 8,
+            "pageId": "ml-parameters",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 9,
+            "pageId": "ml-parameters",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 10,
+            "pageId": "ml-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 11,
+            "pageId": "ml-visual",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": [
+              {
+                "width": 496,
+                "height": 260,
+                "naturalWidth": 800,
+                "naturalHeight": 420
+              }
+            ]
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 12,
+            "pageId": "ml-visual",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 13,
+            "pageId": "ml-loss",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 14,
+            "pageId": "ml-loss",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 15,
+            "pageId": "ml-loss",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 16,
+            "pageId": "ml-practice",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 17,
+            "pageId": "ml-gradient",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 18,
+            "pageId": "ml-gradient",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 19,
+            "pageId": "ml-update",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 20,
+            "pageId": "ml-update",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 21,
+            "pageId": "ml-update",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 22,
+            "pageId": "ml-validation",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 441,
+                "contentWidth": 441
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 23,
+            "pageId": "ml-validation",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 24,
+            "pageId": "ml-overfit",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 25,
+            "pageId": "ml-overfit",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 26,
+            "pageId": "ml-recap",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 27,
+            "pageId": "ml-recap",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 28,
+            "pageId": "ml-recap",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          }
+        ]
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "compound-interest",
+      "revision": 8,
+      "sourceSHA256": "f03946265d944b6d78a4c2fbf433871f8a8797d23f1cb1aac3b6858679cc21e7",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "compound-interest-chapter",
+          "writing": "正文按增长基数、递推关系、周期单位和追加资金展开；新增页用具体参数与金额说明操作，保留既有标题和段落层级。",
+          "teaching": "面积图解释额外的 1 元；页内参数同时呈现单利、复利和两期/二十期末余额。两期结果与前文例题对应，重置回到 100 元、10%。",
+          "facts": "独立核算 100×1.1²=121、100×1.1²⁰≈672.75、100×1.05²=110.25。参数端点本金 100/1000、增长率 0/15 均有限；0% 时两条曲线保持本金。",
+          "brief": "保持数学入门的递推与核算，新增交互用于比较增长率；未设置独立 brief，按本书三个学习目标核对。"
+        }
+      ],
+      "decisions": [],
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "a5556d6a5fc380694a0fe639312ae67343e9f4eac1a2faffd5046e0e4cf761eb",
+        "sourceSHA256": "f03946265d944b6d78a4c2fbf433871f8a8797d23f1cb1aac3b6858679cc21e7",
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 23,
+        "checkedSheets": 23,
+        "issues": [],
+        "sheets": [
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 0,
+            "pageId": "intro-capabilities",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 969,
+                "contentWidth": 969
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 1,
+            "pageId": "intro-capabilities",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": [
+              {
+                "width": 602,
+                "height": 602,
+                "naturalWidth": 420,
+                "naturalHeight": 420
+              }
+            ]
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 2,
+            "pageId": "intro-capabilities",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 3,
+            "pageId": "intro-principles",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 4,
+            "pageId": "intro-features",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 5,
+            "pageId": "intro-features",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 6,
+            "pageId": "intro-features",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 7,
+            "pageId": "intro-start",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 969,
+                "contentWidth": 969
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 8,
+            "pageId": "growth-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 0,
+            "pageId": "intro-capabilities",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 498,
+                "contentWidth": 498
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 1,
+            "pageId": "intro-capabilities",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": [
+              {
+                "width": 379,
+                "height": 379,
+                "naturalWidth": 420,
+                "naturalHeight": 420
+              }
+            ]
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 2,
+            "pageId": "intro-principles",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 3,
+            "pageId": "intro-features",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 4,
+            "pageId": "intro-features",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 5,
+            "pageId": "intro-start",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 498,
+                "contentWidth": 498
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 6,
+            "pageId": "growth-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 0,
+            "pageId": "intro-capabilities",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 496,
+                "contentWidth": 496
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 1,
+            "pageId": "intro-capabilities",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": [
+              {
+                "width": 496,
+                "height": 496,
+                "naturalWidth": 420,
+                "naturalHeight": 420
+              }
+            ]
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 2,
+            "pageId": "intro-principles",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 3,
+            "pageId": "intro-features",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 4,
+            "pageId": "intro-features",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 5,
+            "pageId": "intro-start",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 496,
+                "contentWidth": 496
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 6,
+            "pageId": "growth-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          }
+        ]
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "concept",
+      "revision": 10,
+      "sourceSHA256": "9c9dd5ff6335fe616c3dc11e741ccf9f56dd44d12abe8907737fd8f5dabffe9d",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "notebook-observation-chapter",
+          "writing": "订单数、顾客数和筛选范围使用具体记录；新增分步说明逐项写明集合变化，无另设反问或泛化总结。",
+          "teaching": "保留统计口径、订单合流图与交集图。顾客去重示例改为完整代码、执行行和右栏变量，订单记录 3 条、顾客去重数 2。",
+          "facts": "沿用未变更正文中已执行的 SQL 核验记录；本轮逐步核对 ∅→{A}→{A}→{A,B} 与计数 0/1/1/2，重置为空集合。 完整 Python 源码已实际运行，八个执行快照的行号与全部变量逐一相等；重复 A 后集合仍为 {\"A\"}，加入 B 后计数为 2。",
+          "brief": "按统计口径学习目标检查，区分记录和不同编号数量；保持既有习题、答案与稳定 ID。"
+        }
+      ],
+      "decisions": [],
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "680ad0cea5fe302624dbfb6646d7d9241d30244b5e2c4bc9a3082c7ef91b2dcb",
+        "sourceSHA256": "9c9dd5ff6335fe616c3dc11e741ccf9f56dd44d12abe8907737fd8f5dabffe9d",
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 31,
+        "checkedSheets": 31,
+        "issues": [],
+        "sheets": [
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 0,
+            "pageId": "observation-1",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 969,
+                "contentWidth": 969
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 1,
+            "pageId": "observation-1",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 2,
+            "pageId": "observation-2",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 3,
+            "pageId": "observation-2",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 4,
+            "pageId": "observation-3",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": [
+              {
+                "width": 920,
+                "height": 417,
+                "naturalWidth": 860,
+                "naturalHeight": 390
+              }
+            ]
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 5,
+            "pageId": "observation-3",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 6,
+            "pageId": "observation-3",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 7,
+            "pageId": "observation-3",
+            "part": "3",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 8,
+            "pageId": "observation-4",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 9,
+            "pageId": "observation-4",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 10,
+            "pageId": "observation-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 0,
+            "pageId": "observation-1",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 498,
+                "contentWidth": 498
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 1,
+            "pageId": "observation-1",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 2,
+            "pageId": "observation-2",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 3,
+            "pageId": "observation-2",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 4,
+            "pageId": "observation-3",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": [
+              {
+                "width": 498,
+                "height": 226,
+                "naturalWidth": 860,
+                "naturalHeight": 390
+              }
+            ]
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 5,
+            "pageId": "observation-3",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 6,
+            "pageId": "observation-3",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 7,
+            "pageId": "observation-4",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 8,
+            "pageId": "observation-4",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 9,
+            "pageId": "observation-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 0,
+            "pageId": "observation-1",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 496,
+                "contentWidth": 496
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 1,
+            "pageId": "observation-1",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 2,
+            "pageId": "observation-2",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 3,
+            "pageId": "observation-2",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 4,
+            "pageId": "observation-3",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": [
+              {
+                "width": 496,
+                "height": 225,
+                "naturalWidth": 860,
+                "naturalHeight": 390
+              }
+            ]
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 5,
+            "pageId": "observation-3",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 6,
+            "pageId": "observation-3",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 7,
+            "pageId": "observation-4",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 8,
+            "pageId": "observation-4",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 9,
+            "pageId": "observation-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          }
+        ]
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "literature",
+      "revision": 8,
+      "sourceSHA256": "724ac83f06a591235678157fd5cf9e5eb6bbb173965092451f937022367757a5",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "literature-chapter",
+          "writing": "背景、炼字、修辞和章法按原诗展开；新赏析直接解释“深”“感时/恨别”“连”“搔”，无引用边界的防御句。",
+          "teaching": "四联原文、字词与赏析全文展开，无片段切换。新增赏析练习可直接跳转；保留主观题的参考要点。",
+          "facts": "新增题面引用“感时花溅泪，恨别鸟惊心”，解答联系乐景反衬、触景生情、移情于物与全诗忧国思家关系；原诗和背景沿用既有官方资料核验。",
+          "brief": "按文学细读组织解释，保留背景、作者处境和表达赏析，不将诗歌解释改为技术流程。"
+        }
+      ],
+      "decisions": [],
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "14e1842e3a267a0530a1b02fa8858d4ada7ed0cc7e8f78b49bf4fbf7aa6ddc99",
+        "sourceSHA256": "724ac83f06a591235678157fd5cf9e5eb6bbb173965092451f937022367757a5",
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 18,
+        "checkedSheets": 18,
+        "issues": [],
+        "sheets": [
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 0,
+            "pageId": "subject-literature",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": [
+              {
+                "width": 791,
+                "height": 369,
+                "naturalWidth": 900,
+                "naturalHeight": 420
+              }
+            ]
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 1,
+            "pageId": "subject-literature",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 2,
+            "pageId": "subject-literature-context",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 3,
+            "pageId": "subject-literature-rhetoric",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 4,
+            "pageId": "literature-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 5,
+            "pageId": "literature-practice",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 0,
+            "pageId": "subject-literature",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": [
+              {
+                "width": 498,
+                "height": 233,
+                "naturalWidth": 900,
+                "naturalHeight": 420
+              }
+            ]
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 1,
+            "pageId": "subject-literature",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 2,
+            "pageId": "subject-literature-context",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 3,
+            "pageId": "subject-literature-rhetoric",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 4,
+            "pageId": "literature-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 5,
+            "pageId": "literature-practice",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 0,
+            "pageId": "subject-literature",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": [
+              {
+                "width": 496,
+                "height": 231,
+                "naturalWidth": 900,
+                "naturalHeight": 420
+              }
+            ]
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 1,
+            "pageId": "subject-literature-context",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 2,
+            "pageId": "subject-literature-context",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 3,
+            "pageId": "subject-literature-rhetoric",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 4,
+            "pageId": "literature-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 5,
+            "pageId": "literature-practice",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          }
+        ]
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "business",
+      "revision": 8,
+      "sourceSHA256": "8185edb746388659a172b50e09020ea1f3d064dcd621305b886381cd767fdbeb",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "business-chapter",
+          "writing": "单位贡献、成本、销量和利润使用同一套标签与单位；教学模型与 Costco 案例各自有明确背景。",
+          "teaching": "参数和实时计算置于图侧右栏；关闭右栏后读数回到组件内。新增固定成本改变后的利润练习。",
+          "facts": "独立核算贡献 80−50=30 元/件、平衡销量 3000/30=100 件、120 件利润 600 元；固定成本 6000 元时平衡销量 200 件。各参数端点保持单价大于单位变动成本。Costco 年报数字未修改，复用原有官方年报核验记录。 新题核算 120×30−4500=−900 元、4500÷30=150 件。",
+          "brief": "按商学成本分析目标核对，使用给定模型解释关系，真实公司案例继续保留既有来源。"
+        }
+      ],
+      "decisions": [],
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "688219677a0f367abbc064cb9c40a7b0eb364899d31928e7c383e5f0766f3ca0",
+        "sourceSHA256": "8185edb746388659a172b50e09020ea1f3d064dcd621305b886381cd767fdbeb",
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 20,
+        "checkedSheets": 20,
+        "issues": [],
+        "sheets": [
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 0,
+            "pageId": "subject-business",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 1,
+            "pageId": "subject-business",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 2,
+            "pageId": "subject-business",
+            "part": "2",
+            "issues": [],
+            "tables": [
+              {
+                "width": 965,
+                "contentWidth": 965
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 3,
+            "pageId": "subject-business-case",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 969,
+                "contentWidth": 969
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 4,
+            "pageId": "subject-business-case",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 5,
+            "pageId": "business-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 6,
+            "pageId": "business-lab",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 7,
+            "pageId": "business-practice",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 0,
+            "pageId": "subject-business",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 1,
+            "pageId": "subject-business",
+            "part": "1",
+            "issues": [],
+            "tables": [
+              {
+                "width": 444,
+                "contentWidth": 444
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 2,
+            "pageId": "subject-business-case",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 498,
+                "contentWidth": 600
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 3,
+            "pageId": "subject-business-case",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 4,
+            "pageId": "business-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 5,
+            "pageId": "business-practice",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 0,
+            "pageId": "subject-business",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 1,
+            "pageId": "subject-business",
+            "part": "1",
+            "issues": [],
+            "tables": [
+              {
+                "width": 441,
+                "contentWidth": 441
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 2,
+            "pageId": "subject-business-case",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 496,
+                "contentWidth": 600
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 3,
+            "pageId": "subject-business-case",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 4,
+            "pageId": "business-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 5,
+            "pageId": "business-practice",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          }
+        ]
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "programming",
+      "revision": 8,
+      "sourceSHA256": "09b9aa482d5ab3352635f2fb393a48aa8eeeb9f2506bc1b3d6d6068ccbc24a43",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "programming-chapter",
+          "writing": "逐步说明使用具体变量名与当前值；完整代码常驻，移除仅切换文字的步骤页。",
+          "teaching": "每步标示已执行行、records 输入位置、seen 集合与变量前值。新增重复值练习；离线恢复到第八步，打印完整八个快照且源码仅一次。",
+          "facts": "完整 Python 源码已实际运行，八个执行快照的行号与全部变量逐一相等；重复 A 后集合仍为 {\"A\"}，加入 B 后计数为 2。",
+          "brief": "保留入门函数、状态表与测试；运行快照补足循环读取和 add 执行之间的状态变化。"
+        }
+      ],
+      "decisions": [],
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "e0624dfdfd9971b72fa7905f054ef34077e7e8569c78dd3acd66559e1a9dff76",
+        "sourceSHA256": "09b9aa482d5ab3352635f2fb393a48aa8eeeb9f2506bc1b3d6d6068ccbc24a43",
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 19,
+        "checkedSheets": 19,
+        "issues": [],
+        "sheets": [
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 0,
+            "pageId": "subject-code",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 1,
+            "pageId": "subject-code",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 2,
+            "pageId": "subject-code",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 3,
+            "pageId": "subject-code-trace",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 965,
+                "contentWidth": 965
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 4,
+            "pageId": "subject-code-trace",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 5,
+            "pageId": "code-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 6,
+            "pageId": "code-practice",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 0,
+            "pageId": "subject-code",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 1,
+            "pageId": "subject-code",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 2,
+            "pageId": "subject-code-trace",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 444,
+                "contentWidth": 444
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 3,
+            "pageId": "subject-code-trace",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 4,
+            "pageId": "code-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 5,
+            "pageId": "code-practice",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 0,
+            "pageId": "subject-code",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 1,
+            "pageId": "subject-code",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 2,
+            "pageId": "subject-code-trace",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 441,
+                "contentWidth": 441
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 3,
+            "pageId": "subject-code-trace",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 4,
+            "pageId": "code-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 5,
+            "pageId": "code-practice",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          }
+        ]
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "paper-notebook",
+      "revision": 16,
+      "sourceSHA256": "91b24bc10268bbe123bcf2e9392b1adae99c415f283e265a39fb879da9bdcdd4",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "intro-chapter",
+          "writing": "删去泛化介绍，按复利基数、递推、周期和核算组织正文。",
+          "teaching": "强调期末值和增长因子；侧栏解释利息继续增长与幂次来源。新增单利/复利参数计算，初始与变化值已独立核算并在浏览器实际操作。",
+          "facts": "核算 100×1.1²=121、200×1.05²=220.5、1.01¹²−1≈12.68%。",
+          "brief": "保留数学入门所需的条件和逐次计算，标题不再带路线串。"
+        },
+        {
+          "chapterId": "subject-chapter",
+          "writing": "文学逐联赏析全文展开；编程解释指向实际输入位置、执行行与集合变化。新习题使用完整背景，题面不暗示答案。",
+          "teaching": "春望保留连贯原文与赏析；编程显示源码、八步状态、当前输入和右栏变量。文学、成本和集合习题分别进入导航。",
+          "facts": "完整 Python 源码已实际运行，八个执行快照的行号与全部变量逐一相等；重复 A 后集合仍为 {\"A\"}，加入 B 后计数为 2。成本习题核算 120×(80−50)−4500=−900 元，平衡销量 150 件；文学赏析沿用原诗与已核对的时代背景。",
+          "brief": "文学细读、商学分析和代码执行各自采用合适的阅读结构；同一运行库与独立学科示例共享内容。"
+        }
+      ],
+      "decisions": [],
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "fd93eb1115220cb267d39a29dfb10ece03ae46d80c8cf7d60b29a4e386a5c927",
+        "sourceSHA256": "91b24bc10268bbe123bcf2e9392b1adae99c415f283e265a39fb879da9bdcdd4",
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 95,
+        "checkedSheets": 95,
+        "issues": [],
+        "sheets": [
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 0,
+            "pageId": "intro-capabilities",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 969,
+                "contentWidth": 969
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 1,
+            "pageId": "intro-capabilities",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": [
+              {
+                "width": 549,
+                "height": 549,
+                "naturalWidth": 420,
+                "naturalHeight": 420
+              }
+            ]
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 2,
+            "pageId": "intro-capabilities",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 3,
+            "pageId": "intro-principles",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 4,
+            "pageId": "intro-principles",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 5,
+            "pageId": "intro-features",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 6,
+            "pageId": "intro-features",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 7,
+            "pageId": "intro-features",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 8,
+            "pageId": "intro-start",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 969,
+                "contentWidth": 969
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 9,
+            "pageId": "growth-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 10,
+            "pageId": "growth-lab",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 11,
+            "pageId": "subject-literature",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": [
+              {
+                "width": 723,
+                "height": 337,
+                "naturalWidth": 900,
+                "naturalHeight": 420
+              }
+            ]
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 12,
+            "pageId": "subject-literature",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 13,
+            "pageId": "subject-literature-context",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 14,
+            "pageId": "subject-literature-context",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 15,
+            "pageId": "subject-literature-rhetoric",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 16,
+            "pageId": "subject-literature-rhetoric",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 17,
+            "pageId": "subject-business",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 18,
+            "pageId": "subject-business",
+            "part": "1",
+            "issues": [],
+            "tables": [
+              {
+                "width": 965,
+                "contentWidth": 965
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 19,
+            "pageId": "subject-business-case",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 969,
+                "contentWidth": 969
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 20,
+            "pageId": "subject-business-case",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 21,
+            "pageId": "subject-code",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 22,
+            "pageId": "subject-code",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 23,
+            "pageId": "subject-code-trace",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 965,
+                "contentWidth": 965
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 24,
+            "pageId": "subject-code-trace",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 25,
+            "pageId": "literature-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 26,
+            "pageId": "business-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 27,
+            "pageId": "business-lab",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 28,
+            "pageId": "code-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 29,
+            "pageId": "literature-practice",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 30,
+            "pageId": "business-practice",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 31,
+            "pageId": "code-practice",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 0,
+            "pageId": "intro-capabilities",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 498,
+                "contentWidth": 498
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 1,
+            "pageId": "intro-capabilities",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": [
+              {
+                "width": 379,
+                "height": 379,
+                "naturalWidth": 420,
+                "naturalHeight": 420
+              }
+            ]
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 2,
+            "pageId": "intro-principles",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 3,
+            "pageId": "intro-features",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 4,
+            "pageId": "intro-features",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 5,
+            "pageId": "intro-features",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 6,
+            "pageId": "intro-start",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 498,
+                "contentWidth": 498
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 7,
+            "pageId": "intro-start",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 8,
+            "pageId": "growth-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 9,
+            "pageId": "subject-literature",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": [
+              {
+                "width": 498,
+                "height": 233,
+                "naturalWidth": 900,
+                "naturalHeight": 420
+              }
+            ]
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 10,
+            "pageId": "subject-literature",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 11,
+            "pageId": "subject-literature-context",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 12,
+            "pageId": "subject-literature-context",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 13,
+            "pageId": "subject-literature-rhetoric",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 14,
+            "pageId": "subject-literature-rhetoric",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 15,
+            "pageId": "subject-business",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 16,
+            "pageId": "subject-business",
+            "part": "1",
+            "issues": [],
+            "tables": [
+              {
+                "width": 444,
+                "contentWidth": 444
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 17,
+            "pageId": "subject-business-case",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 18,
+            "pageId": "subject-business-case",
+            "part": "1",
+            "issues": [],
+            "tables": [
+              {
+                "width": 498,
+                "contentWidth": 600
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 19,
+            "pageId": "subject-business-case",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 20,
+            "pageId": "subject-code",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 21,
+            "pageId": "subject-code",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 22,
+            "pageId": "subject-code-trace",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 444,
+                "contentWidth": 444
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 23,
+            "pageId": "subject-code-trace",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 24,
+            "pageId": "literature-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 25,
+            "pageId": "business-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 26,
+            "pageId": "code-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 27,
+            "pageId": "literature-practice",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 28,
+            "pageId": "business-practice",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 29,
+            "pageId": "code-practice",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 0,
+            "pageId": "intro-capabilities",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 1,
+            "pageId": "intro-capabilities",
+            "part": "1",
+            "issues": [],
+            "tables": [
+              {
+                "width": 496,
+                "contentWidth": 496
+              }
+            ],
+            "images": [
+              {
+                "width": 496,
+                "height": 496,
+                "naturalWidth": 420,
+                "naturalHeight": 420
+              }
+            ]
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 2,
+            "pageId": "intro-capabilities",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 3,
+            "pageId": "intro-principles",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 4,
+            "pageId": "intro-principles",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 5,
+            "pageId": "intro-features",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 6,
+            "pageId": "intro-features",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 7,
+            "pageId": "intro-features",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 8,
+            "pageId": "intro-start",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 496,
+                "contentWidth": 496
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 9,
+            "pageId": "intro-start",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 10,
+            "pageId": "growth-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 11,
+            "pageId": "subject-literature",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": [
+              {
+                "width": 496,
+                "height": 231,
+                "naturalWidth": 900,
+                "naturalHeight": 420
+              }
+            ]
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 12,
+            "pageId": "subject-literature",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 13,
+            "pageId": "subject-literature-context",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 14,
+            "pageId": "subject-literature-context",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 15,
+            "pageId": "subject-literature-rhetoric",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 16,
+            "pageId": "subject-literature-rhetoric",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 17,
+            "pageId": "subject-literature-rhetoric",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 18,
+            "pageId": "subject-business",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 19,
+            "pageId": "subject-business",
+            "part": "1",
+            "issues": [],
+            "tables": [
+              {
+                "width": 441,
+                "contentWidth": 441
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 20,
+            "pageId": "subject-business-case",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 21,
+            "pageId": "subject-business-case",
+            "part": "1",
+            "issues": [],
+            "tables": [
+              {
+                "width": 496,
+                "contentWidth": 600
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 22,
+            "pageId": "subject-business-case",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 23,
+            "pageId": "subject-code",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 24,
+            "pageId": "subject-code",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 25,
+            "pageId": "subject-code-trace",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 441,
+                "contentWidth": 441
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 26,
+            "pageId": "subject-code-trace",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 27,
+            "pageId": "literature-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 28,
+            "pageId": "business-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 29,
+            "pageId": "code-lab",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 30,
+            "pageId": "literature-practice",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 31,
+            "pageId": "business-practice",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 32,
+            "pageId": "code-practice",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          }
+        ]
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "paper-notebook-product",
+      "revision": 9,
+      "sourceSHA256": "578d9767219ef288d77347f0b684d317ca4d22ed7e4d4e3fcfd4b54caa856a1f",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "product-story",
+          "writing": "产品说明继续按具体功能命名，文学赏析直接展开，代码过程呈现真实变量。",
+          "teaching": "统一原文赏析、参数计算和完整执行跟踪。首页六学科共用阅读器，快速入口从实际块生成，缺少的类别隐藏。",
+          "facts": "产品说明沿用 8 张逻辑页；集合过程改为已运行核对的八步，当前源码与状态同源。影片沿用上次发布素材，本轮未重新录制。",
+          "brief": "保留象牙纸、文楷、批注、页边与底栏、离线保存和翻页；交互规范与作者辅助函数同步升级。"
+        }
+      ],
+      "decisions": [],
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "d5aa58d5b2dd39218048c94ee245f8c5aae898d93af4ef3918b4fef1854f53ee",
+        "sourceSHA256": "578d9767219ef288d77347f0b684d317ca4d22ed7e4d4e3fcfd4b54caa856a1f",
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 41,
+        "checkedSheets": 41,
+        "issues": [],
+        "sheets": [
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 0,
+            "pageId": "product-pain",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 1,
+            "pageId": "product-pain",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 2,
+            "pageId": "product-idea",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 3,
+            "pageId": "product-structure",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 4,
+            "pageId": "product-structure",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 5,
+            "pageId": "product-structure",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 6,
+            "pageId": "product-marks",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 7,
+            "pageId": "product-marks",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 8,
+            "pageId": "product-subjects",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 9,
+            "pageId": "product-subjects",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 10,
+            "pageId": "product-subjects",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 11,
+            "pageId": "product-subjects",
+            "part": "3",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 12,
+            "pageId": "product-fit",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 13,
+            "pageId": "product-focus",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 969,
+                "contentWidth": 969
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 14,
+            "pageId": "product-focus",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 15,
+            "pageId": "product-start",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 0,
+            "pageId": "product-pain",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 1,
+            "pageId": "product-idea",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 2,
+            "pageId": "product-structure",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 3,
+            "pageId": "product-structure",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 4,
+            "pageId": "product-marks",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 5,
+            "pageId": "product-subjects",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 6,
+            "pageId": "product-subjects",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 7,
+            "pageId": "product-subjects",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 8,
+            "pageId": "product-subjects",
+            "part": "3",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 9,
+            "pageId": "product-fit",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 10,
+            "pageId": "product-focus",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 498,
+                "contentWidth": 498
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 11,
+            "pageId": "product-focus",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 12,
+            "pageId": "product-start",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 0,
+            "pageId": "product-pain",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 1,
+            "pageId": "product-idea",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 2,
+            "pageId": "product-structure",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 3,
+            "pageId": "product-structure",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 4,
+            "pageId": "product-marks",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 5,
+            "pageId": "product-subjects",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 6,
+            "pageId": "product-subjects",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 7,
+            "pageId": "product-subjects",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 8,
+            "pageId": "product-fit",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 9,
+            "pageId": "product-focus",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 496,
+                "contentWidth": 496
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 10,
+            "pageId": "product-focus",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 11,
+            "pageId": "product-start",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          }
+        ]
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "formula",
+      "revision": 7,
+      "sourceSHA256": "a7beae45c27c6cfecf31f9d196aa750aba75ac0d264af4281ee229338f90be93",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "notebook-growth-chapter",
+          "writing": "删去无实质信息的开场修饰，金额和周期在正文直接给出。",
+          "teaching": "增加逐期余额曲线，将相同增长率与增加额联系起来。",
+          "facts": "核算 100/110/121/133.1；变化率不同的三期结果为 124.74。",
+          "brief": "保留递推关系与条件变化，不追加泛化总结。"
+        }
+      ],
+      "decisions": [],
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "45a2d6e9f67cac72803fb4e1ae5aebdfb4dd5f91793bacc0de1abe3bc1f35545",
+        "sourceSHA256": "a7beae45c27c6cfecf31f9d196aa750aba75ac0d264af4281ee229338f90be93",
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 13,
+        "checkedSheets": 13,
+        "issues": [],
+        "sheets": [
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 0,
+            "pageId": "growth-1",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 969,
+                "contentWidth": 969
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 1,
+            "pageId": "growth-1",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 2,
+            "pageId": "growth-1",
+            "part": "2",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 3,
+            "pageId": "growth-2",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 4,
+            "pageId": "growth-2",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 0,
+            "pageId": "growth-1",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 498,
+                "contentWidth": 498
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 1,
+            "pageId": "growth-1",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 2,
+            "pageId": "growth-2",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 3,
+            "pageId": "growth-2",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 0,
+            "pageId": "growth-1",
+            "part": "0",
+            "issues": [],
+            "tables": [
+              {
+                "width": 496,
+                "contentWidth": 496
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 1,
+            "pageId": "growth-1",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 2,
+            "pageId": "growth-2",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 3,
+            "pageId": "growth-2",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          }
+        ]
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "practice",
+      "revision": 7,
+      "sourceSHA256": "cbcf677768910d770e9ba85a25a8380c649f924541c20272fcc4a034419c0db2",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "notebook-observe-plant-chapter",
+          "writing": "观察步骤改为位置、颜色、数量和养护记录，减少空泛要求。",
+          "teaching": "补植物位置图，圈出两片黄叶并用箭头标注，与记录表对应。",
+          "facts": "图示用于定位叶片；正文按植物名称、浇水、盆土和根系记录讨论原因。未将黄叶直接等同于某种病因。",
+          "brief": "适合观察记录练习；保留开放作答和复查所需信息。"
+        }
+      ],
+      "decisions": [],
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "26dcea6ec1d1891653c250f896a2e77b175424f977f6d9114add4476c0cfe83f",
+        "sourceSHA256": "cbcf677768910d770e9ba85a25a8380c649f924541c20272fcc4a034419c0db2",
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 11,
+        "checkedSheets": 11,
+        "issues": [],
+        "sheets": [
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 0,
+            "pageId": "plant-1",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": [
+              {
+                "width": 826,
+                "height": 418,
+                "naturalWidth": 850,
+                "naturalHeight": 430
+              }
+            ]
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 1,
+            "pageId": "plant-1",
+            "part": "1",
+            "issues": [],
+            "tables": [
+              {
+                "width": 965,
+                "contentWidth": 965
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 2,
+            "pageId": "plant-2",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "index": 3,
+            "pageId": "plant-2",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 0,
+            "pageId": "plant-1",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": [
+              {
+                "width": 444,
+                "height": 225,
+                "naturalWidth": 850,
+                "naturalHeight": 430
+              }
+            ]
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 1,
+            "pageId": "plant-1",
+            "part": "1",
+            "issues": [],
+            "tables": [
+              {
+                "width": 444,
+                "contentWidth": 444
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 2,
+            "pageId": "plant-2",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 820,
+              "height": 1180
+            },
+            "index": 3,
+            "pageId": "plant-2",
+            "part": "1",
+            "issues": [],
+            "tables": [],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 0,
+            "pageId": "plant-1",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": [
+              {
+                "width": 441,
+                "height": 223,
+                "naturalWidth": 850,
+                "naturalHeight": 430
+              }
+            ]
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 1,
+            "pageId": "plant-1",
+            "part": "1",
+            "issues": [],
+            "tables": [
+              {
+                "width": 441,
+                "contentWidth": 441
+              }
+            ],
+            "images": []
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "index": 2,
+            "pageId": "plant-2",
+            "part": "0",
+            "issues": [],
+            "tables": [],
+            "images": []
+          }
+        ]
+      },
+      "deliveryReady": true
+    }
+  ],
+  "activities": [
+    {
+      "engine": "chromium",
+      "computation": true,
+      "keyboard": true,
+      "sourceSearch": true,
+      "reset": true,
+      "offlineRoundtrip": true,
+      "printAllFrames": true,
+      "responsive": [
+        390,
+        820,
+        1440
+      ],
+      "night": true,
+      "homepageEntry": true,
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "computation": true,
+      "keyboard": true,
+      "sourceSearch": true,
+      "reset": true,
+      "offlineRoundtrip": true,
+      "printAllFrames": true,
+      "responsive": [
+        390,
+        820,
+        1440
+      ],
+      "night": true,
+      "homepageEntry": true,
+      "errors": []
+    }
+  ],
+  "layoutSheets": 356,
+  "packageVerification": "Node/Python构建、模板指纹和离线源文件验证通过"
+}

@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "notebook-ml-foundations",
-    "revision": 11,
+    "revision": 12,
     "title": "线性回归与模型评估",
     "language": "zh-CN",
     "goals": [
@@ -702,7 +702,7 @@
               {
                 "id": "ml-lab-intro",
                 "type": "prose",
-                "text": "沿用样本 A(1,2)、B(2,4)、C(3,5)。图中圆点是标签，直线是当前参数的预测。调整斜率和截距，观察整条直线与三个圆点的距离，并比较均方误差。",
+                "text": "沿用样本 A(1,2)、B(2,4)、C(3,5)。图中圆点是标签，直线是当前参数的预测。调整斜率和截距，观察整条直线与三个圆点的距离，右栏同步列出当前参数、均方误差、均方根误差与决定系数；图中的红色虚线表示预测值减去标签所得的残差。",
                 "study": {
                   "marks": [
                     {
@@ -723,13 +723,17 @@
                 "title": "斜率、截距与平方误差",
                 "exploration": {
                   "kind": "plot",
+                  "regression": {
+                    "slope": "slope",
+                    "intercept": "intercept"
+                  },
                   "parameters": [
                     {
                       "id": "slope",
                       "label": "斜率 w",
                       "min": 0,
                       "max": 3,
-                      "step": 0.1,
+                      "step": 0.001,
                       "value": 1
                     },
                     {
@@ -737,7 +741,7 @@
                       "label": "截距 b",
                       "min": -2,
                       "max": 2,
-                      "step": 0.1,
+                      "step": 0.001,
                       "value": 1
                     }
                   ],
@@ -798,96 +802,6 @@
                           "intercept"
                         ]
                       }
-                    },
-                    {
-                      "label": "均方误差",
-                      "expression": {
-                        "op": "div",
-                        "args": [
-                          {
-                            "op": "add",
-                            "args": [
-                              {
-                                "op": "pow",
-                                "args": [
-                                  {
-                                    "op": "sub",
-                                    "args": [
-                                      {
-                                        "op": "add",
-                                        "args": [
-                                          {
-                                            "op": "mul",
-                                            "args": [
-                                              "slope",
-                                              1
-                                            ]
-                                          },
-                                          "intercept"
-                                        ]
-                                      },
-                                      2
-                                    ]
-                                  },
-                                  2
-                                ]
-                              },
-                              {
-                                "op": "pow",
-                                "args": [
-                                  {
-                                    "op": "sub",
-                                    "args": [
-                                      {
-                                        "op": "add",
-                                        "args": [
-                                          {
-                                            "op": "mul",
-                                            "args": [
-                                              "slope",
-                                              2
-                                            ]
-                                          },
-                                          "intercept"
-                                        ]
-                                      },
-                                      4
-                                    ]
-                                  },
-                                  2
-                                ]
-                              },
-                              {
-                                "op": "pow",
-                                "args": [
-                                  {
-                                    "op": "sub",
-                                    "args": [
-                                      {
-                                        "op": "add",
-                                        "args": [
-                                          {
-                                            "op": "mul",
-                                            "args": [
-                                              "slope",
-                                              3
-                                            ]
-                                          },
-                                          "intercept"
-                                        ]
-                                      },
-                                      5
-                                    ]
-                                  },
-                                  2
-                                ]
-                              }
-                            ]
-                          },
-                          3
-                        ]
-                      },
-                      "digits": 3
                     }
                   ]
                 }
@@ -1225,6 +1139,65 @@
                 "anchor": "标签录入错误"
               }
             ]
+          },
+          {
+            "id": "ml-practice",
+            "title": "拟合与误差练习",
+            "layout": "exam",
+            "subject": "stem",
+            "blocks": [
+              {
+                "id": "ml-practice-mse",
+                "type": "exercise",
+                "questionType": "single",
+                "question": "样本为 A(1,2)、B(2,4)、C(3,5)。模型 ŷ = 1.5x + 0.5 的均方误差是多少？",
+                "options": [
+                  {
+                    "id": "ml-practice-mse-a",
+                    "text": "1/12，约 0.0833"
+                  },
+                  {
+                    "id": "ml-practice-mse-b",
+                    "text": "1/6，约 0.1667"
+                  },
+                  {
+                    "id": "ml-practice-mse-c",
+                    "text": "1/4，即 0.25"
+                  }
+                ],
+                "solution": [
+                  "ml-practice-mse-a"
+                ],
+                "explanation": "三个预测值为 2、3.5、5，残差为 0、−0.5、0。平方误差之和为 0.25，除以样本数 3 得到 MSE=1/12。可在参数计算页设 w=1.5、b=0.5 核对。",
+                "points": 2
+              },
+              {
+                "id": "ml-practice-scale",
+                "type": "exercise",
+                "questionType": "single",
+                "question": "预测值与标签原来以“元”为单位，现统一换成“万元”。同一批预测的 MSE 和 RMSE 分别变为原来的多少？",
+                "options": [
+                  {
+                    "id": "ml-practice-scale-a",
+                    "text": "MSE 为 1/10⁸，RMSE 为 1/10⁴"
+                  },
+                  {
+                    "id": "ml-practice-scale-b",
+                    "text": "两者都为 1/10⁴"
+                  },
+                  {
+                    "id": "ml-practice-scale-c",
+                    "text": "MSE 为 1/10⁴，RMSE 为 1/10⁸"
+                  }
+                ],
+                "solution": [
+                  "ml-practice-scale-a"
+                ],
+                "explanation": "单位换算使每个残差除以 10⁴；平方后，MSE 除以 10⁸。RMSE 对 MSE 开平方，因此除以 10⁴，并与标签保留相同单位。",
+                "points": 2
+              }
+            ],
+            "cues": []
           }
         ]
       },
@@ -2113,7 +2086,7 @@
     }
   ],
   "extensions": {
-    "baseRevision": 10,
+    "baseRevision": 11,
     "readerProfile": {
       "font": "hand",
       "lineSpacing": 2.05,

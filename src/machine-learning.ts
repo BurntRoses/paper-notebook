@@ -3,7 +3,7 @@ import {userState,type NotebookDocument,type Page,type Block} from './model/type
 const prose=(id:string,text:string):Block=>({id,type:'prose',text});
 const concept=(id:string,title:string,text:string):Block=>({id,type:'concept',title,text,study:{role:'definition'}});
 const formula=(id:string,latex:string,text:string,parameters:Block['parameters']):Block=>({id,type:'formula',latex,text,parameters,keepTogether:true,study:{role:'derivation',visual:'blackboard'}});
-const page=(id:string,title:string,blocks:Block[],cues:{title?:string;text:string;blockId:string;anchor?:string}[],layout:'cornell'|'reading'='cornell'):Page=>({id,title,layout,subject:'stem',blocks,cues:cues.map((c,i)=>({id:id+'-cue-'+i,...c}))});
+const page=(id:string,title:string,blocks:Block[],cues:{title?:string;text:string;blockId:string;anchor?:string}[],layout:Page['layout']='cornell'):Page=>({id,title,layout,subject:'stem',blocks,cues:cues.map((c,i)=>({id:id+'-cue-'+i,...c}))});
 const p1=page('ml-task','线性回归的学习任务',[
  prose('ml-opening','线性回归用直线描述输入与数值结果之间的关系。同一组斜率与截距作用于全部样本；选择斜率与截距时，损失函数汇总各条预测与标签的差异，优化算法据此调整参数。'),
  {id:'ml-process',type:'diagram',arrangement:'row',title:'参数拟合与新样本预测',nodes:[{id:'ml-data-node',label:'带标签的样本'},{id:'ml-fit-node',label:'计算损失，拟合参数'},{id:'ml-predict-node',label:'新输入 → 预测'}],edges:[{from:'ml-data-node',to:'ml-fit-node',label:'利用标签'},{from:'ml-fit-node',to:'ml-predict-node',label:'应用参数'}],caption:'已知标签参与参数拟合；新输入经过同一规则得到预测值。',study:{frame:'tape'}},
@@ -20,7 +20,7 @@ const p3=page('ml-map','回归、分类与聚类',[
  prose('ml-task-explain','回归与分类都属于监督学习：训练样本同时提供输入和目标。聚类按样本间的相似性分组。例如设备的温度与振动幅度可以形成若干运行状态群；距离的定义与特征尺度会改变哪些设备彼此接近。'),
  concept('ml-model-choice','输出形式与模型选择','连续数值的预测可用回归模型，离散类别的预测可用分类模型。线性回归以加权求和描述输入与输出的关系，适合作为可解释的基线。模型选择还要考虑预测对象、可用特征、评价方式和误判代价；例如漏报故障的代价会影响分类阈值。'),
 ], [{"title":"输出与目标","text":"耗电量有连续的数值尺度；故障类别是离散结果。任务目标决定模型输出需要表达的量。","blockId":"ml-task-types","anchor":"连续值，如下一小时耗电量"},{"title":"误判代价","text":"漏报故障会延误检修，误报会增加检查成本。分类阈值的选择要结合这两类后果。","blockId":"ml-model-choice","anchor":"漏报故障的代价"}]);
-const regressionLab=page('ml-lab','参数与误差的变化',[{id:'ml-lab-intro',type:'prose',text:'沿用样本 A(1,2)、B(2,4)、C(3,5)。图中圆点是标签，直线是当前参数的预测。调整斜率和截距，观察整条直线与三个圆点的距离，并比较均方误差。',study:{marks:[{text:'整条直线与三个圆点的距离',kind:'bold'},{text:'整条直线与三个圆点的距离',kind:'red',color:'#285f9e'}]}},regressionActivity],[],'reading');
+const regressionLab=page('ml-lab','参数与误差的变化',[{id:'ml-lab-intro',type:'prose',text:'沿用样本 A(1,2)、B(2,4)、C(3,5)。图中圆点是标签，直线是当前参数的预测。调整斜率和截距，观察整条直线与三个圆点的距离，右栏同步列出当前参数、均方误差、均方根误差与决定系数；图中的红色虚线表示预测值减去标签所得的残差。',study:{marks:[{text:'整条直线与三个圆点的距离',kind:'bold'},{text:'整条直线与三个圆点的距离',kind:'red',color:'#285f9e'}]}},regressionActivity],[],'reading');
 const p4=page('ml-model','线性模型与预测值',[
  formula('ml-linear','\\hat y=wx+b','固定 w、b 后，输入 x 代入一次函数得到预测 ŷ。模型假定预测随 x 等速变化：x 每增加相同的量，ŷ 的增量也相同。观测中的波动由预测与标签之间的差异呈现。',[
   {symbol:'x',name:'输入',description:'预测时已知的特征值。本例取 x=2，表示样本 B 的输入；它随样本改变。'},
@@ -124,7 +124,7 @@ const emphasis:Record<string,NonNullable<Block['study']>['marks']>={
 for(const chapter of machineLearning.notebook.chapters)for(const page of chapter.pages)for(const block of page.blocks){
  if(emphasis[block.id])block.study={...block.study,marks:emphasis[block.id]};
 }
-machineLearning.notebook.revision=11;machineLearning.extensions.baseRevision=10;
+machineLearning.notebook.revision=12;machineLearning.extensions.baseRevision=11;
 
 machineLearning.userState.updatedAt='2026-11-11T12:00:00.000Z';
 
@@ -148,3 +148,8 @@ const figureGuides:Record<string,NonNullable<Block['figure']>['annotations']>={
 for(const chapter of machineLearning.notebook.chapters)for(const page of chapter.pages)for(const block of page.blocks){
  if(figureGuides[block.id])block.figure={...block.figure,annotations:figureGuides[block.id]};
 }
+
+machineLearning.notebook.chapters[1].pages.push(page('ml-practice','拟合与误差练习',[
+ {id:'ml-practice-mse',type:'exercise',questionType:'single',question:'样本为 A(1,2)、B(2,4)、C(3,5)。模型 ŷ = 1.5x + 0.5 的均方误差是多少？',options:[{id:'ml-practice-mse-a',text:'1/12，约 0.0833'},{id:'ml-practice-mse-b',text:'1/6，约 0.1667'},{id:'ml-practice-mse-c',text:'1/4，即 0.25'}],solution:['ml-practice-mse-a'],explanation:'三个预测值为 2、3.5、5，残差为 0、−0.5、0。平方误差之和为 0.25，除以样本数 3 得到 MSE=1/12。可在参数计算页设 w=1.5、b=0.5 核对。',points:2},
+ {id:'ml-practice-scale',type:'exercise',questionType:'single',question:'预测值与标签原来以“元”为单位，现统一换成“万元”。同一批预测的 MSE 和 RMSE 分别变为原来的多少？',options:[{id:'ml-practice-scale-a',text:'MSE 为 1/10⁸，RMSE 为 1/10⁴'},{id:'ml-practice-scale-b',text:'两者都为 1/10⁴'},{id:'ml-practice-scale-c',text:'MSE 为 1/10⁴，RMSE 为 1/10⁸'}],solution:['ml-practice-scale-a'],explanation:'单位换算使每个残差除以 10⁴；平方后，MSE 除以 10⁸。RMSE 对 MSE 开平方，因此除以 10⁴，并与标签保留相同单位。',points:2}
+],[],'exam'));

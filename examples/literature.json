@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "showcase-literature",
-    "revision": 7,
+    "revision": 8,
     "title": "杜甫《春望》",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -437,6 +437,22 @@
                 }
               }
             ]
+          },
+          {
+            "id": "literature-practice",
+            "title": "《春望》赏析练习",
+            "subject": "literature",
+            "layout": "exam",
+            "blocks": [
+              {
+                "id": "literature-practice-image",
+                "type": "exercise",
+                "questionType": "subjective",
+                "question": "结合“感时花溅泪，恨别鸟惊心”，分析春日花鸟与诗人情感的关系，并说明“感时”“恨别”在全诗中的作用。",
+                "explanation": "参考要点：花鸟属于春日景物，见花落泪、闻鸟惊心体现触景生情，乐景反衬忧时伤别；也可从移情于物展开。“感时”承接国破与战乱，“恨别”连向家书与思家，使忧国和思家交织。赏析须结合字词与诗句说明。",
+                "points": 0
+              }
+            ]
           }
         ]
       }
@@ -486,7 +502,7 @@
     }
   ],
   "extensions": {
-    "baseRevision": 6,
+    "baseRevision": 7,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

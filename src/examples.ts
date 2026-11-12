@@ -91,7 +91,7 @@ for(const document of examples){
 
 for(const example of examples)example.userState.updatedAt='2026-11-11T12:00:00.000Z';
 
-conceptExample.notebook.revision=9;conceptExample.extensions.baseRevision=8;
+conceptExample.notebook.revision=10;conceptExample.extensions.baseRevision=9;
 
 conceptExample.assets.push({id:'customer-overlap',name:'两地顾客名单.svg',mime:'image/svg+xml',data:'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(customerOverlap),width:860,height:390,source:'本例给定的两地顾客名单',license:'MIT',verified:true});
 practiceExample.assets.push({id:'plant-observation',name:'植物观察位置.svg',mime:'image/svg+xml',data:'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(plantObservation),width:850,height:430,source:'Paper Notebook 原创观察记录示意',license:'MIT',verified:true});

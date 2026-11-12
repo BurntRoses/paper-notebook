@@ -1,11 +1,18 @@
 """Check authored emphasis without generating marks or changing the lesson."""
+import json
 
+
+def trace_value_text(variable):
+    value=variable['value'];dump=lambda x:json.dumps(x,ensure_ascii=False,separators=(',',':'))
+    if not isinstance(value,list):return dump(value)
+    items=', '.join(dump(x) for x in value)
+    return ('{'+items+'}' if value else 'set()') if variable.get('display')=='set' else '['+items+']'
 
 def block_text(block):
     if block['type'] == 'exploration':
         a=block['exploration']
         if a['kind']=='plot':return '\n'.join([p['label'] for p in a['parameters']]+[a['domain']['label'],a['yLabel']]+[v['label'] for v in a['series']+a['outputs']])
-        return '\n'.join(v for f in a['frames'] for v in [f['label'],f.get('quote',''),f['text']]+[v['label']+'：'+v['value'] for v in f.get('facts',[])] if v)
+        return '\n'.join([v for f in a['frames'] for v in [f['label'],f.get('quote',''),f['text']]+[v['label']+'：'+v['value'] for v in f.get('facts',[])]+[v['name']+' = '+trace_value_text(v) for v in f.get('variables',[])] if v]+a.get('trace',{}).get('code',[]))
     if block['type'] == 'comparison':
         return '\n'.join(block.get('columns', []) + [cell for row in block.get('rows', []) for cell in row])
     primary = block.get('text') or block.get('question') or block.get('prompt') or block.get('latex') or ''

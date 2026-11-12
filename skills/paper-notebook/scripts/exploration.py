@@ -1,5 +1,5 @@
 """Validate native learning activities and the bounded expression data language."""
-import math
+import math,json
 
 ARITY={'sub':2,'div':2,'pow':2,'ln':1,'exp':1,'abs':1}
 def evaluate(expr, values, depth=0):
@@ -22,6 +22,21 @@ def validate_exploration(activity, path):
         if activity['kind']!='plot':
             ids=[f['id'] for f in activity['frames']]
             if len(ids)!=len(set(ids)):raise ValueError('frames: duplicate IDs')
+            if activity.get('trace'):
+                trace=activity['trace']
+                if activity['kind']!='sequence':raise ValueError('trace: use sequence for execution traces')
+                for i,f in enumerate(activity['frames']):
+                    line=f.get('line')
+                    if isinstance(line,bool) or not isinstance(line,int) or not 0<=line<=len(trace['code']):raise ValueError(f'frames.{i}.line: must reference a code line; 0 means not started')
+                    if 'variables' not in f:raise ValueError(f'frames.{i}.variables: complete variable snapshot required')
+                    names=[v['name'] for v in f['variables']]
+                    if len(names)!=len(set(names)):raise ValueError(f'frames.{i}.variables: duplicate variable names')
+                    for v in f['variables']:
+                        if v.get('display')=='set' and (not isinstance(v['value'],list) or len({json.dumps(x) for x in v['value']})!=len(v['value'])):raise ValueError(f'frames.{i}.variables: set values must be unique')
+                    if 'cursor' in f:
+                        values=next((v['value'] for v in f['variables'] if v['name']==trace.get('input')),None)
+                        if not isinstance(values,list) or not 0<=f['cursor']<len(values):raise ValueError(f'frames.{i}.cursor: must reference an input element')
+                if not any(f['variables']!=activity['frames'][i-1]['variables'] for i,f in enumerate(activity['frames']) if i):raise ValueError('frames: execution trace must contain variable changes')
             return
         parameters=activity['parameters'];ids=[p['id'] for p in parameters]
         if len(ids)!=len(set(ids)) or 'x' in ids:raise ValueError('parameters: duplicate IDs or reserved x')
@@ -31,7 +46,13 @@ def validate_exploration(activity, path):
         if domain['min']>=domain['max']:raise ValueError('domain: maximum must exceed minimum')
         for point in activity.get('observations',[]):
             if not domain['min']<=point['x']<=domain['max']:raise ValueError('observations: point outside domain')
+        regression=activity.get('regression')
+        if regression:
+            if regression['slope']==regression['intercept'] or any(k not in ids for k in regression.values()):raise ValueError('regression: bind distinct slope and intercept parameters')
+            if len(activity.get('observations',[]))<2 or len({p['x'] for p in activity.get('observations',[])})<2:raise ValueError('regression: two distinct x values required')
         values={p['id']:p['value'] for p in parameters}
         for i in range(33):
-            for item in activity['series']+activity['outputs']:evaluate(item['expression'],dict(values,x=domain['min']+(domain['max']-domain['min'])*i/32))
+            x=domain['min']+(domain['max']-domain['min'])*i/32
+            for item in activity['series']+activity['outputs']:evaluate(item['expression'],dict(values,x=x))
+            if regression and abs(evaluate(activity['series'][0]['expression'],dict(values,x=x))-(values[regression['slope']]*x+values[regression['intercept']]))>1e-8:raise ValueError('regression: first series must match the linear model')
     except (ValueError,KeyError,ZeroDivisionError,OverflowError,TypeError) as error:raise ValueError(path+'.exploration: '+str(error)) from error

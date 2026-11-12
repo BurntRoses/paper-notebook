@@ -13,7 +13,8 @@ test('subject lessons are independent, valid readers with complete marks and por
   assert.equal(doc.userState.lastPageId,pagesOf(doc)[0].id);
   assert.equal(doc.extensions.baseRevision,doc.notebook.revision-1);
   const report=checkStudyMarks(doc);
-  assert.deepEqual(report.unmarkedPages,[],name);
+  const exercisePages=pagesOf(doc).filter(p=>p.blocks.every(b=>b.type==='exercise')).map(p=>p.id);
+  assert.deepEqual(report.unmarkedPages,exercisePages,name);
   const sourceIds=new Set(doc.notebook.sources.map(s=>s.id));
   for(const p of pagesOf(doc)){
    assert.equal(p.subtitle,undefined);
@@ -23,8 +24,8 @@ test('subject lessons are independent, valid readers with complete marks and por
    }
    for(const block of p.blocks)for(const ref of block.sourceRefs||[])assert.ok(sourceIds.has(ref.sourceId),ref.sourceId);
   }
-  assert.deepEqual(report.typography.missingBoldPages,[],name);
-  assert.deepEqual(report.typography.missingColorPages,[],name);
+  assert.deepEqual(report.typography.missingBoldPages,exercisePages,name);
+  assert.deepEqual(report.typography.missingColorPages,exercisePages,name);
   assert.ok(blocksOf(doc).some(b=>b.figure?.annotations?.length),name);
   assert.deepEqual(importText(exportMarkdown(doc)).document.notebook,doc.notebook);
   const used=new Set(blocksOf(doc).flatMap(b=>b.assetId?[b.assetId]:[]));

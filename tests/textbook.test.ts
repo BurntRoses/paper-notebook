@@ -45,8 +45,8 @@ test('artifact filenames are readable, versioned and safe on major desktop files
 });
 test('machine learning textbook validates, distinguishes examples and supplies reproducible numerical visuals',()=>{
  const {document,warnings}=parseDocument(machineLearning);assert.deepEqual(warnings,[]);
- assert.equal(document.notebook.chapters.length,4);assert.equal(pagesOf(document).length,13);
- const blocks=blocksOf(document);assert.equal(blocks.filter(b=>b.type==='exercise').length,0);
+ assert.equal(document.notebook.chapters.length,4);assert.equal(pagesOf(document).length,14);
+ const blocks=blocksOf(document);assert.equal(blocks.filter(b=>b.type==='exercise').length,2);
  assert.ok(blocks.filter(b=>b.type==='chart').length>=3);assert.ok(blocks.filter(b=>b.type==='example').every(b=>b.steps?.length&&b.result));
  const loss=blocks.find(b=>b.id==='ml-loss-curve')!;
  for(const point of loss.series![0].points)assert.equal(point.y,2.5*(point.x-2)**2);
@@ -69,7 +69,7 @@ test('downloadable authored examples carry intentional anchored emphasis',()=>{
    for(const selector of annotation.selectors)assert.equal(resolveSelector(document,selector).status,'resolved');
   }
  }
- assert.equal(checkStudyMarks(machineLearning).unmarkedPages.length,0);
+ assert.deepEqual(checkStudyMarks(machineLearning).unmarkedPages,['ml-practice']);
 });
 test('formula symbol rows validate and roundtrip with addressable explanations and compatible legacy text',()=>{
  const original=structuredClone(machineLearning),round=importText(exportMarkdown(original)).document;

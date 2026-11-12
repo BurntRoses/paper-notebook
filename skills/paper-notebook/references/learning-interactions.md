@@ -1,29 +1,58 @@
-# 页内学习交互
+# 页内学习交互设计规范
 
-优先从学习活动选择组件。数理计算采用参数与曲线，算法或历史过程采用状态分步，诗文阅读采用原句与解释。每项交互应回答具体的知识问题，并与正文条件、术语、单位相符。只在有教学用途的位置使用。
+## 选择交互
+
+设计前写清三个对象：读者操作的量或步骤、由操作改变的状态、用来解释结果的图形或指标。操作须产生可观察的计算、数据结构或执行位置变化。切换一段说明文字、给静态赏析加标签页，不构成学习交互。
+
+| 内容 | 组件与可观察结果 | 必须核对 |
+| --- | --- | --- |
+| 函数、复利、成本模型 | `plot`：参数、曲线、右栏读数同步 | 公式、单位、初始值、边界值、变化方向 |
+| 一元线性拟合 | `plot.regression`：预测线、逐点残差、MSE/RMSE/R²、拟合参数 | 同一数据与参数参与全部计算；残差定义；常量标签的 R² |
+| 短程序、算法 | `sequence.trace`：源码当前行、输入位置、容器内容、变量快照与前后变化 | 每一步对应实际运行结果；初始化、重复值、最终值 |
+| 文学赏析、背景、定义 | `quote`、`prose`、`callout` 与标注图 | 完整原文和分析直接可读，使用相关学科的解释方式 |
+
+同一页围绕一个机制安排交互，正文交代数据与条件。控制靠近对应标签，核心图形保留足够宽度。右栏显示实时计算或变量状态，并继续容纳个人便条；关闭右栏时，结果回到组件内部。保留象牙纸、文楷、直线纸页边界与现有翻页。
 
 ## 参数计算 `plot`
 
+必填 `kind, parameters, domain, yLabel, series, outputs`。`parameters` 定义 1–4 个 `{id,label,min,max,step,value,unit?}`；`domain` 为 `{min,max,label}`；`series` 为 1–4 项 `{label,expression}`；`outputs` 为 1–6 项 `{label,expression,unit?,digits?}`。
+
+`x` 为横坐标，其余变量须在 parameters 声明。表达式是数值、变量名或 `{op,args}` 运算树。add/mul/min/max 接受 1–8 项，sub/div/pow 恰好两项，ln/exp/abs 恰好一项，最多 16 层。曲线在固定横轴范围采样，outputs 独立声明读数。只舍入显示值，后续运算使用未舍入值。
+
+`observations:[{x,y,label?}]` 标出教学或实际数据，并在正文注明其性质与来源。观察点须位于横轴范围内。参数上下限须符合模型；除零、对负数取对数或溢出在本组件报告，控件仍可修改。
+
+### 一元线性拟合
+
+添加 `regression:{slope:"slope",intercept:"intercept"}`，两个字段绑定不同的参数 ID。首条 series 必须是这两个参数构成的 `ŷ = wx + b`，至少两个观测点的 x 不同。
+
+阅读器按当前参数计算每个样本的 ŷ、`e = ŷ − y` 和 e²，图中用残差线连接标签与预测，右栏显示样本数、MSE、RMSE、R²，并提供逐点误差表。标签没有变化时，R² 显示未定义。已有 outputs 继续显示。
+
+“计算拟合参数”使用这些观测点的最小二乘解，再按控件精度取最近可表示值；参数范围应容纳该解，建议 step 为 0.001 或更细。解超出控件范围时按钮禁用。正文说明拟合原理，不能仅以点击按钮代替推导。
+
+## 代码执行过程 `sequence.trace`
+
 ```json
-{"id":"growth-experiment","type":"exploration","title":"增长率与累计金额","exploration":{"kind":"plot","parameters":[{"id":"rate","label":"每期增长率","min":0,"max":15,"step":0.5,"value":5,"unit":"%"}],"domain":{"min":0,"max":20,"label":"期数"},"yLabel":"金额（元）","series":[{"label":"复利","expression":{"op":"mul","args":[100,{"op":"pow","args":[{"op":"add","args":[1,{"op":"div","args":["rate",100]}]},"x"]}]}}],"outputs":[{"label":"第 20 期末","unit":"元","digits":2,"expression":{"op":"mul","args":[100,{"op":"pow","args":[{"op":"add","args":[1,{"op":"div","args":["rate",100]}]},20]}]}}]}}
+{"kind":"sequence","trace":{"language":"Python","code":["records = [\"A\", \"A\", \"B\"]","seen = set()","for customer in records:","    seen.add(customer)","count = len(seen)"],"input":"records"},"frames":[{"id":"empty","label":"初始化","line":2,"text":"输入有三条记录，seen 为空。","variables":[{"name":"records","value":["A","A","B"]},{"name":"seen","value":[],"display":"set"}]},{"id":"first","label":"取第一条记录","line":3,"cursor":0,"text":"customer 接收第一个 A。","variables":[{"name":"records","value":["A","A","B"]},{"name":"seen","value":[],"display":"set"},{"name":"customer","value":"A"}]}]}
 ```
 
-`x` 是横坐标。其余变量必须在 parameters 声明，ID 使用英文字母开头的字母数字或下划线。表达式仅为数值、变量名或运算树：add/mul/min/max 接受 1–8 个参数，sub/div/pow 恰好两个，ln/exp/abs 恰好一个。最多 16 层。曲线在固定横轴范围采样，output 独立声明需要读取的量。不得用输出标题代替计算公式。
+上例展示结构；完整演示须继续写到最终结果。code 保留完整程序、缩进与语言，最多 60 行。每个 frame 必填 id/label/text/line/variables，最多 40 帧。line 是刚执行的行号，0 表示尚未执行；初始帧从初始化完成后开始时，写明初始化状态。
 
-可选 `observations:[{x,y,label?}]` 标出真实或教学观测点；注明数据来源和性质。观察点须落在横轴范围内。初始值和全部可调范围应符合模型，读数按 digits 显示，内部使用未舍入值。零除、对负数取对数、溢出等情况显示组件内错误，输入仍可修改。图表色彩配有图例和数值，读屏可读取曲线起止值与结果。
+variables 是该步**完整**快照，未出现的变量按未赋值处理。值可为字符串、数值、布尔、null 或最多 30 项的标量数组；`display:"set"` 以集合形式显示，元素不得重复。`trace.input` 指定输入列表的变量名，frame.cursor 是当前输入元素的零起始下标。
 
-## 过程分步 `sequence`
+阅读器以当前行底色、输入位置和新增元素反馈步骤，右栏显示变量当前值及变化前的值。前进、后退、拖动步骤与重置必须得到同一状态。中文输入和控件方向键不触发翻页。执行过程使用已核对的快照，单文件阅读器不会执行作者提供的脚本；编写时应在相应解释器中运行程序并逐步对照，记录使用的输入。
 
-`exploration:{kind:"sequence",frames:[{id,label,quote?,text,facts?:[{label,value}]}]}`。
+只有文字的旧 sequence/reading 文件继续可读，展开为正文，不再生成切换按钮。新的 Python authoring.exploration 拒绝这类声明。
 
-每一步写明操作与状态变化；facts 展示变量、容器内容、阶段结果。至少 2 步，最多 12 步。控制只切换已编写的状态，用于演示算法、实验流程或事件先后。若需要真实计算，使用 plot 或阅读器已有的练习组件。代码在 quote 中按原样展示；解释放在 text。
+## 快速跳转
 
-## 原文批读 `reading`
+首页与离线阅读器按实际内容收录交互、习题、图解、公式和代码。不存在的类别不显示；单目标直接定位，多目标列出具体标题。链接使用稳定 pageId/blockId，不能靠物理页码猜测。切换示例后刷新目标，载入期间禁用，失败后恢复已显示的笔记。关闭菜单后返回触发按钮，支持方向键与 Escape。
 
-采用相同 frames 结构，kind 改为 reading。label 使用段落、诗联或原句名称，quote 保留原文，text 写背景、用词、修辞与结构的分析。facts 可列出格律、术语或材料位置。准确引文与分析各在其对应字段。沿用 sourceRefs 记录出处。作者标记可锚定 frame 的原句与解释，原生搜索可定位到未打开的段落。
+## 验收
 
-## 保存与静态阅读
+- 计算：独立核算初始值、一个改变值和端点；图形、右栏与逐点表使用相同未舍入结果。拟合示例核对最小二乘参数与误差下降。
+- 执行：运行完整源码，逐帧核对当前行、输入位置、全部变量；覆盖重复元素和最终输出。只改说明文案不算状态变化。
+- 版式：正文、右栏开关、双页、窄屏、深色均可读。长值和表格由自身区域滚动，不越过纸页边界。实时更新不重新分页，不打断正在编辑的便条。
+- 连续性：前进、后退、步骤拖动、重置、切页、重新分页与快速切换保持一致；单独打开、练习跳转、图解跳转均定位到实际内容。
+- 保存：状态存入 `userState.explorations[blockId]`；选择保存学习记录后下载并断网打开，参数和步骤保持。取消学习记录则使用初始状态。打印展开完整执行过程与静态计算结果。
 
-参数或当前片段保存在 `userState.explorations[blockId]`，不修改教材正文。reset 恢复作者初始值；切换页、调整版式、下载后再打开均保留所选记录。导出时取消学习记录则恢复初始值。Markdown 的 notebook-block 保留完整声明。打印展开全部过程和批读片段，参数计算保留当前值、图像及结果。
-
-Node 与 Python 入口使用同一 schema；Python helper 为 `authoring.exploration(title, activity, id=...)`。生成交互后按 quality-workflow.md 完成核算和实际操作。示例见 examples 中的数学、机器学习、文学、商学和编程文件。
+按 quality-workflow.md 记录实际核算、浏览器操作和未执行路径。示例声明见仓库 examples 下的机器学习、复利、商学、统计和编程 JSON。

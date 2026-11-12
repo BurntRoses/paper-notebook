@@ -11,11 +11,21 @@ export const readingActivity:Block={id:'literature-exploration',type:'exploratio
  {id:'spring-third',label:'颈联',quote:'烽火连三月，家书抵万金。',text:'战火持续，交通阻隔，家人的音讯变得极难获得。“连”写战乱延续，“抵万金”以夸张写家书的珍贵。诗的视线从城中景物转向家人，忧国与思家在同一场战乱中相连。'},
  {id:'spring-last',label:'尾联',quote:'白头搔更短，浑欲不胜簪。',text:'“搔”将忧思写成动作，“更短”写白发稀疏的程度不断加重，几乎难以承住发簪。诗人以衰老的身体细节收束全诗，前面的国事、离别与家书之忧都凝聚在这一动作中。',facts:[{label:'章法',value:'由城中所望写到自身形象，情感逐层集中。'}]}
 ]}};
-export const sequenceActivity:Block={id:'code-exploration',type:'exploration',title:'逐条读入顾客编号',study:{marks:[{text:'集合已经包含 A',kind:'bold'},{text:'集合已经包含 A',kind:'red',color:'#285f9e'}]},exploration:{kind:'sequence',frames:[
- {id:'set-empty',label:'初始状态',quote:'seen = set()',text:'新集合为空。尚未读入记录，顾客去重数为 0。',facts:[{label:'集合',value:'∅（空集）'},{label:'去重数',value:'0'}]},
- {id:'set-first',label:'读入 A',quote:'seen.add("A")',text:'A 首次出现，加入集合。集合包含一个不同的编号。',facts:[{label:'已读记录',value:'[A]'},{label:'集合',value:'{A}'},{label:'去重数',value:'1'}]},
- {id:'set-repeat',label:'再次读入 A',quote:'seen.add("A")',text:'集合已经包含 A。再次加入相等的值后，集合仍为 {A}，去重数保持为 1。',facts:[{label:'已读记录',value:'[A, A]'},{label:'集合',value:'{A}'},{label:'去重数',value:'1'}]},
- {id:'set-second',label:'读入 B',quote:'seen.add("B")',text:'B 与已有的 A 不同，加入后集合有两个元素。三条记录对应两个不同的顾客编号。',facts:[{label:'已读记录',value:'[A, A, B]'},{label:'集合',value:'{A, B}'},{label:'去重数',value:'2'}]}
+const traceVariables=(seen:string[],customer?:string,count?:number)=>[
+ {name:'records',value:['A','A','B']},
+ {name:'seen',value:seen,display:'set' as const},
+ ...(customer===undefined?[]:[{name:'customer',value:customer}]),
+ ...(count===undefined?[]:[{name:'count',value:count}])
+];
+export const sequenceActivity:Block={id:'code-exploration',type:'exploration',title:'集合去重的执行过程',study:{marks:[{text:'集合已经包含 A',kind:'bold'},{text:'集合已经包含 A',kind:'red',color:'#285f9e'}]},exploration:{kind:'sequence',trace:{language:'Python',code:['records = ["A", "A", "B"]','seen = set()','for customer in records:','    seen.add(customer)','count = len(seen)'],input:'records'},frames:[
+ {id:'set-empty',label:'初始化',line:2,text:'输入列表保留三条记录。集合 seen 为空，尚未进入循环。',variables:traceVariables([])},
+ {id:'set-select-first',label:'取第一条记录',line:3,cursor:0,text:'循环从列表取出第一个 A，变量 customer 的值为 "A"。',variables:traceVariables([],'A')},
+ {id:'set-first',label:'加入 A',line:4,cursor:0,text:'seen.add(customer) 将 A 加入集合，集合中有一个元素。',variables:traceVariables(['A'],'A')},
+ {id:'set-select-repeat',label:'取第二条记录',line:3,cursor:1,text:'第二条记录仍为 A。输入位置前进，customer 的值保持不变。',variables:traceVariables(['A'],'A')},
+ {id:'set-repeat',label:'再次加入 A',line:4,cursor:1,text:'集合已经包含 A。执行 add 后，集合中的元素保持不变。',variables:traceVariables(['A'],'A')},
+ {id:'set-select-second',label:'取第三条记录',line:3,cursor:2,text:'循环取出 B，customer 从 "A" 变为 "B"。',variables:traceVariables(['A'],'B')},
+ {id:'set-second',label:'加入 B',line:4,cursor:2,text:'B 加入 seen，集合现在包含 A、B 两个不同的编号。',variables:traceVariables(['A','B'],'B')},
+ {id:'set-count',label:'计算去重数',line:5,cursor:2,text:'循环结束，len(seen) 返回 2。count 保存去重后的顾客人数。',variables:traceVariables(['A','B'],'B',2)}
 ]}};
 const prediction=(x:Expression)=>add(mul('slope',x),'intercept');
-export const regressionActivity:Block={id:'ml-exploration',type:'exploration',title:'斜率、截距与平方误差',exploration:{kind:'plot',parameters:[{id:'slope',label:'斜率 w',min:0,max:3,step:0.1,value:1},{id:'intercept',label:'截距 b',min:-2,max:2,step:0.1,value:1}],domain:{min:0,max:4,label:'输入 x'},yLabel:'标签与预测值',observations:[{x:1,y:2,label:'A'},{x:2,y:4,label:'B'},{x:3,y:5,label:'C'}],series:[{label:'预测 ŷ = wx + b',expression:prediction('x')}],outputs:[{label:'样本 C 的预测值',expression:prediction(3)},{label:'均方误差',expression:div(add(pow(sub(prediction(1),2),2),pow(sub(prediction(2),4),2),pow(sub(prediction(3),5),2)),3),digits:3}]}};
+export const regressionActivity:Block={id:'ml-exploration',type:'exploration',title:'斜率、截距与平方误差',exploration:{kind:'plot',regression:{slope:'slope',intercept:'intercept'},parameters:[{id:'slope',label:'斜率 w',min:0,max:3,step:0.001,value:1},{id:'intercept',label:'截距 b',min:-2,max:2,step:0.001,value:1}],domain:{min:0,max:4,label:'输入 x'},yLabel:'标签与预测值',observations:[{x:1,y:2,label:'A'},{x:2,y:4,label:'B'},{x:3,y:5,label:'C'}],series:[{label:'预测 ŷ = wx + b',expression:prediction('x')}],outputs:[{label:'样本 C 的预测值',expression:prediction(3)}]}};

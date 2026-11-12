@@ -45,6 +45,9 @@ import { introNotebook } from '../intro';
 import { blocksOf, pagesOf, textOf, uid, type Block, type Note, type Doubt, type Selector, type NotebookDocument, type Page, type ReaderPresentation, type ReaderLayout, type PaperShape, type ReadingAnchor } from '../model/types';
 import { renderBlock } from '../ui/blocks';
 import { revealExploration } from '../ui/exploration';
+import { updateExplorationResults } from '../ui/exploration-results';
+import { isInteractive } from '../model/exploration';
+import { learningJumps, learningCategories, type LearningCategory } from '../model/learning-navigation';
 import './exploration.css';
 import { button, el, modal, textarea, input, label, select, checkbox, download, safeName, copyText, toast, enhanceSelects } from '../ui/dom';
 import { setLocale } from '../ui/i18n';
@@ -68,6 +71,8 @@ class ReaderApp {
   get shape():PaperShape{return this.geometry.shape;}
   d:NotebookDocument; pageIndex=0; profile:ReaderPresentation; sidebarOpen:boolean;
   sidebarTab:'contents'|'highlights'|'records'|'sources'='contents'; search=''; rightSidebarOpen=true; private sessionBooks=new Map<string,NotebookDocument>();
+  private contentsFilter:'all'|LearningCategory='all';
+  getLearningJumps(){return learningJumps(this.d);}
   private toolbar:HTMLElement|null=null;
   private gesture:{x:number;y:number;page:HTMLElement;pointer:number;side:'left'|'right';progress:number;target:number}|null=null;
   private scrollObserver:IntersectionObserver|null=null;
@@ -211,6 +216,16 @@ class ReaderApp {
     if(this.sidebarTab==='contents'){
       const search=input(this.search,this.t('搜索正文','Search text'));search.type='search';search.setAttribute('aria-label',this.t('搜索正文','Search text'));search.className='sidebar-search';
       const list=el('div','sidebar-list');list.id='reader-search-results';search.setAttribute('aria-controls',list.id);
+      const jumps=this.getLearningJumps(),shortcuts=el('nav','sidebar-shortcuts');shortcuts.setAttribute('aria-label','快速跳转');
+      if(this.contentsFilter!=='all'&&!jumps.some(j=>j.category===this.contentsFilter))this.contentsFilter='all';
+      const filters=([['all','全部'],...learningCategories] as const).filter(([id])=>id==='all'||jumps.some(j=>j.category===id));
+      const syncFilters=()=>shortcuts.querySelectorAll<HTMLButtonElement>('button').forEach(control=>{const selected=control.dataset.category===this.contentsFilter;control.setAttribute('aria-pressed',String(selected));control.tabIndex=selected?0:-1;});
+      for(const [index,[id,name]]of filters.entries()){
+       const control=button(name,()=>{this.contentsFilter=id;this.search='';search.value='';resultOffset=0;clearTimeout(searchTimer);syncFilters();fill();},'sidebar-shortcut');control.dataset.category=id;
+       control.addEventListener('keydown',event=>{if(event.isComposing||event.altKey||event.ctrlKey||event.metaKey||!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();event.stopPropagation();const rtl=getComputedStyle(shortcuts).direction==='rtl',step=(event.key==='ArrowLeft'?-1:1)*(rtl?-1:1),next=event.key==='Home'?0:event.key==='End'?filters.length-1:(index+step+filters.length)%filters.length;const target=shortcuts.querySelectorAll<HTMLButtonElement>('button')[next];target.click();target.focus();});shortcuts.append(control);
+      }
+      syncFilters();
+      aside.append(shortcuts);
       let resultOffset=0,searchTimer=0;
       const fill=()=>{list.replaceChildren();if(this.search.trim()){
         const {hits,total}=searchNotebook(this.d,this.search,resultOffset),status=el('p','search-count',this.t(`${total} 处匹配`,`${total} matches`));status.setAttribute('role','status');list.append(status);
@@ -225,8 +240,10 @@ class ReaderApp {
           const previous=button(this.t('上一组','Previous results'),()=>move(-40),'quiet'),next=button(this.t('下一组','Next results'),()=>move(40),'quiet');previous.disabled=resultOffset===0;next.disabled=resultOffset+hits.length>=total;
           pages.append(previous,el('span','',`${resultOffset+1}–${resultOffset+hits.length} / ${total}`),next);list.append(pages);
         }
+      }else if(this.contentsFilter!=='all'){
+       const matches=jumps.filter(j=>j.category===this.contentsFilter);for(const target of matches){const control=button('',()=>this.goBlock(target.pageId,target.blockId),'sidebar-result','');control.append(el('span','',target.title),el('span','result-page',target.pageTitle));list.append(control);}if(!matches.length)list.append(el('p','empty-state','本笔记没有此类内容'));
       }else this.d.notebook.chapters.forEach(c=>{const section=el('section','sidebar-chapter');section.append(el('h2','',c.title));c.pages.forEach(p=>{const b=button(p.title,()=>this.goPage(this.pages.findIndex(s=>s.id===p.id),true),'sidebar-page');b.dataset.pageLink=p.id;if(this.d.userState.bookmarks.some(x=>(typeof x==='string'?x:x.pageId)===p.id)){const flag=el('span','index-bookmark','⚑');flag.setAttribute('aria-label','有书签');b.append(flag);}b.setAttribute('aria-current',p.id===this.page.id?'page':'false');section.append(b);
-        for(const block of p.blocks.filter(b=>['formula','diagram','chart','exercise','comparison'].includes(b.type)))section.append(button(this.blockLabel(block),()=>this.goBlock(p.id,block.id),'sidebar-block'));
+        for(const block of p.blocks.filter(b=>['formula','diagram','chart','exercise','comparison','code'].includes(b.type)||b.type==='exploration'&&!!b.exploration&&isInteractive(b.exploration)))section.append(button(this.blockLabel(block),()=>this.goBlock(p.id,block.id),'sidebar-block'));
       });list.append(section)})};
       search.oninput=()=>{this.search=search.value;resultOffset=0;clearTimeout(searchTimer);searchTimer=window.setTimeout(()=>{if(aside.isConnected)fill();},100);};
       search.onkeydown=e=>{if(e.isComposing||e.keyCode===229||e.altKey||e.ctrlKey||e.metaKey)return;if(e.key==='Enter'){e.preventDefault();clearTimeout(searchTimer);fill();list.querySelector<HTMLButtonElement>('.sidebar-result')?.click();}else if(e.key==='ArrowDown'){e.preventDefault();clearTimeout(searchTimer);fill();list.querySelector<HTMLButtonElement>('.sidebar-result')?.focus();}};
@@ -306,7 +323,7 @@ class ReaderApp {
     const control=appRoot.querySelector<HTMLElement>('[aria-controls=reader-sidebar]');control?.setAttribute('aria-expanded',String(open));if(restoreFocus)control?.focus({preventScroll:true});
     this.wakeChrome();this.remember();
   }
-  blockLabel(b:Block){const icon:Record<string,string>={formula:'∑',diagram:'◇',chart:'⌁',exercise:'?',comparison:'▦'};const names:Record<string,string>={formula:this.t('公式','Formula'),diagram:this.t('图示','Diagram'),chart:this.t('数据图','Data chart'),exercise:this.t('练习','Exercise'),comparison:this.t('对照表','Comparison')};return `${icon[b.type]} ${b.title||b.question||names[b.type]}`}
+  blockLabel(b:Block){const icon:Record<string,string>={formula:'∑',diagram:'◇',chart:'⌁',exercise:'?',comparison:'▦',code:'⌘',exploration:'↔'};const names:Record<string,string>={formula:this.t('公式','Formula'),diagram:this.t('图示','Diagram'),chart:this.t('数据图','Data chart'),exercise:this.t('练习','Exercise'),comparison:this.t('对照表','Comparison'),code:'代码',exploration:'页内交互'};return `${icon[b.type]||''} ${b.title||b.question||names[b.type]}`}
   renderPage(page:SurfacePage){
     const slot=el('div','paper-slot');
     const paper=new PageSurface(this.d,this.shape,this.readingSize,b=>this.block(b),this.sheetSize).render(page,this.pages.indexOf(page));
@@ -315,7 +332,7 @@ class ReaderApp {
     for(const side of ['left','right'] as const){const corner=button(side==='right'?'拖动页角到下一页':'拖动页角到上一页',()=>{},'page-corner corner-'+side,'');corner.dataset.corner=side;corner.addEventListener('click',event=>{if(event.detail===0)this.turn(side==='right'?1:-1)});paper.append(corner);}
     slot.append(paper);return slot;
   }
-  block(b:Block){const root=renderBlock(b,this.d,{exploration:(id,state)=>{(this.d.userState.explorations||={})[id]=state;this.pageCache.clear();this.remember();requestAnimationFrame(()=>this.editor.paint());},answer:(id,answer)=>{this.d.userState.answers[id]=structuredClone(answer);const pageId=this.page.id;this.invalidate();this.paginate();const index=this.pages.findIndex(p=>p.id===pageId&&p.blocks.some(b=>b.id===id));if(index>=0)this.pageIndex=index;this.render();},check:(id,value)=>{this.d.userState.checks[id]=value;this.remember()},edit:()=>{},image:b=>this.showImage(b)},this.sourceBlocks.get(b.id)||b);
+  block(b:Block){const root=renderBlock(b,this.d,{exploration:(id,state)=>{(this.d.userState.explorations||={})[id]=state;updateExplorationResults(appRoot,b,state);this.pageCache.clear();this.remember();requestAnimationFrame(()=>this.editor.paint());},answer:(id,answer)=>{this.d.userState.answers[id]=structuredClone(answer);const pageId=this.page.id;this.invalidate();this.paginate();const index=this.pages.findIndex(p=>p.id===pageId&&p.blocks.some(b=>b.id===id));if(index>=0)this.pageIndex=index;this.render();},check:(id,value)=>{this.d.userState.checks[id]=value;this.remember()},edit:()=>{},image:b=>this.showImage(b)},this.sourceBlocks.get(b.id)||b);
     const media=root.querySelector<HTMLElement>('.figure-media');if(media){const open=button('放大与批注图像',()=>showFigureEditor(b,this.d,media,()=>{this.remember();this.pageCache.clear();this.refreshFigureMarks();}),'figure-edit-entry','↗');media.append(open);media.addEventListener('click',e=>{if(!(e.target as HTMLElement).closest('button'))showFigureEditor(b,this.d,media,()=>{this.remember();this.pageCache.clear();this.refreshFigureMarks();});});}
     (root as HTMLElement & {__block:Block}).__block=this.sourceBlocks.get(b.id)||b;return root;
   }
@@ -495,7 +512,7 @@ class ReaderApp {
       ['expand',this.t('图像批注','Figure annotations'),this.t('点击图像放大，可添加圈注、箭头和文字说明。','Click a figure to enlarge it and add circles, arrows or text labels.')],
       ['bookmark',this.t('书签与疑问','Bookmarks and questions'),this.t('选中文字后添加书签或疑问，在顶部“收录”中查看并返回原文。','Save selected text as a bookmark or question. Open Saved in the top bar to review it or return to the passage.')],
       ['settings',this.t('阅读设置','Reading settings'),this.t('调整版式、字体、行距和纸张，分别开关右栏与底栏。修改立即生效。','Choose layout, font, line spacing and paper, or hide either margin. Changes apply immediately.')],
-      ['settings',this.t('页内交互','Learning activities'),this.t('拖动滑块或输入数值可更新曲线和结果；选择诗联或步骤查看相应解释。重置恢复初始状态。','Adjust a slider or number to update the chart and results. Select a passage or step to read its explanation; Reset restores the initial state.')],
+      ['settings',this.t('页内交互','Learning activities'),this.t('拖动滑块或输入数值，曲线与右栏读数同步更新。代码过程按步骤显示执行行和变量。重置恢复初始状态。','Adjust a slider or number to update the chart and margin results. Step through code to inspect the executed line and variables. Reset restores the initial state.')],
       ['folder',this.t('保存副本','Save a copy'),this.t('在“文件”中下载含批注、作答与交互记录的离线 HTML，或导出 PDF。','Open Files to download an offline HTML with your annotations or export a PDF.')]
     ] as const){const item=el('section','guide-step'),body=el('div');body.append(el('h3','',title),el('p','',text));item.append(icon(glyph),body);grid.append(item);}
     const shortcuts=el('div','guide-shortcuts');shortcuts.setAttribute('aria-label',this.t('键盘快捷键','Keyboard shortcuts'));

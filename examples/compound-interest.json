@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "showcase-compound-interest",
-    "revision": 7,
+    "revision": 8,
     "title": "复利与增长",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -779,7 +779,7 @@
     }
   ],
   "extensions": {
-    "baseRevision": 6,
+    "baseRevision": 7,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

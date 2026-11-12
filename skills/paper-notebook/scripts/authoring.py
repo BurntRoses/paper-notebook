@@ -61,8 +61,10 @@ def write(document, output, *, allow_unmarked=False):
 
 
 def exploration(title, activity, *, id=None):
-    """Native parameter plots, authored process states or close reading."""
+    """Native calculations or a verified code/state trace."""
     from exploration import validate_exploration
     bid=id or entity_id('exploration')
+    if activity.get('kind')!='plot' and not (activity.get('kind')=='sequence' and activity.get('trace')):
+        raise ValueError(bid+'.exploration: text-only panels use prose/quote blocks; sequence requires code and variable snapshots')
     validate_exploration(activity,bid)
     return dict(id=bid,type='exploration',title=title,exploration=deepcopy(activity))

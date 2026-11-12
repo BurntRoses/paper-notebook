@@ -1,8 +1,8 @@
 {
-  "date": "2026-11-11T13:31:35.845Z",
+  "date": "2026-11-12T06:55:56.946Z",
   "archive": "paper-notebook-conversation.zip",
   "uploadArchive": "paper-notebook-upload.zip",
-  "entries": 43,
+  "entries": 45,
   "uploadWrapper": {
     "innerMatches": true,
     "overheadBytes": 564
@@ -25,17 +25,17 @@
     "valid": true,
     "id": "paper-notebook-product-story",
     "pages": 8,
-    "blocks": 26,
+    "blocks": 29,
     "assets": 0,
     "studyMarks": {
       "valid": true,
       "required": true,
-      "total": 42,
+      "total": 46,
       "byKind": {
         "underline": 6,
         "circle": 6,
-        "bold": 6,
-        "red": 6,
+        "bold": 8,
+        "red": 8,
         "highlight": 6,
         "star": 4,
         "box": 2,
@@ -56,8 +56,8 @@
       "unmarkedPages": [],
       "invalidTargets": [],
       "typography": {
-        "bold": 6,
-        "coloredText": 6,
+        "bold": 8,
+        "coloredText": 8,
         "missingBoldPages": [
           "product-structure",
           "product-focus"
@@ -77,11 +77,11 @@
     },
     "statistics": {
       "pages": 8,
-      "blocks": 26,
-      "characters": 866,
+      "blocks": 29,
+      "characters": 1689,
       "figures": 3,
       "tables": 1,
-      "marks": 42
+      "marks": 46
     },
     "capacity": {
       "limits": {
@@ -108,12 +108,12 @@
           "chapterReferences": []
         },
         "basis": "Observable signals for editorial review; zero matches is not editorial approval.",
-        "characters": 1161,
+        "characters": 1904,
         "frequency": [
           {
             "phrase": "这",
-            "count": 0,
-            "per10000": 0
+            "count": 1,
+            "per10000": 5.3
           },
           {
             "phrase": "这个",
@@ -127,13 +127,13 @@
           },
           {
             "phrase": "一个",
-            "count": 0,
-            "per10000": 0
+            "count": 1,
+            "per10000": 5.3
           },
           {
             "phrase": "可以",
             "count": 2,
-            "per10000": 17.2
+            "per10000": 10.5
           },
           {
             "phrase": "需要",
@@ -173,22 +173,22 @@
           {
             "phrase": "使",
             "count": 4,
-            "per10000": 34.5
+            "per10000": 21
           }
         ],
         "sentences": {
-          "count": 84,
-          "mean": 12.5,
+          "count": 137,
+          "mean": 12.6,
           "bins": {
-            "upTo15": 59,
-            "from16To30": 19,
-            "from31To40": 6,
-            "over40": 0
+            "upTo15": 96,
+            "from16To30": 31,
+            "from31To40": 9,
+            "over40": 1
           }
         },
         "paragraphs": {
-          "count": 79,
-          "mean": 13.7,
+          "count": 121,
+          "mean": 14.7,
           "median": 8
         },
         "repetitions": [],
@@ -216,7 +216,7 @@
           {
             "chapterId": "product-story",
             "pages": 8,
-            "characters": 866
+            "characters": 1689
           }
         ]
       },
@@ -229,7 +229,7 @@
         "pages": [
           {
             "pageId": "product-pain",
-            "characters": 182,
+            "characters": 185,
             "figures": 0,
             "tables": 0
           },
@@ -241,7 +241,7 @@
           },
           {
             "pageId": "product-structure",
-            "characters": 123,
+            "characters": 172,
             "figures": 0,
             "tables": 0
           },
@@ -253,7 +253,7 @@
           },
           {
             "pageId": "product-subjects",
-            "characters": 92,
+            "characters": 853,
             "figures": 0,
             "tables": 0
           },
@@ -265,13 +265,13 @@
           },
           {
             "pageId": "product-focus",
-            "characters": 127,
+            "characters": 132,
             "figures": 0,
             "tables": 1
           },
           {
             "pageId": "product-start",
-            "characters": 92,
+            "characters": 97,
             "figures": 0,
             "tables": 0
           }
@@ -284,24 +284,24 @@
     },
     "warnings": []
   },
-  "build": "{\"id\": \"paper-notebook-product-story\", \"revision\": 7, \"schemaValidated\": true, \"coreReferencesChecked\": true, \"bundledReaderMatches\": true, \"studyMarks\": {\"anchors\": {\"declared\": 3, \"resolved\": 3, \"exact\": 3, \"blockLevel\": 0, \"degraded\": 0}, \"valid\": true, \"required\": true, \"total\": 42, \"byKind\": {\"underline\": 6, \"circle\": 6, \"bold\": 6, \"red\": 6, \"highlight\": 6, \"star\": 4, \"box\": 2, \"check\": 3, \"wave\": 1, \"dots\": 2}, \"markedPages\": [\"product-pain\", \"product-idea\", \"product-structure\", \"product-marks\", \"product-subjects\", \"product-fit\", \"product-focus\", \"product-start\"], \"unmarkedPages\": [], \"invalidTargets\": [], \"typography\": {\"bold\": 6, \"coloredText\": 6, \"missingBoldPages\": [\"product-structure\", \"product-focus\"], \"missingColorPages\": [\"product-structure\", \"product-focus\"]}}, \"anchors\": {\"declared\": 3, \"resolved\": 3, \"exact\": 3, \"blockLevel\": 0, \"degraded\": 0}, \"contentReview\": {\"advisory\": true, \"automaticRewrite\": false, \"writing\": {\"warnings\": [], \"summary\": []}, \"metrics\": {\"consistency\": {\"terminology\": [], \"chapterReferences\": []}, \"basis\": \"Observable signals for editorial review; zero matches is not editorial approval.\", \"characters\": 1161, \"frequency\": [{\"phrase\": \"这\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"这个\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"这里\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"一个\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"可以\", \"count\": 2, \"per10000\": 17.2}, {\"phrase\": \"需要\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"并\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"同时\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"所以\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"因此\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"把\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"让\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"使\", \"count\": 4, \"per10000\": 34.5}], \"sentences\": {\"count\": 84, \"mean\": 12.5, \"bins\": {\"upTo15\": 59, \"from16To30\": 19, \"from31To40\": 6, \"over40\": 0}}, \"paragraphs\": {\"count\": 79, \"mean\": 13.7, \"median\": 8.0}, \"repetitions\": [], \"cues\": {\"total\": 3, \"questions\": 0, \"unique\": 3, \"pagesWithout\": [\"product-pain\", \"product-idea\", \"product-marks\", \"product-subjects\", \"product-fit\", \"product-focus\", \"product-start\"]}, \"figures\": {\"total\": 3, \"pages\": 8, \"pagesPerFigure\": 2.7}, \"brief\": null, \"chapters\": [{\"chapterId\": \"product-story\", \"pages\": 8, \"characters\": 866}]}, \"teaching\": {\"marginNotes\": 3, \"titledNotes\": 3, \"warnings\": []}, \"visuals\": {\"pages\": [{\"pageId\": \"product-pain\", \"characters\": 182, \"figures\": 0, \"tables\": 0}, {\"pageId\": \"product-idea\", \"characters\": 75, \"figures\": 1, \"tables\": 0}, {\"pageId\": \"product-structure\", \"characters\": 123, \"figures\": 0, \"tables\": 0}, {\"pageId\": \"product-marks\", \"characters\": 86, \"figures\": 1, \"tables\": 0}, {\"pageId\": \"product-subjects\", \"characters\": 92, \"figures\": 0, \"tables\": 0}, {\"pageId\": \"product-fit\", \"characters\": 89, \"figures\": 1, \"tables\": 0}, {\"pageId\": \"product-focus\", \"characters\": 127, \"figures\": 0, \"tables\": 1}, {\"pageId\": \"product-start\", \"characters\": 92, \"figures\": 0, \"tables\": 0}], \"figures\": 3, \"tables\": 1, \"warnings\": []}, \"assets\": []}, \"statistics\": {\"pages\": 8, \"blocks\": 26, \"characters\": 866, \"figures\": 3, \"tables\": 1, \"marks\": 42}, \"capacity\": {\"limits\": {\"pages\": 500, \"blocks\": 5000}, \"warnings\": []}, \"fonts\": {\"checked\": true, \"basis\": \"Bundled StudyHand unicode-range; uncovered characters use system fallback, not proven missing glyphs.\", \"fallbackCharacters\": []}, \"browserInspected\": false, \"deliveryReady\": false, \"nextStep\": \"Review source-bound editorial findings, inspect layout when available, then run finalize_reader.py.\", \"htmlBytes\": 2077855, \"html\": \"Paper-Notebook-使用说明-v7.html\", \"zip\": \"Paper-Notebook-使用说明-v7.zip\"}",
+  "build": "{\"id\": \"paper-notebook-product-story\", \"revision\": 8, \"schemaValidated\": true, \"coreReferencesChecked\": true, \"bundledReaderMatches\": true, \"studyMarks\": {\"anchors\": {\"declared\": 3, \"resolved\": 3, \"exact\": 3, \"blockLevel\": 0, \"degraded\": 0}, \"valid\": true, \"required\": true, \"total\": 46, \"byKind\": {\"underline\": 6, \"circle\": 6, \"bold\": 8, \"red\": 8, \"highlight\": 6, \"star\": 4, \"box\": 2, \"check\": 3, \"wave\": 1, \"dots\": 2}, \"markedPages\": [\"product-pain\", \"product-idea\", \"product-structure\", \"product-marks\", \"product-subjects\", \"product-fit\", \"product-focus\", \"product-start\"], \"unmarkedPages\": [], \"invalidTargets\": [], \"typography\": {\"bold\": 8, \"coloredText\": 8, \"missingBoldPages\": [\"product-structure\", \"product-focus\"], \"missingColorPages\": [\"product-structure\", \"product-focus\"]}}, \"anchors\": {\"declared\": 3, \"resolved\": 3, \"exact\": 3, \"blockLevel\": 0, \"degraded\": 0}, \"contentReview\": {\"advisory\": true, \"automaticRewrite\": false, \"writing\": {\"warnings\": [], \"summary\": []}, \"metrics\": {\"consistency\": {\"terminology\": [], \"chapterReferences\": []}, \"basis\": \"Observable signals for editorial review; zero matches is not editorial approval.\", \"characters\": 1904, \"frequency\": [{\"phrase\": \"这\", \"count\": 1, \"per10000\": 5.3}, {\"phrase\": \"这个\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"这里\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"一个\", \"count\": 1, \"per10000\": 5.3}, {\"phrase\": \"可以\", \"count\": 2, \"per10000\": 10.5}, {\"phrase\": \"需要\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"并\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"同时\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"所以\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"因此\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"把\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"让\", \"count\": 0, \"per10000\": 0.0}, {\"phrase\": \"使\", \"count\": 4, \"per10000\": 21.0}], \"sentences\": {\"count\": 137, \"mean\": 12.6, \"bins\": {\"upTo15\": 96, \"from16To30\": 31, \"from31To40\": 9, \"over40\": 1}}, \"paragraphs\": {\"count\": 121, \"mean\": 14.7, \"median\": 8.0}, \"repetitions\": [], \"cues\": {\"total\": 3, \"questions\": 0, \"unique\": 3, \"pagesWithout\": [\"product-pain\", \"product-idea\", \"product-marks\", \"product-subjects\", \"product-fit\", \"product-focus\", \"product-start\"]}, \"figures\": {\"total\": 3, \"pages\": 8, \"pagesPerFigure\": 2.7}, \"brief\": null, \"chapters\": [{\"chapterId\": \"product-story\", \"pages\": 8, \"characters\": 1689}]}, \"teaching\": {\"marginNotes\": 3, \"titledNotes\": 3, \"warnings\": []}, \"visuals\": {\"pages\": [{\"pageId\": \"product-pain\", \"characters\": 185, \"figures\": 0, \"tables\": 0}, {\"pageId\": \"product-idea\", \"characters\": 75, \"figures\": 1, \"tables\": 0}, {\"pageId\": \"product-structure\", \"characters\": 172, \"figures\": 0, \"tables\": 0}, {\"pageId\": \"product-marks\", \"characters\": 86, \"figures\": 1, \"tables\": 0}, {\"pageId\": \"product-subjects\", \"characters\": 853, \"figures\": 0, \"tables\": 0}, {\"pageId\": \"product-fit\", \"characters\": 89, \"figures\": 1, \"tables\": 0}, {\"pageId\": \"product-focus\", \"characters\": 132, \"figures\": 0, \"tables\": 1}, {\"pageId\": \"product-start\", \"characters\": 97, \"figures\": 0, \"tables\": 0}], \"figures\": 3, \"tables\": 1, \"warnings\": []}, \"assets\": []}, \"statistics\": {\"pages\": 8, \"blocks\": 29, \"characters\": 1689, \"figures\": 3, \"tables\": 1, \"marks\": 46}, \"capacity\": {\"limits\": {\"pages\": 500, \"blocks\": 5000}, \"warnings\": []}, \"fonts\": {\"checked\": true, \"basis\": \"Bundled StudyHand unicode-range; uncovered characters use system fallback, not proven missing glyphs.\", \"fallbackCharacters\": []}, \"browserInspected\": false, \"deliveryReady\": false, \"nextStep\": \"Review source-bound editorial findings, inspect layout when available, then run finalize_reader.py.\", \"htmlBytes\": 2628552, \"html\": \"Paper-Notebook-使用说明-v8.html\", \"zip\": \"Paper-Notebook-使用说明-v8.zip\"}",
   "nodeReport": {
     "id": "paper-notebook-product-story",
-    "revision": 7,
-    "html": "Paper-Notebook-使用说明-v7.html",
-    "zip": "Paper-Notebook-使用说明-v7.zip",
-    "htmlBytes": 2077855,
+    "revision": 8,
+    "html": "Paper-Notebook-使用说明-v8.html",
+    "zip": "Paper-Notebook-使用说明-v8.zip",
+    "htmlBytes": 2628552,
     "bundledReaderMatches": true,
     "sourceMatches": true,
     "studyMarks": {
       "valid": true,
       "required": true,
-      "total": 42,
+      "total": 46,
       "byKind": {
         "underline": 6,
         "circle": 6,
-        "bold": 6,
-        "red": 6,
+        "bold": 8,
+        "red": 8,
         "highlight": 6,
         "star": 4,
         "box": 2,
@@ -322,8 +322,8 @@
       "unmarkedPages": [],
       "invalidTargets": [],
       "typography": {
-        "bold": 6,
-        "coloredText": 6,
+        "bold": 8,
+        "coloredText": 8,
         "missingBoldPages": [
           "product-structure",
           "product-focus"
@@ -350,11 +350,11 @@
     },
     "statistics": {
       "pages": 8,
-      "blocks": 26,
-      "characters": 866,
+      "blocks": 29,
+      "characters": 1689,
       "figures": 3,
       "tables": 1,
-      "marks": 42
+      "marks": 46
     },
     "capacity": {
       "limits": {
@@ -386,12 +386,12 @@
           "chapterReferences": []
         },
         "basis": "Observable signals for editorial review; zero matches is not editorial approval.",
-        "characters": 1161,
+        "characters": 1904,
         "frequency": [
           {
             "phrase": "这",
-            "count": 0,
-            "per10000": 0
+            "count": 1,
+            "per10000": 5.3
           },
           {
             "phrase": "这个",
@@ -405,13 +405,13 @@
           },
           {
             "phrase": "一个",
-            "count": 0,
-            "per10000": 0
+            "count": 1,
+            "per10000": 5.3
           },
           {
             "phrase": "可以",
             "count": 2,
-            "per10000": 17.2
+            "per10000": 10.5
           },
           {
             "phrase": "需要",
@@ -451,22 +451,22 @@
           {
             "phrase": "使",
             "count": 4,
-            "per10000": 34.5
+            "per10000": 21
           }
         ],
         "sentences": {
-          "count": 84,
-          "mean": 12.5,
+          "count": 137,
+          "mean": 12.6,
           "bins": {
-            "upTo15": 59,
-            "from16To30": 19,
-            "from31To40": 6,
-            "over40": 0
+            "upTo15": 96,
+            "from16To30": 31,
+            "from31To40": 9,
+            "over40": 1
           }
         },
         "paragraphs": {
-          "count": 79,
-          "mean": 13.7,
+          "count": 121,
+          "mean": 14.7,
           "median": 8
         },
         "repetitions": [],
@@ -494,7 +494,7 @@
           {
             "chapterId": "product-story",
             "pages": 8,
-            "characters": 866
+            "characters": 1689
           }
         ]
       },
@@ -507,7 +507,7 @@
         "pages": [
           {
             "pageId": "product-pain",
-            "characters": 182,
+            "characters": 185,
             "figures": 0,
             "tables": 0
           },
@@ -519,7 +519,7 @@
           },
           {
             "pageId": "product-structure",
-            "characters": 123,
+            "characters": 172,
             "figures": 0,
             "tables": 0
           },
@@ -531,7 +531,7 @@
           },
           {
             "pageId": "product-subjects",
-            "characters": 92,
+            "characters": 853,
             "figures": 0,
             "tables": 0
           },
@@ -543,13 +543,13 @@
           },
           {
             "pageId": "product-focus",
-            "characters": 127,
+            "characters": 132,
             "figures": 0,
             "tables": 1
           },
           {
             "pageId": "product-start",
-            "characters": 92,
+            "characters": 97,
             "figures": 0,
             "tables": 0
           }

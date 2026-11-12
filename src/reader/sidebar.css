@@ -24,4 +24,5 @@
 .search-pagination{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:12px;font-size:12px;color:var(--muted)}
 .search-pagination button{min-height:38px;padding:6px 10px;white-space:nowrap}
 .reader-startup{margin:20vh auto;padding:20px;text-align:center;color:var(--muted);font:15px/1.7 system-ui}
+.sidebar-shortcuts{display:flex;flex-wrap:wrap;gap:4px;margin:10px 0}.sidebar-shortcuts .sidebar-shortcut{font:12px/1.5 system-ui;min-height:34px;padding:5px 8px;border:0;border-radius:4px;background:transparent;color:var(--muted)}.sidebar-shortcuts .sidebar-shortcut[aria-pressed=true]{background:var(--field);color:var(--heading)}.sidebar-shortcut:focus-visible{filter:brightness(.85)}
 @media(hover:hover){.reader-sidebar .sidebar-result:hover{background:var(--field)}}
