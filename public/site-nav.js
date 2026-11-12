@@ -72,7 +72,7 @@
     preview.title=`试读：${option.dataset.exampleTitle}`;
     const title=document.querySelector('#preview-example-title');
     if(title)title.textContent=option.dataset.exampleTitle;
-    if(openPreview)openPreview.href=`downloads/${option.dataset.example}.html?demo&v=3.21`;
+    if(openPreview)openPreview.href=`downloads/${option.dataset.example}.html?demo&v=3.24`;
   };
   const previewDocuments=new Map();
   const fetchPreview=name=>{

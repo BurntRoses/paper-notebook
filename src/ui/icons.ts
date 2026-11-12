@@ -1,6 +1,8 @@
 /** One optical grid for the reader chrome; no platform-dependent text glyphs. */
 const paths = {
   contents:'M4 6h16M4 12h16M4 18h16',
+  previous:'m14 6-6 6 6 6',
+  next:'m10 6 6 6-6 6',
   folder:'M3 7V5h6l2 2h10v12H3V7Z M3 10h18',
   sun:'M12 3V1m0 22v-2M3 12H1m22 0h-2M5.6 5.6 4.2 4.2m15.6 15.6-1.4-1.4M5.6 18.4l-1.4 1.4M19.8 4.2l-1.4 1.4 M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z',
   moon:'M20.5 14.3A9 9 0 0 1 9.7 3.5 9 9 0 1 0 20.5 14.3Z',
