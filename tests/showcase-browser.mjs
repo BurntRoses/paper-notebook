@@ -62,7 +62,7 @@ for(const [engine,type] of Object.entries({chromium,webkit}).filter(([name])=>!p
   await frame.getByRole('button',{name:'结束教程',exact:true}).click();
   await page.getByRole('button',{name:'切换明暗模式',exact:true}).click();
   await page.locator('button[data-example="compound-interest"]').click();await ready(page,...examples[1].slice(0,2));await page.screenshot({path:`${out}/${engine}-desktop.png`});
-  await page.setViewportSize({width:390,height:844});await page.locator('.preview-controls').scrollIntoViewIfNeeded();
+  await page.setViewportSize({width:390,height:844});await page.locator('.learning-example-list').scrollIntoViewIfNeeded();
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   for(const button of await page.locator('[data-example]').all()){const b=await button.boundingBox();assert.ok(b.x>=0&&b.x+b.width<=390);}
   await page.screenshot({path:`${out}/${engine}-phone.png`});

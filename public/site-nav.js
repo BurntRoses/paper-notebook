@@ -49,10 +49,15 @@
   const footerStar=document.querySelector('.footer-star');
   if(footerStar){const visible=new IntersectionObserver(entries=>{footerStar.classList.toggle('is-visible',entries[0].isIntersecting&&!document.hidden);});visible.observe(footerStar);document.addEventListener('visibilitychange',()=>{footerStar.classList.toggle('is-visible',!document.hidden&&footerStar.getBoundingClientRect().top<innerHeight);});}
   const preview=document.querySelector('.reader-preview[data-src]');
-  const tour=document.querySelector('#start-reader-tour'),tourStatus=document.querySelector('#preview-tour-status');
+  const tour=document.querySelector('#start-reader-tour'),tourStatus=document.querySelector('#preview-tour-status'),activity=document.querySelector('#preview-open-activity');
   const examples=[...document.querySelectorAll('[data-example]')],openPreview=document.querySelector('#preview-open');
   const loading=document.querySelector('.preview-loading'),retry=document.querySelector('.preview-retry');
-  const setBusy=busy=>{if(preview){if(busy)preview.setAttribute('aria-busy','true');else preview.removeAttribute('aria-busy');}if(loading)loading.hidden=!busy;if(loading?.firstElementChild)loading.firstElementChild.textContent='正在载入示例…';if(retry)retry.hidden=true;for(const b of examples)b.toggleAttribute('data-loading',busy&&b.getAttribute('aria-pressed')==='true');};
+  const setBusy=busy=>{
+    if(preview){if(busy)preview.setAttribute('aria-busy','true');else preview.removeAttribute('aria-busy');}
+    if(loading)loading.hidden=!busy;if(loading?.firstElementChild)loading.firstElementChild.textContent='正在载入示例…';if(retry)retry.hidden=true;
+    if(activity)activity.disabled=busy||!currentReader()||!selectedExample?.dataset.learnBlock;
+    for(const b of examples){const pending=busy&&b.getAttribute('aria-pressed')==='true';b.toggleAttribute('data-loading',pending);if(pending)b.setAttribute('aria-busy','true');else b.removeAttribute('aria-busy');}
+  };
   const failed=message=>{setBusy(false);if(tourStatus)tourStatus.textContent=message;if(retry){retry.hidden=false;loading.hidden=false;loading.firstElementChild.textContent=message;}};
   let previewObserver,generation=0,readerReady,retryExample,syncExamples=()=>{};
   let selectedExample=examples.find(option=>option.getAttribute('aria-pressed')==='true');
@@ -60,7 +65,9 @@
     for(const item of examples)item.setAttribute('aria-pressed',String(item===option));syncExamples();
     if(!option||!preview)return;
     preview.title=`试读：${option.dataset.exampleTitle}`;
-    if(openPreview)openPreview.href=`downloads/${option.dataset.example}.html?demo&v=3.19`;
+    const title=document.querySelector('#preview-example-title');
+    if(title)title.textContent=option.dataset.exampleTitle;
+    if(openPreview)openPreview.href=`downloads/${option.dataset.example}.html?demo&v=3.20`;
   };
   const previewDocuments=new Map();
   const fetchPreview=name=>{
@@ -115,21 +122,21 @@
    option.addEventListener('focus',()=>{if(currentReader())void fetchPreview(option.dataset.example).catch(()=>{});});
    option.addEventListener('click',()=>void activateExample(option));
   }
-  async function activateExample(option,targetBlock){
-    if(!preview||option.getAttribute('aria-pressed')==='true'&&!targetBlock)return;
+  async function activateExample(option){
+    if(!preview||option.getAttribute('aria-pressed')==='true')return;
     const token=++generation;cancelOtherPreviews(option.dataset.example);
     selectExample(option);
     if(tour)tour.disabled=true;if(tourStatus)tourStatus.textContent='';
     // Selecting the displayed book cancels an unfinished switch without
     // resetting its page, selection or in-progress annotation.
     if(option===selectedExample&&currentReader()){
-      setBusy(false);if(tour)tour.disabled=false;if(targetBlock)locateActivity(currentReader(),targetBlock);return;
+      setBusy(false);if(tour)tour.disabled=false;return;
     }
     setBusy(true);
     try{
       const [document,reader]=await Promise.all([fetchPreview(option.dataset.example),waitReader()]);if(token!==generation)return;
       reader.openPreview(document);retryExample=undefined;selectedExample=option;preview.dataset.selectedExample=option.dataset.example;
-      setBusy(false);if(tour)tour.disabled=false;if(targetBlock)locateActivity(reader,targetBlock);
+      setBusy(false);if(tour)tour.disabled=false;
     }catch{
       if(token!==generation)return;
       setBusy(false);if(tour)tour.disabled=false;
@@ -137,8 +144,17 @@
       selectExample(selectedExample);
     }
   }
-  function locateActivity(reader,id){const page=reader.d.notebook.chapters.flatMap(c=>c.pages).find(p=>p.blocks.some(b=>b.id===id));if(!page)throw new Error('Activity unavailable');reader.goBlock(page.id,id);document.querySelector('#read').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}
-  for(const action of document.querySelectorAll('[data-learn-example]'))action.addEventListener('click',async()=>{const option=examples.find(b=>b.dataset.example===action.dataset.learnExample);if(!option)return;action.disabled=true;action.setAttribute('aria-busy','true');const status=document.querySelector('#learning-status');if(status)status.textContent='正在打开…';try{await activateExample(option,action.dataset.learnBlock);if(status)status.textContent=preview.dataset.selectedExample===option.dataset.example?'已打开示例，可在纸页内操作。':'加载失败，请重试。';}finally{action.disabled=false;action.removeAttribute('aria-busy');}});
+  activity?.addEventListener('click',()=>{
+    const reader=currentReader(),id=selectedExample?.dataset.learnBlock;
+    if(activity.disabled||!reader||!id)return;
+    try{
+      const page=reader.d.notebook.chapters.flatMap(c=>c.pages).find(p=>p.blocks.some(b=>b.id===id));
+      if(!page)throw new Error('Activity unavailable');
+      reader.goBlock(page.id,id);
+      document.querySelector('.learning-preview-head').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+      if(tourStatus)tourStatus.textContent='';
+    }catch{if(tourStatus)tourStatus.textContent='页内交互暂时无法打开，请重新选择示例。';}
+  });
   syncExamples=roving(examples,()=>examples.find(b=>b.getAttribute('aria-pressed')==='true'),b=>b.click());
   retry?.addEventListener('click',()=>{
     const wanted=retryExample||examples.find(b=>b.getAttribute('aria-pressed')==='true');retryExample=undefined;

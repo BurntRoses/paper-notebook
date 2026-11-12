@@ -36,8 +36,8 @@ for(const [engine,type] of Object.entries({chromium,webkit})){
   await page.clock.install();let releaseRequest;const heldRequest=new Promise(resolve=>releaseRequest=resolve);
   const stalledRequest=page.waitForRequest('**/previews/literature.json*');
   await page.route('**/previews/literature.json*',async route=>{await heldRequest;await route.abort().catch(()=>{});});
-  await page.locator('[data-example=literature]').click();await stalledRequest;await page.clock.fastForward(20001);
-  await page.locator('.preview-retry').waitFor();assert.equal(await page.locator('iframe').getAttribute('aria-busy'),null);assert.equal(await page.locator('[data-example=business]').getAttribute('aria-pressed'),'true');
+  await page.locator('[data-example=literature]').click();await stalledRequest;assert.ok(await page.locator('#preview-open-activity').isDisabled());assert.equal(await page.locator('[data-example=literature]').getAttribute('aria-busy'),'true');await page.clock.fastForward(20001);
+  await page.locator('.preview-retry').waitFor();assert.equal(await page.locator('iframe').getAttribute('aria-busy'),null);assert.equal(await page.locator('[data-example=business]').getAttribute('aria-pressed'),'true');assert.equal(await page.locator('#preview-example-title').innerText(),'单位贡献与会员制');assert.ok(await page.locator('#preview-open-activity').isEnabled());
   releaseRequest();await page.unroute('**/previews/literature.json*');await page.clock.resume();await page.locator('.preview-retry').click();
   await page.waitForFunction(()=>document.querySelector('iframe').contentWindow.reader?.d.notebook.id==='showcase-literature'&&!document.querySelector('iframe').hasAttribute('aria-busy'));
   await page.locator('[data-example=machine-learning]').focus();await page.keyboard.press('ArrowRight');await page.waitForFunction(()=>document.querySelector('iframe').contentWindow.reader?.d.notebook.id==='showcase-compound-interest');assert.equal(await page.locator('[data-example=compound-interest]').getAttribute('tabindex'),'0');assert.equal(await page.locator('[data-example=machine-learning]').getAttribute('tabindex'),'-1');
@@ -49,9 +49,9 @@ for(const [engine,type] of Object.entries({chromium,webkit})){
   for(const [width,height] of [[1440,1000],[900,650],[390,844],[320,640],[1180,650]]){
    await page.setViewportSize({width,height});await page.waitForTimeout(180);const layout=await page.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth}));assert.ok(layout.scroll<=layout.width+1,JSON.stringify(layout));
    const bounds=await frame.locator('.reader-settings').evaluate(n=>{const r=n.getBoundingClientRect();return {top:r.top,bottom:r.bottom,right:r.right,left:r.left,w:innerWidth,h:innerHeight}});assert.ok(bounds.left>=0&&bounds.right<=bounds.w+1&&bounds.top>=0&&bounds.bottom<=bounds.h+1,JSON.stringify(bounds));
-   if(width===390)await page.screenshot({path:`output/prescription-ui/${engine}-phone-settings.png`});
+   if(width===390){await page.locator('.reader-preview').scrollIntoViewIfNeeded();await page.screenshot({path:`output/prescription-ui/${engine}-phone-settings.png`});}
   }
-  await page.setViewportSize({width:1440,height:1000});await page.waitForTimeout(180);await frame.getByRole('button',{name:'完成',exact:true}).click();
+  await page.setViewportSize({width:1440,height:1000});await page.waitForTimeout(180);await page.locator('.reader-preview').scrollIntoViewIfNeeded();await frame.getByRole('button',{name:'完成',exact:true}).click();
   const files=frame.getByLabel('文件与工具',{exact:true});await files.focus();await page.keyboard.press('ArrowDown');assert.equal(await page.locator('iframe').evaluate(f=>f.contentDocument.activeElement.textContent),'导入');await page.keyboard.press('End');assert.equal(await page.locator('iframe').evaluate(f=>f.contentDocument.activeElement.textContent),'功能介绍');await page.keyboard.press('Escape');assert.ok(await files.evaluate(n=>n===n.ownerDocument.activeElement));assert.equal(await page.locator('iframe').evaluate(f=>f.contentWindow.reader.pageIndex),pageIndex);
   await page.locator('iframe').evaluate(f=>{const before=f.contentWindow.reader.pageIndex;f.contentDocument.body.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',isComposing:true,bubbles:true}));if(f.contentWindow.reader.pageIndex!==before)throw Error('IME changed reading page');});
   // Initial shell failures also provide a retry, independent of lesson fetches.
