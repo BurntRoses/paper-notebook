@@ -50,7 +50,7 @@
     const ranges = [];
     if (Number.isFinite(video.duration) && video.duration > 0) for (let i = 0; i < video.buffered.length; i++) {
       const start = video.buffered.start(i) / video.duration * 100, end = Math.min(100, video.buffered.end(i) / video.duration * 100);
-      ranges.push(`linear-gradient(to right,transparent ${start}%,#ffffff60 ${start}%,#ffffff60 ${end}%,transparent ${end}%)`);
+      ranges.push(`linear-gradient(to right,transparent ${start}%,var(--film-buffer-color) ${start}%,var(--film-buffer-color) ${end}%,transparent ${end}%)`);
     }
     bufferedTrack.style.backgroundImage = ranges.join(',') || 'none';
   };
