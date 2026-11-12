@@ -45,7 +45,7 @@
   shortcuts.append(button,nav);
   const actions=document.createElement('div');actions.className='site-header-actions';actions.append(theme,star,shortcuts);header.replaceChildren(brand,actions);
   // Native iframe lazy loading may fetch several screens ahead. Defer the
-  // embedded reader until it is close, keeping initial bandwidth for the film.
+  // embedded reader until it is close, keeping initial bandwidth for the visible page.
   const footerStar=document.querySelector('.footer-star');
   if(footerStar){const visible=new IntersectionObserver(entries=>{footerStar.classList.toggle('is-visible',entries[0].isIntersecting&&!document.hidden);});visible.observe(footerStar);document.addEventListener('visibilitychange',()=>{footerStar.classList.toggle('is-visible',!document.hidden&&footerStar.getBoundingClientRect().top<innerHeight);});}
   const preview=document.querySelector('.reader-preview[data-src]');
@@ -120,11 +120,12 @@
       if(!generation){setBusy(false);if(selectedExample)preview.dataset.selectedExample=selectedExample.dataset.example;if(tour)tour.disabled=false;}
       applyTheme(document.documentElement.dataset.siteTheme==='dark');
     });
-    previewObserver=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting))void waitReader().catch(()=>{if(!generation)failed('示例加载失败，请重试。');});},{rootMargin:'180px'});previewObserver.observe(preview);
+    previewObserver=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting&&e.intersectionRect.height>=Math.min(120,e.boundingClientRect.height*.15)))void waitReader().catch(()=>{if(!generation)failed('示例加载失败，请重试。');});},{threshold:[0,.15],rootMargin:navigator.connection?.saveData||/2g|3g/.test(navigator.connection?.effectiveType||'')?'0px':'120px'});previewObserver.observe(preview);
   }
   for(const option of examples){
-   option.addEventListener('pointerenter',()=>{if(currentReader())void fetchPreview(option.dataset.example).catch(()=>{});},{passive:true});
-   option.addEventListener('focus',()=>{if(currentReader())void fetchPreview(option.dataset.example).catch(()=>{});});
+   let intentTimer;const prefetch=()=>{const connection=navigator.connection;if(currentReader()&&option.getAttribute('aria-pressed')!=='true'&&!connection?.saveData&&!/2g|3g/.test(connection?.effectiveType||'')&&!(connection?.downlink>0&&connection.downlink<2))void fetchPreview(option.dataset.example).catch(()=>{});};
+   option.addEventListener('pointerenter',()=>{intentTimer=setTimeout(prefetch,120);},{passive:true});option.addEventListener('pointerleave',()=>clearTimeout(intentTimer),{passive:true});
+   option.addEventListener('focus',()=>{intentTimer=setTimeout(prefetch,120);});option.addEventListener('blur',()=>clearTimeout(intentTimer));
    option.addEventListener('click',()=>void activateExample(option));
   }
   async function activateExample(option){
@@ -140,6 +141,7 @@
     setBusy(true);
     try{
       const [document,reader]=await Promise.all([fetchPreview(option.dataset.example),waitReader()]);if(token!==generation)return;
+      if(reader.profile.font==='hand')await preview.contentWindow.document.fonts.load('18px StudyHand',JSON.stringify(document.notebook));if(token!==generation)return;
       reader.openPreview(document);retryExample=undefined;selectedExample=option;preview.dataset.selectedExample=option.dataset.example;
       setBusy(false);if(tour)tour.disabled=false;
     }catch{

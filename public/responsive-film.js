@@ -54,7 +54,7 @@
     }
     bufferedTrack.style.backgroundImage = ranges.join(',') || 'none';
   };
-  playButton.addEventListener('click', () => { if (video.paused) void video.play().catch(() => message('无法播放，请重试。', true)); else video.pause(); });
+  playButton.addEventListener('click', () => { startVideo(); if (video.paused) void video.play().catch(() => message('无法播放，请重试。', true)); else video.pause(); });
   video.addEventListener('click', () => playButton.click());
   muteButton.addEventListener('click', () => { video.muted = !video.muted; });
   progress.addEventListener('input', () => { if (Number.isFinite(video.duration)) video.currentTime = Number(progress.value); });
@@ -108,7 +108,7 @@
   const fitMenu = () => { if (menu && !menu.hidden) menu.style.maxHeight = `${Math.max(44, screen.clientHeight - controls.offsetHeight - 12)}px`; };
   new ResizeObserver(fitMenu).observe(screen);
   const openMenu = () => {
-    if (!menu) return;
+    startVideo();if (!menu) return;
     menu.hidden = false; updateQuality(); fitMenu();
     (choices.find(choice => choice.dataset.qualityChoice === mode) || choices[0])?.focus({ preventScroll: true });
   };
@@ -186,7 +186,7 @@
   }
 
   async function maybeUpgrade() {
-    if (document.hidden || mode !== 'auto' || switching || quality !== '540' || upgradeController || attempted.has(active) || slowNetwork() || location.protocol === 'file:' || video.ended || bufferAhead() < 10 || video.duration - video.currentTime < 12) return;
+    if (document.hidden || video.paused || mode !== 'auto' || switching || quality !== '540' || upgradeController || attempted.has(active) || slowNetwork() || location.protocol === 'file:' || video.ended || bufferAhead() < 10 || video.duration - video.currentTime < 12) return;
     const direction = active, controller = new AbortController(); upgradeController = controller; attempted.add(direction);
     const started = performance.now(); let received = 0, requiredRate = 200 * 1024;
     // Stop the background transfer if it cannot sustain HD or competes with playback.
@@ -246,8 +246,11 @@
     const next = event.key === 'Home' ? 0 : event.key === 'End' ? options.length - 1 : (current + (event.key === 'ArrowDown' ? 1 : -1) + options.length) % options.length;
     event.preventDefault(); options[next]?.focus({ preventScroll: true });
   });
+  let mediaStarted=false,mediaObserver;
+  function startVideo(){if(mediaStarted)return;mediaStarted=true;mediaObserver?.disconnect();adapt();}
   function adapt(retryPlay = false) {
     const next = orientation.matches ? 'portrait' : 'landscape';
+    if(!mediaStarted){video.dataset.orientation=next;video.poster=poster(next);return;}
     if (!retryPlay && next === active) return;
     cancelUpgrade();
     if (retryPlay) attempted.delete(next);
@@ -286,5 +289,6 @@
     if (!event.persisted) { sourceController?.abort(); for (const copy of hdCopies.values()) URL.revokeObjectURL(copy); hdCopies.clear(); }
   });
   window.addEventListener('pageshow', event => { if (event.persisted) resume(); });
-  adapt();
+  video.preload='none';adapt();
+  mediaObserver=new IntersectionObserver(entries=>{if(entries.some(entry=>entry.isIntersecting))startVideo();},{rootMargin:slowNetwork()?'0px':'250px'});mediaObserver.observe(screen);
 })();

@@ -1,5 +1,7 @@
 import { cp, mkdir, readFile, rm, writeFile, stat } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
+import {createHash} from 'node:crypto';
+import {onlineReader} from './online-reader.mjs';
 
 // The public site is a product, not a mirror of the development release.
 // Build interfaces and production sources remain in the repository/dist only.
@@ -31,7 +33,11 @@ await cp(dist+'downloads/paper-notebook-upload.zip',site+'downloads/paper-notebo
 for(const path of ['paper-landscape-3.jpg','paper-portrait-3.jpg','paper-notebook-film.mp4','paper-notebook-film-portrait.mp4','paper-notebook-film-1080.mp4','paper-notebook-film-portrait-1080.mp4','paper-notebook-film-low.mp4','paper-notebook-film-portrait-low.mp4','story/film-landscape-poster-1.webp','story/film-portrait-poster-1.webp'])await cp(publicDir+'promo/'+path,site+'promo/'+path);
 await writeFile(site + 'reader.html', reader);
 const previewDocument=JSON.parse(await readFile(dist+'downloads/machine-learning.json','utf8'));
-await writeFile(site+'preview-reader.html',reader.replace(/(<script\b[^>]*\bid=["']notebook-data["'][^>]*>)[\s\S]*?(<\/script>)/,(_,open,close)=>open+JSON.stringify(previewDocument).replaceAll('<','\\u003c')+close));
+const previewSource=reader.replace(/(<script\b[^>]*\bid=["']notebook-data["'][^>]*>)[\s\S]*?(<\/script>)/,(_,open,close)=>open+JSON.stringify(previewDocument).replaceAll('<','\\u003c')+close);
+const hosted=onlineReader(previewSource,'reader.html?v='+createHash('sha256').update(reader).digest('hex').slice(0,20));
+await mkdir(site+'reader-assets',{recursive:true});
+await Promise.all([...hosted.assets].map(([name,data])=>writeFile(site+'reader-assets/'+name,data)));
+await writeFile(site+'preview-reader.html',hosted.html);
 await writeFile(site + 'index.html', home);
 await writeFile(site+'chat-start.html','<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="0;url=./#create"><link rel="canonical" href="./#create"><title>制作笔记 · Paper Notebook</title><script>location.replace("./"+(["#agent","#chat"].includes(location.hash)?location.hash:"#create"))</script><a href="./#create">前往首页，复制制作指令</a></html>');
 await writeFile(site+'promo.html','<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=./"><link rel="canonical" href="./"><title>Paper Notebook</title><script>const anchors={reader:"read",subjects:"read",workflow:"create",downloads:"create"};location.replace("./"+(location.hash?"#"+(anchors[location.hash.slice(1)]||location.hash.slice(1)):""))</script><a href="./">前往 Paper Notebook</a></html>');

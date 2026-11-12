@@ -8,7 +8,7 @@ for(const [engine,type] of Object.entries({chromium,webkit})){
  const browser=await type.launch({headless:true});
  try{
   const page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'}),errors=[];page.on('pageerror',e=>errors.push(e.message));
-  await page.goto(base,{waitUntil:'domcontentloaded'});await ready(page);await page.locator('.film-screen').scrollIntoViewIfNeeded();
+  await page.goto(base,{waitUntil:'domcontentloaded'});await page.locator('.film-screen').scrollIntoViewIfNeeded();await ready(page);await page.locator('.film-screen').scrollIntoViewIfNeeded();
   assert.ok(await page.locator('.film-feedback').isHidden());assert.ok(await page.locator('.film-retry').isHidden());
   for(const theme of ['light','dark']){await page.evaluate(theme=>document.documentElement.dataset.siteTheme=theme,theme);const appearance=await page.locator('.film-controls').evaluate(n=>({background:getComputedStyle(n).backgroundColor,image:getComputedStyle(n).backgroundImage,surface:getComputedStyle(document.documentElement).getPropertyValue('--site-surface').trim(),top:n.getBoundingClientRect().top,videoBottom:document.querySelector('video').getBoundingClientRect().bottom}));assert.equal(appearance.image,'none');assert.ok(appearance.top>=appearance.videoBottom-1);assert.equal(appearance.background,theme==='light'?'rgb(252, 250, 242)':'rgb(41, 54, 56)');}await page.evaluate(()=>document.documentElement.dataset.siteTheme='light');
 

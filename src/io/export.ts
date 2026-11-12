@@ -6,10 +6,14 @@ import { slimFonts, artifactStem, bundleReadme } from './packaging';
 import { download, safeName } from '../ui/dom';
 import notices from '../../THIRD_PARTY_NOTICES.txt?raw';
 export { notices };
-let initialShell='';
-export function captureShell(){initialShell='<!doctype html>\n'+document.documentElement.outerHTML;}
+let initialShell='',templateURL='';let hostedTemplate:Promise<string>|undefined;
+export function captureShell(){initialShell='<!doctype html>\n'+document.documentElement.outerHTML;const meta=document.querySelector<HTMLMetaElement>('meta[name="paper-notebook-template"]');templateURL=meta?new URL(meta.content,location.href).href:'';}
+async function offlineTemplate(){
+ if(!hostedTemplate)hostedTemplate=fetch(templateURL,{cache:'force-cache'}).then(async response=>{if(!response.ok)throw new Error('离线模板加载失败，请重试。');const html=await response.text();if(!html.includes('notebook-data')|| /<meta\b[^>]*name=["']paper-notebook-template["']/i.test(html))throw new Error('离线模板无效，请刷新后重试。');return html;}).catch(error=>{hostedTemplate=undefined;throw error;});
+ return hostedTemplate;
+}
 export function shareDocument(d:NotebookDocument,personal:boolean){const copy=structuredClone(d);if(!personal){const prefs=copy.userState.preferences;copy.userState=userState(copy.notebook.chapters[0].pages[0].id);copy.userState.preferences={...prefs,weatherEnabled:false,weatherCity:'',timerRunning:false,timerEnd:undefined,timerRemaining:1500};}return copy;}
-export async function htmlFor(d:NotebookDocument){let shell=initialShell;if(/<script[^>]+src=["'][^"']*(?:src\/(?:main|reader\/main)|@vite)/.test(shell)){
+export async function htmlFor(d:NotebookDocument){let shell=templateURL?await offlineTemplate():initialShell;if(/<script[^>]+src=["'][^"']*(?:src\/(?:main|reader\/main)|@vite)/.test(shell)){
  const response=await fetch('./downloads/blank-notebook.html');if(!response.ok)throw new Error('开发入口请先 build，再用 preview 打开；离线导出需要已打包的运行时。');shell=await response.text();if(!shell.includes('notebook-data')||shell.includes('/src/main.ts')||shell.includes('/src/reader/main.ts'))throw new Error('未找到成品运行时，请先运行 build。');
  }
  return slimFonts(shell.replace(/(<script\b[^>]*\bid=["']notebook-data["'][^>]*>)[\s\S]*?(<\/script>)/,(_,open,close)=>open+scriptJSON(d)+close).replace(/<title>[^<]*<\/title>/,()=>`<title>${d.notebook.title.replace(/[<>&]/g,'')} · Paper Notebook</title>`),d);

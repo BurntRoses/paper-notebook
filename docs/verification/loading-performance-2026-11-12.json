@@ -1,0 +1,209 @@
+{
+  "date": "2026-11-12",
+  "version": "2.7.1",
+  "site": "3.23",
+  "method": "Local gzip server; cold Chromium context; 400 KiB/s download, 100 ms latency, CPU 4x throttling. Single baseline/final comparison, not a production latency guarantee.",
+  "before": {
+    "readerHTMLBytes": 4365831,
+    "encodedReaderBytes": 2730249,
+    "trialReadyMs": 17958,
+    "earlyVideoRequests": 1
+  },
+  "after": {
+    "readerHTMLBytes": 41680,
+    "encodedReaderHTMLBytes": 14043,
+    "encodedReaderResources": 980720,
+    "trialReadyMs": 7548,
+    "earlyVideoRequests": 0
+  },
+  "browser": [
+    {
+      "engine": "chromium",
+      "fontsRequested": 17,
+      "encodedReaderResources": 980720,
+      "noEarlyVideo": true,
+      "oneReaderRuntime": true,
+      "cachedAssets": true,
+      "templateFailureRetry": true,
+      "offlineExport": true,
+      "offlineRequests": 0,
+      "videoLoadsNearViewport": true
+    },
+    {
+      "engine": "webkit",
+      "fontsRequested": 17,
+      "encodedReaderResources": 980720,
+      "noEarlyVideo": true,
+      "oneReaderRuntime": true,
+      "cachedAssets": true,
+      "templateFailureRetry": true,
+      "offlineExport": true,
+      "offlineRequests": 0,
+      "videoLoadsNearViewport": true
+    }
+  ],
+  "weakVideo": [
+    {
+      "engine": "chromium-slow-network",
+      "slowNetworkKiBps": 80,
+      "warmedBufferSeconds": 4,
+      "playback": {
+        "played": 5.800107,
+        "elapsed": 6.004799999952317,
+        "waits": 0,
+        "width": 960
+      },
+      "noCompetingHD": true
+    },
+    {
+      "engine": "chromium",
+      "fastPreloadsHD": true,
+      "rotationKeepsTimeAndPlayback": true
+    },
+    {
+      "engine": "chromium",
+      "autoDefaultsToHD": true,
+      "manualQualityKeepsTimeAndPlayback": true,
+      "manualChoiceSurvivesNetworkAndRotation": true,
+      "autoRestoresAdaptation": true,
+      "phoneFits": true
+    },
+    {
+      "engine": "chromium",
+      "autoFallsBackFromStalledHD": true
+    },
+    {
+      "engine": "chromium",
+      "lowPlaysBeforeHDReady": true,
+      "upgradeUsesCompleteLocalCopy": true,
+      "upgradeKeepsTimeAndPlayback": true
+    },
+    {
+      "engine": "chromium",
+      "failedUpgradeKeepsLowPlayback": true,
+      "manualErrorKeepsChoiceAndRecoveryTime": true
+    },
+    {
+      "engine": "chromium",
+      "dataSaverStaysLow": true
+    },
+    {
+      "engine": "webkit",
+      "fastPreloadsHD": true,
+      "rotationKeepsTimeAndPlayback": true
+    },
+    {
+      "engine": "webkit",
+      "autoDefaultsToHD": true,
+      "manualQualityKeepsTimeAndPlayback": true,
+      "manualChoiceSurvivesNetworkAndRotation": true,
+      "autoRestoresAdaptation": true,
+      "phoneFits": true
+    },
+    {
+      "engine": "webkit",
+      "autoFallsBackFromStalledHD": true
+    },
+    {
+      "engine": "webkit",
+      "lowPlaysBeforeHDReady": true,
+      "upgradeUsesCompleteLocalCopy": true,
+      "upgradeKeepsTimeAndPlayback": true
+    },
+    {
+      "engine": "webkit",
+      "failedUpgradeKeepsLowPlayback": true,
+      "manualErrorKeepsChoiceAndRecoveryTime": true
+    },
+    {
+      "engine": "webkit",
+      "dataSaverStaysLow": true
+    }
+  ],
+  "tests": {
+    "passed": 101,
+    "failed": 0
+  },
+  "artifacts": [
+    {
+      "name": "machine-learning",
+      "sourceSHA256": "b8973db1f8ac2675f7661c89b1186ad6a95185a4d5f8305bcadb900f555d1aae",
+      "artifactSHA256": "657677c72dd72910c20fff74231e47071009815fd909e0b0b48e158c91c9a729",
+      "sheets": 85,
+      "issues": [],
+      "deliveryReady": true
+    },
+    {
+      "name": "compound-interest",
+      "sourceSHA256": "f03946265d944b6d78a4c2fbf433871f8a8797d23f1cb1aac3b6858679cc21e7",
+      "artifactSHA256": "52610aacef582e302434dc8370a82161219d982b4cffaa64831e368b0517970d",
+      "sheets": 23,
+      "issues": [],
+      "deliveryReady": true
+    },
+    {
+      "name": "concept",
+      "sourceSHA256": "9c9dd5ff6335fe616c3dc11e741ccf9f56dd44d12abe8907737fd8f5dabffe9d",
+      "artifactSHA256": "5c229005692f2e3f506c264d3c7c4de94fc5f85ba1b36f02747441d3088bb116",
+      "sheets": 31,
+      "issues": [],
+      "deliveryReady": true
+    },
+    {
+      "name": "literature",
+      "sourceSHA256": "724ac83f06a591235678157fd5cf9e5eb6bbb173965092451f937022367757a5",
+      "artifactSHA256": "e81b4422654462eafbcdd5e7cd0650f89f48084fbb738a4261d610e2905a8fae",
+      "sheets": 18,
+      "issues": [],
+      "deliveryReady": true
+    },
+    {
+      "name": "business",
+      "sourceSHA256": "8185edb746388659a172b50e09020ea1f3d064dcd621305b886381cd767fdbeb",
+      "artifactSHA256": "bf3714673a48cd2ccdeb89bbb6e6a89f36cefedb7fb05ff38ea5d87d23596cf0",
+      "sheets": 20,
+      "issues": [],
+      "deliveryReady": true
+    },
+    {
+      "name": "programming",
+      "sourceSHA256": "09b9aa482d5ab3352635f2fb393a48aa8eeeb9f2506bc1b3d6d6068ccbc24a43",
+      "artifactSHA256": "4d48a19e75a9628e58a148c4279e8b6682c3c820135657bfd9538e6865db6a94",
+      "sheets": 19,
+      "issues": [],
+      "deliveryReady": true
+    },
+    {
+      "name": "paper-notebook",
+      "sourceSHA256": "91b24bc10268bbe123bcf2e9392b1adae99c415f283e265a39fb879da9bdcdd4",
+      "artifactSHA256": "05c8185c4e8ff638a958d2737a7eae51961eff0b06a7df9030f54880548cad49",
+      "sheets": 95,
+      "issues": [],
+      "deliveryReady": true
+    },
+    {
+      "name": "paper-notebook-product",
+      "sourceSHA256": "578d9767219ef288d77347f0b684d317ca4d22ed7e4d4e3fcfd4b54caa856a1f",
+      "artifactSHA256": "8bd0397ffb9c4f0813890822b17ca06b003081c80d4dc2f0d7b36cabf5a305bd",
+      "sheets": 41,
+      "issues": [],
+      "deliveryReady": true
+    },
+    {
+      "name": "formula",
+      "sourceSHA256": "a7beae45c27c6cfecf31f9d196aa750aba75ac0d264af4281ee229338f90be93",
+      "artifactSHA256": "621351846d2d17e4b5ec1112b71d91194d61210325c3d935146c7e00fb7f290c",
+      "sheets": 13,
+      "issues": [],
+      "deliveryReady": true
+    },
+    {
+      "name": "practice",
+      "sourceSHA256": "cbcf677768910d770e9ba85a25a8380c649f924541c20272fcc4a034419c0db2",
+      "artifactSHA256": "90e2e2854d14ee340a9097aac445b3dd5832e9df079df8ac4a0a7758019001ca",
+      "sheets": 11,
+      "issues": [],
+      "deliveryReady": true
+    }
+  ]
+}
