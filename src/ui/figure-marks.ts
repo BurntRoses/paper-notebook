@@ -7,7 +7,7 @@ export function figureMarks(marks:FigureMark[],ratio=4/3){
  for(const mark of marks){
   const x=mark.x*width/100,y=mark.y*height/100,x2=(mark.x2??mark.x+8)*width/100,y2=(mark.y2??mark.y+8)*height/100;
   let node:SVGElement;const make=(tag:string,attrs:Record<string,string|number>)=>{const n=document.createElementNS(NS,tag);for(const [k,v] of Object.entries(attrs))n.setAttribute(k,String(v));return n;};
-  if(mark.kind==='text'){node=make('text',{x,y,'font-size':24,'font-family':'StudyHand,serif',fill:mark.color||'#b1483d',stroke:'none'});node.textContent=mark.text||'';}
+  if(mark.kind==='text'){node=make('text',{x,y,'font-size':24,'font-family':'StudyHand,serif','text-rendering':'geometricPrecision',fill:mark.color||'#b1483d',stroke:'none'});node.textContent=mark.text||'';}
   else if(mark.kind==='circle')node=make('path',{d:circleStroke(Math.min(x,x2),Math.min(y,y2),Math.max(6,Math.abs(x2-x)),Math.max(6,Math.abs(y2-y)),Math.round(x+y+37))});
   else if(mark.kind==='check')node=make('path',{d:`M ${x-8} ${y} l 8 8 17 -24`});
   else if(mark.kind==='pen')node=make('path',{d:(mark.points||[]).map((p,i)=>`${i?'L':'M'} ${p[0]*width/100} ${p[1]*height/100}`).join(' ')});

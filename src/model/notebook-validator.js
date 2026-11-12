@@ -8,9 +8,9 @@ var __commonJS = (cb, mod) => function __require() {
   }
 };
 
-// node_modules/.pnpm/ajv@8.20.0/node_modules/ajv/dist/runtime/ucs2length.js
+// ../../../Users/luohonggen/Desktop/notebook/paper-notebook-kit/node_modules/.pnpm/ajv@8.20.0/node_modules/ajv/dist/runtime/ucs2length.js
 var require_ucs2length = __commonJS({
-  "node_modules/.pnpm/ajv@8.20.0/node_modules/ajv/dist/runtime/ucs2length.js"(exports) {
+  "../../../Users/luohonggen/Desktop/notebook/paper-notebook-kit/node_modules/.pnpm/ajv@8.20.0/node_modules/ajv/dist/runtime/ucs2length.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     function ucs2length(str) {
@@ -34,9 +34,9 @@ var require_ucs2length = __commonJS({
   }
 });
 
-// node_modules/.pnpm/fast-deep-equal@3.1.3/node_modules/fast-deep-equal/index.js
+// ../../../Users/luohonggen/Desktop/notebook/paper-notebook-kit/node_modules/.pnpm/fast-deep-equal@3.1.3/node_modules/fast-deep-equal/index.js
 var require_fast_deep_equal = __commonJS({
-  "node_modules/.pnpm/fast-deep-equal@3.1.3/node_modules/fast-deep-equal/index.js"(exports, module) {
+  "../../../Users/luohonggen/Desktop/notebook/paper-notebook-kit/node_modules/.pnpm/fast-deep-equal@3.1.3/node_modules/fast-deep-equal/index.js"(exports, module) {
     "use strict";
     module.exports = function equal(a, b) {
       if (a === b) return true;
@@ -69,9 +69,9 @@ var require_fast_deep_equal = __commonJS({
   }
 });
 
-// node_modules/.pnpm/ajv@8.20.0/node_modules/ajv/dist/runtime/equal.js
+// ../../../Users/luohonggen/Desktop/notebook/paper-notebook-kit/node_modules/.pnpm/ajv@8.20.0/node_modules/ajv/dist/runtime/equal.js
 var require_equal = __commonJS({
-  "node_modules/.pnpm/ajv@8.20.0/node_modules/ajv/dist/runtime/equal.js"(exports) {
+  "../../../Users/luohonggen/Desktop/notebook/paper-notebook-kit/node_modules/.pnpm/ajv@8.20.0/node_modules/ajv/dist/runtime/equal.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var equal = require_fast_deep_equal();
@@ -85,7 +85,7 @@ var require_notebook_validator = __commonJS({
   "notebook-validator.cjs"(exports, module) {
     module.exports = validate21;
     module.exports.default = validate21;
-    var schema6 = { "$schema": "http://json-schema.org/draft-07/schema#", "$id": "https://paper-notebook.local/notebook.schema.json", "title": "Paper Notebook Document 1.0", "type": "object", "required": ["schemaVersion", "notebook", "userState", "assets", "extensions"], "properties": { "schemaVersion": { "const": "1.0.0" }, "notebook": { "type": "object", "required": ["id", "revision", "title", "language", "goals", "sources", "chapters"], "properties": { "id": { "$ref": "#/definitions/id" }, "revision": { "type": "integer", "minimum": 1 }, "title": { "type": "string", "maxLength": 1e3 }, "subtitle": { "type": "string" }, "language": { "type": "string" }, "goals": { "type": "array", "items": { "type": "string" } }, "sources": { "type": "array", "items": { "type": "object", "required": ["id", "title"], "properties": { "id": { "$ref": "#/definitions/id" }, "title": { "type": "string" }, "url": { "type": "string" } } } }, "chapters": { "type": "array", "minItems": 1, "maxItems": 500, "items": { "type": "object", "required": ["id", "title", "pages"], "properties": { "id": { "$ref": "#/definitions/id" }, "title": { "type": "string" }, "pages": { "type": "array", "minItems": 1, "maxItems": 500, "items": { "type": "object", "required": ["id", "title", "blocks"], "properties": { "id": { "$ref": "#/definitions/id" }, "title": { "type": "string" }, "layout": { "enum": ["reading", "cornell", "grid", "exam", "free"] }, "blocks": { "type": "array", "maxItems": 5e3, "items": { "$ref": "#/definitions/block" } }, "summary": { "type": "string" }, "cues": { "type": "array", "items": { "type": "object", "required": ["id", "text"], "properties": { "id": { "$ref": "#/definitions/id" }, "text": { "type": "string" }, "blockId": { "type": "string" }, "anchor": { "type": "string", "minLength": 1, "description": "Exact source phrase in the referenced block; the cue follows its fragment and line." }, "title": { "type": "string", "minLength": 1, "description": "Optional concrete title for an explanatory margin note; text contains its complete explanation." } } } }, "paper": { "type": "object", "properties": { "ruling": { "enum": ["lined", "grid", "dots", "blank"] }, "lineHeight": { "type": "number", "minimum": 24, "maximum": 56 } } }, "placements": { "$ref": "#/definitions/placements" }, "subject": { "enum": ["general", "stem", "literature", "business", "code"] } } } } } } }, "parent": { "type": "object", "required": ["notebookId"], "properties": { "notebookId": { "$ref": "#/definitions/id" }, "pageId": { "$ref": "#/definitions/id" } } }, "brief": { "type": "object", "required": ["goal", "level", "minutes", "materials", "exercises", "language", "route", "imagePolicy"], "properties": { "goal": { "type": "string" }, "level": { "type": "string" }, "minutes": { "type": "number", "minimum": 1 }, "materials": { "type": "array", "items": { "type": "string" } }, "exercises": { "type": "boolean" }, "language": { "type": "string" }, "route": { "enum": ["quick", "systematic", "deep", "practice", "review"] }, "imagePolicy": { "enum": ["original", "programmatic", "redraw"] }, "languageStyle": { "type": "string" }, "difficulty": { "type": "string" }, "priorKnowledge": { "type": "string" }, "horizon": { "enum": ["short", "long"] }, "materialFidelity": { "enum": ["strict", "guided", "open"] }, "scope": { "type": "string" }, "termPolicy": { "type": "string" } } } } }, "userState": { "type": "object", "required": ["updatedAt", "lastPageId", "notes", "annotations", "doubts", "answers", "checks", "bookmarks", "readingPositions", "preferences"], "properties": { "updatedAt": { "type": "string" }, "lastPageId": { "type": "string" }, "notes": { "type": "array", "items": { "type": "object", "required": ["id", "pageId", "title", "text", "back", "material", "seed", "x", "y", "z", "face", "attached", "collapsed", "surface"], "properties": { "id": { "$ref": "#/definitions/id" }, "pageId": { "type": "string" }, "title": { "type": "string" }, "text": { "type": "string" }, "back": { "type": "string" }, "material": { "enum": ["butter", "rose", "sage", "lilac", "kraft", "glassine", "transparent"] }, "seed": { "type": "number" }, "x": { "type": "number" }, "y": { "type": "number" }, "z": { "type": "number" }, "face": { "enum": ["front", "back"] }, "attached": { "type": "boolean" }, "collapsed": { "type": "boolean" }, "surface": { "enum": ["page", "desk"] }, "blockId": { "$ref": "#/definitions/id" }, "selector": { "$ref": "#/definitions/selector" }, "width": { "type": "number", "minimum": 80, "maximum": 1e3 }, "height": { "type": "number", "minimum": 60, "maximum": 1e3 }, "positions": { "type": "object", "properties": { "landscape": { "type": "object", "required": ["x", "y", "width", "z"], "properties": { "x": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "y": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "width": { "type": "number", "minimum": 20, "maximum": 1e4 }, "height": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "z": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "sheet": { "type": "integer", "minimum": 0 } } }, "portrait": { "type": "object", "required": ["x", "y", "width", "z"], "properties": { "x": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "y": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "width": { "type": "number", "minimum": 20, "maximum": 1e4 }, "height": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "z": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "sheet": { "type": "integer", "minimum": 0 } } } } }, "sheet": { "type": "integer", "minimum": 0 }, "anchors": { "type": "array", "items": { "type": "object", "required": ["pageId", "selector"], "additionalProperties": false, "properties": { "pageId": { "type": "string" }, "selector": { "$ref": "#/definitions/selector" } } } }, "region": { "enum": ["right", "bottom"] }, "marginPosition": { "type": "number", "minimum": 0, "maximum": 1 } } } }, "annotations": { "type": "array", "items": { "type": "object", "required": ["id", "kind", "selectors", "color", "width", "seed", "pageId"], "properties": { "id": { "$ref": "#/definitions/id" }, "kind": { "enum": ["bold", "red", "strike", "underline", "circle", "highlight", "arrow", "check", "freehand", "wave", "box", "bracket", "star", "dots"] }, "selectors": { "type": "array", "items": { "$ref": "#/definitions/selector" } }, "color": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" }, "width": { "type": "number", "minimum": 0.5, "maximum": 40 }, "seed": { "type": "number" }, "pageId": { "type": "string" }, "points": { "type": "array", "items": { "type": "array", "minItems": 2, "maxItems": 3, "items": { "type": "number" } } }, "status": { "enum": ["resolved", "ambiguous", "orphaned", "needs-placement"] }, "coordinateSpace": { "enum": ["legacy-width", "normalized-page"] }, "originalPoints": { "type": "array", "items": { "type": "array", "minItems": 2, "maxItems": 3, "items": { "type": "number" } } }, "sourceSize": { "type": "object", "required": ["width", "height"], "properties": { "width": { "type": "number", "exclusiveMinimum": 0 }, "height": { "type": "number", "exclusiveMinimum": 0 } } }, "shape": { "enum": ["landscape", "portrait"] }, "sheet": { "type": "integer", "minimum": 0 }, "tool": { "enum": ["pencil", "pen", "marker", "arrow"] }, "attachedBlockId": { "type": "string" }, "blockFrame": { "type": "object", "required": ["x", "y", "width", "height"], "properties": { "x": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "y": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "width": { "type": "number", "minimum": 20, "maximum": 1e4 }, "height": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "z": { "type": "number", "minimum": -1e5, "maximum": 1e5 } } }, "migration": { "type": "string" } } } }, "doubts": { "type": "array", "items": { "type": "object", "required": ["id", "pageId", "selector", "question", "status"], "properties": { "id": { "$ref": "#/definitions/id" }, "pageId": { "type": "string" }, "selector": { "$ref": "#/definitions/selector" }, "question": { "type": "string" }, "status": { "enum": ["open", "resolved"] }, "category": { "enum": ["unclear", "verify", "question"] }, "answerNotebookId": { "$ref": "#/definitions/id" }, "answerPageId": { "$ref": "#/definitions/id" }, "anchors": { "type": "array", "items": { "type": "object", "required": ["pageId", "selector"], "additionalProperties": false, "properties": { "pageId": { "type": "string" }, "selector": { "$ref": "#/definitions/selector" } } } } } } }, "answers": { "type": "object", "additionalProperties": { "type": "object", "required": ["selected", "submitted"], "properties": { "selected": { "type": "array", "items": { "type": "string" } }, "submitted": { "type": "boolean" }, "text": { "type": "string" }, "matches": { "type": "object", "additionalProperties": { "type": "string" } } } } }, "checks": { "type": "object", "additionalProperties": { "type": "boolean" } }, "bookmarks": { "type": "array", "items": { "oneOf": [{ "type": "string" }, { "type": "object", "required": ["id", "pageId", "kind"], "additionalProperties": false, "properties": { "id": { "$ref": "#/definitions/id" }, "pageId": { "type": "string" }, "blockId": { "$ref": "#/definitions/id" }, "selector": { "$ref": "#/definitions/selector" }, "kind": { "enum": ["page", "text"] }, "label": { "type": "string" }, "createdAt": { "type": "string" }, "sheet": { "type": "integer", "minimum": 0 } }, "allOf": [{ "if": { "properties": { "kind": { "const": "text" } } }, "then": { "required": ["selector"] } }] }] } }, "readingPositions": { "type": "object", "additionalProperties": { "type": "number" } }, "preferences": { "type": "object", "required": ["language", "desk", "showDesk", "motion", "texture", "reading", "direction", "spread", "fontSize", "weatherCity", "weatherEnabled", "timerRemaining", "timerRunning"], "properties": { "language": { "enum": ["zh", "en"] }, "desk": { "enum": ["oak", "felt", "night"] }, "showDesk": { "type": "boolean" }, "motion": { "type": "boolean" }, "texture": { "type": "number", "minimum": 0, "maximum": 1 }, "reading": { "enum": ["pages", "scroll"] }, "direction": { "enum": ["horizontal", "vertical"] }, "spread": { "type": "boolean" }, "fontSize": { "type": "number", "minimum": 14, "maximum": 28 }, "weatherCity": { "type": "string" }, "weatherEnabled": { "type": "boolean" }, "penColor": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" }, "penWidth": { "type": "number", "minimum": 0.5, "maximum": 40 }, "penTexture": { "enum": ["pencil", "marker", "ink"] }, "timerDisplay": { "enum": ["digital", "dial", "minimal", "focus"] }, "timerRemaining": { "type": "number", "minimum": 0 }, "timerRunning": { "type": "boolean" }, "timerEnd": { "type": "number" } } }, "readingAnchor": { "type": "object", "required": ["pageId", "offset"], "properties": { "sheet": { "type": "integer", "minimum": 0 }, "textOffset": { "type": "integer", "minimum": 0 }, "pageId": { "$ref": "#/definitions/id" }, "blockId": { "$ref": "#/definitions/id" }, "offset": { "type": "number", "minimum": 0, "maximum": 1 } } }, "layouts": { "type": "object", "additionalProperties": { "$ref": "#/definitions/placements" } }, "dismissedStudyMarks": { "type": "array", "uniqueItems": true, "items": { "type": "string" } }, "figureMarks": { "type": "array", "items": { "allOf": [{ "$ref": "#/definitions/figureMark" }, { "required": ["id", "pageId", "blockId"] }] } }, "explorations": { "type": "object", "additionalProperties": { "type": "object", "additionalProperties": false, "properties": { "values": { "type": "object", "additionalProperties": { "type": "number", "minimum": -1e6, "maximum": 1e6 } }, "active": { "$ref": "#/definitions/id" } }, "required": [] } } } }, "assets": { "type": "array", "items": { "type": "object", "required": ["id", "name", "data", "mime"], "properties": { "id": { "$ref": "#/definitions/id" }, "name": { "type": "string" }, "data": { "type": "string", "maxLength": 3e7 }, "mime": { "type": "string" }, "originalAssetId": { "type": "string" }, "source": { "type": "string" }, "license": { "type": "string" }, "verified": { "type": "boolean" }, "width": { "type": "integer", "minimum": 1, "maximum": 1e5 }, "height": { "type": "integer", "minimum": 1, "maximum": 1e5 } } } }, "extensions": { "type": "object", "properties": { "doubtLinks": { "type": "array", "items": { "type": "object", "required": ["doubtId", "pageId"], "properties": { "doubtId": { "$ref": "#/definitions/id" }, "pageId": { "$ref": "#/definitions/id" } } } }, "baseRevision": { "type": "integer", "minimum": 1 } } } }, "definitions": { "id": { "type": "string", "minLength": 1, "maxLength": 200, "pattern": "^[A-Za-z0-9_.:-]+$" }, "selector": { "type": "object", "required": ["blockId", "start", "end", "exact", "prefix", "suffix"], "properties": { "blockId": { "type": "string" }, "start": { "type": "integer", "minimum": 0 }, "end": { "type": "integer", "minimum": 0 }, "exact": { "type": "string" }, "prefix": { "type": "string" }, "suffix": { "type": "string" } } }, "block": { "type": "object", "required": ["id", "type"], "properties": { "id": { "$ref": "#/definitions/id" }, "type": { "type": "string" }, "title": { "type": "string" }, "text": { "type": "string", "maxLength": 1e6 }, "items": { "$ref": "#/definitions/items" }, "steps": { "$ref": "#/definitions/items" }, "columns": { "type": "array", "items": { "type": "string" } }, "rows": { "type": "array", "items": { "type": "array", "items": { "type": "string" } } }, "nodes": { "type": "array", "items": { "type": "object", "required": ["id", "label"], "properties": { "id": { "type": "string" }, "label": { "type": "string" }, "shape": { "enum": ["rounded", "rectangle", "circle", "ellipse", "diamond", "hexagon", "pill", "document", "cylinder"] } } } }, "edges": { "type": "array", "items": { "type": "object", "required": ["from", "to"], "properties": { "from": { "type": "string" }, "to": { "type": "string" }, "label": { "type": "string" } } } }, "options": { "$ref": "#/definitions/items" }, "solution": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }, "pairs": { "type": "array", "items": { "type": "object", "required": ["id", "left", "right"], "properties": { "id": { "type": "string" }, "left": { "type": "string" }, "right": { "type": "string" } } } }, "questionType": { "enum": ["single", "multiple", "truefalse", "matching", "subjective"] }, "points": { "type": "number", "minimum": 0 }, "prompt": { "type": "string" }, "result": { "type": "string" }, "language": { "type": "string" }, "explanation": { "type": "string" }, "caption": { "type": "string" }, "attribution": { "type": "string" }, "tone": { "type": "string" }, "verification": { "type": "string" }, "sourceRefs": { "type": "array", "items": { "type": "object", "required": ["sourceId"], "properties": { "sourceId": { "type": "string" }, "locator": { "type": "string" } } } }, "study": { "type": "object", "additionalProperties": false, "properties": { "label": { "type": "string" }, "aside": { "type": "string" }, "tone": { "enum": ["blue", "red", "olive", "gold"] }, "marks": { "type": "array", "items": { "type": "object", "required": ["text", "kind"], "additionalProperties": false, "properties": { "text": { "type": "string", "minLength": 1 }, "kind": { "enum": ["highlight", "underline", "circle", "wave", "box", "bracket", "check", "star", "dots", "bold", "red"] }, "color": { "type": "string" }, "seed": { "type": "integer", "minimum": 1 } } } }, "visual": { "enum": ["plain", "blackboard", "extract", "sketch"] }, "explanations": { "type": "array", "maxItems": 3, "items": { "type": "object", "required": ["text", "note"], "additionalProperties": false, "properties": { "text": { "type": "string", "minLength": 1 }, "note": { "type": "string", "minLength": 1 } } } }, "role": { "enum": ["definition", "intuition", "derivation", "example", "evidence", "takeaway", "recall"] }, "frame": { "enum": ["auto", "plain", "pencil", "tape", "double", "margin"] } } }, "align": { "type": "array", "items": { "enum": ["left", "center", "right"] } }, "keepTogether": { "type": "boolean" }, "chartType": { "enum": ["scatter", "line", "bar"] }, "xLabel": { "type": "string" }, "yLabel": { "type": "string" }, "series": { "type": "array", "minItems": 1, "maxItems": 4, "items": { "type": "object", "required": ["id", "label", "points"], "properties": { "id": { "type": "string" }, "label": { "type": "string" }, "points": { "type": "array", "minItems": 1, "maxItems": 200, "items": { "type": "object", "required": ["x", "y"], "properties": { "x": { "type": "number" }, "y": { "type": "number" }, "label": { "type": "string" } } } } } } }, "parameters": { "type": "array", "minItems": 1, "maxItems": 30, "items": { "type": "object", "required": ["symbol", "name", "description"], "additionalProperties": false, "properties": { "symbol": { "type": "string", "minLength": 1 }, "name": { "type": "string", "minLength": 1 }, "description": { "type": "string", "minLength": 1 } } } }, "figure": { "type": "object", "additionalProperties": false, "properties": { "size": { "enum": ["small", "medium", "wide", "full"] }, "ratio": { "enum": ["auto", "1:1", "4:3", "3:2", "16:9", "3:4"] }, "align": { "enum": ["left", "center", "right"] }, "style": { "enum": ["sketch", "precise"] }, "annotations": { "type": "array", "items": { "$ref": "#/definitions/figureMark" } } } }, "columnWidths": { "type": "array", "minItems": 1, "items": { "type": "number", "minimum": 48, "maximum": 1200 } }, "exploration": { "$ref": "#/definitions/exploration" } }, "allOf": [{ "if": { "properties": { "type": { "enum": ["prose", "concept", "quote", "callout", "code"] } } }, "then": { "required": ["text"] } }, { "if": { "properties": { "type": { "enum": ["steps", "checklist"] } } }, "then": { "required": ["items"] } }, { "if": { "properties": { "type": { "const": "example" } } }, "then": { "required": ["prompt", "steps", "result"] } }, { "if": { "properties": { "type": { "const": "formula" } } }, "then": { "required": ["latex"], "properties": { "latex": { "type": "string" } } } }, { "if": { "properties": { "type": { "const": "comparison" } } }, "then": { "required": ["columns", "rows"] } }, { "if": { "properties": { "type": { "const": "image" } } }, "then": { "required": ["assetId", "alt"], "properties": { "assetId": { "type": "string" }, "alt": { "type": "string" } } } }, { "if": { "properties": { "type": { "const": "diagram" } } }, "then": { "required": ["nodes", "edges"] } }, { "if": { "properties": { "type": { "const": "exercise" } } }, "then": { "required": ["question", "questionType"], "properties": { "question": { "type": "string" } }, "allOf": [{ "if": { "properties": { "questionType": { "enum": ["single", "multiple", "truefalse"] } } }, "then": { "required": ["options", "solution"] } }, { "if": { "properties": { "questionType": { "const": "matching" } } }, "then": { "required": ["pairs"] } }] } }, { "if": { "properties": { "type": { "const": "chart" } } }, "then": { "required": ["chartType", "series", "xLabel", "yLabel"] } }, { "if": { "properties": { "type": { "const": "exploration" } } }, "then": { "required": ["exploration"] } }] }, "items": { "type": "array", "items": { "type": "object", "required": ["id", "text"], "properties": { "id": { "$ref": "#/definitions/id" }, "text": { "type": "string" } } } }, "objectFrame": { "type": "object", "required": ["x", "y", "width", "z"], "properties": { "x": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "y": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "width": { "type": "number", "minimum": 20, "maximum": 1e4 }, "height": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "z": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "sheet": { "type": "integer", "minimum": 0 } } }, "placements": { "type": "object", "properties": { "landscape": { "type": "object", "additionalProperties": { "$ref": "#/definitions/objectFrame" } }, "portrait": { "type": "object", "additionalProperties": { "$ref": "#/definitions/objectFrame" } } }, "additionalProperties": false }, "figureMark": { "type": "object", "required": ["kind", "x", "y"], "properties": { "kind": { "enum": ["circle", "arrow", "check", "text", "pen"] }, "x": { "type": "number", "minimum": 0, "maximum": 100 }, "y": { "type": "number", "minimum": 0, "maximum": 100 }, "x2": { "type": "number", "minimum": 0, "maximum": 100 }, "y2": { "type": "number", "minimum": 0, "maximum": 100 }, "text": { "type": "string", "maxLength": 240 }, "color": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" }, "points": { "type": "array", "maxItems": 5e3, "items": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "type": "number", "minimum": 0, "maximum": 100 } } }, "id": { "type": "string" }, "blockId": { "type": "string" }, "pageId": { "type": "string" } }, "additionalProperties": false }, "expression": { "oneOf": [{ "type": "number", "minimum": -1e15, "maximum": 1e15 }, { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" }, { "type": "object", "additionalProperties": false, "properties": { "op": { "enum": ["add", "sub", "mul", "div", "pow", "ln", "exp", "abs", "min", "max"] }, "args": { "type": "array", "items": { "$ref": "#/definitions/expression" }, "minItems": 1, "maxItems": 8 } }, "required": ["op", "args"] }] }, "exploration": { "oneOf": [{ "type": "object", "additionalProperties": false, "properties": { "kind": { "const": "plot" }, "parameters": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "id": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" }, "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "min": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "max": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "step": { "type": "number", "exclusiveMinimum": 0, "maximum": 1e6 }, "value": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "unit": { "type": "string", "maxLength": 30 } }, "required": ["id", "label", "min", "max", "step", "value"] }, "minItems": 1, "maxItems": 4 }, "domain": { "type": "object", "additionalProperties": false, "properties": { "min": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "max": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "label": { "type": "string", "minLength": 1, "maxLength": 120 } }, "required": ["min", "max", "label"] }, "yLabel": { "type": "string", "minLength": 1, "maxLength": 120 }, "observations": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "x": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "y": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "label": { "type": "string", "minLength": 1, "maxLength": 120 } }, "required": ["x", "y"] }, "minItems": 1, "maxItems": 100 }, "series": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "expression": { "$ref": "#/definitions/expression" } }, "required": ["label", "expression"] }, "minItems": 1, "maxItems": 4 }, "outputs": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "expression": { "$ref": "#/definitions/expression" }, "unit": { "type": "string", "maxLength": 30 }, "digits": { "type": "integer", "minimum": 0, "maximum": 6 } }, "required": ["label", "expression"] }, "minItems": 1, "maxItems": 6 }, "regression": { "type": "object", "additionalProperties": false, "required": ["slope", "intercept"], "properties": { "slope": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" }, "intercept": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" } } } }, "required": ["kind", "parameters", "domain", "yLabel", "series", "outputs"] }, { "type": "object", "additionalProperties": false, "properties": { "kind": { "enum": ["sequence", "reading"] }, "frames": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "id": { "$ref": "#/definitions/id" }, "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "quote": { "type": "string", "maxLength": 3e3 }, "text": { "type": "string", "minLength": 1, "maxLength": 5e3 }, "facts": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "value": { "type": "string", "minLength": 1, "maxLength": 300 } }, "required": ["label", "value"] }, "minItems": 1, "maxItems": 8 }, "line": { "type": "integer", "minimum": 0, "maximum": 60 }, "variables": { "type": "array", "maxItems": 16, "items": { "$ref": "#/definitions/traceVariable" } }, "cursor": { "type": "integer", "minimum": 0, "maximum": 29 } }, "required": ["id", "label", "text"] }, "minItems": 2, "maxItems": 40 }, "trace": { "type": "object", "additionalProperties": false, "required": ["language", "code"], "properties": { "language": { "type": "string", "minLength": 1, "maxLength": 40 }, "code": { "type": "array", "minItems": 1, "maxItems": 60, "items": { "type": "string", "maxLength": 300 } }, "input": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" } } } }, "required": ["kind", "frames"] }] }, "traceScalar": { "oneOf": [{ "type": "string", "maxLength": 120 }, { "type": "number", "minimum": -1e15, "maximum": 1e15 }, { "type": "boolean" }, { "type": "null" }] }, "traceVariable": { "type": "object", "additionalProperties": false, "required": ["name", "value"], "properties": { "name": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" }, "value": { "oneOf": [{ "$ref": "#/definitions/traceScalar" }, { "type": "array", "maxItems": 30, "items": { "$ref": "#/definitions/traceScalar" } }] }, "display": { "enum": ["list", "set"] } } } } };
+    var schema6 = { "$schema": "http://json-schema.org/draft-07/schema#", "$id": "https://paper-notebook.local/notebook.schema.json", "title": "Paper Notebook Document 1.0", "type": "object", "required": ["schemaVersion", "notebook", "userState", "assets", "extensions"], "properties": { "schemaVersion": { "const": "1.0.0" }, "notebook": { "type": "object", "required": ["id", "revision", "title", "language", "goals", "sources", "chapters"], "properties": { "id": { "$ref": "#/definitions/id" }, "revision": { "type": "integer", "minimum": 1 }, "title": { "type": "string", "maxLength": 1e3 }, "subtitle": { "type": "string" }, "language": { "type": "string" }, "goals": { "type": "array", "items": { "type": "string" } }, "sources": { "type": "array", "items": { "type": "object", "required": ["id", "title"], "properties": { "id": { "$ref": "#/definitions/id" }, "title": { "type": "string" }, "url": { "type": "string" } } } }, "chapters": { "type": "array", "minItems": 1, "maxItems": 500, "items": { "type": "object", "required": ["id", "title", "pages"], "properties": { "id": { "$ref": "#/definitions/id" }, "title": { "type": "string" }, "pages": { "type": "array", "minItems": 1, "maxItems": 500, "items": { "type": "object", "required": ["id", "title", "blocks"], "properties": { "id": { "$ref": "#/definitions/id" }, "title": { "type": "string" }, "layout": { "enum": ["reading", "cornell", "grid", "exam", "free"] }, "blocks": { "type": "array", "maxItems": 5e3, "items": { "$ref": "#/definitions/block" } }, "summary": { "type": "string" }, "cues": { "type": "array", "items": { "type": "object", "required": ["id", "text"], "properties": { "id": { "$ref": "#/definitions/id" }, "text": { "type": "string" }, "blockId": { "type": "string" }, "anchor": { "type": "string", "minLength": 1, "description": "Exact source phrase in the referenced block; the cue follows its fragment and line." }, "title": { "type": "string", "minLength": 1, "description": "Optional concrete title for an explanatory margin note; text contains its complete explanation." } } } }, "paper": { "type": "object", "properties": { "ruling": { "enum": ["lined", "grid", "dots", "blank"] }, "lineHeight": { "type": "number", "minimum": 24, "maximum": 56 } } }, "placements": { "$ref": "#/definitions/placements" }, "subject": { "enum": ["general", "stem", "literature", "business", "code"] } } } } } } }, "parent": { "type": "object", "required": ["notebookId"], "properties": { "notebookId": { "$ref": "#/definitions/id" }, "pageId": { "$ref": "#/definitions/id" } } }, "brief": { "type": "object", "required": ["goal", "level", "minutes", "materials", "exercises", "language", "route", "imagePolicy"], "properties": { "goal": { "type": "string" }, "level": { "type": "string" }, "minutes": { "type": "number", "minimum": 1 }, "materials": { "type": "array", "items": { "type": "string" } }, "exercises": { "type": "boolean" }, "language": { "type": "string" }, "route": { "enum": ["quick", "systematic", "deep", "practice", "review"] }, "imagePolicy": { "enum": ["original", "programmatic", "redraw"] }, "languageStyle": { "type": "string" }, "difficulty": { "type": "string" }, "priorKnowledge": { "type": "string" }, "horizon": { "enum": ["short", "long"] }, "materialFidelity": { "enum": ["strict", "guided", "open"] }, "scope": { "type": "string" }, "termPolicy": { "type": "string" } } } } }, "userState": { "type": "object", "required": ["updatedAt", "lastPageId", "notes", "annotations", "doubts", "answers", "checks", "bookmarks", "readingPositions", "preferences"], "properties": { "updatedAt": { "type": "string" }, "lastPageId": { "type": "string" }, "notes": { "type": "array", "items": { "type": "object", "required": ["id", "pageId", "title", "text", "back", "material", "seed", "x", "y", "z", "face", "attached", "collapsed", "surface"], "properties": { "id": { "$ref": "#/definitions/id" }, "pageId": { "type": "string" }, "title": { "type": "string" }, "text": { "type": "string" }, "back": { "type": "string" }, "material": { "enum": ["butter", "rose", "sage", "lilac", "kraft", "glassine", "transparent"] }, "seed": { "type": "number" }, "x": { "type": "number" }, "y": { "type": "number" }, "z": { "type": "number" }, "face": { "enum": ["front", "back"] }, "attached": { "type": "boolean" }, "collapsed": { "type": "boolean" }, "surface": { "enum": ["page", "desk"] }, "blockId": { "$ref": "#/definitions/id" }, "selector": { "$ref": "#/definitions/selector" }, "width": { "type": "number", "minimum": 80, "maximum": 1e3 }, "height": { "type": "number", "minimum": 60, "maximum": 1e3 }, "positions": { "type": "object", "properties": { "landscape": { "type": "object", "required": ["x", "y", "width", "z"], "properties": { "x": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "y": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "width": { "type": "number", "minimum": 20, "maximum": 1e4 }, "height": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "z": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "sheet": { "type": "integer", "minimum": 0 } } }, "portrait": { "type": "object", "required": ["x", "y", "width", "z"], "properties": { "x": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "y": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "width": { "type": "number", "minimum": 20, "maximum": 1e4 }, "height": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "z": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "sheet": { "type": "integer", "minimum": 0 } } } } }, "sheet": { "type": "integer", "minimum": 0 }, "anchors": { "type": "array", "items": { "type": "object", "required": ["pageId", "selector"], "additionalProperties": false, "properties": { "pageId": { "type": "string" }, "selector": { "$ref": "#/definitions/selector" } } } }, "region": { "enum": ["right", "bottom"] }, "marginPosition": { "type": "number", "minimum": 0, "maximum": 1 } } } }, "annotations": { "type": "array", "items": { "type": "object", "required": ["id", "kind", "selectors", "color", "width", "seed", "pageId"], "properties": { "id": { "$ref": "#/definitions/id" }, "kind": { "enum": ["bold", "red", "strike", "underline", "circle", "highlight", "arrow", "check", "freehand", "wave", "box", "bracket", "star", "dots"] }, "selectors": { "type": "array", "items": { "$ref": "#/definitions/selector" } }, "color": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" }, "width": { "type": "number", "minimum": 0.5, "maximum": 40 }, "seed": { "type": "number" }, "pageId": { "type": "string" }, "points": { "type": "array", "items": { "type": "array", "minItems": 2, "maxItems": 3, "items": { "type": "number" } } }, "status": { "enum": ["resolved", "ambiguous", "orphaned", "needs-placement"] }, "coordinateSpace": { "enum": ["legacy-width", "normalized-page"] }, "originalPoints": { "type": "array", "items": { "type": "array", "minItems": 2, "maxItems": 3, "items": { "type": "number" } } }, "sourceSize": { "type": "object", "required": ["width", "height"], "properties": { "width": { "type": "number", "exclusiveMinimum": 0 }, "height": { "type": "number", "exclusiveMinimum": 0 } } }, "shape": { "enum": ["landscape", "portrait"] }, "sheet": { "type": "integer", "minimum": 0 }, "tool": { "enum": ["pencil", "pen", "marker", "arrow"] }, "attachedBlockId": { "type": "string" }, "blockFrame": { "type": "object", "required": ["x", "y", "width", "height"], "properties": { "x": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "y": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "width": { "type": "number", "minimum": 20, "maximum": 1e4 }, "height": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "z": { "type": "number", "minimum": -1e5, "maximum": 1e5 } } }, "migration": { "type": "string" } } } }, "doubts": { "type": "array", "items": { "type": "object", "required": ["id", "pageId", "selector", "question", "status"], "properties": { "id": { "$ref": "#/definitions/id" }, "pageId": { "type": "string" }, "selector": { "$ref": "#/definitions/selector" }, "question": { "type": "string" }, "status": { "enum": ["open", "resolved"] }, "category": { "enum": ["unclear", "verify", "question"] }, "answerNotebookId": { "$ref": "#/definitions/id" }, "answerPageId": { "$ref": "#/definitions/id" }, "anchors": { "type": "array", "items": { "type": "object", "required": ["pageId", "selector"], "additionalProperties": false, "properties": { "pageId": { "type": "string" }, "selector": { "$ref": "#/definitions/selector" } } } } } } }, "answers": { "type": "object", "additionalProperties": { "type": "object", "required": ["selected", "submitted"], "properties": { "selected": { "type": "array", "items": { "type": "string" } }, "submitted": { "type": "boolean" }, "text": { "type": "string" }, "matches": { "type": "object", "additionalProperties": { "type": "string" } } } } }, "checks": { "type": "object", "additionalProperties": { "type": "boolean" } }, "bookmarks": { "type": "array", "items": { "oneOf": [{ "type": "string" }, { "type": "object", "required": ["id", "pageId", "kind"], "additionalProperties": false, "properties": { "id": { "$ref": "#/definitions/id" }, "pageId": { "type": "string" }, "blockId": { "$ref": "#/definitions/id" }, "selector": { "$ref": "#/definitions/selector" }, "kind": { "enum": ["page", "text"] }, "label": { "type": "string" }, "createdAt": { "type": "string" }, "sheet": { "type": "integer", "minimum": 0 } }, "allOf": [{ "if": { "properties": { "kind": { "const": "text" } } }, "then": { "required": ["selector"] } }] }] } }, "readingPositions": { "type": "object", "additionalProperties": { "type": "number" } }, "preferences": { "type": "object", "required": ["language", "desk", "showDesk", "motion", "texture", "reading", "direction", "spread", "fontSize", "weatherCity", "weatherEnabled", "timerRemaining", "timerRunning"], "properties": { "language": { "enum": ["zh", "en"] }, "desk": { "enum": ["oak", "felt", "night"] }, "showDesk": { "type": "boolean" }, "motion": { "type": "boolean" }, "texture": { "type": "number", "minimum": 0, "maximum": 1 }, "reading": { "enum": ["pages", "scroll"] }, "direction": { "enum": ["horizontal", "vertical"] }, "spread": { "type": "boolean" }, "fontSize": { "type": "number", "minimum": 14, "maximum": 28 }, "weatherCity": { "type": "string" }, "weatherEnabled": { "type": "boolean" }, "penColor": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" }, "penWidth": { "type": "number", "minimum": 0.5, "maximum": 40 }, "penTexture": { "enum": ["pencil", "marker", "ink"] }, "timerDisplay": { "enum": ["digital", "dial", "minimal", "focus"] }, "timerRemaining": { "type": "number", "minimum": 0 }, "timerRunning": { "type": "boolean" }, "timerEnd": { "type": "number" } } }, "readingAnchor": { "type": "object", "required": ["pageId", "offset"], "properties": { "sheet": { "type": "integer", "minimum": 0 }, "textOffset": { "type": "integer", "minimum": 0 }, "pageId": { "$ref": "#/definitions/id" }, "blockId": { "$ref": "#/definitions/id" }, "offset": { "type": "number", "minimum": 0, "maximum": 1 } } }, "layouts": { "type": "object", "additionalProperties": { "$ref": "#/definitions/placements" } }, "dismissedStudyMarks": { "type": "array", "uniqueItems": true, "items": { "type": "string" } }, "figureMarks": { "type": "array", "items": { "allOf": [{ "$ref": "#/definitions/figureMark" }, { "required": ["id", "pageId", "blockId"] }] } }, "explorations": { "type": "object", "additionalProperties": { "type": "object", "additionalProperties": false, "properties": { "values": { "type": "object", "additionalProperties": { "type": "number", "minimum": -1e6, "maximum": 1e6 } }, "active": { "$ref": "#/definitions/id" } }, "required": [] } } } }, "assets": { "type": "array", "items": { "type": "object", "required": ["id", "name", "data", "mime"], "properties": { "id": { "$ref": "#/definitions/id" }, "name": { "type": "string" }, "data": { "type": "string", "maxLength": 3e7 }, "mime": { "type": "string" }, "originalAssetId": { "type": "string" }, "source": { "type": "string" }, "license": { "type": "string" }, "verified": { "type": "boolean" }, "width": { "type": "integer", "minimum": 1, "maximum": 1e5 }, "height": { "type": "integer", "minimum": 1, "maximum": 1e5 } } } }, "extensions": { "type": "object", "properties": { "doubtLinks": { "type": "array", "items": { "type": "object", "required": ["doubtId", "pageId"], "properties": { "doubtId": { "$ref": "#/definitions/id" }, "pageId": { "$ref": "#/definitions/id" } } } }, "baseRevision": { "type": "integer", "minimum": 1 }, "readerProfile": { "type": "object", "properties": { "layout": { "type": "string", "enum": ["auto", "single", "spread", "scroll"] }, "direction": { "type": "string", "enum": ["horizontal", "vertical"] }, "sidebar": { "type": "string", "enum": ["open", "collapsed"] }, "pageShape": { "type": "string", "enum": ["auto", "portrait", "landscape"] }, "transition": { "type": "string", "enum": ["turn", "cover", "slide", "fade", "none"] }, "theme": { "type": "string", "enum": ["paper-light", "paper-night"] }, "motion": { "type": "string", "enum": ["full", "reduced"] }, "paperStyle": { "type": "string", "enum": ["auto", "white", "ivory", "cotton", "mist", "sage", "inkwash"] }, "font": { "type": "string", "enum": ["hand", "serif", "sans"] }, "lineSpacing": { "type": "number", "enum": [1.65, 1.85, 2.05, 2.25] }, "marginNotes": { "type": "boolean" }, "bottomNotes": { "type": "boolean" } } } } } }, "definitions": { "id": { "type": "string", "minLength": 1, "maxLength": 200, "pattern": "^[A-Za-z0-9_.:-]+$" }, "selector": { "type": "object", "required": ["blockId", "start", "end", "exact", "prefix", "suffix"], "properties": { "blockId": { "type": "string" }, "start": { "type": "integer", "minimum": 0 }, "end": { "type": "integer", "minimum": 0 }, "exact": { "type": "string" }, "prefix": { "type": "string" }, "suffix": { "type": "string" } } }, "block": { "type": "object", "required": ["id", "type"], "properties": { "id": { "$ref": "#/definitions/id" }, "type": { "type": "string" }, "title": { "type": "string" }, "text": { "type": "string", "maxLength": 1e6 }, "items": { "$ref": "#/definitions/items" }, "steps": { "$ref": "#/definitions/items" }, "columns": { "type": "array", "items": { "type": "string" } }, "rows": { "type": "array", "items": { "type": "array", "items": { "type": "string" } } }, "nodes": { "type": "array", "items": { "type": "object", "required": ["id", "label"], "properties": { "id": { "type": "string" }, "label": { "type": "string" }, "shape": { "enum": ["rounded", "rectangle", "circle", "ellipse", "diamond", "hexagon", "pill", "document", "cylinder"] } } } }, "edges": { "type": "array", "items": { "type": "object", "required": ["from", "to"], "properties": { "from": { "type": "string" }, "to": { "type": "string" }, "label": { "type": "string" } } } }, "options": { "$ref": "#/definitions/items" }, "solution": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }, "pairs": { "type": "array", "items": { "type": "object", "required": ["id", "left", "right"], "properties": { "id": { "type": "string" }, "left": { "type": "string" }, "right": { "type": "string" } } } }, "questionType": { "enum": ["single", "multiple", "truefalse", "matching", "subjective"] }, "points": { "type": "number", "minimum": 0 }, "prompt": { "type": "string" }, "result": { "type": "string" }, "language": { "type": "string" }, "explanation": { "type": "string" }, "caption": { "type": "string" }, "attribution": { "type": "string" }, "tone": { "type": "string" }, "verification": { "type": "string" }, "sourceRefs": { "type": "array", "items": { "type": "object", "required": ["sourceId"], "properties": { "sourceId": { "type": "string" }, "locator": { "type": "string" } } } }, "study": { "type": "object", "additionalProperties": false, "properties": { "label": { "type": "string" }, "aside": { "type": "string" }, "tone": { "enum": ["blue", "red", "olive", "gold"] }, "marks": { "type": "array", "items": { "type": "object", "required": ["text", "kind"], "additionalProperties": false, "properties": { "text": { "type": "string", "minLength": 1 }, "kind": { "enum": ["highlight", "underline", "circle", "wave", "box", "bracket", "check", "star", "dots", "bold", "red"] }, "color": { "type": "string" }, "seed": { "type": "integer", "minimum": 1 } } } }, "visual": { "enum": ["plain", "blackboard", "extract", "sketch"] }, "explanations": { "type": "array", "maxItems": 3, "items": { "type": "object", "required": ["text", "note"], "additionalProperties": false, "properties": { "text": { "type": "string", "minLength": 1 }, "note": { "type": "string", "minLength": 1 } } } }, "role": { "enum": ["definition", "intuition", "derivation", "example", "evidence", "takeaway", "recall"] }, "frame": { "enum": ["auto", "plain", "pencil", "tape", "double", "margin"] } } }, "align": { "type": "array", "items": { "enum": ["left", "center", "right"] } }, "keepTogether": { "type": "boolean" }, "chartType": { "enum": ["scatter", "line", "bar"] }, "xLabel": { "type": "string" }, "yLabel": { "type": "string" }, "series": { "type": "array", "minItems": 1, "maxItems": 4, "items": { "type": "object", "required": ["id", "label", "points"], "properties": { "id": { "type": "string" }, "label": { "type": "string" }, "points": { "type": "array", "minItems": 1, "maxItems": 200, "items": { "type": "object", "required": ["x", "y"], "properties": { "x": { "type": "number" }, "y": { "type": "number" }, "label": { "type": "string" } } } } } } }, "parameters": { "type": "array", "minItems": 1, "maxItems": 30, "items": { "type": "object", "required": ["symbol", "name", "description"], "additionalProperties": false, "properties": { "symbol": { "type": "string", "minLength": 1 }, "name": { "type": "string", "minLength": 1 }, "description": { "type": "string", "minLength": 1 } } } }, "figure": { "type": "object", "additionalProperties": false, "properties": { "size": { "enum": ["small", "medium", "wide", "full"] }, "ratio": { "enum": ["auto", "1:1", "4:3", "3:2", "16:9", "3:4"] }, "align": { "enum": ["left", "center", "right"] }, "style": { "enum": ["sketch", "precise"] }, "annotations": { "type": "array", "items": { "$ref": "#/definitions/figureMark" } } } }, "columnWidths": { "type": "array", "minItems": 1, "items": { "type": "number", "minimum": 48, "maximum": 1200 } }, "exploration": { "$ref": "#/definitions/exploration" } }, "allOf": [{ "if": { "properties": { "type": { "enum": ["prose", "concept", "quote", "callout", "code"] } } }, "then": { "required": ["text"] } }, { "if": { "properties": { "type": { "enum": ["steps", "checklist"] } } }, "then": { "required": ["items"] } }, { "if": { "properties": { "type": { "const": "example" } } }, "then": { "required": ["prompt", "steps", "result"] } }, { "if": { "properties": { "type": { "const": "formula" } } }, "then": { "required": ["latex"], "properties": { "latex": { "type": "string" } } } }, { "if": { "properties": { "type": { "const": "comparison" } } }, "then": { "required": ["columns", "rows"] } }, { "if": { "properties": { "type": { "const": "image" } } }, "then": { "required": ["assetId", "alt"], "properties": { "assetId": { "type": "string" }, "alt": { "type": "string" } } } }, { "if": { "properties": { "type": { "const": "diagram" } } }, "then": { "required": ["nodes", "edges"] } }, { "if": { "properties": { "type": { "const": "exercise" } } }, "then": { "required": ["question", "questionType"], "properties": { "question": { "type": "string" } }, "allOf": [{ "if": { "properties": { "questionType": { "enum": ["single", "multiple", "truefalse"] } } }, "then": { "required": ["options", "solution"] } }, { "if": { "properties": { "questionType": { "const": "matching" } } }, "then": { "required": ["pairs"] } }] } }, { "if": { "properties": { "type": { "const": "chart" } } }, "then": { "required": ["chartType", "series", "xLabel", "yLabel"] } }, { "if": { "properties": { "type": { "const": "exploration" } } }, "then": { "required": ["exploration"] } }] }, "items": { "type": "array", "items": { "type": "object", "required": ["id", "text"], "properties": { "id": { "$ref": "#/definitions/id" }, "text": { "type": "string" } } } }, "objectFrame": { "type": "object", "required": ["x", "y", "width", "z"], "properties": { "x": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "y": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "width": { "type": "number", "minimum": 20, "maximum": 1e4 }, "height": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "z": { "type": "number", "minimum": -1e5, "maximum": 1e5 }, "sheet": { "type": "integer", "minimum": 0 } } }, "placements": { "type": "object", "properties": { "landscape": { "type": "object", "additionalProperties": { "$ref": "#/definitions/objectFrame" } }, "portrait": { "type": "object", "additionalProperties": { "$ref": "#/definitions/objectFrame" } } }, "additionalProperties": false }, "figureMark": { "type": "object", "required": ["kind", "x", "y"], "properties": { "kind": { "enum": ["circle", "arrow", "check", "text", "pen"] }, "x": { "type": "number", "minimum": 0, "maximum": 100 }, "y": { "type": "number", "minimum": 0, "maximum": 100 }, "x2": { "type": "number", "minimum": 0, "maximum": 100 }, "y2": { "type": "number", "minimum": 0, "maximum": 100 }, "text": { "type": "string", "maxLength": 240 }, "color": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" }, "points": { "type": "array", "maxItems": 5e3, "items": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "type": "number", "minimum": 0, "maximum": 100 } } }, "id": { "type": "string" }, "blockId": { "type": "string" }, "pageId": { "type": "string" } }, "additionalProperties": false }, "expression": { "oneOf": [{ "type": "number", "minimum": -1e15, "maximum": 1e15 }, { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" }, { "type": "object", "additionalProperties": false, "properties": { "op": { "enum": ["add", "sub", "mul", "div", "pow", "ln", "exp", "abs", "min", "max"] }, "args": { "type": "array", "items": { "$ref": "#/definitions/expression" }, "minItems": 1, "maxItems": 8 } }, "required": ["op", "args"] }] }, "exploration": { "oneOf": [{ "type": "object", "additionalProperties": false, "properties": { "kind": { "const": "plot" }, "parameters": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "id": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" }, "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "min": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "max": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "step": { "type": "number", "exclusiveMinimum": 0, "maximum": 1e6 }, "value": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "unit": { "type": "string", "maxLength": 30 } }, "required": ["id", "label", "min", "max", "step", "value"] }, "minItems": 1, "maxItems": 4 }, "domain": { "type": "object", "additionalProperties": false, "properties": { "min": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "max": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "label": { "type": "string", "minLength": 1, "maxLength": 120 } }, "required": ["min", "max", "label"] }, "yLabel": { "type": "string", "minLength": 1, "maxLength": 120 }, "observations": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "x": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "y": { "type": "number", "minimum": -1e6, "maximum": 1e6 }, "label": { "type": "string", "minLength": 1, "maxLength": 120 } }, "required": ["x", "y"] }, "minItems": 1, "maxItems": 100 }, "series": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "expression": { "$ref": "#/definitions/expression" } }, "required": ["label", "expression"] }, "minItems": 1, "maxItems": 4 }, "outputs": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "expression": { "$ref": "#/definitions/expression" }, "unit": { "type": "string", "maxLength": 30 }, "digits": { "type": "integer", "minimum": 0, "maximum": 6 } }, "required": ["label", "expression"] }, "minItems": 1, "maxItems": 6 }, "regression": { "type": "object", "additionalProperties": false, "required": ["slope", "intercept"], "properties": { "slope": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" }, "intercept": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" } } } }, "required": ["kind", "parameters", "domain", "yLabel", "series", "outputs"] }, { "type": "object", "additionalProperties": false, "properties": { "kind": { "enum": ["sequence", "reading"] }, "frames": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "id": { "$ref": "#/definitions/id" }, "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "quote": { "type": "string", "maxLength": 3e3 }, "text": { "type": "string", "minLength": 1, "maxLength": 5e3 }, "facts": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "label": { "type": "string", "minLength": 1, "maxLength": 120 }, "value": { "type": "string", "minLength": 1, "maxLength": 300 } }, "required": ["label", "value"] }, "minItems": 1, "maxItems": 8 }, "line": { "type": "integer", "minimum": 0, "maximum": 60 }, "variables": { "type": "array", "maxItems": 16, "items": { "$ref": "#/definitions/traceVariable" } }, "cursor": { "type": "integer", "minimum": 0, "maximum": 29 } }, "required": ["id", "label", "text"] }, "minItems": 2, "maxItems": 40 }, "trace": { "type": "object", "additionalProperties": false, "required": ["language", "code"], "properties": { "language": { "type": "string", "minLength": 1, "maxLength": 40 }, "code": { "type": "array", "minItems": 1, "maxItems": 60, "items": { "type": "string", "maxLength": 300 } }, "input": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" } } } }, "required": ["kind", "frames"] }] }, "traceScalar": { "oneOf": [{ "type": "string", "maxLength": 120 }, { "type": "number", "minimum": -1e15, "maximum": 1e15 }, { "type": "boolean" }, { "type": "null" }] }, "traceVariable": { "type": "object", "additionalProperties": false, "required": ["name", "value"], "properties": { "name": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$" }, "value": { "oneOf": [{ "$ref": "#/definitions/traceScalar" }, { "type": "array", "maxItems": 30, "items": { "$ref": "#/definitions/traceScalar" } }] }, "display": { "enum": ["list", "set"] } } } } };
     var func3 = require_ucs2length().default;
     var pattern0 = new RegExp("^[A-Za-z0-9_.:-]+$", "u");
     function validate22(data, { instancePath = "", parentData, parentDataProperty, rootData = data } = {}) {
@@ -9149,22 +9149,347 @@ var require_notebook_validator = __commonJS({
                 }
               }
             }
+            if (data220.readerProfile !== void 0) {
+              let data226 = data220.readerProfile;
+              if (data226 && typeof data226 == "object" && !Array.isArray(data226)) {
+                if (data226.layout !== void 0) {
+                  let data227 = data226.layout;
+                  if (typeof data227 !== "string") {
+                    const err310 = { instancePath: instancePath + "/extensions/readerProfile/layout", schemaPath: "#/properties/extensions/properties/readerProfile/properties/layout/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+                    if (vErrors === null) {
+                      vErrors = [err310];
+                    } else {
+                      vErrors.push(err310);
+                    }
+                    errors++;
+                  }
+                  let valid113;
+                  valid113 = false;
+                  for (const v25 of schema6.properties.extensions.properties.readerProfile.properties.layout.enum) {
+                    if (func0(data227, v25)) {
+                      valid113 = true;
+                      break;
+                    }
+                  }
+                  if (!valid113) {
+                    const err311 = { instancePath: instancePath + "/extensions/readerProfile/layout", schemaPath: "#/properties/extensions/properties/readerProfile/properties/layout/enum", keyword: "enum", params: { allowedValues: schema6.properties.extensions.properties.readerProfile.properties.layout.enum }, message: "must be equal to one of the allowed values" };
+                    if (vErrors === null) {
+                      vErrors = [err311];
+                    } else {
+                      vErrors.push(err311);
+                    }
+                    errors++;
+                  }
+                }
+                if (data226.direction !== void 0) {
+                  let data228 = data226.direction;
+                  if (typeof data228 !== "string") {
+                    const err312 = { instancePath: instancePath + "/extensions/readerProfile/direction", schemaPath: "#/properties/extensions/properties/readerProfile/properties/direction/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+                    if (vErrors === null) {
+                      vErrors = [err312];
+                    } else {
+                      vErrors.push(err312);
+                    }
+                    errors++;
+                  }
+                  let valid114;
+                  valid114 = false;
+                  for (const v26 of schema6.properties.extensions.properties.readerProfile.properties.direction.enum) {
+                    if (func0(data228, v26)) {
+                      valid114 = true;
+                      break;
+                    }
+                  }
+                  if (!valid114) {
+                    const err313 = { instancePath: instancePath + "/extensions/readerProfile/direction", schemaPath: "#/properties/extensions/properties/readerProfile/properties/direction/enum", keyword: "enum", params: { allowedValues: schema6.properties.extensions.properties.readerProfile.properties.direction.enum }, message: "must be equal to one of the allowed values" };
+                    if (vErrors === null) {
+                      vErrors = [err313];
+                    } else {
+                      vErrors.push(err313);
+                    }
+                    errors++;
+                  }
+                }
+                if (data226.sidebar !== void 0) {
+                  let data229 = data226.sidebar;
+                  if (typeof data229 !== "string") {
+                    const err314 = { instancePath: instancePath + "/extensions/readerProfile/sidebar", schemaPath: "#/properties/extensions/properties/readerProfile/properties/sidebar/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+                    if (vErrors === null) {
+                      vErrors = [err314];
+                    } else {
+                      vErrors.push(err314);
+                    }
+                    errors++;
+                  }
+                  let valid115;
+                  valid115 = false;
+                  for (const v27 of schema6.properties.extensions.properties.readerProfile.properties.sidebar.enum) {
+                    if (func0(data229, v27)) {
+                      valid115 = true;
+                      break;
+                    }
+                  }
+                  if (!valid115) {
+                    const err315 = { instancePath: instancePath + "/extensions/readerProfile/sidebar", schemaPath: "#/properties/extensions/properties/readerProfile/properties/sidebar/enum", keyword: "enum", params: { allowedValues: schema6.properties.extensions.properties.readerProfile.properties.sidebar.enum }, message: "must be equal to one of the allowed values" };
+                    if (vErrors === null) {
+                      vErrors = [err315];
+                    } else {
+                      vErrors.push(err315);
+                    }
+                    errors++;
+                  }
+                }
+                if (data226.pageShape !== void 0) {
+                  let data230 = data226.pageShape;
+                  if (typeof data230 !== "string") {
+                    const err316 = { instancePath: instancePath + "/extensions/readerProfile/pageShape", schemaPath: "#/properties/extensions/properties/readerProfile/properties/pageShape/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+                    if (vErrors === null) {
+                      vErrors = [err316];
+                    } else {
+                      vErrors.push(err316);
+                    }
+                    errors++;
+                  }
+                  let valid116;
+                  valid116 = false;
+                  for (const v28 of schema6.properties.extensions.properties.readerProfile.properties.pageShape.enum) {
+                    if (func0(data230, v28)) {
+                      valid116 = true;
+                      break;
+                    }
+                  }
+                  if (!valid116) {
+                    const err317 = { instancePath: instancePath + "/extensions/readerProfile/pageShape", schemaPath: "#/properties/extensions/properties/readerProfile/properties/pageShape/enum", keyword: "enum", params: { allowedValues: schema6.properties.extensions.properties.readerProfile.properties.pageShape.enum }, message: "must be equal to one of the allowed values" };
+                    if (vErrors === null) {
+                      vErrors = [err317];
+                    } else {
+                      vErrors.push(err317);
+                    }
+                    errors++;
+                  }
+                }
+                if (data226.transition !== void 0) {
+                  let data231 = data226.transition;
+                  if (typeof data231 !== "string") {
+                    const err318 = { instancePath: instancePath + "/extensions/readerProfile/transition", schemaPath: "#/properties/extensions/properties/readerProfile/properties/transition/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+                    if (vErrors === null) {
+                      vErrors = [err318];
+                    } else {
+                      vErrors.push(err318);
+                    }
+                    errors++;
+                  }
+                  let valid117;
+                  valid117 = false;
+                  for (const v29 of schema6.properties.extensions.properties.readerProfile.properties.transition.enum) {
+                    if (func0(data231, v29)) {
+                      valid117 = true;
+                      break;
+                    }
+                  }
+                  if (!valid117) {
+                    const err319 = { instancePath: instancePath + "/extensions/readerProfile/transition", schemaPath: "#/properties/extensions/properties/readerProfile/properties/transition/enum", keyword: "enum", params: { allowedValues: schema6.properties.extensions.properties.readerProfile.properties.transition.enum }, message: "must be equal to one of the allowed values" };
+                    if (vErrors === null) {
+                      vErrors = [err319];
+                    } else {
+                      vErrors.push(err319);
+                    }
+                    errors++;
+                  }
+                }
+                if (data226.theme !== void 0) {
+                  let data232 = data226.theme;
+                  if (typeof data232 !== "string") {
+                    const err320 = { instancePath: instancePath + "/extensions/readerProfile/theme", schemaPath: "#/properties/extensions/properties/readerProfile/properties/theme/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+                    if (vErrors === null) {
+                      vErrors = [err320];
+                    } else {
+                      vErrors.push(err320);
+                    }
+                    errors++;
+                  }
+                  let valid118;
+                  valid118 = false;
+                  for (const v30 of schema6.properties.extensions.properties.readerProfile.properties.theme.enum) {
+                    if (func0(data232, v30)) {
+                      valid118 = true;
+                      break;
+                    }
+                  }
+                  if (!valid118) {
+                    const err321 = { instancePath: instancePath + "/extensions/readerProfile/theme", schemaPath: "#/properties/extensions/properties/readerProfile/properties/theme/enum", keyword: "enum", params: { allowedValues: schema6.properties.extensions.properties.readerProfile.properties.theme.enum }, message: "must be equal to one of the allowed values" };
+                    if (vErrors === null) {
+                      vErrors = [err321];
+                    } else {
+                      vErrors.push(err321);
+                    }
+                    errors++;
+                  }
+                }
+                if (data226.motion !== void 0) {
+                  let data233 = data226.motion;
+                  if (typeof data233 !== "string") {
+                    const err322 = { instancePath: instancePath + "/extensions/readerProfile/motion", schemaPath: "#/properties/extensions/properties/readerProfile/properties/motion/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+                    if (vErrors === null) {
+                      vErrors = [err322];
+                    } else {
+                      vErrors.push(err322);
+                    }
+                    errors++;
+                  }
+                  let valid119;
+                  valid119 = false;
+                  for (const v31 of schema6.properties.extensions.properties.readerProfile.properties.motion.enum) {
+                    if (func0(data233, v31)) {
+                      valid119 = true;
+                      break;
+                    }
+                  }
+                  if (!valid119) {
+                    const err323 = { instancePath: instancePath + "/extensions/readerProfile/motion", schemaPath: "#/properties/extensions/properties/readerProfile/properties/motion/enum", keyword: "enum", params: { allowedValues: schema6.properties.extensions.properties.readerProfile.properties.motion.enum }, message: "must be equal to one of the allowed values" };
+                    if (vErrors === null) {
+                      vErrors = [err323];
+                    } else {
+                      vErrors.push(err323);
+                    }
+                    errors++;
+                  }
+                }
+                if (data226.paperStyle !== void 0) {
+                  let data234 = data226.paperStyle;
+                  if (typeof data234 !== "string") {
+                    const err324 = { instancePath: instancePath + "/extensions/readerProfile/paperStyle", schemaPath: "#/properties/extensions/properties/readerProfile/properties/paperStyle/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+                    if (vErrors === null) {
+                      vErrors = [err324];
+                    } else {
+                      vErrors.push(err324);
+                    }
+                    errors++;
+                  }
+                  let valid120;
+                  valid120 = false;
+                  for (const v32 of schema6.properties.extensions.properties.readerProfile.properties.paperStyle.enum) {
+                    if (func0(data234, v32)) {
+                      valid120 = true;
+                      break;
+                    }
+                  }
+                  if (!valid120) {
+                    const err325 = { instancePath: instancePath + "/extensions/readerProfile/paperStyle", schemaPath: "#/properties/extensions/properties/readerProfile/properties/paperStyle/enum", keyword: "enum", params: { allowedValues: schema6.properties.extensions.properties.readerProfile.properties.paperStyle.enum }, message: "must be equal to one of the allowed values" };
+                    if (vErrors === null) {
+                      vErrors = [err325];
+                    } else {
+                      vErrors.push(err325);
+                    }
+                    errors++;
+                  }
+                }
+                if (data226.font !== void 0) {
+                  let data235 = data226.font;
+                  if (typeof data235 !== "string") {
+                    const err326 = { instancePath: instancePath + "/extensions/readerProfile/font", schemaPath: "#/properties/extensions/properties/readerProfile/properties/font/type", keyword: "type", params: { type: "string" }, message: "must be string" };
+                    if (vErrors === null) {
+                      vErrors = [err326];
+                    } else {
+                      vErrors.push(err326);
+                    }
+                    errors++;
+                  }
+                  let valid121;
+                  valid121 = false;
+                  for (const v33 of schema6.properties.extensions.properties.readerProfile.properties.font.enum) {
+                    if (func0(data235, v33)) {
+                      valid121 = true;
+                      break;
+                    }
+                  }
+                  if (!valid121) {
+                    const err327 = { instancePath: instancePath + "/extensions/readerProfile/font", schemaPath: "#/properties/extensions/properties/readerProfile/properties/font/enum", keyword: "enum", params: { allowedValues: schema6.properties.extensions.properties.readerProfile.properties.font.enum }, message: "must be equal to one of the allowed values" };
+                    if (vErrors === null) {
+                      vErrors = [err327];
+                    } else {
+                      vErrors.push(err327);
+                    }
+                    errors++;
+                  }
+                }
+                if (data226.lineSpacing !== void 0) {
+                  let data236 = data226.lineSpacing;
+                  if (!(typeof data236 == "number")) {
+                    const err328 = { instancePath: instancePath + "/extensions/readerProfile/lineSpacing", schemaPath: "#/properties/extensions/properties/readerProfile/properties/lineSpacing/type", keyword: "type", params: { type: "number" }, message: "must be number" };
+                    if (vErrors === null) {
+                      vErrors = [err328];
+                    } else {
+                      vErrors.push(err328);
+                    }
+                    errors++;
+                  }
+                  let valid122;
+                  valid122 = false;
+                  for (const v34 of schema6.properties.extensions.properties.readerProfile.properties.lineSpacing.enum) {
+                    if (func0(data236, v34)) {
+                      valid122 = true;
+                      break;
+                    }
+                  }
+                  if (!valid122) {
+                    const err329 = { instancePath: instancePath + "/extensions/readerProfile/lineSpacing", schemaPath: "#/properties/extensions/properties/readerProfile/properties/lineSpacing/enum", keyword: "enum", params: { allowedValues: schema6.properties.extensions.properties.readerProfile.properties.lineSpacing.enum }, message: "must be equal to one of the allowed values" };
+                    if (vErrors === null) {
+                      vErrors = [err329];
+                    } else {
+                      vErrors.push(err329);
+                    }
+                    errors++;
+                  }
+                }
+                if (data226.marginNotes !== void 0) {
+                  if (typeof data226.marginNotes !== "boolean") {
+                    const err330 = { instancePath: instancePath + "/extensions/readerProfile/marginNotes", schemaPath: "#/properties/extensions/properties/readerProfile/properties/marginNotes/type", keyword: "type", params: { type: "boolean" }, message: "must be boolean" };
+                    if (vErrors === null) {
+                      vErrors = [err330];
+                    } else {
+                      vErrors.push(err330);
+                    }
+                    errors++;
+                  }
+                }
+                if (data226.bottomNotes !== void 0) {
+                  if (typeof data226.bottomNotes !== "boolean") {
+                    const err331 = { instancePath: instancePath + "/extensions/readerProfile/bottomNotes", schemaPath: "#/properties/extensions/properties/readerProfile/properties/bottomNotes/type", keyword: "type", params: { type: "boolean" }, message: "must be boolean" };
+                    if (vErrors === null) {
+                      vErrors = [err331];
+                    } else {
+                      vErrors.push(err331);
+                    }
+                    errors++;
+                  }
+                }
+              } else {
+                const err332 = { instancePath: instancePath + "/extensions/readerProfile", schemaPath: "#/properties/extensions/properties/readerProfile/type", keyword: "type", params: { type: "object" }, message: "must be object" };
+                if (vErrors === null) {
+                  vErrors = [err332];
+                } else {
+                  vErrors.push(err332);
+                }
+                errors++;
+              }
+            }
           } else {
-            const err310 = { instancePath: instancePath + "/extensions", schemaPath: "#/properties/extensions/type", keyword: "type", params: { type: "object" }, message: "must be object" };
+            const err333 = { instancePath: instancePath + "/extensions", schemaPath: "#/properties/extensions/type", keyword: "type", params: { type: "object" }, message: "must be object" };
             if (vErrors === null) {
-              vErrors = [err310];
+              vErrors = [err333];
             } else {
-              vErrors.push(err310);
+              vErrors.push(err333);
             }
             errors++;
           }
         }
       } else {
-        const err311 = { instancePath, schemaPath: "#/type", keyword: "type", params: { type: "object" }, message: "must be object" };
+        const err334 = { instancePath, schemaPath: "#/type", keyword: "type", params: { type: "object" }, message: "must be object" };
         if (vErrors === null) {
-          vErrors = [err311];
+          vErrors = [err334];
         } else {
-          vErrors.push(err311);
+          vErrors.push(err334);
         }
         errors++;
       }

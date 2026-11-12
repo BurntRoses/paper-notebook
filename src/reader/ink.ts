@@ -4,6 +4,7 @@ import { inkPoints } from '../model/paper';
 import { circleStroke } from './circle';
 import { drawRuling } from './ruling';
 import { indexForBookmark } from './anchors';
+import { projectedText } from '../ui/projection';
 import type { SurfacePage } from './surface';
 import { blocksOf, textOf, type Annotation, type Bookmark, type NotebookDocument, type Selector } from '../model/types';
 const NS='http://www.w3.org/2000/svg';
@@ -12,6 +13,7 @@ const random=(seed:number)=>()=>{seed=(seed*1664525+1013904223)>>>0;return seed/
 export { authoredAnnotations } from '../model/study';
 export function polygonPath(points:number[][]){return points.length?'M '+points.map(p=>p.slice(0,2).join(' ')).join(' L ')+' Z':'';}
 export function rangeFor(span:HTMLElement,start:number,end:number){
+ if(span.classList.contains('inline-math')){const r=document.createRange();r.selectNodeContents(span);return r;}
  const walker=document.createTreeWalker(span,NodeFilter.SHOW_TEXT),nodes:Text[]=[];let n:Node|null;while((n=walker.nextNode()))nodes.push(n as Text);
  let at=0,first:Text|undefined,last:Text|undefined,a=0,b=0;
  for(const node of nodes){if(!first&&start<=at+node.length){first=node;a=Math.max(0,start-at);}if(end>=at&&end<=at+node.length){last=node;b=end-at;break;}at+=node.length;}
@@ -25,14 +27,14 @@ export function lineRects(rects:DOMRect[]){
 export function selectorRects(paper:HTMLElement,d:NotebookDocument,selector:Selector){
  const b=blocksOf(d).find(b=>b.id===selector.blockId);if(!b)return [];const resolved=resolveInText(textOf(b),selector);if(resolved.status!=='resolved')return [];
  const rects:DOMRect[]=[];for(const block of paper.querySelectorAll<HTMLElement>(`[data-block="${CSS.escape(selector.blockId)}"]`))for(const span of block.querySelectorAll<HTMLElement>('.ink-text')){
-  const offset=Number(span.dataset.offset||0),start=Math.max(0,resolved.start-offset),end=Math.min(span.textContent?.length||0,resolved.end-offset);if(end>start){const r=rangeFor(span,start,end);if(r)rects.push(...r.getClientRects());}
+  const offset=Number(span.dataset.offset||0),start=Math.max(0,resolved.start-offset),end=Math.min(projectedText(span).length,resolved.end-offset);if(end>start){if(span.classList.contains('inline-math'))rects.push(span.getBoundingClientRect());else{const r=rangeFor(span,start,end);if(r)rects.push(...r.getClientRects());}}
  }return lineRects(rects);
 }
 /** Reveal a match inside a scrollable code/table without moving the paper itself. */
 export function revealPassage(paper:HTMLElement,d:NotebookDocument,selector:Selector){
  const block=paper.querySelector<HTMLElement>(`[data-block="${CSS.escape(selector.blockId)}"]`);if(!block)return;
  const source=blocksOf(d).find(b=>b.id===selector.blockId);if(!source)return;
- const resolved=resolveInText(textOf(source),selector),span=[...block.querySelectorAll<HTMLElement>('.ink-text')].find(n=>{const offset=Number(n.dataset.offset||0);return resolved.start>=offset&&resolved.start<offset+(n.textContent?.length||0);});
+ const resolved=resolveInText(textOf(source),selector),span=[...block.querySelectorAll<HTMLElement>('.ink-text')].find(n=>{const offset=Number(n.dataset.offset||0);return resolved.start>=offset&&resolved.start<offset+projectedText(n).length;});
  for(let node:HTMLElement|null=span?.parentElement||block;node&&node!==paper;node=node.parentElement){
   const style=getComputedStyle(node),rect=selectorRects(paper,d,selector)[0];if(!rect)break;
   const box=node.getBoundingClientRect(),sx=box.width/node.offsetWidth||1,sy=box.height/node.offsetHeight||1;
@@ -51,6 +53,7 @@ export function flashPassage(paper:HTMLElement,d:NotebookDocument,selector:Selec
 export function drawInk(paper:HTMLElement,annotations:Annotation[],d:NotebookDocument,pages?:SurfacePage[]){
  const overlay=paper.querySelector<SVGSVGElement>('.ink-overlay');if(!overlay)return;overlay.replaceChildren();
  paper.querySelectorAll('strong.bold-ink,span.red-ink').forEach(n=>n.replaceWith(...n.childNodes));paper.querySelectorAll('.ink-text').forEach(n=>n.normalize());
+ paper.querySelectorAll<HTMLElement>('.inline-math').forEach(n=>{delete n.dataset.inkBold;delete n.dataset.inkColor;n.style.removeProperty('--annotation-color');});
  const base=paper.getBoundingClientRect(),width=paper.offsetWidth,height=paper.offsetHeight,sx=width/base.width,sy=height/base.height;
  overlay.setAttribute('viewBox',`0 0 ${width} ${height}`);
  for(const a of [...annotations].sort((a,b)=>Number(!['bold','red'].includes(a.kind))-Number(!['bold','red'].includes(b.kind)))){
@@ -67,7 +70,7 @@ export function drawInk(paper:HTMLElement,annotations:Annotation[],d:NotebookDoc
    node.dataset.ink=a.id;overlay.append(node);continue;
   }
   if(a.kind==='bold'||a.kind==='red'){
-   for(const s of a.selectors){const b=blocksOf(d).find(b=>b.id===s.blockId);if(!b)continue;const r=resolveInText(textOf(b),s);if(r.status!=='resolved')continue;for(const block of paper.querySelectorAll<HTMLElement>(`[data-block="${CSS.escape(s.blockId)}"]`))for(const span of block.querySelectorAll<HTMLElement>('.ink-text')){const off=Number(span.dataset.offset||0),start=Math.max(0,r.start-off),end=Math.min(span.textContent!.length,r.end-off);if(end<=start)continue;const range=rangeFor(span,start,end);if(!range)continue;const wrapper=document.createElement(a.kind==='bold'?'strong':'span');wrapper.className=a.kind==='bold'?'bold-ink':'red-ink';if(a.kind==='red')wrapper.style.color=a.color;wrapper.append(range.extractContents());range.insertNode(wrapper);}}
+   for(const s of a.selectors){const b=blocksOf(d).find(b=>b.id===s.blockId);if(!b)continue;const r=resolveInText(textOf(b),s);if(r.status!=='resolved')continue;for(const block of paper.querySelectorAll<HTMLElement>(`[data-block="${CSS.escape(s.blockId)}"]`))for(const span of block.querySelectorAll<HTMLElement>('.ink-text')){const off=Number(span.dataset.offset||0),start=Math.max(0,r.start-off),end=Math.min(projectedText(span).length,r.end-off);if(end<=start)continue;if(span.classList.contains('inline-math')){if(a.kind==='bold')span.dataset.inkBold='true';else{span.dataset.inkColor='true';span.style.setProperty('--annotation-color',a.color);}continue;}const range=rangeFor(span,start,end);if(!range)continue;const wrapper=document.createElement(a.kind==='bold'?'strong':'span');wrapper.className=a.kind==='bold'?'bold-ink':'red-ink';if(a.kind==='red')wrapper.style.setProperty('--annotation-color',a.color);wrapper.append(range.extractContents());range.insertNode(wrapper);}}
    continue;
   }
   let index=0;for(const selector of a.selectors)for(const [line,r] of selectorRects(paper,d,selector).entries()){

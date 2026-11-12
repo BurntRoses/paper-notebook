@@ -24,6 +24,8 @@ ID 采用字母、数字、下划线、连字符、点或冒号，在文档内�
 
 `textOf` 的投影：先取 text/question/prompt/latex 中首个非空值，再取 items/steps，最后取 result；比较表按 columns、rows 展开；非空片段之间一个换行。标题不参与。偏移使用 JavaScript UTF-16，边界不得切开代理对。
 
+行内数学是文本的显示方式，源数据保留 LaTeX 及其 `\(…\)` 或 `$…$` 分隔符。选择、批注、搜索、复制和续页继续使用原字符串的 UTF-16 偏移，不使用 KaTeX 展开的 DOM 文字计算位置；公式作为完整对象跨行与续页，代码不解析数学分隔符。
+
 Selector 保存 blockId、start/end、exact、prefix/suffix。先尝试原偏移，再按原句与上下文匹配。多个候选标为 ambiguous；原文消失标为 orphaned。阅读器在记录区提示待关联，不猜测位置。荧光、下划线、圈注、波浪、方框、括注、勾记、星标和着重点使用实际 Range 矩形生成确定性 SVG。同类型重叠范围合并，重复标记切换显示；点击现有标记可删除。作者标记的隐藏 ID 写入 `userState.dismissedStudyMarks`，不修改正文；公开副本恢复作者标记。
 
 自由笔 `coordinateSpace: normalized-page` 表示 x/纸宽、y/纸高，`sourceSize` 保存落笔纸幅。独立笔迹等比保留，`attachedBlockId + blockFrame` 使笔迹随对象变换。`sheet` 指续页序号。旧笔迹两轴均按纸宽归一化，迁移为 `legacy-width` 并复制 `originalPoints`；缺少历史纸幅时标为 `needs-placement`，在可见列表中重新定位。便签 `positions[shape]` 保存横竖排版。

@@ -1,0 +1,7 @@
+.page-surface .inline-math{display:inline-block;vertical-align:baseline;max-width:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;white-space:nowrap;line-height:normal}
+.page-surface .inline-math .katex{font-size:1.05em}
+.page-surface .inline-math[data-ink-bold] .katex{font-weight:700}
+
+.page-surface .red-ink,.page-surface .inline-math[data-ink-color]{color:var(--annotation-color,var(--red))}
+html[data-paper-theme=paper-night] .page-surface .red-ink,html[data-paper-theme=paper-night] .page-surface .inline-math[data-ink-color]{color:color-mix(in srgb,var(--annotation-color,var(--red)) 40%,#fff 60%);filter:none}
+#print-root .page-surface .red-ink,#print-root .page-surface .inline-math[data-ink-color]{color:var(--annotation-color,var(--red));filter:none}

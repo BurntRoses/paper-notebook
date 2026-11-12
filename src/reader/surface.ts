@@ -4,6 +4,7 @@ import { el } from '../ui/dom';
 import { applyPaperStyle } from './paper-styles';
 import { fitFigureBlock } from '../ui/figures';
 import { cueNode, cuesForSheet, summaryForSheet } from './margins';
+import { inlineBoundary, inlineParts } from '../model/inline-math';
 export interface SurfacePage extends Page {part:number;totalParts:number}
 export type FragmentBlock=Block & {_offset?:number;_oversize?:boolean;_captionOnly?:boolean};
 /** A physical sheet is a view of existing page/block IDs, never a rewrite of the source. */
@@ -90,6 +91,7 @@ export class PageSurface {
       let lo=0,hi=b.text.length;while(lo<hi){const mid=Math.ceil((lo+hi)/2),t={...b,text:b.text.slice(0,mid)};const probe=append(t),fits=height()<=limit();probe.remove();if(fits)lo=mid;else hi=mid-1;}
       let cut=safeBoundary(b.text,lo);if(cut<1&&blocks.length){flush();continue;}if(cut<1)cut=safeBoundary(b.text,Math.min(b.text.length,200));
       if(cut<b.text.length){const sentence=Math.max(...['。','！','？','；','\n'].map(mark=>b.text!.lastIndexOf(mark,cut-1)));if(sentence>cut*.7)cut=sentence+1;const lineBreak=b.text.lastIndexOf('\n',cut);const space=b.text.lastIndexOf(' ',cut);const word=Math.max(lineBreak,space);if(word>cut-35&&word>0)cut=word+1;}
+      cut=inlineBoundary(b.text,cut);if(cut<1&&blocks.length){flush();continue;}if(cut<1)cut=inlineParts(b.text)[0].text.length;
       const head={...b,text:b.text.slice(0,cut)};commit(head);const rest=b.text.slice(cut);if(!rest)break;flush();b={...b,title:undefined,text:rest,_offset:(b._offset||0)+cut};continue;
      }
      if(b.type==='formula'&&(b.parameters?.length||0)>1){

@@ -6,6 +6,7 @@ import { PageSurface, type SurfacePage } from './surface';
 import { authoredAnnotations, drawInk } from './ink';
 import { layoutPaperMargins } from './margins';
 import { drawSketchFrames } from './sketch';
+import { readerCopy } from './records';
 
 /** Print is a separate projection. It never changes the saved reader profile or source IDs. */
 export interface PrintOptions { orientation:'portrait'|'landscape'; includeRecords:boolean }
@@ -13,8 +14,8 @@ export const defaultPrintOptions:PrintOptions={orientation:'portrait',includeRec
 const mm=(n:number)=>n*96/25.4;
 
 function printDocument(source:NotebookDocument,records:boolean){
- const d=structuredClone(source);d.extensions.readerProfile={...(d.extensions.readerProfile as object),lineSpacing:2.05,theme:'paper-light'};
- if(!records){d.userState.explorations={};d.userState.answers={};d.userState.checks={};}
+ const d=records?structuredClone(source):readerCopy(source,{marks:false,questions:false,answers:false,legacy:false});
+ d.extensions.readerProfile={...(d.extensions.readerProfile as object),lineSpacing:2.05,theme:'paper-light'};
  if(records){
   const blocks:Page['blocks']=[];
   for(const n of d.userState.notes)blocks.push({id:'print-note-'+n.id,type:'prose',title:n.title||'我的笔记',text:[pagesOf(d).find(p=>p.id===n.pageId)?.title,n.selector?.exact,n.text,n.back].filter(Boolean).join('\n\n')});
@@ -34,7 +35,32 @@ export function createPrintView(source:NotebookDocument,options:PrintOptions,ori
  const dimensions=options.orientation==='portrait'?{width:mm(210),height:mm(297)}:{width:mm(297),height:mm(210)};
  const d=printDocument(source,options.includeRecords);
  const sourceBlocks=new Map(blocksOf(d).map(b=>[b.id,b]));
- const surface=new PageSurface(d,options.orientation,16,b=>{const n=renderBlock(b,d,{staticView:true,answer:()=>{},check:()=>{},edit:()=>{},image:()=>{}},sourceBlocks.get(b.id)||b);(n as HTMLElement&{__block:unknown}).__block=sourceBlocks.get(b.id)||b;return n;},dimensions,root);
+ const render=(document:NotebookDocument)=>(b:Page['blocks'][number])=>{const n=renderBlock(b,document,{staticView:true,answer:()=>{},check:()=>{},edit:()=>{},image:()=>{}},sourceBlocks.get(b.id)||b);(n as HTMLElement&{__block:unknown}).__block=sourceBlocks.get(b.id)||b;return n;};
+ const surface=new PageSurface(d,options.orientation,16,render(d),dimensions,root);
+ // Screen margins scroll. On paper their full text continues on ordinary sheets
+ // immediately after the corresponding page, instead of being clipped or shrunk.
+ const continueMargins=()=>{
+  for(const paper of [...root.querySelectorAll<HTMLElement>('.print-sheet')]){
+   const blocks:Page['blocks']=[];
+   for(const zone of paper.querySelectorAll<HTMLElement>(':scope > .reader-page-body > .paper-notes,:scope > .paper-bottom')){
+    const bottom=zone.getBoundingClientRect().bottom,stream=zone.querySelector('.margin-stream')||zone;
+    for(const node of [...stream.children]){
+     if(!(node instanceof HTMLElement)||node.getBoundingClientRect().bottom<=bottom+1)continue;
+     const title=node.querySelector('.cue-title')?.textContent|| (zone.classList.contains('paper-bottom')?'页末补充':undefined);
+     const text=node.querySelector('.cue-body')?.textContent||node.textContent||'';
+     if(text.trim())blocks.push({id:`print-margin-${paper.dataset.page}-${paper.dataset.part}-${blocks.length}`,type:'prose',title,text});
+     node.remove();
+    }
+   }
+   if(!blocks.length)continue;
+   const page:Page={id:`print-margin-${paper.dataset.page}-${paper.dataset.part}`,title:'页边说明',layout:'reading',blocks};
+   const overflow:NotebookDocument={...d,notebook:{...d.notebook,chapters:[{id:'print-margin-chapter',title:pagesOf(d).find(p=>p.id===paper.dataset.page)?.title||d.notebook.title,pages:[page]}]},extensions:{...d.extensions,readerProfile:{...(d.extensions.readerProfile as object),marginNotes:false,bottomNotes:false}}};
+   const continuation=new PageSurface(overflow,options.orientation,16,render(overflow),dimensions,root);
+   let previous=paper;
+   for(const [index,sheet] of continuation.paginate().entries()){const rendered=continuation.render(sheet,index);rendered.classList.add('print-margin-continuation');previous.after(rendered);previous=rendered;}
+   const reference=el('span','print-margin-reference');reference.dataset.continuation=page.id;paper.querySelector('.reader-page-footer')!.prepend(reference);
+  }
+ };
  const populate=()=>{
   root.replaceChildren();const sheets=surface.paginate();sheets.forEach((p,i)=>root.append(surface.render(p,i)));fitPageFigures(root);
   if(options.includeRecords&&original){
@@ -47,11 +73,14 @@ export function createPrintView(source:NotebookDocument,options:PrintOptions,ori
     const scale=Math.min(body.clientWidth/originalPage.offsetWidth,body.clientHeight/originalPage.offsetHeight);originalPage.style.transformOrigin='top left';originalPage.style.transform=`scale(${scale})`;originalPage.style.setProperty('--original-scale',`scale(${scale})`);sheet.querySelector(':scope > .reader-page-footer .folio-number')!.textContent=String(root.children.length);
    }
   }
+  layoutPaperMargins(root,d);continueMargins();
+  const printed=[...root.querySelectorAll<HTMLElement>(':scope > .print-sheet')];
+  printed.forEach((paper,index)=>{paper.querySelector(':scope > .reader-page-footer .folio-number')!.textContent=String(index+1);});
+  for(const reference of root.querySelectorAll<HTMLElement>('.print-margin-reference'))reference.textContent='页边说明见第 '+(printed.findIndex(p=>p.dataset.page===reference.dataset.continuation)+1)+' 页';
   // KaTeX bases wrap at relation/operator boundaries. Scale only an indivisible
   // base (for example a very wide matrix), keeping ordinary long sums readable.
   for(const formula of root.querySelectorAll<HTMLElement>('.print-sheet:not(.ink-appendix) .formula')){const width=Math.max(0,...[...formula.querySelectorAll<HTMLElement>('.katex-html > .base')].map(n=>n.getBoundingClientRect().width));if(width>formula.clientWidth)formula.style.fontSize=(parseFloat(getComputedStyle(formula).fontSize)*formula.clientWidth/width)+'px';}
-  for(const paper of root.querySelectorAll<HTMLElement>('.print-sheet:not(.ink-appendix)'))drawInk(paper,[...authoredAnnotations(source,paper.dataset.page!),...(options.includeRecords?source.userState.annotations.filter(a=>a.kind!=='freehand'&&a.pageId===paper.dataset.page):[])],source);
-  layoutPaperMargins(root,d);
+  for(const paper of root.querySelectorAll<HTMLElement>('.print-sheet:not(.ink-appendix)'))drawInk(paper,[...authoredAnnotations(d,paper.dataset.page!),...d.userState.annotations.filter(a=>a.kind!=='freehand'&&a.pageId===paper.dataset.page)],d);
   drawSketchFrames(root);
  };
  populate();

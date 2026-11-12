@@ -12,7 +12,7 @@ export function drawRuling(paper:HTMLElement){
   // Technical figures, table cells and chalkboards have their own surfaces.
   if(span.closest('[data-visual=blackboard],.block-formula,.block-code,.table-scroll,.figure-caption,.block-image,.oversize-object'))continue;
   const container=span.closest<HTMLElement>('p,li,.callout-body')||span.parentElement!,bounds=container.getBoundingClientRect(),range=document.createRange();range.selectNodeContents(span);
-  const rows=[...range.getClientRects()].filter(r=>r.width>.1&&r.height>1);
+  const rows=(span.classList.contains('inline-math')?[span.getBoundingClientRect()]:[...range.getClientRects()]).filter(r=>r.width>.1&&r.height>1);
   for(const rect of rows){
    const left=Math.max(0,(bounds.left-base.left)*sx),right=Math.min(body.clientWidth,(bounds.right-base.left)*sx),y=(rect.bottom-base.top)*sy+2;
    if(y<0||y>body.clientHeight||right<=left)continue;

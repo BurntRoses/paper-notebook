@@ -15,6 +15,7 @@ function lesson(name:string,title:string,pageIds:string[],goals:string[]):[strin
 
 const compound=lesson('compound-interest','复利与增长',
  ['intro-capabilities','intro-principles','intro-features','intro-start','growth-lab'],introNotebook.notebook.goals);
+compound[1].notebook.revision=9;compound[1].extensions.baseRevision=8;
 compound[1].notebook.sources=compound[1].notebook.sources.filter(s=>s.id.startsWith('intro-source-'));
 const area=compound[1].notebook.chapters[0].pages[0].blocks.find(b=>b.id==='intro-area')!;
 area.figure={...area.figure,annotations:[{kind:'circle',x:77,y:78,x2:86,y2:87,color:'#b1483d'},{kind:'arrow',x:94,y:72,x2:85,y2:82,color:'#b1483d'}]};

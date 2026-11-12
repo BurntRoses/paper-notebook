@@ -3,6 +3,13 @@ import { validateExploration } from './exploration';
 import { migrateInk } from './paper';
 import { blocksOf, pagesOf, textOf, defaultPreferences, type NotebookDocument, type Selector, type Block, type Answer } from './types';
 export function parseDocument(raw: unknown): { document: NotebookDocument; warnings: string[] } {
+  // JSON.parse accepts overflow such as 1e999; JSON.stringify would silently
+  // turn it into null, including in forward-compatible extension fields.
+  const pending:[unknown,string][]=[[raw,'']],visited=new WeakSet<object>();
+  while(pending.length){const [value,path]=pending.pop()!;
+    if(typeof value==='number'&&!Number.isFinite(value))throw new Error(`${path||'/'}: 数值必须有限，不能在导出时转换为空值。`);
+    if(value&&typeof value==='object'&&!visited.has(value)){visited.add(value);for(const [key,item] of Object.entries(value))if(typeof item==='number'||item&&typeof item==='object')pending.push([item,path+'/'+key.replace(/~/g,'~0').replace(/\//g,'~1')]);}
+  }
   if(!validate(raw)) throw new Error((validate.errors||[]).slice(0,8).map(e=>`${e.instancePath || '/'} ${e.message}`).join('\n'));
   const d=structuredClone(raw) as unknown as NotebookDocument,warnings:string[]=[],ids=new Set<string>();
   // Preferences added after 1.0 remain optional on disk so older notebooks keep opening.
@@ -14,8 +21,6 @@ export function parseDocument(raw: unknown): { document: NotebookDocument; warni
   for(const p of pagesOf(d))for(const cue of p.cues||[])if(cue.anchor){const source=p.blocks.find(b=>b.id===cue.blockId);if(!source||!textOf(source).includes(cue.anchor))throw new Error(`${p.id}: cue ${cue.id} 的 anchor 必须对应正文原句。`);}
   if(pagesOf(d).length>500||blocksOf(d).length>5000)throw new Error('请将超过 500 页或 5000 个内容块的笔记拆为分册。');
   for(const a of d.assets){add(a.id,'asset');if(!/^data:image\/(png|jpeg|webp|gif|avif|svg\+xml);(base64|charset=utf-8),/i.test(a.data))throw new Error(`资源 ${a.id} 必须是内嵌图片 data URL。`);}
-  const profile=d.extensions.readerProfile as Record<string,unknown>|undefined;
-  if(profile){if(typeof profile!=='object'||Array.isArray(profile))throw new Error('readerProfile 必须是对象。');const allowed:Record<string,string[]>={layout:['auto','single','spread','scroll'],direction:['horizontal','vertical'],sidebar:['open','collapsed'],pageShape:['auto','portrait','landscape'],transition:['turn','cover','slide','fade','none'],theme:['paper-light','paper-night'],motion:['full','reduced'],paperStyle:['auto','white','ivory','cotton','mist','sage','inkwash'],font:['hand','serif','sans'],lineSpacing:['1.65','1.85','2.05','2.25']};for(const [key,values] of Object.entries(allowed))if(profile[key]!==undefined&&!values.includes(String(profile[key])))throw new Error(`readerProfile.${key}: 无效选项。`);}
   const assets=new Set(d.assets.map(a=>a.id)),sources=new Set(d.notebook.sources.map(s=>s.id));
   for(const b of blocksOf(d)){
     if(b.type==='exploration'&&b.exploration)validateExploration(b.exploration,b.id);

@@ -33,14 +33,15 @@ export async function copyText(text:string){try{await navigator.clipboard.writeT
 export function readFile(file:File){return new Promise<string>((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(String(r.result));r.onerror=()=>reject(r.error);r.readAsDataURL(file);});}
 export function pickFile(accept:string,multiple=false):Promise<File[]>{return new Promise(resolve=>{const n=el('input');n.type='file';n.accept=accept;n.multiple=multiple;n.hidden=true;document.body.append(n);n.addEventListener('change',()=>{resolve([...n.files||[]]);n.remove();});n.addEventListener('cancel',()=>{resolve([]);n.remove();});n.click();});}
 
-let activeChoice:{wrap:HTMLElement;close:()=>void}|null=null;
+let activeChoice:{wrap:HTMLElement;trigger:HTMLElement;top:number;left:number;close:()=>void}|null=null;
 let choiceOutsideBound=false;
 /** Keep a real select for values/forms, and present an accessible paper-styled listbox. */
 export function enhanceSelects(root:ParentNode=document){
  if(!choiceOutsideBound){
   document.addEventListener('pointerdown',e=>{if(activeChoice&&!activeChoice.wrap.contains(e.target as Node))activeChoice.close();});
   window.addEventListener('resize',()=>activeChoice?.close());
-  document.addEventListener('scroll',e=>{if(activeChoice&&!activeChoice.wrap.contains(e.target as Node))activeChoice.close();},{capture:true,passive:true});
+  // A queued scroll event may arrive after opening without moving the trigger.
+  document.addEventListener('scroll',e=>{if(!activeChoice||activeChoice.wrap.contains(e.target as Node))return;const r=activeChoice.trigger.getBoundingClientRect();if(!activeChoice.trigger.isConnected||Math.abs(r.top-activeChoice.top)>.5||Math.abs(r.left-activeChoice.left)>.5)activeChoice.close();},{capture:true,passive:true});
   choiceOutsideBound=true;
  }
  const selects=[...(root instanceof HTMLSelectElement&&!root.dataset.choice?[root]:[]),...root.querySelectorAll<HTMLSelectElement>('select:not([data-choice])')];
@@ -53,8 +54,8 @@ export function enhanceSelects(root:ParentNode=document){
   const close=()=>{if(activeChoice?.wrap===wrap)activeChoice=null;opened=false;trigger.setAttribute('aria-expanded','false');if(list.matches(':popover-open'))list.hidePopover();else list.hidden=true;};
   const focus=(i:number,direction=1)=>{const options=[...list.querySelectorAll<HTMLButtonElement>('[role=option]')];i=Math.max(0,Math.min(options.length-1,i));while(options[i]?.disabled)i+=direction;if(!options[i])return;index=i;options[index].focus({preventScroll:true});options[index].scrollIntoView({block:'nearest'});};
   const toggle=()=>{
-   if(opened){close();return;}activeChoice?.close();activeChoice={wrap,close};sync();list.replaceChildren();[...n.options].forEach(o=>{const b=button(o.textContent||'',()=>{n.value=o.value;n.dispatchEvent(new Event('change',{bubbles:true}));sync();close();if(trigger.isConnected)trigger.focus();});b.setAttribute('role','option');b.setAttribute('aria-selected',String(o.selected));b.disabled=o.disabled;b.tabIndex=-1;list.append(b);});
-   const r=trigger.getBoundingClientRect(),width=Math.max(1,Math.min(innerWidth-24,Math.max(190,r.width)));
+   if(opened){close();return;}activeChoice?.close();sync();list.replaceChildren();[...n.options].forEach(o=>{const b=button(o.textContent||'',()=>{n.value=o.value;n.dispatchEvent(new Event('change',{bubbles:true}));sync();close();if(trigger.isConnected)trigger.focus();});b.setAttribute('role','option');b.setAttribute('aria-selected',String(o.selected));b.disabled=o.disabled;b.tabIndex=-1;list.append(b);});
+   const r=trigger.getBoundingClientRect();activeChoice={wrap,trigger,top:r.top,left:r.left,close};const width=Math.max(1,Math.min(innerWidth-24,Math.max(190,r.width)));
    list.style.width=width+'px';list.style.left=Math.min(Math.max(12,r.left),Math.max(12,innerWidth-width-12))+'px';list.style.maxHeight=Math.min(300,innerHeight-24)+'px';list.hidden=false;list.showPopover?.();
    const height=list.getBoundingClientRect().height,below=Math.max(0,innerHeight-r.bottom-17),above=Math.max(0,r.top-17),down=below>=height||below>=above;
    list.style.maxHeight=Math.min(300,down?below:above)+'px';const visibleHeight=list.getBoundingClientRect().height;

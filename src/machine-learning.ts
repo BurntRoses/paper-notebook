@@ -124,7 +124,7 @@ const emphasis:Record<string,NonNullable<Block['study']>['marks']>={
 for(const chapter of machineLearning.notebook.chapters)for(const page of chapter.pages)for(const block of page.blocks){
  if(emphasis[block.id])block.study={...block.study,marks:emphasis[block.id]};
 }
-machineLearning.notebook.revision=12;machineLearning.extensions.baseRevision=11;
+machineLearning.notebook.revision=13;machineLearning.extensions.baseRevision=12;
 
 machineLearning.userState.updatedAt='2026-11-11T12:00:00.000Z';
 
@@ -141,6 +141,13 @@ const residualSvg='<svg xmlns="http://www.w3.org/2000/svg" width="800" height="4
 machineLearning.assets.push({id:'ml-residual-detail-asset',name:'样本B的残差放大图',mime:'image/svg+xml',data:'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(residualSvg),width:800,height:420,source:'由本册教学数据 (x=2,y=4) 与模型 ŷ=x+1 绘制',license:'MIT',verified:true});
 p5.blocks.splice(1,0,{id:'ml-residual-detail',type:'image',title:'放大样本 B：误差沿纵向计算',assetId:'ml-residual-detail-asset',alt:'同一输入x等于2，真实标签为4，预测值为3；箭头从真实位置指向预测位置，残差为负1。',caption:'残差沿纵轴比较，符号由“预测减标签”的约定决定。图上的箭头向下，对应负残差。',figure:{size:'wide',ratio:'auto',style:'sketch',annotations:[{kind:'circle',x:38,y:20,x2:47,y2:42,color:'#b1483d'},{kind:'text',x:67,y:53,text:'向下：负残差',color:'#b1483d'},{kind:'arrow',x:66,y:50,x2:46,y2:33,color:'#b1483d'}]}});
 const figureGuides:Record<string,NonNullable<Block['figure']>['annotations']>={
+ 'ml-convergence-chart':[
+  {kind:'text',x:35,y:27,text:'损失：2.5 → 0.625',color:'#285f9e'},
+  {kind:'text',x:42,y:35,text:'→ 0.15625 → 0.0390625',color:'#285f9e'},
+  {kind:'text',x:44,y:43,text:'每次更新 × 1/4',color:'#b1483d'},
+  {kind:'circle',x:34,y:52,x2:46,y2:63,color:'#b1483d'},
+  {kind:'arrow',x:46,y:47,x2:43,y2:52,color:'#b1483d'}
+ ],
  'ml-loss-curve':[{kind:'circle',x:47,y:66,x2:56,y2:79,color:'#357344'},{kind:'text',x:58,y:53,text:'最低点 w=2',color:'#357344'},{kind:'arrow',x:61,y:57,x2:53,y2:70,color:'#357344'}],
  'ml-fit-chart':[{kind:'circle',x:60,y:22,x2:69,y2:41,color:'#b1483d'},{kind:'text',x:25,y:19,text:'同一 x，比较纵向差',color:'#b1483d'},{kind:'arrow',x:48,y:20,x2:63,y2:31,color:'#b1483d'}],
  'ml-complexity-chart':[{kind:'circle',x:55,y:42,x2:63,y2:55,color:'#357344'},{kind:'text',x:24,y:22,text:'按验证误差选择',color:'#357344'},{kind:'arrow',x:45,y:25,x2:58,y2:46,color:'#357344'}]

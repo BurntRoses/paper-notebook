@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "notebook-growth",
-    "revision": 7,
+    "revision": 8,
     "title": "复利的递推关系",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -53,7 +53,7 @@
                 "id": "growth-eq",
                 "type": "formula",
                 "latex": "P_{n+1}=P_n(1+r), \\qquad P_n=P_0(1+r)^n",
-                "text": "P₀ 是初始值，r 是每期增长率，n 是期数。每一期的增长率相同，但增加的绝对数值不同。",
+                "text": "\\(P_0\\) 是初始本金，\\(r\\) 是每期增长率，\\(n\\) 是期数。每一期的增长率相同，但增加的绝对数值不同。",
                 "study": {
                   "marks": [
                     {
@@ -123,7 +123,54 @@
                 "caption": "相邻两期分别增加 10、11、12.1 元，变化来自逐期扩大的计息基数。",
                 "figure": {
                   "size": "wide",
-                  "ratio": "3:2"
+                  "ratio": "3:2",
+                  "annotations": [
+                    {
+                      "kind": "text",
+                      "x": 20,
+                      "y": 45,
+                      "text": "第 1 期 +10 元",
+                      "color": "#285f9e"
+                    },
+                    {
+                      "kind": "arrow",
+                      "x": 28,
+                      "y": 40,
+                      "x2": 28,
+                      "y2": 32,
+                      "color": "#285f9e"
+                    },
+                    {
+                      "kind": "text",
+                      "x": 45,
+                      "y": 40,
+                      "text": "第 2 期 +11 元",
+                      "color": "#285f9e"
+                    },
+                    {
+                      "kind": "arrow",
+                      "x": 54,
+                      "y": 35,
+                      "x2": 54,
+                      "y2": 28,
+                      "color": "#285f9e"
+                    },
+                    {
+                      "kind": "text",
+                      "x": 68,
+                      "y": 35,
+                      "text": "第 3 期 +12.1 元",
+                      "color": "#b1483d"
+                    },
+                    {
+                      "kind": "arrow",
+                      "x": 79,
+                      "y": 30,
+                      "x2": 80,
+                      "y2": 24,
+                      "color": "#b1483d"
+                    }
+                  ]
                 }
               },
               {
@@ -133,11 +180,11 @@
                 "steps": [
                   {
                     "id": "growth-s1",
-                    "text": "第二期末：100 × 1.1² = 121。"
+                    "text": "第二期末：\\(100 \\times 1.1^2 = 121\\) 元。"
                   },
                   {
                     "id": "growth-s2",
-                    "text": "第三期末：121 × 1.1 = 133.1。"
+                    "text": "第三期末：\\(121 \\times 1.1 = 133.1\\) 元。"
                   }
                 ],
                 "result": "三期一共增加 33.1 元，等于期末金额 133.1 元减去初始本金 100 元。",
@@ -273,7 +320,7 @@
     ]
   },
   "userState": {
-    "updatedAt": "2026-11-11T12:00:00.000Z",
+    "updatedAt": "2026-11-13T12:00:00.000Z",
     "lastPageId": "growth-1",
     "notes": [],
     "annotations": [],
@@ -313,6 +360,6 @@
       "theme": "paper-light",
       "motion": "full"
     },
-    "baseRevision": 6
+    "baseRevision": 7
   }
 }

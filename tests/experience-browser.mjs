@@ -27,7 +27,7 @@ const checkFigurePainting=async page=>{
 };
 // Composite translucent backgrounds, then measure the actual foreground against the visible surface.
 const contrast=()=>{
- const rgb=s=>(s.match(/[\d.]+/g)||[]).map(Number),lum=c=>{const v=c.slice(0,3).map(n=>{n/=255;return n<=.04045?n/12.92:((n+.055)/1.055)**2.4});return v[0]*.2126+v[1]*.7152+v[2]*.0722};
+ const rgb=s=>{const values=(s.match(/[\d.]+/g)||[]).map(Number);return s.startsWith('color(srgb ')?values.map((value,index)=>index<3?value*255:value):values},lum=c=>{const v=c.slice(0,3).map(n=>{n/=255;return n<=.04045?n/12.92:((n+.055)/1.055)**2.4});return v[0]*.2126+v[1]*.7152+v[2]*.0722};
  const issues=[];
  for(const n of document.querySelectorAll('.reader-app-root *,dialog[open] *,.paper-choice-list:popover-open *')){
   if(![...n.childNodes].some(t=>t.nodeType===3&&t.textContent.trim())||!n.checkVisibility()||n.closest('svg,[disabled],.page-transition'))continue;
@@ -43,8 +43,8 @@ try{
  const context=await browser.newContext({viewport:{width:1440,height:1000},acceptDownloads:true}),page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
  await open(page,'paper-notebook');
  await page.evaluate(()=>{const r=window.reader;r.profile.theme='paper-night';r.profile.motion='reduced';r.sidebarOpen=true;r.render()});
- const dims=await page.locator('.reader-control,.reader-files summary').evaluateAll(ns=>ns.filter(n=>n.checkVisibility()).map(n=>{const r=n.getBoundingClientRect(),s=n.querySelector('svg').getBoundingClientRect();return {w:r.width,h:r.height,y:r.y,sw:s.width,sh:s.height,cy:s.y+s.height/2}}));
- assert.ok(dims.length>=5);for(const d of dims){assert.equal(d.w,44);assert.equal(d.h,44);assert.equal(d.sw,20);assert.equal(d.sh,20);assert.ok(Math.abs(d.cy-dims[0].cy)<.2)}
+ const dims=await page.locator('.reader-control,.reader-files summary').evaluateAll(ns=>ns.filter(n=>n.checkVisibility()).map(n=>{const r=n.getBoundingClientRect(),s=n.querySelector('svg').getBoundingClientRect();return {w:r.width,h:r.height,y:r.y,sw:s.width,sh:s.height,cy:s.y+s.height/2,hasText:!!n.textContent.trim(),star:n.classList.contains('reader-star'),fits:n.scrollWidth<=n.clientWidth}}));
+ assert.ok(dims.length>=5);for(const d of dims){if(!d.hasText)assert.equal(d.w,44);else{assert.ok(d.w>=44);assert.ok(d.fits,'Header labels must fit their buttons')}assert.equal(d.h,44);assert.equal(d.sw,d.star?18:20);assert.equal(d.sh,d.star?18:20);assert.ok(Math.abs(d.cy-dims[0].cy)<.2);assert.ok(Math.abs(d.cy-(d.y+d.h/2))<.2)}
  const darkIssues=[];for(let i=0;i<await page.evaluate(()=>window.reader.pages.length);i++){await page.evaluate(i=>window.reader.goPage(i),i);darkIssues.push(...await page.evaluate(contrast))}
  assert.deepEqual([...new Map(darkIssues.map(n=>[n.class,n])).values()],[]);
  await page.evaluate(()=>window.reader.goPage(0));await page.screenshot({path:'docs/screenshots/paper-night.png',fullPage:true});
@@ -125,7 +125,7 @@ try{
  await page.setViewportSize({width:1440,height:1000});await page.waitForTimeout(250);await page.evaluate(()=>{const r=window.reader;r.profile.direction='vertical';r.profile.motion='full';r.profile.layout='single';r.zoom=1;r.goPage(0)});
  let corner=await page.locator('.reader-stage > .reader-page-wrap [data-corner=right]').boundingBox();await page.mouse.move(corner.x+15,corner.y+15);await page.mouse.down();await page.mouse.move(corner.x+15,corner.y-250,{steps:6});await page.mouse.up();assert.equal(await page.evaluate(()=>window.reader.pageIndex),1);
  corner=await page.locator('.reader-stage > .reader-page-wrap [data-corner=right]').boundingBox();await page.mouse.move(corner.x+15,corner.y+15);await page.mouse.down();await page.mouse.move(corner.x+15,corner.y-100);await page.keyboard.press('Escape');await page.mouse.up();assert.equal(await page.evaluate(()=>window.reader.pageIndex),1);assert.equal(await page.locator('[data-drag-side]').count(),0);
- await page.evaluate(()=>{const r=window.reader;r.profile.layout='spread';r.profile.direction='horizontal';r.render();r.turn(1);r.turn(1);r.turn(-1)});await page.waitForTimeout(500);assert.equal(await page.evaluate(()=>window.reader.pageIndex),3);assert.equal(await page.locator('.page-transition,[data-drag-side]').count(),0);
+ const spreadTurns=await page.evaluate(()=>{const r=window.reader;r.profile.layout='spread';r.profile.direction='horizontal';r.render();const start=r.pageIndex,indices=[];for(const delta of [1,1,-1]){r.turn(delta);indices.push(r.pageIndex)}return {start,indices,step:r.step}});assert.equal(spreadTurns.step,2);assert.deepEqual(spreadTurns.indices,[spreadTurns.start+2,spreadTurns.start+4,spreadTurns.start+2]);await page.waitForTimeout(500);assert.equal(await page.evaluate(()=>window.reader.pageIndex),spreadTurns.start+2);assert.equal(await page.locator('.page-transition,[data-drag-side]').count(),0);
  await page.evaluate(()=>window.reader.turn(1));await page.setViewportSize({width:820,height:1180});await page.waitForTimeout(350);assert.equal(await page.locator('.page-transition,[data-drag-side]').count(),0);await page.emulateMedia({reducedMotion:'reduce'});await page.keyboard.press('PageDown');assert.equal(await page.locator('.page-transition').count(),0);
  check('phone print dimensions stay A4; vertical drag, Escape cancellation, rapid reverse spread turns, rotation and reduced motion leave no stale animation');
  assert.deepEqual(errors,[]);await writeFile('docs/verification/experience-report.json',JSON.stringify({date:new Date().toISOString(),checks,errors,scope:'Headless Chromium, screen emulation, real Chromium PDF output; native OS print UI and physical devices not exercised'},null,2));

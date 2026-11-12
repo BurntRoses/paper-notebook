@@ -1,0 +1,27 @@
+# 笔记本质量迭代 · 2.8
+
+本轮完成 `paper-notebook-codex-tasks.md` 中的笔记本协议、阅读批注、页内交互、生成规范和导出打印。范围保持为图文讲解、圈画批注和单文件离线阅读；原有课内练习继续可用。题库管理、组卷和模拟考试由独立 Skill 项目开发，其代码、依赖和产物不进入本轮发布。
+
+默认保留象牙纸、文楷及 2.05 行距，已有用户偏好优先。纸页直线边界、原有翻页动效、右栏和底栏布局继续使用共享阅读器。
+
+| 任务 | 本轮处理 | 验证路径 |
+| --- | --- | --- |
+| 内容协议 | `readerProfile` 纳入共同 schema；Node 和 Python 拒绝无效设置、重复个人记录 ID、缺少选区的文字书签及非有限数值。粘贴、文件和便携 Python 构建统一 50 MB 上限。ZIP 异步读取首个准确命名的 `notebook.json`，不解压无关条目。 | `tests/protocol-parity.test.ts`；模型、往返和质量门测试；`tools/verify-chat-package.mjs`。 |
+| 阅读和批注 | 行内 LaTeX 保留源字符串与 UTF-16 位置，选区、复制、加粗、变色、圈画和重排仍指向原文。代码内容按原文显示。右栏和底栏便条、图像圈注、箭头和文字随单文件保存。 | `tests/inline-math-browser.mjs`、`tests/muse-annotation-browser.mjs`、`tests/workspace-browser.mjs`。 |
+| 原有课内练习 | 草稿输入即保存，不因选项变化或失焦重建组件；首次提交可用。主观题重答保留文字，匹配题反馈显示完整参考对应关系。 | `tests/learning-exercises-browser.mjs`：五种题型、键盘、窄屏、重答和离线恢复。 |
+| 页内交互 | 沿用原生曲线、线性拟合与源码执行过程；核对数值、重置、端点、右栏关闭时的读数、离线状态与打印。 | `tests/exploration-browser.mjs`。 |
+| 生成和示例 | Skill 明确笔记本范围、行内公式写法、文楷默认及图上有效标注；复利和梯度下降曲线补充实际数值与关系标注。交付继续经过规范指纹、逐章审阅和成品校验。 | 当前源文件、`tools/notebook.mjs review/verify/finalize`、`tools/inspect-layout.mjs`。 |
+| 导出和打印 | 公开副本清除个人图像标记、书签及作者标记隐藏状态；长作者页边说明接续为正文后的说明页，原页标明页码；长个人便条在记录附录完整排版。 | `tests/muse-reader-browser.mjs`：A4 横竖、12pt、12mm 留白、公开/个人副本、长说明与便条、离线 ZIP。 |
+| 界面与性能 | 文件菜单与目录互斥；选择列表忽略不改变触发器位置的延迟滚动通知，真实位移仍收起。深色重点文字使用更高对比度的同色系显示。在线阅读继续按需加载字体、复用运行库并延迟视频缓冲。 | `tests/reader-browser.mjs`、`tests/experience-browser.mjs`、`tests/loading-browser.mjs`。 |
+
+## 已记录的结果
+
+本轮模型与工具测试 109 项通过。Chromium、WebKit 已通过行内公式、图像和文字批注、五种课内练习、长内容打印、页内交互、个人记录工作区、导入竞争与失败恢复、搜索和便条等路径。对应报告由以上脚本生成在 `output/`。
+
+手机翻页栏改按真实控件高度定位。新增图内批注的像素截图发现 Chromium 在缩放纸页时画偏文楷文字；显式加载字体后仍可复现，文字节点启用 `text-rendering="geometricPrecision"` 后，两种引擎均显示完整。
+
+加载检查使用 gzip 和缓存服务：两种引擎首次试读均请求 17 个字体切片，压缩阅读资源约 0.98 MB；离线导出后打开不发起外部请求。阈值仍保留原有 1.2 MB 限制。
+
+本记录中的功能验证不代替逐份产物的布局与编辑审阅。最终成品的源文件、规范指纹、全部物理页检查和逐章结论随对应 `finalize` 记录绑定。
+
+最终构建的 `reader-browser` 17 项、`experience-browser` 7 项通过，浏览器错误列表均为空。便携包通过 Node-only 与 Python 构建、源数据与阅读器指纹核验及替换模板拒绝测试。十份示例在 1440×1000、820×1180、390×844 三种视口完成 356 张物理页检查，无布局问题，并全部通过 source-bound `finalize`。逐章结论与当前指纹见 `notebook-editorial-2026-11-13.json`。

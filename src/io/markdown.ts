@@ -4,6 +4,10 @@ import { parseDocument } from '../model/document';
 const markdown=new MarkdownIt({html:false,linkify:false});
 function clean(s:string){return s.replace(/\*\*(.*?)\*\*/g,'$1').replace(/`([^`]+)`/g,'$1').replace(/!\[([^\]]*)\]\(([^)]*)\)/g,'[图片：$1] ($2)').replace(/\[([^\]]+)\]\(([^)]+)\)/g,'$1 ($2)');}
 export function importText(input:string):{document:NotebookDocument;warnings:string[]}{
+ // Pasted content follows the same UTF-8 byte limit as selected files. Small
+ // strings need no encoding pass; one UTF-16 code unit uses at most three bytes.
+ const limit=50*1024*1024;
+ if(input.length>limit||(input.length>limit/3&&new TextEncoder().encode(input).byteLength>limit))throw new Error('单次导入限制 50 MB。');
  let source=input.replace(/^\uFEFF/,'').trim();
  const fenced=source.match(/^(`{3,}|~{3,})(?:json|markdown|md|text|txt)?[ \t]*\n([\s\S]*?)\n\1[ \t]*$/i);if(fenced)source=fenced[2];
  if(source.startsWith('{')){let data:unknown;try{data=JSON.parse(source);}catch{throw new Error('JSON 语法错误。请检查引号、逗号和截断的内容。');}return parseDocument(data);}

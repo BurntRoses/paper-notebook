@@ -1,4 +1,5 @@
 import { authoredAnnotations } from '../model/study';
+import { projectedText } from '../ui/projection';
 import { resolveInText } from '../model/document';
 import { blocksOf, textOf, userState, uid, type NotebookDocument, type Selector, type Annotation, type Bookmark } from '../model/types';
 export type MarkKind = Exclude<Annotation['kind'],'freehand'>;
@@ -14,10 +15,10 @@ export function captureSelection(): SelectionPart[] {
     if(span.contains(range.startContainer))local.setStart(range.startContainer,range.startOffset);
     if(span.contains(range.endContainer))local.setEnd(range.endContainer,range.endOffset);
     const prefix=own.cloneRange();prefix.setEnd(local.startContainer,local.startOffset);
-    const exact=local.toString();if(!exact)continue;
+    const formula=span.classList.contains('inline-math'),exact=formula?projectedText(span):local.toString();if(!exact||local.collapsed)continue;
     const block=span.closest<HTMLElement>('[data-block]')!,page=span.closest<HTMLElement>('[data-page]')!;
     const text=textOf((block as HTMLElement & {__block:any}).__block);
-    const start=Number(span.dataset.offset||0)+prefix.toString().length;
+    const start=Number(span.dataset.offset||0)+(formula?0:prefix.toString().length);
     parts.push({pageId:page.dataset.page!,selector:{blockId:block.dataset.block!,start,end:start+exact.length,exact,prefix:text.slice(Math.max(0,start-24),start),suffix:text.slice(start+exact.length,start+exact.length+24)}});
   }
   return parts;

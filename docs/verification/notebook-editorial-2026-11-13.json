@@ -1,0 +1,330 @@
+{
+  "date": "2026-11-13",
+  "version": "2.8.0",
+  "reports": [
+    {
+      "name": "machine-learning",
+      "revision": 13,
+      "sourceSHA256": "a5ee00680d7b59f3281375a3f0f9f2bca8f3af5e2866aaff87ccec145e59bddf",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "ml-ch-data",
+          "writing": "开篇直接说明参数、损失和优化，房价情境与无量纲教学数据分别交代。",
+          "teaching": "侧栏补特征向量和预测时点，旧的参数锚点已更新。",
+          "facts": "核对 A/B/C 的输入 1/2/3 与标签 2/4/5；未将房价单位套入无量纲数据。",
+          "brief": "按具备一次函数基础的读者组织机制讲解。"
+        },
+        {
+          "chapterId": "ml-ch-model",
+          "writing": "拟合正文沿用原有模型说明，新增练习直接给出数据、模型与单位换算；题面不预先标记答案。",
+          "teaching": "参数、曲线与右栏的 MSE/RMSE/R²同步变化；逐点误差可展开，残差在图中标示；计算拟合参数使用最小二乘。新增两题可从习题菜单定位、作答。",
+          "facts": "独立核算初始残差 0/−1/−1，MSE=2/3；OLS 为 w=1.5、b=2/3，MSE=1/18；显示 b=0.667 时 MSE 四位小数为 0.0556。练习 w=1.5、b=.5 的 MSE=1/12；元换万元后 MSE/RMSE 分别缩小 10⁸/10⁴ 倍。",
+          "brief": "保留线性模型机制讲解；指标与图形同源，先手动调参再比较解析解。"
+        },
+        {
+          "chapterId": "ml-ch-train",
+          "writing": "梯度更新围绕导数、步长与实际损失展开；新增图内说明直接写损失数值与缩小比例，保持原有标题和正文。",
+          "teaching": "连续更新曲线补充 2.5→0.625→0.15625→0.0390625 与“每次更新 × 1/4”；圈注和引线联系第一次更新后的点。侧栏保留第二次更新与临界步长。",
+          "facts": "核对原数据与 J=2.5(w−2)²，固定 b=0、η=0.1，从 w=1 出发得到 1.5、1.75、1.875；损失依次 2.5、0.625、0.15625、0.0390625，相邻项比值均为 1/4。图内数值与原曲线数据一致；收缩条件仍为 0<η<0.4。",
+          "brief": "保留有一次函数基础的机制讲解；图内标注用于联系参数误差减半与平方损失缩小至四分之一。"
+        },
+        {
+          "chapterId": "ml-ch-evaluate",
+          "writing": "以候选方案选择解释验证偏差，泛化定义采用直接表述。",
+          "teaching": "增加 L2 参数收缩与两特征内积的具体计算，避免术语罗列。",
+          "facts": "L2 目标导数为 5(w−2)+2λw，λ=.5 时 w=5/3；两特征预测 3×2−1×1+4=9。",
+          "brief": "用患者分组和时间拆分说明评估设计，保留真实任务中的输入时点要求。"
+        }
+      ],
+      "decisions": [],
+      "evidenceReuse": {
+        "baselineSourceSHA256": "b8973db1f8ac2675f7661c89b1186ad6a95185a4d5f8305bcadb900f555d1aae",
+        "unchangedChapters": [
+          "ml-ch-data",
+          "ml-ch-model",
+          "ml-ch-evaluate"
+        ],
+        "reviewedChanges": [
+          "ml-ch-train"
+        ]
+      },
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "7f7f0c10c29af323163c3c6a9d1d93212d26395905cb262352a0a1e885f14a8c",
+        "checkedSheets": 85,
+        "issues": []
+      }
+    },
+    {
+      "name": "compound-interest",
+      "revision": 9,
+      "sourceSHA256": "c5c67817b05ff0f44712587ac30506a5eb212c89c5defa0d77141aa62a974d74",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "compound-interest-chapter",
+          "writing": "正文仍按增长基数、递推关系、周期单位和追加资金展开；新增图内短注直接写第二期期末值与差额。",
+          "teaching": "单利和复利图保留零起点纵轴，圈出第二期末点并标明单利120元、复利121元、相差1元；面积图继续解释额外1元。参数交互保留两期/二十期余额及100元、10%的重置状态。",
+          "facts": "核对100+2×100×0.1=120，100×1.1²=121，差额为1元；曲线全部数据和坐标尺度未改。沿用已核验的100×1.1²⁰≈672.75、100×1.05²=110.25以及0%端点结果。",
+          "brief": "保持数学入门的递推与核算；短注解释同一期末的金额差，标题层级和既有习题保留。"
+        }
+      ],
+      "decisions": [],
+      "evidenceReuse": {
+        "baselineSourceSHA256": "f03946265d944b6d78a4c2fbf433871f8a8797d23f1cb1aac3b6858679cc21e7",
+        "unchangedChapters": [],
+        "reviewedChanges": [
+          "compound-interest-chapter"
+        ]
+      },
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "e9d532c7ae359b1b75186383a919fc63914a26495d04ef4857a52ee98968f9c7",
+        "checkedSheets": 23,
+        "issues": []
+      }
+    },
+    {
+      "name": "concept",
+      "revision": 10,
+      "sourceSHA256": "9c9dd5ff6335fe616c3dc11e741ccf9f56dd44d12abe8907737fd8f5dabffe9d",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "notebook-observation-chapter",
+          "writing": "订单数、顾客数和筛选范围使用具体记录；新增分步说明逐项写明集合变化，无另设反问或泛化总结。",
+          "teaching": "保留统计口径、订单合流图与交集图。顾客去重示例改为完整代码、执行行和右栏变量，订单记录 3 条、顾客去重数 2。",
+          "facts": "沿用未变更正文中已执行的 SQL 核验记录；本轮逐步核对 ∅→{A}→{A}→{A,B} 与计数 0/1/1/2，重置为空集合。 完整 Python 源码已实际运行，八个执行快照的行号与全部变量逐一相等；重复 A 后集合仍为 {\"A\"}，加入 B 后计数为 2。",
+          "brief": "按统计口径学习目标检查，区分记录和不同编号数量；保持既有习题、答案与稳定 ID。"
+        }
+      ],
+      "decisions": [],
+      "evidenceReuse": {
+        "baselineSourceSHA256": "9c9dd5ff6335fe616c3dc11e741ccf9f56dd44d12abe8907737fd8f5dabffe9d",
+        "unchangedChapters": [
+          "notebook-observation-chapter"
+        ],
+        "reviewedChanges": []
+      },
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "1653d381bd598869dcb785b6ca6f4514eccec254aba70a079fde746e1d997227",
+        "checkedSheets": 31,
+        "issues": []
+      }
+    },
+    {
+      "name": "literature",
+      "revision": 8,
+      "sourceSHA256": "724ac83f06a591235678157fd5cf9e5eb6bbb173965092451f937022367757a5",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "literature-chapter",
+          "writing": "背景、炼字、修辞和章法按原诗展开；新赏析直接解释“深”“感时/恨别”“连”“搔”，无引用边界的防御句。",
+          "teaching": "四联原文、字词与赏析全文展开，无片段切换。新增赏析练习可直接跳转；保留主观题的参考要点。",
+          "facts": "新增题面引用“感时花溅泪，恨别鸟惊心”，解答联系乐景反衬、触景生情、移情于物与全诗忧国思家关系；原诗和背景沿用既有官方资料核验。",
+          "brief": "按文学细读组织解释，保留背景、作者处境和表达赏析，不将诗歌解释改为技术流程。"
+        }
+      ],
+      "decisions": [],
+      "evidenceReuse": {
+        "baselineSourceSHA256": "724ac83f06a591235678157fd5cf9e5eb6bbb173965092451f937022367757a5",
+        "unchangedChapters": [
+          "literature-chapter"
+        ],
+        "reviewedChanges": []
+      },
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "b1304c7c6030c04f0c44eaf73a752a805fa8a7d0038ca8c096c19aa54833295c",
+        "checkedSheets": 18,
+        "issues": []
+      }
+    },
+    {
+      "name": "business",
+      "revision": 8,
+      "sourceSHA256": "8185edb746388659a172b50e09020ea1f3d064dcd621305b886381cd767fdbeb",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "business-chapter",
+          "writing": "单位贡献、成本、销量和利润使用同一套标签与单位；教学模型与 Costco 案例各自有明确背景。",
+          "teaching": "参数和实时计算置于图侧右栏；关闭右栏后读数回到组件内。新增固定成本改变后的利润练习。",
+          "facts": "独立核算贡献 80−50=30 元/件、平衡销量 3000/30=100 件、120 件利润 600 元；固定成本 6000 元时平衡销量 200 件。各参数端点保持单价大于单位变动成本。Costco 年报数字未修改，复用原有官方年报核验记录。 新题核算 120×30−4500=−900 元、4500÷30=150 件。",
+          "brief": "按商学成本分析目标核对，使用给定模型解释关系，真实公司案例继续保留既有来源。"
+        }
+      ],
+      "decisions": [],
+      "evidenceReuse": {
+        "baselineSourceSHA256": "8185edb746388659a172b50e09020ea1f3d064dcd621305b886381cd767fdbeb",
+        "unchangedChapters": [
+          "business-chapter"
+        ],
+        "reviewedChanges": []
+      },
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "30b818d3371db614cc854569b47120976b0a0a93de758428845dec24bfd0ed50",
+        "checkedSheets": 20,
+        "issues": []
+      }
+    },
+    {
+      "name": "programming",
+      "revision": 8,
+      "sourceSHA256": "09b9aa482d5ab3352635f2fb393a48aa8eeeb9f2506bc1b3d6d6068ccbc24a43",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "programming-chapter",
+          "writing": "逐步说明使用具体变量名与当前值；完整代码常驻，移除仅切换文字的步骤页。",
+          "teaching": "每步标示已执行行、records 输入位置、seen 集合与变量前值。新增重复值练习；离线恢复到第八步，打印完整八个快照且源码仅一次。",
+          "facts": "完整 Python 源码已实际运行，八个执行快照的行号与全部变量逐一相等；重复 A 后集合仍为 {\"A\"}，加入 B 后计数为 2。",
+          "brief": "保留入门函数、状态表与测试；运行快照补足循环读取和 add 执行之间的状态变化。"
+        }
+      ],
+      "decisions": [],
+      "evidenceReuse": {
+        "baselineSourceSHA256": "09b9aa482d5ab3352635f2fb393a48aa8eeeb9f2506bc1b3d6d6068ccbc24a43",
+        "unchangedChapters": [
+          "programming-chapter"
+        ],
+        "reviewedChanges": []
+      },
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "106e4ad7bf5ead73d8dc4318561ce3cc5384a92a824600ca8ea5bf032df6adfc",
+        "checkedSheets": 19,
+        "issues": []
+      }
+    },
+    {
+      "name": "paper-notebook",
+      "revision": 17,
+      "sourceSHA256": "96d8a8692731c6b5bf91a9b8518f1e39e98221cd984f012a0b7108ae8e20958a",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "intro-chapter",
+          "writing": "正文保持复利基数、递推、周期和核算结构；图内短注使用期数、金额和差额，无装饰性标题或重复总结。",
+          "teaching": "单利与复利曲线新增第二期120元/121元和1元差额，圈出对应末点并以引线指向；期末值、增长因子和幂次来源继续由正文与侧栏解释。",
+          "facts": "核对100+2×100×0.1=120，100×1.1²=121，差额1元；图的数据、零起点纵轴和单位保持不变。沿用已核验的200×1.05²=220.5和1.01¹²−1≈12.68%。",
+          "brief": "保留数学入门的条件与逐次计算；新增标注服务于单利/复利比较，不增加独立章节或操作负担。"
+        },
+        {
+          "chapterId": "subject-chapter",
+          "writing": "文学逐联赏析全文展开；编程解释指向实际输入位置、执行行与集合变化。新习题使用完整背景，题面不暗示答案。",
+          "teaching": "春望保留连贯原文与赏析；编程显示源码、八步状态、当前输入和右栏变量。文学、成本和集合习题分别进入导航。",
+          "facts": "完整 Python 源码已实际运行，八个执行快照的行号与全部变量逐一相等；重复 A 后集合仍为 {\"A\"}，加入 B 后计数为 2。成本习题核算 120×(80−50)−4500=−900 元，平衡销量 150 件；文学赏析沿用原诗与已核对的时代背景。",
+          "brief": "文学细读、商学分析和代码执行各自采用合适的阅读结构；同一运行库与独立学科示例共享内容。"
+        }
+      ],
+      "decisions": [],
+      "evidenceReuse": {
+        "baselineSourceSHA256": "91b24bc10268bbe123bcf2e9392b1adae99c415f283e265a39fb879da9bdcdd4",
+        "unchangedChapters": [
+          "subject-chapter"
+        ],
+        "reviewedChanges": [
+          "intro-chapter"
+        ]
+      },
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "3048fdcdfd248fbb239f941293104dd137513b3b7af2ac8994b8bad5803970c2",
+        "checkedSheets": 95,
+        "issues": []
+      }
+    },
+    {
+      "name": "paper-notebook-product",
+      "revision": 9,
+      "sourceSHA256": "578d9767219ef288d77347f0b684d317ca4d22ed7e4d4e3fcfd4b54caa856a1f",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "product-story",
+          "writing": "产品说明继续按具体功能命名，文学赏析直接展开，代码过程呈现真实变量。",
+          "teaching": "统一原文赏析、参数计算和完整执行跟踪。首页六学科共用阅读器，快速入口从实际块生成，缺少的类别隐藏。",
+          "facts": "产品说明沿用 8 张逻辑页；集合过程改为已运行核对的八步，当前源码与状态同源。影片沿用上次发布素材，本轮未重新录制。",
+          "brief": "保留象牙纸、文楷、批注、页边与底栏、离线保存和翻页；交互规范与作者辅助函数同步升级。"
+        }
+      ],
+      "decisions": [],
+      "evidenceReuse": {
+        "baselineSourceSHA256": "578d9767219ef288d77347f0b684d317ca4d22ed7e4d4e3fcfd4b54caa856a1f",
+        "unchangedChapters": [
+          "product-story"
+        ],
+        "reviewedChanges": []
+      },
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "1878b8133da0e6969df3999fbcf836232dd5873883f43d8f8f7c659d0f55e29e",
+        "checkedSheets": 41,
+        "issues": []
+      }
+    },
+    {
+      "name": "formula",
+      "revision": 8,
+      "sourceSHA256": "73f5df220b2b1f64da3fe87647fe80887292965f99b7ad1df28e542472012290",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "notebook-growth-chapter",
+          "writing": "本金、期增长率、期数使用行内LaTeX，并紧接符号给出中文定义；两步例题保留完整等式与元单位。正文的金额和周期表达直接。",
+          "teaching": "逐期余额曲线在三个相邻区间分别标注增加10、11、12.1元，并以箭头指向相应曲线区段。符号定义、递推通式、余额表和核算例题相互对应。",
+          "facts": "核对100→110→121→133.1，相邻增加额为10、11、12.1元；100×1.1²=121、121×1.1=133.1，三期净增33.1元。不同利率的终值100×1.10×1.05×1.08=124.74。行内LaTeX只改变显示，符号与数值含义一致。",
+          "brief": "保留递推关系与条件变化的两页结构；公式、例题及图注围绕逐期计息基数展开。"
+        }
+      ],
+      "decisions": [],
+      "evidenceReuse": {
+        "baselineSourceSHA256": "a7beae45c27c6cfecf31f9d196aa750aba75ac0d264af4281ee229338f90be93",
+        "unchangedChapters": [],
+        "reviewedChanges": [
+          "notebook-growth-chapter"
+        ]
+      },
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "7d732a7ed459f7f11381db90de98aad5681349a6960c43365067ceeb5782ed29",
+        "checkedSheets": 13,
+        "issues": []
+      }
+    },
+    {
+      "name": "practice",
+      "revision": 7,
+      "sourceSHA256": "cbcf677768910d770e9ba85a25a8380c649f924541c20272fcc4a034419c0db2",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "chapters": [
+        {
+          "chapterId": "notebook-observe-plant-chapter",
+          "writing": "观察步骤改为位置、颜色、数量和养护记录，减少空泛要求。",
+          "teaching": "补植物位置图，圈出两片黄叶并用箭头标注，与记录表对应。",
+          "facts": "图示用于定位叶片；正文按植物名称、浇水、盆土和根系记录讨论原因。未将黄叶直接等同于某种病因。",
+          "brief": "适合观察记录练习；保留开放作答和复查所需信息。"
+        }
+      ],
+      "decisions": [],
+      "evidenceReuse": {
+        "baselineSourceSHA256": "cbcf677768910d770e9ba85a25a8380c649f924541c20272fcc4a034419c0db2",
+        "unchangedChapters": [
+          "notebook-observe-plant-chapter"
+        ],
+        "reviewedChanges": []
+      },
+      "browser": {
+        "inspected": true,
+        "artifactSHA256": "5498cc92fbb3b6ce60970396cd33f1b85dee18a21b5103fe595b3c3c8866a46c",
+        "checkedSheets": 11,
+        "issues": []
+      }
+    }
+  ]
+}

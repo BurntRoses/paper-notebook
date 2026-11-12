@@ -8,6 +8,7 @@ from pathlib import Path
 import re
 import zipfile
 import unicodedata
+import math
 from verify_reader import verify
 from exploration import validate_exploration
 from study_quality import check_study_marks, block_text
@@ -35,11 +36,13 @@ def validate(value, rule, schema, path='$'):
     for sub in rule.get('allOf',[]):validate(value,sub,schema,path)
     for keyword in ['oneOf', 'anyOf']:
         if keyword in rule:
-            matches=0
+            matches=0;errors=[]
             for sub in rule[keyword]:
                 try:validate(value,sub,schema,path);matches+=1
-                except ValueError:pass
-            if (keyword=='oneOf' and matches!=1) or (keyword=='anyOf' and matches==0):fail(keyword+': no unique matching branch' if keyword=='oneOf' else keyword+': no matching branch')
+                except ValueError as error:errors.append(str(error))
+            if (keyword=='oneOf' and matches!=1) or (keyword=='anyOf' and matches==0):
+                detail='; '.join(errors[:3])[:800]
+                fail(keyword+(': multiple matching branches' if matches else ': no matching branch')+(' ('+detail+')' if detail else ''))
     if 'not' in rule:
         try:validate(value,rule['not'],schema,path)
         except ValueError:pass
@@ -64,11 +67,26 @@ def validate(value, rule, schema, path='$'):
         if len(value)<rule.get('minLength',0) or len(value)>rule.get('maxLength',float('inf')):fail('text length')
         if 'pattern' in rule and not re.search(rule['pattern'],value):fail('text pattern')
     if isinstance(value,(int,float)) and not isinstance(value,bool):
+        try:finite=math.isfinite(value)
+        except OverflowError:finite=False
+        if not finite:fail('number must be finite')
         if value<rule.get('minimum',float('-inf')) or value>rule.get('maximum',float('inf')):fail('number range')
         if 'exclusiveMinimum' in rule and value<=rule['exclusiveMinimum']:fail('number must be greater than minimum')
 
 
 def check_references(doc):
+    # JSON exponent overflow can occur in unknown extension fields too. Never
+    # write Infinity into a reader that the browser cannot parse.
+    pending=[(doc,'$')];visited=set()
+    while pending:
+        value,path=pending.pop()
+        if isinstance(value,(int,float)) and not isinstance(value,bool):
+            try:finite=math.isfinite(value)
+            except OverflowError:finite=False
+            if not finite:raise ValueError(path+': number must be finite')
+        if isinstance(value,(dict,list)) and id(value) not in visited:
+            visited.add(id(value))
+            pending.extend((item,path+'.'+str(key)) for key,item in (value.items() if isinstance(value,dict) else enumerate(value)) if isinstance(item,(dict,list,int,float)) and not isinstance(item,bool))
     ids=set()
     def add(item):
         if item['id'] in ids:raise ValueError('duplicate ID: '+item['id'])
@@ -104,8 +122,11 @@ def check_references(doc):
                     options={v['id'] for v in block.get('options',[])};solution=block.get('solution',[])
                     if not solution or any(v not in options for v in solution) or (block['questionType']!='multiple' and len(solution)!=1):raise ValueError(f"{chapter['id']}/{page['id']}/{block['id']}.solution: answer must reference actual option IDs")
     if len(pages)>500 or sum(len(p['blocks']) for p in pages)>5000:raise ValueError('split into smaller notebooks')
-    for key in ['notes','annotations','doubts']:
-        for item in doc['userState'][key]:add(item)
+    for key in ['notes','annotations','doubts','figureMarks']:
+        for item in doc['userState'].get(key,[]):add(item)
+    for index,item in enumerate(doc['userState']['bookmarks']):
+        add({'id':f'bookmark-{item}-{index}'} if isinstance(item,str) else item)
+        if isinstance(item,dict) and item.get('kind')=='text' and not item.get('selector'):raise ValueError('userState.bookmarks.'+str(index)+'.selector: text bookmarks require a source selection')
 
 
 def artifact_stem(title, revision):
@@ -133,6 +154,7 @@ def slim_fonts(template, doc):
 
 
 def build(source, template, schema_path, notices, output, allow_unmarked=False):
+    if source.stat().st_size>50*1024*1024:raise ValueError('Import limit is 50 MB.')
     doc=json.loads(source.read_text(encoding='utf-8-sig'),parse_constant=lambda v:(_ for _ in ()).throw(ValueError('invalid JSON number: '+v)))
     schema=json.loads(schema_path.read_text(encoding='utf-8'))
     validate(doc,schema,schema);check_references(doc)

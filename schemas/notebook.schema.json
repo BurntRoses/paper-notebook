@@ -1127,6 +1127,101 @@
         "baseRevision": {
           "type": "integer",
           "minimum": 1
+        },
+        "readerProfile": {
+          "type": "object",
+          "properties": {
+            "layout": {
+              "type": "string",
+              "enum": [
+                "auto",
+                "single",
+                "spread",
+                "scroll"
+              ]
+            },
+            "direction": {
+              "type": "string",
+              "enum": [
+                "horizontal",
+                "vertical"
+              ]
+            },
+            "sidebar": {
+              "type": "string",
+              "enum": [
+                "open",
+                "collapsed"
+              ]
+            },
+            "pageShape": {
+              "type": "string",
+              "enum": [
+                "auto",
+                "portrait",
+                "landscape"
+              ]
+            },
+            "transition": {
+              "type": "string",
+              "enum": [
+                "turn",
+                "cover",
+                "slide",
+                "fade",
+                "none"
+              ]
+            },
+            "theme": {
+              "type": "string",
+              "enum": [
+                "paper-light",
+                "paper-night"
+              ]
+            },
+            "motion": {
+              "type": "string",
+              "enum": [
+                "full",
+                "reduced"
+              ]
+            },
+            "paperStyle": {
+              "type": "string",
+              "enum": [
+                "auto",
+                "white",
+                "ivory",
+                "cotton",
+                "mist",
+                "sage",
+                "inkwash"
+              ]
+            },
+            "font": {
+              "type": "string",
+              "enum": [
+                "hand",
+                "serif",
+                "sans"
+              ]
+            },
+            "lineSpacing": {
+              "type": "number",
+              "enum": [
+                1.65,
+                1.85,
+                2.05,
+                2.25
+              ]
+            },
+            "marginNotes": {
+              "type": "boolean"
+            },
+            "bottomNotes": {
+              "type": "boolean"
+            }
+          }
         }
       }
     }

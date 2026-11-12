@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "notebook": {
     "id": "paper-notebook-introduction",
-    "revision": 16,
+    "revision": 17,
     "title": "复利与增长",
     "author": "Paper Notebook",
     "language": "zh-CN",
@@ -372,7 +372,46 @@
                 "title": "两期后的差异",
                 "figure": {
                   "size": "wide",
-                  "ratio": "3:2"
+                  "ratio": "3:2",
+                  "annotations": [
+                    {
+                      "kind": "circle",
+                      "x": 87,
+                      "y": 12,
+                      "x2": 97,
+                      "y2": 23,
+                      "color": "#b1483d"
+                    },
+                    {
+                      "kind": "text",
+                      "x": 35,
+                      "y": 36,
+                      "text": "第二期：单利 120 元",
+                      "color": "#285f9e"
+                    },
+                    {
+                      "kind": "text",
+                      "x": 46,
+                      "y": 43,
+                      "text": "复利 121 元",
+                      "color": "#b1483d"
+                    },
+                    {
+                      "kind": "text",
+                      "x": 46,
+                      "y": 51,
+                      "text": "相差 1 元",
+                      "color": "#b1483d"
+                    },
+                    {
+                      "kind": "arrow",
+                      "x": 68,
+                      "y": 32,
+                      "x2": 89,
+                      "y2": 23,
+                      "color": "#b1483d"
+                    }
+                  ]
                 },
                 "chartType": "line",
                 "xLabel": "期数",
@@ -2228,7 +2267,7 @@
     }
   ],
   "extensions": {
-    "baseRevision": 15,
+    "baseRevision": 16,
     "readerProfile": {
       "layout": "single",
       "direction": "horizontal",

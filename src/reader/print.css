@@ -71,3 +71,4 @@
 #print-root .print-sheet:not(:has(.paper-bottom)) >.reader-page-body{bottom:20mm}
 #print-root .print-sheet .paper-notes .cornell-cue{margin-bottom:0;font-size:10pt;line-height:1.95}
 #print-root .print-sheet .block-callout[data-frame]{padding:3mm 4mm;font-size:11pt;line-height:1.95}
+#print-root .print-margin-reference{margin-right:auto;font-size:9pt;color:var(--muted)}

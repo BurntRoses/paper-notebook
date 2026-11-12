@@ -1,6 +1,8 @@
 import { searchNotebook } from './search';
 import './style.css';
 import './math.css';
+import './inline-math.css';
+import { projectedText } from '../ui/projection';
 import './paper.css';
 import './fonts.css';
 import './textbook.css';
@@ -36,7 +38,7 @@ import { PaperEditor, readingMarks } from './editor';
 import { flashPassage, revealPassage } from './ink';
 import { readerGeometry } from './geometry';
 import { saveDraft, loadDraft, restoreDraft } from '../model/store';
-import { unzipSync, strFromU8 } from 'fflate';
+import { notebookFromArchive } from '../io/import-package';
 import { captureShell, exportHTML, exportBundle, exportPreview, pagePNG, notices } from '../io/export';
 import { importText, exportMarkdown } from '../io/markdown';
 import { mergeUpdate, parseDocument, resolveSelector } from '../model/document';
@@ -159,7 +161,7 @@ class ReaderApp {
     const appearance=el('div','reader-control-group');
     const settings=named(this.t('阅读设置','Reading settings'),this.t('设置','Settings'),'settings',()=>this.showSettings(),'settings-entry');settings.setAttribute('aria-haspopup','dialog');settings.setAttribute('aria-expanded',String(!!document.querySelector('.reader-settings[open]')));
     const theme=button(this.t('切换日夜模式','Toggle day and night'),()=>{this.profile.theme=this.profile.theme==='paper-night'?'paper-light':'paper-night';this.refreshAppearance()},'reader-control theme-toggle','');theme.append(icon(this.profile.theme==='paper-night'?'sun':'moon'));theme.setAttribute('aria-pressed',String(this.profile.theme==='paper-night'));appearance.append(settings,theme);
-    const files=el('details','reader-files'),fileTrigger=el('summary','reader-label-control');fileTrigger.title=this.t('文件与工具','Files and tools');fileTrigger.setAttribute('aria-label',fileTrigger.title);fileTrigger.setAttribute('aria-expanded','false');fileTrigger.append(icon('folder'),el('span','control-label',this.t('文件','Files')));files.append(fileTrigger);files.ontoggle=()=>fileTrigger.setAttribute('aria-expanded',String(files.open));
+    const files=el('details','reader-files'),fileTrigger=el('summary','reader-label-control');fileTrigger.title=this.t('文件与工具','Files and tools');fileTrigger.setAttribute('aria-label',fileTrigger.title);fileTrigger.setAttribute('aria-expanded','false');fileTrigger.append(icon('folder'),el('span','control-label',this.t('文件','Files')));files.append(fileTrigger);files.ontoggle=()=>{fileTrigger.setAttribute('aria-expanded',String(files.open));if(files.open&&this.sidebarOpen)this.toggleSidebar(false);};
     const menu=el('div','reader-file-menu');for(const [name,action] of [[this.t('导入','Import'),()=>this.showImport()],[this.t('下载','Download'),()=>this.showExport()],[this.t('导出 PDF','Export PDF'),()=>this.showPDF()]] as [string,()=>void][])menu.append(button(name,()=>{files.open=false;action()}));
     menu.append(el('hr','reader-menu-divider'),button(this.t(this.immersive?'退出沉浸阅读':'沉浸阅读',this.immersive?'Exit immersive reading':'Immersive reading'),()=>{files.open=false;this.setImmersive()},'immersion-entry'),button(this.t('功能介绍','Features'),()=>{files.open=false;this.showGuide()}));files.append(menu);
     files.addEventListener('keydown',e=>{
@@ -195,7 +197,7 @@ class ReaderApp {
     layoutPaperMargins(stage,this.d);
     this.positionNavigation();
   }
-  positionNavigation(){const nav=appRoot.querySelector<HTMLElement>('.reader-navigation'),papers=[...appRoot.querySelectorAll<HTMLElement>('.reader-stage > .reader-page-wrap .page-surface')];if(!nav||!papers.length)return;const first=papers[0].getBoundingClientRect(),last=papers.at(-1)!.getBoundingClientRect();nav.style.left=((first.left+last.right)/2)+'px';nav.style.top=Math.min(innerHeight-48,last.bottom-42)+'px';nav.style.maxWidth=Math.max(280,last.right-first.left-24)+'px';}
+  positionNavigation(){const nav=appRoot.querySelector<HTMLElement>('.reader-navigation'),papers=[...appRoot.querySelectorAll<HTMLElement>('.reader-stage > .reader-page-wrap .page-surface')];if(!nav||!papers.length)return;const first=papers[0].getBoundingClientRect(),last=papers.at(-1)!.getBoundingClientRect();nav.style.left=((first.left+last.right)/2)+'px';const height=nav.getBoundingClientRect().height;nav.style.top=Math.min(innerHeight-height-6,last.bottom-height)+'px';nav.style.maxWidth=Math.max(280,last.right-first.left-24)+'px';}
   setImmersive(value=!this.immersive){const a=this.anchor();this.immersive=value;this.invalidate();this.render(a);window.scrollTo(0,0);}
   wakeChrome(){clearTimeout(this.chromeTick);appRoot.classList.remove('immersive-quiet');const nav=appRoot.querySelector<HTMLElement>('.reader-navigation');if(nav)nav.inert=false;if(this.immersive)this.chromeTick=window.setTimeout(()=>{if(this.toolbar||this.sidebarOpen||this.rightSidebarOpen||document.querySelector('dialog[open]')||nav?.contains(document.activeElement))return;appRoot.classList.add('immersive-quiet');if(nav)nav.inert=true;},2600);}
   visiblePages(){return this.pages.slice(this.pageIndex,this.pageIndex+(this.actualLayout()==='spread'?2:1))}
@@ -287,7 +289,7 @@ class ReaderApp {
     const pageId=page.id,index=this.pages.indexOf(page);
     if(this.d.userState.bookmarks.some(raw=>{const b=typeof raw==='string'?{id:raw,pageId:raw,kind:'page' as const}:raw;return b.kind==='page'&&b.pageId===pageId&&indexForBookmark(this.pages,this.d,b)===index;})){toast('当前页已有书签');return;}
     const paper=appRoot.querySelector<HTMLElement>(`.reader-stage [data-page="${CSS.escape(pageId)}"][data-part="${page.part}"]`),span=paper?.querySelector<HTMLElement>('.ink-text');
-    const blockId=span?.closest<HTMLElement>('[data-block]')?.dataset.block||page.blocks[0]?.id,source=blocksOf(this.d).find(b=>b.id===blockId),text=source?textOf(source):'',start=Number(span?.dataset.offset||0),exact=span?.textContent?.slice(0,32)||'';
+    const blockId=span?.closest<HTMLElement>('[data-block]')?.dataset.block||page.blocks[0]?.id,source=blocksOf(this.d).find(b=>b.id===blockId),text=source?textOf(source):'',start=Number(span?.dataset.offset||0),exact=span?projectedText(span).slice(0,32):'';
     const selector=blockId&&exact?{blockId,start,end:start+exact.length,exact,prefix:text.slice(Math.max(0,start-24),start),suffix:text.slice(start+exact.length,start+exact.length+24)}:undefined;
     this.d.userState.bookmarks.push({id:uid('bookmark'),pageId,kind:'page',sheet:page.part,blockId,selector,createdAt:new Date().toISOString()});this.remember();this.editor.paint();this.refreshWorkspace();this.refreshSidebar();toast('已加入页书签');
   }
@@ -318,6 +320,7 @@ class ReaderApp {
     appRoot.append(backdrop,this.renderSidebar());
   }
   toggleSidebar(open=!this.sidebarOpen){
+    if(open)appRoot.querySelectorAll<HTMLDetailsElement>('.reader-files[open]').forEach(menu=>menu.open=false);
     const restoreFocus=!open&&!!document.activeElement?.closest('.reader-sidebar');
     this.sidebarOpen=open;appRoot.classList.toggle('sidebar-collapsed',!open);this.mountSidebar();
     const control=appRoot.querySelector<HTMLElement>('[aria-controls=reader-sidebar]');control?.setAttribute('aria-expanded',String(open));if(restoreFocus)control?.focus({preventScroll:true});
@@ -332,7 +335,7 @@ class ReaderApp {
     for(const side of ['left','right'] as const){const corner=button(side==='right'?'拖动页角到下一页':'拖动页角到上一页',()=>{},'page-corner corner-'+side,'');corner.dataset.corner=side;corner.addEventListener('click',event=>{if(event.detail===0)this.turn(side==='right'?1:-1)});paper.append(corner);}
     slot.append(paper);return slot;
   }
-  block(b:Block){const root=renderBlock(b,this.d,{exploration:(id,state)=>{(this.d.userState.explorations||={})[id]=state;updateExplorationResults(appRoot,b,state);this.pageCache.clear();this.remember();requestAnimationFrame(()=>this.editor.paint());},answer:(id,answer)=>{this.d.userState.answers[id]=structuredClone(answer);const pageId=this.page.id;this.invalidate();this.paginate();const index=this.pages.findIndex(p=>p.id===pageId&&p.blocks.some(b=>b.id===id));if(index>=0)this.pageIndex=index;this.render();},check:(id,value)=>{this.d.userState.checks[id]=value;this.remember()},edit:()=>{},image:b=>this.showImage(b)},this.sourceBlocks.get(b.id)||b);
+  block(b:Block){const root=renderBlock(b,this.d,{exploration:(id,state)=>{(this.d.userState.explorations||={})[id]=state;updateExplorationResults(appRoot,b,state);this.pageCache.clear();this.remember();requestAnimationFrame(()=>this.editor.paint());},answer:(id,answer,refresh=true)=>{this.d.userState.answers[id]=structuredClone(answer);this.pageCache.clear();if(!refresh){this.remember();return;}const pageId=this.page.id;this.invalidate();this.paginate();const index=this.pages.findIndex(p=>p.id===pageId&&p.blocks.some(b=>b.id===id));if(index>=0)this.pageIndex=index;this.render();appRoot.querySelector<HTMLElement>(`[data-block="${CSS.escape(id)}"] .exam-submit`)?.focus({preventScroll:true});},check:(id,value)=>{this.d.userState.checks[id]=value;this.remember()},edit:()=>{},image:b=>this.showImage(b)},this.sourceBlocks.get(b.id)||b);
     const media=root.querySelector<HTMLElement>('.figure-media');if(media){const open=button('放大与批注图像',()=>showFigureEditor(b,this.d,media,()=>{this.remember();this.pageCache.clear();this.refreshFigureMarks();}),'figure-edit-entry','↗');media.append(open);media.addEventListener('click',e=>{if(!(e.target as HTMLElement).closest('button'))showFigureEditor(b,this.d,media,()=>{this.remember();this.pageCache.clear();this.refreshFigureMarks();});});}
     (root as HTMLElement & {__block:Block}).__block=this.sourceBlocks.get(b.id)||b;return root;
   }
@@ -563,7 +566,7 @@ class ReaderApp {
     file.onchange=async()=>{const f=file.files?.[0];if(!f)return;const version=++readVersion;candidate=null;accept.disabled=true;preview.replaceChildren(el('p','',this.t('正在读取文件…','Reading file…')));preview.setAttribute('aria-busy','true');try{
       if(f.size>50*1024*1024)throw new Error(this.t('单次导入限制 50 MB。','Import limit is 50 MB.'));
       let source:string;if(/\.zip$/i.test(f.name)){
-        const files=unzipSync(new Uint8Array(await f.arrayBuffer()),{filter:entry=>/notebook\.json$/i.test(entry.name)&&entry.originalSize<50*1024*1024});const name=Object.keys(files).find(n=>/notebook\.json$/i.test(n));if(!name)throw new Error(this.t('ZIP 中缺少 notebook.json。','ZIP has no notebook.json.'));source=strFromU8(files[name]);
+        source=await notebookFromArchive(new Uint8Array(await f.arrayBuffer()));
       }else if(/\.html$/i.test(f.name)){const html=await f.text();const parsed=new DOMParser().parseFromString(html,'text/html');source=parsed.querySelector('#notebook-data')?.textContent||'';if(!source)throw new Error(this.t('HTML 缺少 notebook-data。','HTML has no notebook-data.'))}
       else source=await f.text();if(version!==readVersion||!m.dialog.open)return;area.value=source;inspect(source);
     }catch(error){if(version===readVersion&&m.dialog.open)preview.replaceChildren(el('p','import-error',String(error instanceof Error?error.message:error)));}finally{if(version===readVersion)preview.removeAttribute('aria-busy');}};
@@ -584,8 +587,8 @@ class ReaderApp {
     const exercises=checkbox(brief.exercises,()=>{});
     const horizon=select([['short','短期速览：一个问题或一节课'],['long','长期学习：课程或持续复习']],brief.horizon||'short');
     const route=select([['quick','快速理解'],['systematic','系统学习'],['deep','深入探究'],['practice','实践操作'],['review','复习巩固']],brief.route||'systematic');
-    const fidelity=select([['strict','严格遵循材料：题库、讲义、原文优先'],['guided','以材料为主，允许补充必要背景'],['open','开放组织，可补充可靠来源']],brief.materialFidelity||'guided');
-    const material=textarea((brief.materials||[]).join('\n'),3);material.placeholder=this.t('材料名称、文件、章节或题库范围','Files, chapters, question bank or scope');
+    const fidelity=select([['strict','严格遵循材料：讲义、原文优先'],['guided','以材料为主，允许补充必要背景'],['open','开放组织，可补充可靠来源']],brief.materialFidelity||'guided');
+    const material=textarea((brief.materials||[]).join('\n'),3);material.placeholder=this.t('材料名称、文件、章节或知识范围','Files, chapters or knowledge scope');
     const terms=textarea(brief.termPolicy||'',2);terms.placeholder=this.t('术语表、统一译法、需要校正的词','Glossary, preferred translations or corrections');
     m.body.append(label(this.t('使用平台','Environment'),environment),label(this.t('参考材料','Reference materials'),material),el('p','brief-note','复制给 AI 后，先上传准备好的文件，或明确回复“没有文件”。无文件时，AI 将按可用能力检索可靠资料并绘制图解，再用选择题确认主题等需求。'),label(this.t('学习目标','Learning goal'),goal),label(this.t('基础情况','Prior knowledge'),level),label(this.t('预计时长（分钟）','Time in minutes'),minutes),label(this.t('语言风格','Language'),language),label(this.t('表达风格','Writing style'),style),label(this.t('难易程度','Difficulty'),difficulty),label(this.t('包含练习','Include exercises'),exercises),label(this.t('学习周期','Horizon'),horizon),label(this.t('内容路线','Route'),route),label(this.t('材料遵循程度','Material fidelity'),fidelity),label(this.t('术语与校正要求','Terms and corrections'),terms));
     const output=el('textarea','brief-output');output.readOnly=true;output.rows=8;output.setAttribute('aria-label',this.t('生成提示预览','Prompt preview'));

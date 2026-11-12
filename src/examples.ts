@@ -39,10 +39,14 @@ conceptExample.userState.annotations[0].selectors[0]={blockId:'obs-opening',star
 export const formulaExample=make('notebook-growth','复利的递推关系',[
  {id:'growth-1',title:'复利的逐期累积',layout:'grid',blocks:[
   {id:'growth-intro',type:'prose',text:'账户初始有 100 元，每期增长 10%，不取出利息。第一期后是 110 元，第二期增长的基础变成了 110 元，因此增加 11 元。第三期再以121元为基础，增加12.1元；增长率相同，增长金额随基数扩大。'},
-  {id:'growth-eq',type:'formula',latex:'P_{n+1}=P_n(1+r), \\qquad P_n=P_0(1+r)^n',text:'P₀ 是初始值，r 是每期增长率，n 是期数。每一期的增长率相同，但增加的绝对数值不同。'},
+  {id:'growth-eq',type:'formula',latex:'P_{n+1}=P_n(1+r), \\qquad P_n=P_0(1+r)^n',text:'\\(P_0\\) 是初始本金，\\(r\\) 是每期增长率，\\(n\\) 是期数。每一期的增长率相同，但增加的绝对数值不同。'},
   {id:'growth-table',type:'comparison',columns:['期数 n','期初数值','期末数值'],rows:[['1','100','110'],['2','110','121'],['3','121','133.1']]},
-  {id:'growth-chart',type:'chart',title:'每期利率相同，增加额逐期扩大',chartType:'line',xLabel:'期数',yLabel:'期末金额 / 元',series:[{id:'growth-balance',label:'复利余额',points:[{x:0,y:100},{x:1,y:110},{x:2,y:121},{x:3,y:133.1}]}],caption:'相邻两期分别增加 10、11、12.1 元，变化来自逐期扩大的计息基数。',figure:{size:'wide',ratio:'3:2'}},
-  {id:'growth-steps',type:'example',prompt:'第三期末有多少？',steps:[{id:'growth-s1',text:'第二期末：100 × 1.1² = 121。'},{id:'growth-s2',text:'第三期末：121 × 1.1 = 133.1。'}],result:'三期一共增加 33.1 元，等于期末金额 133.1 元减去初始本金 100 元。'}]},
+  {id:'growth-chart',type:'chart',title:'每期利率相同，增加额逐期扩大',chartType:'line',xLabel:'期数',yLabel:'期末金额 / 元',series:[{id:'growth-balance',label:'复利余额',points:[{x:0,y:100},{x:1,y:110},{x:2,y:121},{x:3,y:133.1}]}],caption:'相邻两期分别增加 10、11、12.1 元，变化来自逐期扩大的计息基数。',figure:{size:'wide',ratio:'3:2',annotations:[
+   {kind:'text',x:20,y:45,text:'第 1 期 +10 元',color:'#285f9e'},{kind:'arrow',x:28,y:40,x2:28,y2:32,color:'#285f9e'},
+   {kind:'text',x:45,y:40,text:'第 2 期 +11 元',color:'#285f9e'},{kind:'arrow',x:54,y:35,x2:54,y2:28,color:'#285f9e'},
+   {kind:'text',x:68,y:35,text:'第 3 期 +12.1 元',color:'#b1483d'},{kind:'arrow',x:79,y:30,x2:80,y2:24,color:'#b1483d'}
+  ]}},
+  {id:'growth-steps',type:'example',prompt:'第三期末有多少？',steps:[{id:'growth-s1',text:'第二期末：\\(100 \\times 1.1^2 = 121\\) 元。'},{id:'growth-s2',text:'第三期末：\\(121 \\times 1.1 = 133.1\\) 元。'}],result:'三期一共增加 33.1 元，等于期末金额 133.1 元减去初始本金 100 元。'}]},
  {id:'growth-2',title:'不同增长率的逐期计算',layout:'reading',blocks:[
   {id:'growth-bound',type:'callout',text:'公式按每期增长率恒定、增长继续计入本金、期间没有额外存入或取出计算。若三期增长率分别为10%、5%、8%，终值按各期因子相乘：100 × 1.10 × 1.05 × 1.08 = 124.74。'},
   {id:'growth-path',type:'diagram',title:'三期增长率各异',nodes:[{id:'g0',label:'100'},{id:'g1',label:'110'},{id:'g2',label:'115.5'},{id:'g3',label:'124.74'}],edges:[{from:'g0',to:'g1',label:'× 1.10'},{from:'g1',to:'g2',label:'× 1.05'},{from:'g2',to:'g3',label:'× 1.08'}],figure:{size:'wide',ratio:'auto',style:'sketch',annotations:[{kind:'circle',x:43,y:37,x2:63,y2:61,color:'#285f9e'},{kind:'text',x:43,y:19,text:'每期基数更新',color:'#b1483d'}]}},
@@ -95,3 +99,6 @@ conceptExample.notebook.revision=10;conceptExample.extensions.baseRevision=9;
 
 conceptExample.assets.push({id:'customer-overlap',name:'两地顾客名单.svg',mime:'image/svg+xml',data:'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(customerOverlap),width:860,height:390,source:'本例给定的两地顾客名单',license:'MIT',verified:true});
 practiceExample.assets.push({id:'plant-observation',name:'植物观察位置.svg',mime:'image/svg+xml',data:'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(plantObservation),width:850,height:430,source:'Paper Notebook 原创观察记录示意',license:'MIT',verified:true});
+
+formulaExample.notebook.revision=8;formulaExample.extensions.baseRevision=7;
+formulaExample.userState.updatedAt='2026-11-13T12:00:00.000Z';
