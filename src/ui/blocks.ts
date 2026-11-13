@@ -67,7 +67,19 @@ export function renderBlock(b:Block,d:NotebookDocument,actions:BlockActions,sour
    }else root.append(formula);
    if(b.text)text(b.text,'p',0,'formula-context');break;
   }
-  case 'code':{const head=el('div','code-head',b.language||'code');head.append(button('复制代码',()=>copyText(b.text||''),'text-button','⧉'));const pre=el('pre');pre.tabIndex=0;const code=el('code'),span=projection(code,b.text||'',0,false);span.replaceChildren(...codeTokens(b.text||'',b.language).map(t=>el('span','code-token token-'+t.kind,t.text)));pre.append(code);root.append(head,pre);break;}
+  case 'code':{
+   const head=el('div','code-head',b.language||'code');let copying=false,timer=0;
+   const copy=button('复制代码',async()=>{
+    if(copying)return;copying=true;copy.setAttribute('aria-busy','true');clearTimeout(timer);
+    const copied=await copyText(b.text||'');copying=false;copy.removeAttribute('aria-busy');
+    const label=uiText(copied?'已复制':'复制代码');copy.textContent=label;copy.setAttribute('aria-label',label);copy.title=label;
+    timer=window.setTimeout(()=>{const label=uiText('复制代码');copy.textContent=uiText('复制');copy.setAttribute('aria-label',label);copy.title=label;},1600);
+   },'text-button');copy.textContent=uiText('复制');head.append(copy);
+   const pre=el('pre');pre.tabIndex=0;pre.setAttribute('aria-label',(b.language||'')+'代码');
+   const code=el('code'),span=projection(code,b.text||'',0,false);
+   span.replaceChildren(...codeTokens(b.text||'',b.language).map(t=>el('span','code-token token-'+t.kind,t.text)));
+   pre.append(code);root.append(head,pre);break;
+  }
   case 'image':{const asset=d.assets.find(a=>a.id===b.assetId);if(asset){const image=el('img');image.src=asset.data;image.alt=b.alt||'';image.loading='lazy';image.decoding='async';const figure=figureLayout(b,image,asset,d.userState.figureMarks?.filter(a=>a.blockId===b.id));if(asset.source)figure.append(el('small','asset-source',`${asset.source} · ${asset.license||'用户提供'}`));root.append(figure);}else root.append(el('p','muted','图片尚未提供。'));break;}
   case 'diagram':{root.append(figureLayout(b,diagramSVG(b),undefined,d.userState.figureMarks?.filter(a=>a.blockId===b.id)));break;}
   case 'chart':{root.append(figureLayout(b,chartSVG(b),undefined,d.userState.figureMarks?.filter(a=>a.blockId===b.id)));break;}

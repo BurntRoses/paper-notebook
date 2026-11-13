@@ -1,0 +1,405 @@
+{
+  "date": "2026-11-13",
+  "version": "2.9.0",
+  "scope": "代码语法配色、变量映射、参数曲线与页内交互运行库；示例正文未改动。",
+  "editorialBaseline": {
+    "path": "docs/verification/notebook-editorial-2026-11-13.json",
+    "sha256": "c76f335b32a84a32ff4d3ba6dee76e4d95b365fdfeedc4d3ce030c22c5568e97",
+    "reuseCondition": "全部源文件与强制写作规则 SHA256 均与基线一致；复用原有逐章审阅与问题处理记录。"
+  },
+  "checks": {
+    "artifacts": 10,
+    "editorialSourceMatches": 10,
+    "finalizePassed": 10,
+    "expectedSheets": 357,
+    "checkedSheets": 357,
+    "layoutIssues": 0
+  },
+  "reportDirectory": "output/code-interactions-release",
+  "reports": [
+    {
+      "name": "machine-learning",
+      "revision": 13,
+      "sourceSHA256": "a5ee00680d7b59f3281375a3f0f9f2bca8f3af5e2866aaff87ccec145e59bddf",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "artifactSHA256": "4b84ef67aaa860f0126e51cd72d2a094fa7422a5a8f49815b20adc8597348d78",
+      "editorialEvidence": {
+        "reused": true,
+        "sourceUnchanged": true,
+        "rulesUnchanged": true,
+        "chapterIds": [
+          "ml-ch-data",
+          "ml-ch-model",
+          "ml-ch-train",
+          "ml-ch-evaluate"
+        ],
+        "decisions": 0
+      },
+      "browser": {
+        "engine": "Chromium",
+        "offline": true,
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 85,
+        "checkedSheets": 85,
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "compound-interest",
+      "revision": 9,
+      "sourceSHA256": "c5c67817b05ff0f44712587ac30506a5eb212c89c5defa0d77141aa62a974d74",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "artifactSHA256": "297a70622f359b398e8bcb5c46cb40505185d6d88486eafd10d754486df357bf",
+      "editorialEvidence": {
+        "reused": true,
+        "sourceUnchanged": true,
+        "rulesUnchanged": true,
+        "chapterIds": [
+          "compound-interest-chapter"
+        ],
+        "decisions": 0
+      },
+      "browser": {
+        "engine": "Chromium",
+        "offline": true,
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 24,
+        "checkedSheets": 24,
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "concept",
+      "revision": 10,
+      "sourceSHA256": "9c9dd5ff6335fe616c3dc11e741ccf9f56dd44d12abe8907737fd8f5dabffe9d",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "artifactSHA256": "4e6112814e5cd7857e82826b9da3873585d660cf8451b64fe5d301e4c6fc76b1",
+      "editorialEvidence": {
+        "reused": true,
+        "sourceUnchanged": true,
+        "rulesUnchanged": true,
+        "chapterIds": [
+          "notebook-observation-chapter"
+        ],
+        "decisions": 0
+      },
+      "browser": {
+        "engine": "Chromium",
+        "offline": true,
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 31,
+        "checkedSheets": 31,
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "literature",
+      "revision": 8,
+      "sourceSHA256": "724ac83f06a591235678157fd5cf9e5eb6bbb173965092451f937022367757a5",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "artifactSHA256": "3878647d32d1d0fc33f416d01402148fade1f96d1067512270702f54d0917641",
+      "editorialEvidence": {
+        "reused": true,
+        "sourceUnchanged": true,
+        "rulesUnchanged": true,
+        "chapterIds": [
+          "literature-chapter"
+        ],
+        "decisions": 0
+      },
+      "browser": {
+        "engine": "Chromium",
+        "offline": true,
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 18,
+        "checkedSheets": 18,
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "business",
+      "revision": 8,
+      "sourceSHA256": "8185edb746388659a172b50e09020ea1f3d064dcd621305b886381cd767fdbeb",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "artifactSHA256": "70b062cea4904413e5fe3450c3805361984a41efe935242b5bc9f2d9738d2fea",
+      "editorialEvidence": {
+        "reused": true,
+        "sourceUnchanged": true,
+        "rulesUnchanged": true,
+        "chapterIds": [
+          "business-chapter"
+        ],
+        "decisions": 0
+      },
+      "browser": {
+        "engine": "Chromium",
+        "offline": true,
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 20,
+        "checkedSheets": 20,
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "programming",
+      "revision": 8,
+      "sourceSHA256": "09b9aa482d5ab3352635f2fb393a48aa8eeeb9f2506bc1b3d6d6068ccbc24a43",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "artifactSHA256": "5903d982e5b439a885eb25af43199ac16e5acafcb2054217ed1d6adf8f3f8875",
+      "editorialEvidence": {
+        "reused": true,
+        "sourceUnchanged": true,
+        "rulesUnchanged": true,
+        "chapterIds": [
+          "programming-chapter"
+        ],
+        "decisions": 0
+      },
+      "browser": {
+        "engine": "Chromium",
+        "offline": true,
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 19,
+        "checkedSheets": 19,
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "paper-notebook",
+      "revision": 17,
+      "sourceSHA256": "96d8a8692731c6b5bf91a9b8518f1e39e98221cd984f012a0b7108ae8e20958a",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "artifactSHA256": "3329689315d238783d8515db8d0dd22ffe2af43db19e9eacc3f817b707854a8e",
+      "editorialEvidence": {
+        "reused": true,
+        "sourceUnchanged": true,
+        "rulesUnchanged": true,
+        "chapterIds": [
+          "intro-chapter",
+          "subject-chapter"
+        ],
+        "decisions": 0
+      },
+      "browser": {
+        "engine": "Chromium",
+        "offline": true,
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 95,
+        "checkedSheets": 95,
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "paper-notebook-product",
+      "revision": 9,
+      "sourceSHA256": "578d9767219ef288d77347f0b684d317ca4d22ed7e4d4e3fcfd4b54caa856a1f",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "artifactSHA256": "e2454f6c5fda5d500a59b3ab4011ee2689139f5edc97a7dcce522f6088cf2319",
+      "editorialEvidence": {
+        "reused": true,
+        "sourceUnchanged": true,
+        "rulesUnchanged": true,
+        "chapterIds": [
+          "product-story"
+        ],
+        "decisions": 0
+      },
+      "browser": {
+        "engine": "Chromium",
+        "offline": true,
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 41,
+        "checkedSheets": 41,
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "formula",
+      "revision": 8,
+      "sourceSHA256": "73f5df220b2b1f64da3fe87647fe80887292965f99b7ad1df28e542472012290",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "artifactSHA256": "21c7fc4d0d89eeee63c331ed380d31c7218d1b2faa149450d07cd4dc432ad2d6",
+      "editorialEvidence": {
+        "reused": true,
+        "sourceUnchanged": true,
+        "rulesUnchanged": true,
+        "chapterIds": [
+          "notebook-growth-chapter"
+        ],
+        "decisions": 0
+      },
+      "browser": {
+        "engine": "Chromium",
+        "offline": true,
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 13,
+        "checkedSheets": 13,
+        "issues": []
+      },
+      "deliveryReady": true
+    },
+    {
+      "name": "practice",
+      "revision": 7,
+      "sourceSHA256": "cbcf677768910d770e9ba85a25a8380c649f924541c20272fcc4a034419c0db2",
+      "rulesSHA256": "b41bd310a0ea3a3f763221e917230b5d5aaadd30ec3044d3da792801b4514942",
+      "artifactSHA256": "38a914abe8527789a14d07bcccbee74a6f3f16854bd7f6d4360d2278a137e453",
+      "editorialEvidence": {
+        "reused": true,
+        "sourceUnchanged": true,
+        "rulesUnchanged": true,
+        "chapterIds": [
+          "notebook-observe-plant-chapter"
+        ],
+        "decisions": 0
+      },
+      "browser": {
+        "engine": "Chromium",
+        "offline": true,
+        "viewports": [
+          {
+            "width": 1440,
+            "height": 1000
+          },
+          {
+            "width": 820,
+            "height": 1180
+          },
+          {
+            "width": 390,
+            "height": 844
+          }
+        ],
+        "expectedSheets": 11,
+        "checkedSheets": 11,
+        "issues": []
+      },
+      "deliveryReady": true
+    }
+  ]
+}

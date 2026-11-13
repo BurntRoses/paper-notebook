@@ -51,6 +51,10 @@ import { updateExplorationResults } from '../ui/exploration-results';
 import { isInteractive } from '../model/exploration';
 import { learningJumps, learningCategories, type LearningCategory } from '../model/learning-navigation';
 import './exploration.css';
+import './exploration-colors.css';
+import './code.css';
+import './trace.css';
+import './plot.css';
 import { button, el, modal, textarea, input, label, select, checkbox, download, safeName, copyText, toast, enhanceSelects } from '../ui/dom';
 import { setLocale } from '../ui/i18n';
 import { captureSelection, questionPrompt, readerCopy, bookmarkFor, type SelectionPart, type ExportChoices } from './records';
@@ -63,7 +67,7 @@ try{const value=JSON.parse(raw);if(value)embedded=parseDocument(value).document;
 const appRoot=el('div','reader-app-root');document.querySelector('#app')?.append(appRoot);
 if(new URLSearchParams(location.search).has('poster'))appRoot.classList.add('poster-mode');
 type Anchor=Omit<ReadingAnchor,'offset'> & {top:number};
-const interactive='button,a,input,textarea,select,summary,dialog,.reader-selection-toolbar,.stationery,[contenteditable=true],.paper-note,.object-handles';
+const interactive='button,a,input,textarea,select,summary,dialog,.reader-selection-toolbar,.stationery,[contenteditable=true],.paper-note,.object-handles,.exploration-chart';
 
 class ReaderApp {
   editor:PaperEditor;private sheets:SurfacePage[]=[];private paginationKey='';private saveTick=0;private ready=false;zoom=1;immersive=false;private chromeTick=0;
@@ -80,8 +84,8 @@ class ReaderApp {
   private scrollObserver:IntersectionObserver|null=null;
   private pageHeights=new Map<string,number>();
   private liveSlots=new Set<HTMLElement>();
-  private scrollTick=0; private scrollSaveTick=0; private resizeTick=0; private lastWidth=innerWidth; private lastHeight=innerHeight; private selectionTick=0;
-  private printJob:Awaited<ReturnType<typeof preparePrint>>|undefined;private printPreparing=false;private fontsCalibrated=false;
+  private scrollTick=0; private scrollSaveTick=0; private resizeTick=0; private lastWidth=innerWidth; private lastHeight=innerHeight; private selectionTick=0; private explorationPaintTick=0;
+  private printJob:Awaited<ReturnType<typeof preparePrint>>|undefined;private printPreparing=false;private fontsCalibrated=false;private navigationRevision=0;
   private printState:{anchor:Anchor;index:number;x:number;y:number}|undefined;private printRestoring=false;
   private turnView:PageTurn|undefined;private warmTick=0;private pageCache=new Map<number,HTMLElement[]>();
   constructor(d:NotebookDocument){
@@ -90,10 +94,12 @@ class ReaderApp {
     this.rightSidebarOpen=this.profile.marginNotes??true;this.editor=new PaperEditor(this,appRoot);
     this.sidebarOpen=false;setLocale(this.en?'en':'zh');
     this.paginate();this.pageIndex=this.indexForAnchor(d.userState.readingAnchor||{pageId:d.userState.lastPageId});
-    const saved=structuredClone(d.userState.readingAnchor);this.render();if(saved)this.restoreSaved(saved);if(this.actualLayout()==='scroll'&&!saved)requestAnimationFrame(()=>this.goPage(this.pageIndex));this.bind();(window as unknown as {reader:ReaderApp}).reader=this;
+    const saved=structuredClone(d.userState.readingAnchor),navigationRevision=this.navigationRevision;this.render();if(saved)this.restoreSaved(saved);if(this.actualLayout()==='scroll'&&!saved)requestAnimationFrame(()=>this.goPage(this.pageIndex));this.bind();(window as unknown as {reader:ReaderApp}).reader=this;
     // Font subsets may emit several loadingdone events while a new page is mounted.
     // One ready pass is enough to correct pagination without replacing controls in a loop.
-    document.fonts.ready.then(()=>{if(this.fontsCalibrated)return;this.fontsCalibrated=true;const a=this.anchor();this.invalidate();this.render(a);if(new URLSearchParams(location.search).has('visual'))this.showVisualPage();});
+    // A provisional sheet may begin before the saved block; retain its source
+    // anchor through font reflow unless the reader navigated in the meantime.
+    document.fonts.ready.then(()=>{if(this.fontsCalibrated)return;this.fontsCalibrated=true;const current=this.anchor(),restoreInitial=!!saved&&this.d===d&&this.navigationRevision===navigationRevision,a=restoreInitial?{...current,...saved}:current;this.invalidate();this.render(a);if(restoreInitial)this.restoreSaved(saved!);if(new URLSearchParams(location.search).has('visual'))this.showVisualPage();});
     this.ready=true;
     if(location.protocol==='file:'&&!new URLSearchParams(location.search).has('demo')){try{if(!localStorage.getItem('paper-notebook-guide-v4'))requestAnimationFrame(()=>this.showGuide());}catch{requestAnimationFrame(()=>this.showGuide());}}
     if(loadError)toast(this.t('内嵌内容无效，当前显示示例。可重新导入源文件。','Embedded data is invalid. A sample is open; import your source again.'),true);
@@ -335,7 +341,7 @@ class ReaderApp {
     for(const side of ['left','right'] as const){const corner=button(side==='right'?'拖动页角到下一页':'拖动页角到上一页',()=>{},'page-corner corner-'+side,'');corner.dataset.corner=side;corner.addEventListener('click',event=>{if(event.detail===0)this.turn(side==='right'?1:-1)});paper.append(corner);}
     slot.append(paper);return slot;
   }
-  block(b:Block){const root=renderBlock(b,this.d,{exploration:(id,state)=>{(this.d.userState.explorations||={})[id]=state;updateExplorationResults(appRoot,b,state);this.pageCache.clear();this.remember();requestAnimationFrame(()=>this.editor.paint());},answer:(id,answer,refresh=true)=>{this.d.userState.answers[id]=structuredClone(answer);this.pageCache.clear();if(!refresh){this.remember();return;}const pageId=this.page.id;this.invalidate();this.paginate();const index=this.pages.findIndex(p=>p.id===pageId&&p.blocks.some(b=>b.id===id));if(index>=0)this.pageIndex=index;this.render();appRoot.querySelector<HTMLElement>(`[data-block="${CSS.escape(id)}"] .exam-submit`)?.focus({preventScroll:true});},check:(id,value)=>{this.d.userState.checks[id]=value;this.remember()},edit:()=>{},image:b=>this.showImage(b)},this.sourceBlocks.get(b.id)||b);
+  block(b:Block){const root=renderBlock(b,this.d,{exploration:(id,state)=>{(this.d.userState.explorations||={})[id]=state;updateExplorationResults(appRoot,b,state);this.pageCache.clear();this.remember();if(!this.explorationPaintTick)this.explorationPaintTick=requestAnimationFrame(()=>{this.explorationPaintTick=0;this.editor.paint();});},answer:(id,answer,refresh=true)=>{this.d.userState.answers[id]=structuredClone(answer);this.pageCache.clear();if(!refresh){this.remember();return;}const pageId=this.page.id;this.invalidate();this.paginate();const index=this.pages.findIndex(p=>p.id===pageId&&p.blocks.some(b=>b.id===id));if(index>=0)this.pageIndex=index;this.render();appRoot.querySelector<HTMLElement>(`[data-block="${CSS.escape(id)}"] .exam-submit`)?.focus({preventScroll:true});},check:(id,value)=>{this.d.userState.checks[id]=value;this.remember()},edit:()=>{},image:b=>this.showImage(b)},this.sourceBlocks.get(b.id)||b);
     const media=root.querySelector<HTMLElement>('.figure-media');if(media){const open=button('放大与批注图像',()=>showFigureEditor(b,this.d,media,()=>{this.remember();this.pageCache.clear();this.refreshFigureMarks();}),'figure-edit-entry','↗');media.append(open);media.addEventListener('click',e=>{if(!(e.target as HTMLElement).closest('button'))showFigureEditor(b,this.d,media,()=>{this.remember();this.pageCache.clear();this.refreshFigureMarks();});});}
     (root as HTMLElement & {__block:Block}).__block=this.sourceBlocks.get(b.id)||b;return root;
   }
@@ -382,6 +388,7 @@ class ReaderApp {
   }
   goPage(index:number,fromSidebar=false){
     if(index<0||index>=this.pages.length)return;
+    this.navigationRevision++;
     const oldIndex=this.pageIndex;this.cancelTurn();this.pageIndex=index;
     if(fromSidebar&&this.sidebarOpen)this.toggleSidebar(false);
     if(this.actualLayout()==='scroll'){const slot=appRoot.querySelector<HTMLElement>(`.reader-page-slot[data-index="${this.pageIndex}"]`);if(slot){if(!slot.firstChild){slot.append(this.renderPage(this.page));this.fitPages();this.editor.paint()}slot.scrollIntoView({block:'start',behavior:this.motion()?'smooth':'instant'});this.remember();this.updateProgress();return}this.render();return;}
@@ -459,7 +466,7 @@ class ReaderApp {
     const cancelTurn=()=>this.cancelGesture(true);
     document.addEventListener('pointercancel',cancelTurn);window.addEventListener('blur',cancelTurn);
     document.addEventListener('pointerup',e=>{const g=this.gesture;if(g&&g.pointer===e.pointerId){const commit=g.progress>.18||Math.hypot(e.clientX-g.x,e.clientY-g.y)<7;
-      if(commit&&this.turnView){this.gesture=null;if(appRoot.hasPointerCapture(g.pointer))appRoot.releasePointerCapture(g.pointer);this.pageIndex=g.target;this.updateProgress();this.remember();this.wakeChrome();this.playTurn(this.turnView);}
+      if(commit&&this.turnView){this.gesture=null;if(appRoot.hasPointerCapture(g.pointer))appRoot.releasePointerCapture(g.pointer);this.navigationRevision++;this.pageIndex=g.target;this.updateProgress();this.remember();this.wakeChrome();this.playTurn(this.turnView);}
       else{this.cancelGesture(!commit);if(commit)this.turn(g.side==='right'?1:-1);}return;}
       if(this.immersive&&!getSelection()?.toString())this.wakeChrome();if(e.button===0&&!(e.target as HTMLElement).closest(interactive))requestAnimationFrame(()=>this.showToolbar());
     });
@@ -470,7 +477,7 @@ class ReaderApp {
       let active:HTMLElement|undefined,distance=Infinity;
       if(this.actualLayout()==='scroll')for(const slot of this.liveSlots){const next=Math.abs(slot.getBoundingClientRect().top-100);if(next<distance){active=slot;distance=next;}}
       this.positionNavigation();
-      if(active){const index=Number(active.dataset.index);if(index!==this.pageIndex){this.pageIndex=index;this.updateProgress();}clearTimeout(this.scrollSaveTick);this.scrollSaveTick=window.setTimeout(()=>this.remember(),120);}
+      if(active){const index=Number(active.dataset.index);if(index!==this.pageIndex){this.navigationRevision++;this.pageIndex=index;this.updateProgress();}clearTimeout(this.scrollSaveTick);this.scrollSaveTick=window.setTimeout(()=>this.remember(),120);}
     })},{passive:true});
     window.addEventListener('beforeprint',()=>{this.beginPrint();if(!this.printJob)this.printJob=createPrintView(this.d,{orientation:'portrait',includeRecords:true},{pages:this.pages,render:p=>this.renderPage(p)});});
     window.addEventListener('afterprint',()=>this.finishPrint());const printMedia=matchMedia('print');printMedia.addEventListener('change',event=>{if(!event.matches)this.finishPrint();});

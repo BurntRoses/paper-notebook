@@ -1,0 +1,16 @@
+/* Code, input cells and variable reports share a stable semantic color. */
+[data-variable-color="0"]{--trace-variable:var(--explore-variable-0,var(--accent))}
+[data-variable-color="1"]{--trace-variable:var(--explore-variable-1,var(--accent))}
+[data-variable-color="2"]{--trace-variable:var(--explore-variable-2,var(--accent))}
+[data-variable-color="3"]{--trace-variable:var(--explore-variable-3,var(--accent))}
+.page-surface .exploration-trace .code-token[data-variable]{color:var(--trace-variable)}
+.exploration-trace .trace-collection-name{color:var(--trace-variable);font-weight:600}
+.exploration-trace .trace-collection[hidden]{display:none}
+.exploration-trace .trace-value[data-current=true],.exploration-trace .trace-value[data-added=true]{background:color-mix(in srgb,var(--trace-variable) 13%,var(--paper));color:var(--trace-variable);border-color:var(--line)}
+.exploration-trace .trace-value[aria-current=true]{font-weight:700}
+.exploration-trace .trace-source{min-width:0}.exploration-trace .trace-line-number{font-variant-numeric:tabular-nums}
+.exploration-trace .trace-code:focus-visible{outline:0;filter:brightness(.93)}
+.exploration-trace .trace-line[data-active=true] .trace-line-number{color:var(--heading);font-weight:700}
+.exploration-trace .trace-line[data-active=true]{background:var(--selected)}
+@media print{.exploration-trace .trace-code:focus-visible{filter:none}}
+.page-surface .exploration-trace .red-ink .code-token[data-variable]{color:inherit}

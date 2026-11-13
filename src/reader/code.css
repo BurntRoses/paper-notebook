@@ -1,0 +1,19 @@
+/* The prescription's CodeEditor source-first presentation is adapted to the
+   readonly paper surface: exact whitespace, one scroll area and shared tokens. */
+.page-surface :is(.block-code,.trace-code){--code-property:#285f9e;--code-parameter:#79501d;--code-variable:#305364;--code-type:#72602c;--code-operator:#646074;--code-builtin:#176864}
+html[data-paper-theme=paper-night] .page-surface :is(.block-code,.trace-code){--code-property:#aad2fa;--code-parameter:#e8c69a;--code-variable:#d7e4ed;--code-type:#e1d3a2;--code-operator:#c8c1d4;--code-builtin:#a2dbd4}
+.page-surface :is(.block-code,.trace-code) .code-token{font:inherit;font-style:normal;font-weight:inherit}
+.page-surface :is(.block-code,.trace-code) .token-keyword{color:var(--token-keyword)}
+.page-surface :is(.block-code,.trace-code) .token-builtin{color:var(--code-builtin)}
+.page-surface :is(.block-code,.trace-code) .token-function{color:var(--token-function)}
+.page-surface :is(.block-code,.trace-code) .token-string{color:var(--token-string)}
+.page-surface :is(.block-code,.trace-code) .token-number{color:var(--token-number)}
+.page-surface :is(.block-code,.trace-code) .token-comment{color:var(--token-comment)}
+.page-surface :is(.block-code,.trace-code) .token-property{color:var(--code-property)}
+.page-surface :is(.block-code,.trace-code) .token-parameter{color:var(--code-parameter)}
+.page-surface :is(.block-code,.trace-code) .token-variable{color:var(--code-variable)}
+.page-surface :is(.block-code,.trace-code) .token-type{color:var(--code-type)}
+.page-surface :is(.block-code,.trace-code) .token-operator{color:var(--code-operator)}
+.page-surface :is(.block-code,.trace-code) .token-plain{color:inherit}
+.page-surface :is(.block-code,.trace-code) .red-ink .code-token{color:inherit}
+#print-root .page-surface :is(.block-code,.trace-code){--code-property:#285f9e;--code-parameter:#79501d;--code-variable:#305364;--code-type:#72602c;--code-operator:#646074;--code-builtin:#176864}
