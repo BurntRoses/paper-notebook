@@ -250,7 +250,7 @@
   function startVideo(){if(mediaStarted)return;mediaStarted=true;mediaObserver?.disconnect();adapt();}
   function adapt(retryPlay = false) {
     const next = orientation.matches ? 'portrait' : 'landscape';
-    if(!mediaStarted){video.dataset.orientation=next;video.poster=poster(next);return;}
+    if(!mediaStarted){video.dataset.orientation=next;return;}
     if (!retryPlay && next === active) return;
     cancelUpgrade();
     if (retryPlay) attempted.delete(next);

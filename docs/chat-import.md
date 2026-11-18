@@ -8,7 +8,7 @@
 - 能执行代码并创建附件的对话环境：直接发送提示词与材料。AI 复用已有工具或自行下载[便携对话包](https://burntroses.github.io/paper-notebook/downloads/paper-notebook-conversation.zip)，按包内 `START-HERE.md` 用 Node 或 Python 构建并附加实际 HTML。只有实际下载失败或明确禁止下载时，才请用户手动上传 ZIP。
 - 不能创建或附加文件的对话环境：无法完成此交付，应说明当前限制，不要退化成 Markdown、TXT 或聊天中的 HTML 源码。
 
-网页[生成入口](../public/promo.html#create)分别提供“编程智能体”和“对话模型”提示词。两者都保持简短；流程、教材质量、Schema、构建、验证和交付细节以仓库 Skill 或便携包内文档为准。
+网页[生成入口](../public/promo.html#create)分别提供“编程智能体”和“对话模型”提示词。[AI 入口](https://burntroses.github.io/paper-notebook/for-ai.md)是可直接读取的 Markdown，列出工作区和网页会话的起点。对话提示词还提供便携包地址；包内的 START-HERE.md 给出完整流程。
 
 ## 对话包内容
 

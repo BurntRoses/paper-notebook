@@ -21,7 +21,7 @@ await rm(site, { recursive: true, force: true });
 await mkdir(site+'downloads', {recursive:true});
 await mkdir(site+'promo/story', {recursive:true});
 await mkdir(site+'previews', {recursive:true});
-for(const path of ['start.html','promo-motion.html','site.css','site-ui.js','site-nav.js','create-notebook.js','responsive-film.js','paper-grain.svg','paper-notebook-prompt.txt'])await cp(publicDir+path,site+path);
+for(const path of ['start.html','promo-motion.html','site.css','intro.css','for-ai.md','site-ui.js','site-nav.js','create-notebook.js','responsive-film.js','paper-grain.svg','paper-notebook-prompt.txt'])await cp(publicDir+path,site+path);
 for(const path of ['THIRD_PARTY_NOTICES.txt','LICENSE'])await cp(root+path,site+path);
 for(const name of ['blank-notebook','paper-notebook','paper-notebook-product','machine-learning','concept','formula','practice','compound-interest','literature','business','programming'])await cp(dist+'downloads/'+name+'.html',site+'downloads/'+name+'.html');
 for(const name of ['machine-learning','compound-interest','concept','literature','business','programming'])await cp(dist+'downloads/'+name+'.json',site+'previews/'+name+'.json');
@@ -30,7 +30,7 @@ await cp(dist+'downloads/paper-notebook-skill.zip',site+'downloads/paper-noteboo
 await cp(dist+'downloads/paper-notebook-conversation.zip',site+'downloads/paper-notebook-conversation.zip');
 await cp(dist+'downloads/runtime.json',site+'downloads/runtime.json');
 await cp(dist+'downloads/paper-notebook-upload.zip',site+'downloads/paper-notebook-upload.zip');
-for(const path of ['paper-landscape-3.jpg','paper-portrait-3.jpg','paper-notebook-film.mp4','paper-notebook-film-portrait.mp4','paper-notebook-film-1080.mp4','paper-notebook-film-portrait-1080.mp4','paper-notebook-film-low.mp4','paper-notebook-film-portrait-low.mp4','story/film-landscape-poster-1.webp','story/film-portrait-poster-1.webp'])await cp(publicDir+'promo/'+path,site+'promo/'+path);
+for(const path of ['intro-spread-small.webp','intro-spread-large.webp','paper-notebook-share.jpg','paper-landscape-3.jpg','paper-portrait-3.jpg','paper-notebook-film.mp4','paper-notebook-film-portrait.mp4','paper-notebook-film-1080.mp4','paper-notebook-film-portrait-1080.mp4','paper-notebook-film-low.mp4','paper-notebook-film-portrait-low.mp4','story/film-landscape-poster-1.webp','story/film-portrait-poster-1.webp'])await cp(publicDir+'promo/'+path,site+'promo/'+path);
 await writeFile(site + 'reader.html', reader);
 const previewDocument=JSON.parse(await readFile(dist+'downloads/machine-learning.json','utf8'));
 const previewSource=reader.replace(/(<script\b[^>]*\bid=["']notebook-data["'][^>]*>)[\s\S]*?(<\/script>)/,(_,open,close)=>open+JSON.stringify(previewDocument).replaceAll('<','\\u003c')+close);

@@ -24,6 +24,8 @@
 2. 将指令与讲义、PDF、图片或题目一起发给支持代码执行和文件生成的 AI。
 3. 回答学习目标和基础等问题，下载生成的 HTML，打开后即可阅读和批注。
 
+对话读不到链接时，[下载上传 ZIP](https://burntroses.github.io/paper-notebook/downloads/paper-notebook-upload.zip)，原样上传至同一会话。如果浏览器展开了外层，上传里面的 `paper-notebook-conversation.zip`。AI 可直接读取[使用说明](https://burntroses.github.io/paper-notebook/for-ai.md)。
+
 也可以直接发送：
 
 ```text

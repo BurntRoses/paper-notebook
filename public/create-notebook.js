@@ -18,4 +18,20 @@
   };
   bind('#copy-repository', '#repository-prompt', '#repository-status', '#agent-instructions');
   bind('#copy', '#prompt', '#status', '#chat-instructions');
+  const share = document.querySelector('#copy-share');
+  const shareUrl = document.querySelector('#share-url');
+  const shareStatus = document.querySelector('#share-status');
+  if (share && shareUrl && shareStatus) {
+    share.hidden = false;
+    share.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(shareUrl.value);
+        shareStatus.textContent = '链接已复制。';
+      } catch {
+        shareUrl.focus();
+        shareUrl.select();
+        shareStatus.textContent = '链接已选中，可手动复制。';
+      }
+    });
+  }
 })();

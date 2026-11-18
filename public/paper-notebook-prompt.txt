@@ -1,1 +1,1 @@
-请阅读 https://github.com/BurntRoses/paper-notebook ，按仓库指引为我制作学习笔记。
+请用 Paper Notebook 为我制作可下载的离线 HTML 学习笔记。优先用我上传的构建 ZIP，否则下载 https://burntroses.github.io/paper-notebook/downloads/paper-notebook-conversation.zip 。从包内 START-HERE.md 开始（说明：https://burntroses.github.io/paper-notebook/for-ai.md ），用原版阅读器实际构建、验证并附上 HTML。若无法取得构建包，请让我下载 https://burntroses.github.io/paper-notebook/downloads/paper-notebook-upload.zip 并上传后继续；沿用已有材料和回答。

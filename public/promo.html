@@ -1,10 +1,57 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="使用 AI 制作图文学习笔记，支持参数计算、原文批读、图文批注与离线保存。"><title>Paper Notebook · 图文学习笔记</title><link rel="stylesheet" href="site.css?v=3.27"><script src="site-ui.js?v=3.19" defer></script><script src="site-nav.js?v=3.26" defer></script><script src="responsive-film.js?v=3.23" defer></script><script src="create-notebook.js?v=3.19" defer></script></head><body class="site-home"><header class="site-header"></header><a class="skip-link" href="#main-content">跳至正文</a><main id="main-content">
-<section class="hero"><div><p class="eyebrow">PAPER NOTEBOOK</p><h1>图文学习笔记</h1><p class="lead">使用 AI 将讲义、书页、题目或代码整理成图文笔记，结合图解、推导与例题阅读，在纸页内调参计算、批注和复习。</p><div class="actions"><a class="action" href="#create">制作笔记</a><a class="action secondary" href="#read">在线试读</a></div></div><figure><picture><source media="(orientation:portrait)" width="1080" height="1920" srcset="promo/paper-portrait-3.jpg?v=3.21"><img width="1920" height="1080" src="promo/paper-landscape-3.jpg?v=3.21" alt="线性回归示例中的参数计算、预测曲线和平方误差" fetchpriority="high"></picture></figure></section>
-<section class="benefits"><article><h3>按内容组织学习</h3><p>公式配推导与曲线，原文配赏析，代码配状态过程，页边说明补充定义和例子。</p></article><article><h3>文字与图像批注</h3><p>文字可加粗、变色、圈画；图像可添加圈注、箭头和文字说明。</p></article><article><h3>单文件离线</h3><p>下载 HTML 直接打开，正文、配图、批注、作答和交互记录一同保存。</p></article></section>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>纸间 Paper Notebook — 一页读懂，动手学会</title>
+<meta name="description" content="用你的 AI 将讲义、书页和习题整理成可交互的图文笔记。边读边算、随手批注，保存为一份离线 HTML。">
+<meta name="theme-color" content="#f2eee4">
+<link rel="canonical" href="https://burntroses.github.io/paper-notebook/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="纸间 Paper Notebook">
+<meta property="og:title" content="一页读懂，动手学会｜纸间 Paper Notebook">
+<meta property="og:description" content="从讲义到可交互的图文笔记。边读边算、随手批注，一份 HTML 随身带走。">
+<meta property="og:url" content="https://burntroses.github.io/paper-notebook/">
+<meta property="og:image" content="https://burntroses.github.io/paper-notebook/promo/paper-notebook-share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="纸间 Paper Notebook 产品封面，展示含公式、曲线与批注的双页学习笔记">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" type="text/markdown" href="for-ai.md" title="Paper Notebook · AI 使用说明">
+<link rel="stylesheet" href="site.css?v=3.27">
+<link rel="stylesheet" href="intro.css?v=1">
+<script src="site-ui.js?v=3.19" defer></script>
+<script src="site-nav.js?v=3.26" defer></script>
+<script src="responsive-film.js?v=4" defer></script>
+<script src="create-notebook.js?v=4" defer></script>
+</head>
+<body class="site-home"><header class="site-header"><a class="site-brand" href="./">Paper Notebook</a><a href="#create">制作笔记</a></header><a class="skip-link" href="#main-content">跳至正文</a><main id="main-content">
+<section class="intro" aria-labelledby="intro-title">
+  <div class="intro-copy">
+    <p class="intro-kicker"><span class="intro-mark" aria-hidden="true">纸</span><span>纸间 <span lang="en">PAPER NOTEBOOK</span></span></p>
+    <h1 id="intro-title">一页读懂，<br><em>动手学会。</em></h1>
+    <p class="intro-lead">用你的 AI 将讲义、书页和习题整理成图文笔记。推导看得见，参数可以调，重点随手圈。</p>
+    <div class="intro-actions">
+      <a class="action intro-primary" href="#read">打开试读 <span aria-hidden="true">↘</span></a>
+      <a class="intro-secondary" href="#create">用 AI 做笔记 <span aria-hidden="true">→</span></a>
+    </div>
+    <p class="intro-meta">免费开源 <span aria-hidden="true">·</span> 单文件离线阅读</p>
+  </div>
+  <figure class="intro-preview">
+    <div class="intro-frame-head"><span><i aria-hidden="true"></i> 真实笔记</span><span lang="en">FIELD NOTES &nbsp; / &nbsp; 01</span></div>
+    <img width="1440" height="810" src="promo/intro-spread-large.webp" srcset="promo/intro-spread-small.webp 768w, promo/intro-spread-large.webp 1440w" sizes="(max-width: 500px) 92vw, (max-width: 850px) 84vw, (max-width: 1240px) 53vw, 660px" alt="线性回归笔记的双页视图：左页用滑块调整参数，右页绘出散点、直线与残差。" fetchpriority="high" decoding="async">
+    <figcaption><span><strong>线性回归</strong><span class="intro-caption-note"> · 调参数，观察拟合误差</span></span><span class="intro-page-numbers">10 — 12</span></figcaption>
+  </figure>
+</section>
+<ol class="intro-proof" aria-label="一份笔记的三种用法">
+  <li><span>01</span><div><strong>看明白</strong><p>公式配推导，原文配批读。</p></div></li>
+  <li><span>02</span><div><strong>动手试</strong><p>调参数看曲线，逐行看代码状态。</p></div></li>
+  <li><span>03</span><div><strong>带走继续学</strong><p>正文、批注和作答存进一份 HTML。</p></div></li>
+</ol>
 <section class="learning-section" id="read" aria-labelledby="learning-title">
 <span id="learn" class="section-anchor" aria-hidden="true"></span>
-<div class="section-head"><h2 id="learning-title">在线试读</h2></div>
+<div class="section-head"><div><p class="section-label">01 / 在线试读</p><h2 id="learning-title">选一科，翻开一页。</h2><p>调一调曲线、逐行看代码，或打开一篇原文批读。</p></div></div>
 <div class="learning-example-list" role="group" aria-label="学科示例">
 <button class="learning-example" type="button" data-example="machine-learning" data-example-title="线性回归与模型评估" aria-label="机器学习" aria-pressed="true"><strong>机器学习</strong><span>斜率、截距与误差</span></button>
 <button class="learning-example" type="button" data-example="compound-interest" data-example-title="复利与增长" aria-label="数学 · 复利" aria-pressed="false"><strong>数学 · 复利</strong><span>单利与复利曲线</span></button>
@@ -18,20 +65,27 @@
 <p id="preview-tour-status" class="preview-status" role="status" aria-live="polite"></p>
 <div class="preview-stage"><div class="preview-loading" hidden><span role="status">正在载入示例…</span><button type="button" class="preview-retry" hidden>重试</button></div><iframe class="reader-preview" aria-describedby="preview-tour-status" title="试读：线性回归与模型评估" data-src="preview-reader.html?demo&amp;v=3.26"></iframe></div>
 </section>
-<section id="film"><div class="section-head"><div><h2>功能演示</h2></div></div><div class="film-wrap"><video id="film-player" data-responsive-film controls controlslist="nodownload" playsinline preload="none" poster="promo/story/film-landscape-poster-1.webp?v=3.19" aria-label="Paper Notebook 阅读演示"></video><div class="film-player-settings"><button class="film-quality-trigger" data-film-quality type="button" aria-haspopup="menu" aria-expanded="false" aria-label="视频清晰度"><span data-quality-label>自动 · 1080p</span><span aria-hidden="true">⌄</span></button><div class="film-quality-menu" data-film-quality-menu role="menu" aria-label="视频清晰度" hidden><p>清晰度</p><button class="film-quality-option" data-quality-choice="auto" role="menuitemradio" aria-checked="true"><span>自动</span><small data-auto-quality>1080p</small></button><button class="film-quality-option" data-quality-choice="1080" role="menuitemradio" aria-checked="false"><span>1080p</span></button><button class="film-quality-option" data-quality-choice="720" role="menuitemradio" aria-checked="false"><span>720p</span></button><button class="film-quality-option" data-quality-choice="540" role="menuitemradio" aria-checked="false"><span>540p</span></button></div></div><div class="film-feedback"><p class="film-status" role="status" aria-live="polite"></p><button class="film-retry" type="button">重新加载视频</button></div></div></section>
-<section class="create" id="create"><div class="section-head"><div><h2>制作学习笔记</h2><p>复制指令，与材料和学习要求一起发给 AI。</p></div></div><div class="routes">
-<article class="route" id="agent"><h3>编程智能体</h3><p>适合能读取仓库、编辑文件和运行命令的工具。</p>
-<div class="actions"><button id="copy-repository" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"/></svg>复制给编程智能体</button></div>
-<p id="repository-status" class="note copy-status" role="status" aria-live="polite">生成文件保存在工作区。</p>
-<details id="agent-instructions"><summary>查看将要复制的指令</summary><textarea id="repository-prompt" readonly aria-label="编程智能体提示词">请阅读 https://github.com/BurntRoses/paper-notebook ，按仓库指引为我制作学习笔记。
+<section class="create" id="create" aria-labelledby="create-title">
+<div class="section-head"><div><p class="section-label">02 / 制作笔记</p><h2 id="create-title">从自己的资料开始。</h2><p>选你正在使用的 AI，复制指令并发出。可同时附上资料；生成的 HTML 下载后就能打开。</p></div></div>
+<div class="routes">
+<article class="route" id="chat"><p class="route-label">网页会话</p><h3>对话模型</h3><p>使用支持运行代码和返回文件的对话。和指令一起发送 PDF、图片或题目。</p>
+<div class="actions"><button id="copy" type="button">复制给对话模型</button></div>
+<p id="status" class="note copy-status" role="status" aria-live="polite"></p>
+<div class="upload-option">
+<p><strong>AI 读不到链接？</strong> 下载 ZIP，上传到同一个会话。</p>
+<a class="action secondary upload-link" href="downloads/paper-notebook-upload.zip" download="paper-notebook-upload.zip">下载构建包 <span class="file-format" aria-hidden="true">ZIP ↓</span></a>
+<details id="download-help"><summary>下载后只有文件夹，没有 ZIP？</summary><p>打开 <code>paper-notebook-upload</code> 文件夹，上传里面的 <code>paper-notebook-conversation.zip</code>。如果内层也已展开，压缩整个 <code>paper-notebook</code> 文件夹再上传。</p></details>
+</div>
+<details id="chat-instructions"><summary>查看将要复制的指令</summary><textarea id="prompt" readonly aria-label="对话模型提示词">请用 Paper Notebook 为我制作可下载的离线 HTML 学习笔记。优先用我上传的构建 ZIP，否则下载 https://burntroses.github.io/paper-notebook/downloads/paper-notebook-conversation.zip 。从包内 START-HERE.md 开始（说明：https://burntroses.github.io/paper-notebook/for-ai.md ），用原版阅读器实际构建、验证并附上 HTML。若无法取得构建包，请让我下载 https://burntroses.github.io/paper-notebook/downloads/paper-notebook-upload.zip 并上传后继续；沿用已有材料和回答。
 </textarea></details></article>
-<article class="route" id="chat"><h3>对话模型</h3><p>适合支持代码执行与文件下载的对话平台。</p>
-<div class="actions"><button id="copy" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"/></svg>复制给对话模型</button><a class="action" href="downloads/paper-notebook-upload.zip" download>下载构建包</a></div>
-<p id="status" class="note copy-status" role="status" aria-live="polite">工具获取失败时，上传备用构建包。</p>
-<details id="download-help"><summary>下载后只有文件夹，没有 ZIP？</summary><p>右键文件夹并选择“压缩”，上传生成的 ZIP。</p></details>
-<details id="chat-instructions"><summary>查看将要复制的指令</summary><textarea id="prompt" readonly aria-label="对话模型提示词">请阅读 https://github.com/BurntRoses/paper-notebook ，按仓库指引为我制作学习笔记。
+<article class="route" id="agent"><p class="route-label">本地工作区</p><h3>编程智能体</h3><p>使用能读取 GitHub 和运行命令的 Agent。它会按仓库规范构建，并在工作区交付 HTML。</p>
+<div class="actions"><button id="copy-repository" type="button">复制给编程智能体</button></div>
+<p id="repository-status" class="note copy-status" role="status" aria-live="polite"></p>
+<div class="agent-docs"><a href="https://github.com/BurntRoses/paper-notebook">查看 GitHub 仓库 ↗</a></div>
+<details id="agent-instructions"><summary>查看将要复制的指令</summary><textarea id="repository-prompt" readonly aria-label="编程智能体提示词">请读取 https://github.com/BurntRoses/paper-notebook 的 AGENTS.md 和 skills/paper-notebook/SKILL.md，使用仓库自带的阅读器与 CLI 为我制作图文学习笔记。在工作区构建、验证并交付可离线打开的单文件 HTML。
 </textarea></details></article>
 </div>
-<details class="help"><summary>材料与学习要求</summary><p>提供讲义、书页、题目或代码，说明已有基础、学习目标、范围和练习要求。需要逐字保留原文时，明确要求严格按材料整理。</p></details>
+<div class="create-resources"><details class="help"><summary>该准备什么资料？</summary><p>讲义、书页、题目和代码都可以。告诉 AI 已有基础和想学到什么；需要逐字保留原文时，明确要求严格按材料整理。</p></details><a href="for-ai.md">给 AI 的纯文本说明 ↗</a></div>
 </section>
-</main><footer class="site-footer"><div class="footer-projects"><span>Paper Notebook</span><a class="footer-related" href="https://github.com/BurntRoses/paper-notebook-practice" target="_blank" rel="noopener noreferrer"><span>试卷制作</span><span lang="en">Paper Notebook Practice <span aria-hidden="true">↗</span></span></a></div><nav aria-label="项目支持与许可"><a class="footer-star" href="https://github.com/BurntRoses/paper-notebook" target="_blank" rel="noopener noreferrer" aria-label="为 Paper Notebook 点亮 GitHub Star"><span class="star-orbit" aria-hidden="true">✧</span><span class="star-glyph" aria-hidden="true">☆</span><span><strong>GitHub Star</strong></span><span aria-hidden="true">↗</span></a><a href="https://github.com/BurntRoses/paper-notebook/blob/main/LICENSE">MIT 许可</a><a href="THIRD_PARTY_NOTICES.txt">第三方许可</a></nav></footer></body></html>
+<section id="film"><div class="section-head"><div><p class="section-label">03 / 阅读演示</p><h2>翻页、圈画与保存</h2></div></div><div class="film-wrap"><video id="film-player" data-responsive-film controls controlslist="nodownload" playsinline preload="none" aria-label="Paper Notebook 阅读演示"></video><div class="film-player-settings"><button class="film-quality-trigger" data-film-quality type="button" aria-haspopup="menu" aria-expanded="false" aria-label="视频清晰度"><span data-quality-label>自动 · 1080p</span><span aria-hidden="true">⌄</span></button><div class="film-quality-menu" data-film-quality-menu role="menu" aria-label="视频清晰度" hidden><p>清晰度</p><button class="film-quality-option" data-quality-choice="auto" role="menuitemradio" aria-checked="true"><span>自动</span><small data-auto-quality>1080p</small></button><button class="film-quality-option" data-quality-choice="1080" role="menuitemradio" aria-checked="false"><span>1080p</span></button><button class="film-quality-option" data-quality-choice="720" role="menuitemradio" aria-checked="false"><span>720p</span></button><button class="film-quality-option" data-quality-choice="540" role="menuitemradio" aria-checked="false"><span>540p</span></button></div></div><div class="film-feedback"><p class="film-status" role="status" aria-live="polite"></p><button class="film-retry" type="button">重新加载视频</button></div></div></section>
+</main><footer class="site-footer"><div class="footer-projects"><span>Paper Notebook</span><a class="footer-related" href="https://github.com/BurntRoses/paper-notebook-practice" target="_blank" rel="noopener noreferrer"><span>试卷制作</span><span lang="en">Paper Notebook Practice <span aria-hidden="true">↗</span></span></a></div><nav aria-label="项目支持与许可"><details class="share-details" id="share-details"><summary>分享纸间</summary><label for="share-url">分享链接</label><div><input id="share-url" readonly value="https://burntroses.github.io/paper-notebook/"><button id="copy-share" type="button" hidden>复制链接</button></div><p id="share-status" role="status"></p></details><a class="footer-star" href="https://github.com/BurntRoses/paper-notebook" target="_blank" rel="noopener noreferrer" aria-label="为 Paper Notebook 点亮 GitHub Star"><span class="star-orbit" aria-hidden="true">✧</span><span class="star-glyph" aria-hidden="true">☆</span><span><strong>GitHub Star</strong></span><span aria-hidden="true">↗</span></a><a href="https://github.com/BurntRoses/paper-notebook/blob/main/LICENSE">MIT 许可</a><a href="THIRD_PARTY_NOTICES.txt">第三方许可</a></nav></footer></body></html>

@@ -28,7 +28,7 @@ try {
       if (url.startsWith(base) && !url.includes('#')) links.add(url);
     }
     if (!route) {
-      assert.equal(await page.locator('h1').innerText(),'图文学习笔记');
+      assert.equal(await page.locator('h1').innerText(),'一页读懂，\n动手学会。');
       await page.locator('#read').scrollIntoViewIfNeeded();
       const preview=page.frameLocator('.reader-preview');await preview.locator('.page-surface').waitFor();
       const passage=preview.locator('.reader-stage .ink-text').first();
@@ -70,24 +70,23 @@ try {
   checks.push('Conversation route downloads a wrapper containing the unchanged runtime ZIP; copying instructions remains the primary action');
   await page.locator('#download-help summary').click();
   assert.match(await page.locator('#download-help').innerText(),/压缩/);
-  assert.doesNotMatch(await page.locator('#download-help').innerText(),/paper-notebook-conversation\.zip/);
+  assert.match(await page.locator('#download-help').innerText(),/paper-notebook-conversation\.zip/);
   assert.doesNotMatch(await page.locator('#download-help').innerText(),/Safari|此前下载/);
-  checks.push('Auto-expanded downloads retain one concise folder-recompression recovery path');
+  checks.push('Auto-expanded downloads expose the inner ZIP and explain how to re-compress the runtime folder');
   const prompt = await page.getByLabel('对话模型提示词', { exact: true }).inputValue();
   assert.equal(prompt, await readFile('skills/paper-notebook/prompts/conversation-model.txt', 'utf8'));
   const repositoryPrompt = await page.getByLabel('编程智能体提示词', { exact: true }).inputValue();
   assert.equal(repositoryPrompt, await readFile('skills/paper-notebook/prompts/coding-agent.txt', 'utf8'));
   for(const text of [prompt,repositoryPrompt]){
-    assert.ok(text.trim().length < 160, `Prompt should stay concise (${text.length} chars)`);
+    assert.ok(text.trim().length < 400, `Prompt should stay concise (${text.length} chars)`);
     assert.equal(text.trim().split(/\r?\n/).length,1);
-    assert.ok(text.includes('https://github.com/BurntRoses/paper-notebook'));
     assert.doesNotMatch(text,/Codex|ChatGPT|DeepSeek|WorkBuddy/i);
     assert.doesNotMatch(text,/只输出.*Markdown|交付 Markdown|输出完整.*Markdown/);
-    assert.match(text,/按仓库指引/);
+    assert.match(text,/HTML/);
   }
-  checks.push('Single-line provider-neutral prompts delegate generation to the repository instructions');
-  assert.ok(repositoryPrompt.includes('按仓库指引'));
-  assert.ok(prompt.includes('按仓库指引'));
+  checks.push('One-line prompts point to tool-specific instructions');
+  assert.match(repositoryPrompt,/AGENTS\.md.*SKILL\.md/);
+  assert.match(prompt,/for-ai\.md.*paper-notebook-upload\.zip/);
   assert.equal(prompt.trim().split(/\r?\n/).length,1);
   await page.getByRole('button', { name: '复制给编程智能体', exact: true }).click();
   await page.waitForFunction(() => /已复制|已选中/.test(document.querySelector('#repository-status').textContent));
@@ -141,6 +140,8 @@ try {
   film.on('pageerror',error=>errors.push(error.message));
   film.on('request',r=>{if(/\.mp4(?:\?|$)/.test(r.url()))mediaRequests.push(r.url())});
   await film.goto(base);
+  assert.deepEqual(mediaRequests, [], "the home screen does not fetch a film");
+  await film.locator(".film-screen").scrollIntoViewIfNeeded();
   await film.waitForFunction(()=>[...document.querySelectorAll('video')].length===1&&document.querySelector('video').readyState>=2&&document.querySelector('video').preload==='auto');
   assert.ok(mediaRequests.some(url=>url.includes('/paper-notebook-film-1080.mp4')));
   assert.ok(mediaRequests.every(url=>!/-portrait(?:-1080|-low)?\.mp4/.test(url)),'only the current orientation downloads initially');
@@ -176,7 +177,7 @@ try {
   const cold=await context.newPage();
   cold.on('pageerror',error=>errors.push(error.message));
   await cold.route(/\.mp4(?:\?|$)/,async route=>{await new Promise(resolve=>setTimeout(resolve,600));await route.continue()});
-  await cold.goto(base,{waitUntil:'domcontentloaded'});
+  await cold.goto(base+'#film',{waitUntil:'domcontentloaded'});
   await cold.setViewportSize({width:390,height:844});
   await cold.setViewportSize({width:1440,height:1000});
   await cold.waitForFunction(()=>{const v=document.querySelector('#film-player');return v?.videoWidth===1920&&v.readyState>=2&&!v.hasAttribute('aria-busy')});
@@ -189,7 +190,7 @@ try {
 
   const slowContext=await browser.newContext({viewport:{width:1440,height:1000}}),slow=await slowContext.newPage();
   const network=await slowContext.newCDPSession(slow);await network.send('Network.enable');await network.send('Network.emulateNetworkConditions',{offline:false,latency:150,downloadThroughput:180*1024,uploadThroughput:60*1024});
-  await slow.goto(base,{waitUntil:'domcontentloaded'});await slow.waitForFunction(()=>document.querySelector('#film-player')?.readyState>=2,{},{timeout:45000});
+  await slow.goto(base+'#film',{waitUntil:'domcontentloaded'});await slow.waitForFunction(()=>document.querySelector('#film-player')?.readyState>=2,{},{timeout:45000});
   const began=Date.now();
   await slow.locator('#film-player').evaluate(v=>v.play());
   // NetworkInformation still reports 4G in this emulation. Measure the cold
@@ -209,6 +210,7 @@ try {
     assert.ok(await sp.locator('#site-menu').isVisible());await sp.keyboard.press('Escape');assert.equal(await sp.locator('#site-menu').isVisible(),false);
     await sp.getByRole('button',{name:'复制给对话模型',exact:true}).click();
     await sp.waitForFunction(()=>/已复制|已选中/.test(document.querySelector('#status').textContent));
+    await sp.locator('#film').scrollIntoViewIfNeeded();
     await sp.waitForFunction(()=>[...document.querySelectorAll('video')].every(v=>v.readyState>=2&&v.preload==='auto'));
     await sp.locator('#film-player').evaluate(v=>new Promise(resolve=>{v.addEventListener('seeked',resolve,{once:true});v.currentTime=32}));
     await sp.setViewportSize({width:390,height:844});

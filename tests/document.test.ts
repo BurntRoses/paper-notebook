@@ -27,9 +27,9 @@ test('repository entry prompts stay on one line and retain completed learning pr
     const prompt=generationPrompt(brief,prompts,environment);
     assert.ok(prompt.startsWith(prompts[environment].trim()));
     assert.deepEqual(JSON.parse(prompt.slice(prompt.indexOf('{'))),brief);
-    assert.match(prompt,/按仓库指引/);
+    assert.match(prompt,/HTML/);
     assert.equal(prompts[environment].trim().split(/\r?\n/).length,1);
     assert.doesNotMatch(prompt,/Output complete Markdown|交付 Markdown|只返回.*文本/);
-    assert.match(prompts[environment],/https:\/\/github\.com\/BurntRoses\/paper-notebook/);
+    assert.match(prompts[environment],environment==='conversation'?/for-ai\.md.*paper-notebook-upload\.zip/:/github\.com\/BurntRoses\/paper-notebook.*AGENTS\.md/);
   }
 });

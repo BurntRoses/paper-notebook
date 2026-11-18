@@ -1,1 +1,1 @@
-请阅读 https://github.com/BurntRoses/paper-notebook ，按仓库指引为我制作学习笔记。
+请读取 https://github.com/BurntRoses/paper-notebook 的 AGENTS.md 和 skills/paper-notebook/SKILL.md，使用仓库自带的阅读器与 CLI 为我制作图文学习笔记。在工作区构建、验证并交付可离线打开的单文件 HTML。

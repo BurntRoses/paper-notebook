@@ -10,7 +10,7 @@ for(const engine of ['chromium','webkit']){
  try{
   const context=await browser.newContext({acceptDownloads:true,viewport:{width:1440,height:1000}}),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
   assert.equal((await page.goto(base+'/chat-start.html')).status(),200);
-  const link=page.getByRole('link',{name:'备用：下载构建包',exact:true});assert.equal(await link.getAttribute('href'),'downloads/paper-notebook-upload.zip');
+  const link=page.getByRole('link',{name:'下载构建包',exact:true});assert.equal(await link.getAttribute('href'),'downloads/paper-notebook-upload.zip');
   const waiting=page.waitForEvent('download');await link.click();const download=await waiting;
   assert.equal(download.suggestedFilename(),'paper-notebook-upload.zip');
   const data=await readFile(await download.path());assert.deepEqual(data,expected);
