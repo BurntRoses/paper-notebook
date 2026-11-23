@@ -15,7 +15,8 @@ try{
  assert.equal(await page.locator('[data-kind=circle]').count(),1);const first=await page.locator('[data-kind=circle]').getAttribute('d');
  await page.evaluate(()=>{const r=window.reader;r.goPage(r.pages.findIndex(p=>p.id==='product-idea'))});await page.locator('.page-transition').waitFor({state:'detached'});assert.equal(await page.locator('.page-surface').getAttribute('data-page'),'product-idea');
  await page.evaluate(()=>window.reader.goPage(0));await page.locator('.page-transition').waitFor({state:'detached'});assert.equal(await page.locator('[data-kind=circle]').getAttribute('d'),first);
- await page.screenshot({path:root+'/docs/screenshots/product-offline-circle.png'});checks.push('Portable Python-built HTML opens offline, preserves source and deterministic circle on return');
+ await mkdir('output/screenshots',{recursive:true});
+ await page.screenshot({path:root+'/output/screenshots/product-offline-circle.png'});checks.push('Portable Python-built HTML opens offline, preserves source and deterministic circle on return');
  await page.locator('.reader-files summary').click();await page.locator('.reader-file-menu').getByRole('button',{name:'导入',exact:true}).click();await page.getByRole('button',{name:'生成前问答',exact:true}).click();
  await page.getByLabel('学习目标',{exact:true}).fill('复习材料中的重点');
  const prompt=await page.getByLabel('生成提示预览',{exact:true}).inputValue();assert.ok(prompt.startsWith(genericPrompt.trim()));assert.ok(prompt.includes('复习材料中的重点'));
@@ -44,6 +45,6 @@ try{
  // Wait for an actually presented frame, rather than capturing the native
  // loading spinner between seek completion and the compositor update.
  await promo.locator('#film-player').evaluate(async v=>{const frame=new Promise(resolve=>v.requestVideoFrameCallback(resolve));await v.play();await frame;v.pause()});
- await promo.screenshot({path:root+'/docs/screenshots/product-film-player.png'});checks.push('The file:// homepage film automatically follows rotation while preserving playback position and pause state');
- assert.deepEqual(errors,[]);await mkdir('docs/verification',{recursive:true});await writeFile('docs/verification/product-delivery-report.json',JSON.stringify({date:new Date().toISOString(),checks,errors,scope:'Chromium, including file:// offline Python-built HTML and text import/export; no remote ChatGPT or DeepSeek account session or physical devices used'},null,2));console.log(checks.join('\n'));
+ await promo.screenshot({path:root+'/output/screenshots/product-film-player.png'});checks.push('The file:// homepage film automatically follows rotation while preserving playback position and pause state');
+ assert.deepEqual(errors,[]);await mkdir('output/verification',{recursive:true});await writeFile('output/verification/product-delivery-report.json',JSON.stringify({date:new Date().toISOString(),checks,errors,scope:'Chromium, including file:// offline Python-built HTML and text import/export; no remote ChatGPT or DeepSeek account session or physical devices used'},null,2));console.log(checks.join('\n'));
 }finally{await browser.close();}

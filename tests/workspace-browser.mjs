@@ -126,5 +126,6 @@ for(const engine of ['chromium','webkit']){
   await context.close();
  }finally{await browser.close();}
 }
-await writeFile('docs/verification/workspace-report.json',JSON.stringify({date:new Date().toISOString(),results,scope:'Chromium and WebKit, isolated file HTML, blocked network, desktop window sizes and emulated phone; physical touch devices not exercised.'},null,2)+'\n');
+await mkdir('output/verification',{recursive:true});
+await writeFile('output/verification/workspace-report.json',JSON.stringify({date:new Date().toISOString(),results,scope:'Chromium and WebKit, isolated file HTML, blocked network, desktop window sizes and emulated phone; physical touch devices not exercised.'},null,2)+'\n');
 console.log(JSON.stringify(results,null,2));

@@ -72,5 +72,6 @@ try{
  await page.screenshot({path:'output/turn/settings-quiet.png'});await page.keyboard.press('Tab');assert.equal(await page.locator('.close-dialog').evaluate(n=>n.matches(':focus-visible')),true);assert.equal(await page.locator('.close-dialog').evaluate(n=>getComputedStyle(n).outlineStyle),'solid');
  await page.keyboard.press('Escape');await page.getByRole('button',{name:'阅读设置',exact:true}).click();await page.locator('.close-dialog').click();assert.equal(await page.locator('dialog[open]').count(),0);check('Settings opens without an automatic close-button rectangle; borderless controls retain keyboard focus and pointer close');
  await page.emulateMedia({reducedMotion:'reduce'});await page.keyboard.press('PageDown');assert.equal(await page.locator('.page-transition').count(),0);assert.deepEqual(errors,[]);
- await writeFile('docs/verification/turn-report.json',JSON.stringify({date:new Date().toISOString(),checks,errors,scope:'Chromium desktop, portrait tablet and phone viewports; real devices not exercised; references: https://nodlik.github.io/StPageFlip/'},null,2));
+ await mkdir('output/verification',{recursive:true});
+ await writeFile('output/verification/turn-report.json',JSON.stringify({date:new Date().toISOString(),checks,errors,scope:'Chromium desktop, portrait tablet and phone viewports; real devices not exercised; references: https://nodlik.github.io/StPageFlip/'},null,2));
 }finally{await browser.close()}

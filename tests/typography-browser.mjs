@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {mkdir,writeFile} from 'node:fs/promises';
 const {chromium}=await import(process.env.PLAYWRIGHT_MODULE||'playwright');
 const base=process.env.NOTEBOOK_BASE||'http://127.0.0.1:5180/paper-notebook-kit/dist',browser=await chromium.launch({headless:true}),checks=[],errors=[],layouts=[];
-await mkdir('docs/screenshots/typography',{recursive:true});await mkdir('docs/verification',{recursive:true});
+await mkdir('output/screenshots/typography',{recursive:true});await mkdir('output/verification',{recursive:true});
 const check=name=>{checks.push(name);console.log('✓ '+name)};
 const rulerGeometry=()=>{
  const paper=document.querySelector('.reader-stage .page-surface'),body=paper.querySelector('.reader-page-body'),base=body.getBoundingClientRect(),sy=base.height/body.clientHeight,sx=base.width/body.clientWidth;
@@ -40,8 +40,8 @@ try{
    }
   }
   await page.evaluate(()=>{const r=window.reader;r.goPage(r.pages.findIndex(p=>p.blocks.some(b=>b.id==='ml-observation')))});const geometry=await page.evaluate(rulerGeometry);assert.deepEqual(geometry.issues,[]);assert.ok(geometry.textLines>1);assert.ok(geometry.lines>1);assert.equal(geometry.background,'none');
-  const name=`${width}-${font}-${theme}`;await page.screenshot({path:`docs/screenshots/typography/${name}-body.png`,fullPage:true});layouts.push({width,height,font,spacing,theme,...geometry});
-  await page.evaluate(()=>{const r=window.reader;r.goPage(r.pages.findIndex(p=>p.blocks.some(b=>b.id==='ml-linear')))});await page.screenshot({path:`docs/screenshots/typography/${name}-formula.png`,fullPage:true});
+  const name=`${width}-${font}-${theme}`;await page.screenshot({path:`output/screenshots/typography/${name}-body.png`,fullPage:true});layouts.push({width,height,font,spacing,theme,...geometry});
+  await page.evaluate(()=>{const r=window.reader;r.goPage(r.pages.findIndex(p=>p.blocks.some(b=>b.id==='ml-linear')))});await page.screenshot({path:`output/screenshots/typography/${name}-formula.png`,fullPage:true});
  }
  check('symbol rows survive screen reflow intact with exact text anchors, separate rows and no formula scrollboxes');
  check('ruling stays below actual text across three fonts, spacing choices, both themes and desktop/tablet/phone viewports');
@@ -51,7 +51,7 @@ try{
  assert.ok(await page.locator('.reader-stage [data-kind=underline]').count());
  await page.evaluate(()=>{const r=window.reader;r.zoom=1.5;r.fitPages();r.editor.paint()});assert.ok(await page.locator('.reader-stage [data-kind=underline]').count());
  check('new parameter explanations remain selectable and annotatable after zoom');
- await page.evaluate(()=>{const r=window.reader;r.zoom=1;r.goPage(r.pages.findIndex(p=>p.blocks.some(b=>b.id==='ml-parameter-chart')))});await page.screenshot({path:'docs/screenshots/typography/function-comparison.png',fullPage:true});
+ await page.evaluate(()=>{const r=window.reader;r.zoom=1;r.goPage(r.pages.findIndex(p=>p.blocks.some(b=>b.id==='ml-parameter-chart')))});await page.screenshot({path:'output/screenshots/typography/function-comparison.png',fullPage:true});
  assert.equal(await page.locator('.reader-stage [data-block=ml-parameter-chart].oversize-object').count(),0);
  for(const ruling of ['grid','dots','blank','lined']){
   await page.evaluate(ruling=>{const r=window.reader,p=r.d.notebook.chapters[0].pages[1];p.paper={ruling};r.invalidate();r.render();r.goPage(r.pages.findIndex(p=>p.id==='ml-vocabulary'))},ruling);
@@ -64,5 +64,5 @@ try{
   await page.evaluate(()=>dispatchEvent(new Event('afterprint')));await page.waitForFunction(()=>!window.reader.printState);
  }
  check('portrait and landscape A4 projections retain every formula explanation once without screen ruling');
- assert.deepEqual(errors,[]);await writeFile('docs/verification/typography-report.json',JSON.stringify({date:new Date().toISOString(),checks,layouts,errors},null,2));
+ assert.deepEqual(errors,[]);await writeFile('output/verification/typography-report.json',JSON.stringify({date:new Date().toISOString(),checks,layouts,errors},null,2));
 }finally{await browser.close()}

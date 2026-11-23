@@ -69,4 +69,4 @@ for(const engine of ['chromium','webkit']){
   await context.close();
  }finally{await browser.close()}
 }
-await mkdir('docs/verification',{recursive:true});await writeFile('docs/verification/quality-browser-report.json',JSON.stringify({date:new Date().toISOString(),results},null,2)+'\n');console.log(JSON.stringify(results,null,2));
+await mkdir('output/verification',{recursive:true});await writeFile('output/verification/quality-browser-report.json',JSON.stringify({date:new Date().toISOString(),results},null,2)+'\n');console.log(JSON.stringify(results,null,2));

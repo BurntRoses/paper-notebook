@@ -202,7 +202,7 @@ def render(time):
         frame=Image.composite(upcoming,frame,mask)
     return frame.convert('RGB')
 
-contacts=ROOT/'docs/screenshots'
+contacts=ROOT/'output/screenshots'
 contacts.mkdir(parents=True,exist_ok=True)
 times=[.8,3.5,6,9,12,17.5,20,25.5,28,33,35,37.5,42,45.5,50,54,58,61.5]
 thumb=(270,480) if PORTRAIT else (480,270)

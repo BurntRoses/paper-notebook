@@ -39,24 +39,26 @@ Import an existing notebook to keep working on it. Downloaded copies include you
 <details>
 <summary>Local development and CLI</summary>
 
-Requires Node.js 20.19+.
+Requires Node.js 20.19+ and pnpm 10.
 
 ```sh
-npm install
-npm run build:pages
-npm run preview -- --outDir output/site --port 4173
+git clone https://github.com/BurntRoses/paper-notebook.git
+cd paper-notebook
+pnpm install --frozen-lockfile
+pnpm build:pages
+pnpm exec vite preview --outDir output/site --port 4173
 ```
 
-Open `http://localhost:4173/`. Use `npm run build` for the complete toolkit or `npm run install-skill` to install the Skill for a coding agent.
+Open `http://localhost:4173/`. Use `pnpm build` to generate the complete toolkit and offline examples in `dist/downloads/`, or `pnpm install-skill` to install the Skill for a coding agent.
 
 ```sh
 node tools/notebook.mjs validate notebook.json
 node tools/notebook.mjs build notebook.json --out output/tutorial
 node tools/notebook.mjs verify output/tutorial/<notebook-filename>.html --source notebook.json
-npm test
+pnpm test
 ```
 
-[Content contract](docs/content-contract.md) · [Deployment](docs/hosting.md) · [Tests and verification](docs/verification.md)
+[Content contract](docs/content-contract.md) · [Deployment](docs/hosting.md)
 
 </details>
 

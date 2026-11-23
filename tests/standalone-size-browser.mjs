@@ -45,5 +45,6 @@ for(const engine of ['chromium','webkit']){
   await context.close();
  }finally{await browser.close();}
 }
-await writeFile('docs/verification/standalone-size-report.json',JSON.stringify({date:new Date().toISOString(),results,scope:'Chromium network-offline and WebKit with every non-embedded dependency blocked. Each HTML is copied by itself to a new directory; no adjacent fonts/scripts/images, source JSON, archive or server. This does not diagnose a user file that has not been provided.'},null,2)+'\n');
+await mkdir('output/verification',{recursive:true});
+await writeFile('output/verification/standalone-size-report.json',JSON.stringify({date:new Date().toISOString(),results,scope:'Chromium network-offline and WebKit with every non-embedded dependency blocked. Each HTML is copied by itself to a new directory; no adjacent fonts/scripts/images, source JSON, archive or server. This does not diagnose a user file that has not been provided.'},null,2)+'\n');
 console.log('Standalone Node/Python HTML: Chromium and WebKit opened isolated files, rendered, annotated and exported with no external dependency requests.');

@@ -27,7 +27,9 @@ jobs:
       - uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          generate_release_notes: true
+          body: |
+            下载 `paper-notebook-offline.zip`，解压后在浏览器打开任意 HTML。
+            自行构建请使用 `paper-notebook-toolkit.zip` 或本仓库源码。
           files: |
             dist/downloads/*.zip
             dist/downloads/blank-notebook.html

@@ -84,5 +84,6 @@ try{
   await activityContext.close();
   console.log(orientation+': 8 complete logical pages, no overflow, current spread/notes/figure UI '+width+'×'+height);await context.close();
  }
- assert.deepEqual(errors,[]);await writeFile(root+'docs/verification/product-pages.json',JSON.stringify({logicalPages:16,physicalSheets:sheets,allBlocksCaptured:true,errors,source:'production reader, Chromium headless, CSS geometry and raster in the same viewport',readerSha256:createHash('sha256').update(await readFile(root+'dist/index.html')).digest('hex'),uiSource:'downloads/machine-learning.html; landscape/portrait spreads, right/bottom notes, figure annotation tools',physicalDevices:false},null,2));
+ await mkdir(root+'output/verification',{recursive:true});
+ assert.deepEqual(errors,[]);await writeFile(root+'output/verification/product-pages.json',JSON.stringify({logicalPages:16,physicalSheets:sheets,allBlocksCaptured:true,errors,source:'production reader, Chromium headless, CSS geometry and raster in the same viewport',readerSha256:createHash('sha256').update(await readFile(root+'dist/index.html')).digest('hex'),uiSource:'downloads/machine-learning.html; landscape/portrait spreads, right/bottom notes, figure annotation tools',physicalDevices:false},null,2));
 }finally{await browser.close();}

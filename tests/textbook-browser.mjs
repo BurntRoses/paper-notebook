@@ -3,7 +3,7 @@ import {mkdir,readFile,writeFile} from 'node:fs/promises';
 import {pathToFileURL} from 'node:url';
 import {unzipSync,strFromU8} from 'fflate';
 const {chromium}=await import(process.env.PLAYWRIGHT_MODULE||'playwright');
-const base=process.env.NOTEBOOK_BASE||'http://127.0.0.1:5178/paper-notebook-kit/dist',out=process.cwd()+'/output/textbook';await mkdir(out,{recursive:true});await mkdir('docs/verification',{recursive:true});
+const base=process.env.NOTEBOOK_BASE||'http://127.0.0.1:5178/paper-notebook-kit/dist',out=process.cwd()+'/output/textbook';await mkdir(out,{recursive:true});await mkdir('output/verification',{recursive:true});
 const browser=await chromium.launch({headless:true}),checks=[],errors=[],layouts=[];
 const choose=async(page,label,name)=>{const group=page.getByRole('radiogroup',{name:label,exact:true});if(await group.count()){await group.getByRole('radio',{name,exact:true}).click();return;}await page.getByRole('combobox',{name:label,exact:true}).click();await page.locator('.paper-choice-list:popover-open').getByRole('option',{name,exact:true}).click()};
 const fileAction=async(page,name)=>{await page.locator('.reader-files summary').click();await page.locator('.reader-file-menu').getByRole('button',{name,exact:true}).click()};
@@ -37,5 +37,5 @@ try{
  await fileAction(page,'下载');await choose(page,'格式','单文件 HTML');download=page.waitForEvent('download');await page.locator('.dialog-foot').getByRole('button',{name:'下载',exact:true}).click();const single=await download;assert.equal(single.suggestedFilename(),htmlName);
  const offline=await browser.newContext({offline:true,viewport:{width:1280,height:900},acceptDownloads:true}),op=await offline.newPage(),requests=[];op.on('request',r=>{if(/^https?:/.test(r.url()))requests.push(r.url())});op.on('pageerror',e=>errors.push(e.message));await op.goto(pathToFileURL(offlinePath).href+'?demo');await op.waitForFunction(()=>!!window.reader);await op.evaluate(()=>document.fonts.ready);assert.deepEqual(await op.evaluate(()=>window.reader.d.notebook),source.notebook);assert.deepEqual(requests,[]);assert.equal(await op.locator('html').getAttribute('data-paper-theme'),'paper-night');
  checks.push('Default ZIP contains exactly named HTML, source, guide and notices; separate HTML has matching name; extracted book opens offline with no network requests');
- await offline.close();assert.deepEqual(errors,[]);const report={date:new Date().toISOString(),checks,layouts,palette,errors,scope:'Local Chromium viewport emulation and offline export; no physical device or remote WorkBuddy session used'};await writeFile('docs/verification/textbook-report.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));
+ await offline.close();assert.deepEqual(errors,[]);const report={date:new Date().toISOString(),checks,layouts,palette,errors,scope:'Local Chromium viewport emulation and offline export; no physical device or remote WorkBuddy session used'};await writeFile('output/verification/textbook-report.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));
 }finally{await browser.close()}

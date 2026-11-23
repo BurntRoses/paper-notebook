@@ -41,24 +41,26 @@
 <details>
 <summary>本地开发与命令行</summary>
 
-需要 Node.js 20.19+。
+需要 Node.js 20.19+ 和 pnpm 10。
 
 ```sh
-npm install
-npm run build:pages
-npm run preview -- --outDir output/site --port 4173
+git clone https://github.com/BurntRoses/paper-notebook.git
+cd paper-notebook
+pnpm install --frozen-lockfile
+pnpm build:pages
+pnpm exec vite preview --outDir output/site --port 4173
 ```
 
-浏览器打开 `http://localhost:4173/`。完整工具包使用 `npm run build` 构建；安装到编程智能体使用 `npm run install-skill`。
+浏览器打开 `http://localhost:4173/`。用 `pnpm build` 在 `dist/downloads/` 生成完整工具包和离线示例；用 `pnpm install-skill` 安装到编程智能体。
 
 ```sh
 node tools/notebook.mjs validate notebook.json
 node tools/notebook.mjs build notebook.json --out output/tutorial
 node tools/notebook.mjs verify output/tutorial/<成品文件名>.html --source notebook.json
-npm test
+pnpm test
 ```
 
-[数据协议](docs/content-contract.md) · [部署说明](docs/hosting.md) · [测试与验证](docs/verification.md)
+[数据协议](docs/content-contract.md) · [部署说明](docs/hosting.md)
 
 </details>
 
